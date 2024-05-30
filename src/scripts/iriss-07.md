@@ -156,7 +156,7 @@ The reason for this appears to be ambiguity in terminating block comments with `
 
 Don't worry though, your IDE should help you deal with the line comments, and if you use a screen reader it should manage just fine too.
 
-Outer Doc Comments are placed before the thing that's being documented and use `///` for each line of the comment, and we'll use them for most things like modules, type definitions, traits and functions... like our `add()` function.
+Outer Doc Comments are placed before the thing that's being documented and use three slashes for each line of the comment, and we'll use them for most things like modules, type definitions, traits and functions... like our `add()` function.
 
 ---
 
