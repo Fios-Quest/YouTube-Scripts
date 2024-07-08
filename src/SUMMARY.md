@@ -10,6 +10,8 @@
 - [Functions](iriss/005-iriss.md)
 - [Tests](iriss/006-iriss.md)
 - [Documentation](iriss/007-iriss.md)
+- [Clippy and Friends](iriss/008-iriss.md)
+- [Implementing Types](iriss/009-iriss.md)
 
 # Channel Labs
 
