@@ -89,7 +89,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">IRISS</li><li class="chapter-item expanded "><a href="iriss/000-iriss.html"><strong aria-hidden="true">1.</strong> Welcome to IRISS</a></li><li class="chapter-item expanded "><a href="iriss/001-iriss.html"><strong aria-hidden="true">2.</strong> Setting Up</a></li><li class="chapter-item expanded "><a href="iriss/002-iriss.html"><strong aria-hidden="true">3.</strong> Memory</a></li><li class="chapter-item expanded "><a href="iriss/003-iriss.html"><strong aria-hidden="true">4.</strong> Data Types</a></li><li class="chapter-item expanded "><a href="iriss/004-iriss.html"><strong aria-hidden="true">5.</strong> Control Flow</a></li><li class="chapter-item expanded "><a href="iriss/005-iriss.html"><strong aria-hidden="true">6.</strong> Functions</a></li><li class="chapter-item expanded "><a href="iriss/006-iriss.html"><strong aria-hidden="true">7.</strong> Tests</a></li><li class="chapter-item expanded "><a href="iriss/007-iriss.html"><strong aria-hidden="true">8.</strong> Documentation</a></li><li class="chapter-item expanded "><a href="iriss/008-iriss.html"><strong aria-hidden="true">9.</strong> Clippy and Friends</a></li><li class="chapter-item expanded "><a href="iriss/009-iriss.html"><strong aria-hidden="true">10.</strong> Implementing Types</a></li><li class="chapter-item expanded affix "><li class="part-title">Channel Labs</li><li class="chapter-item expanded "><a href="channel-news/001-fios-quest.html"><strong aria-hidden="true">11.</strong> Long Live Fio's Quest</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">IRISS</li><li class="chapter-item expanded "><a href="iriss/000-iriss.html"><strong aria-hidden="true">1.</strong> Welcome to IRISS</a></li><li class="chapter-item expanded "><a href="iriss/001-iriss.html"><strong aria-hidden="true">2.</strong> Setting Up</a></li><li class="chapter-item expanded "><a href="iriss/002-iriss.html"><strong aria-hidden="true">3.</strong> Memory</a></li><li class="chapter-item expanded "><a href="iriss/003-iriss.html"><strong aria-hidden="true">4.</strong> Data Types</a></li><li class="chapter-item expanded "><a href="iriss/004-iriss.html"><strong aria-hidden="true">5.</strong> Control Flow</a></li><li class="chapter-item expanded "><a href="iriss/005-iriss.html"><strong aria-hidden="true">6.</strong> Functions</a></li><li class="chapter-item expanded "><a href="iriss/006-iriss.html"><strong aria-hidden="true">7.</strong> Tests</a></li><li class="chapter-item expanded "><a href="iriss/007-iriss.html"><strong aria-hidden="true">8.</strong> Documentation</a></li><li class="chapter-item expanded "><a href="iriss/008-iriss.html"><strong aria-hidden="true">9.</strong> Clippy and Friends</a></li><li class="chapter-item expanded "><a href="iriss/009-iriss.html"><strong aria-hidden="true">10.</strong> Implementing Types</a></li><li class="chapter-item expanded affix "><li class="part-title">Channel Labs</li><li class="chapter-item expanded "><a href="channel-news/001-fios-quest.html"><strong aria-hidden="true">11.</strong> Long Live Fio's Quest</a></li><li class="chapter-item expanded affix "><li class="part-title">Shorts</li><li class="chapter-item expanded "><a href="shorts/001-sixty-seconds.html"><strong aria-hidden="true">12.</strong> Lifetimes in 60s</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -2396,6 +2396,19 @@ and, it also prevents old states hanging around, making it unclear what the vali
 <p>Don't forget to drop by the Discord, link in the description be... maybe not below anymore, YouTube moved it, so I'm going to have to change my IRISS intro's from now on.</p>
 <p>But, to end as we usually begin</p>
 <p>My name is Daniel, welcome to Fio's Quest.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="lifetimes-in-60s"><a class="header" href="#lifetimes-in-60s">Lifetimes in 60s</a></h1>
+<p>Rust lifetimes in 60 seconds</p>
+<p>In Rust, all data is owned by something, let's pretend it's a crab.</p>
+<p>When the crab goes out of scope, that data ceases to exist.</p>
+<p>You can pass the crab up and down the stack, but if we had to pass ownership like this all the time it'd get really messy.</p>
+<p>Instead, we can create a reference to data, let's pretend it's a kite.</p>
+<p>The crab still owns the data, but the kite (reference) allows access to it.</p>
+<p>The kite can now go out of scope, but the crab still keeps the data.</p>
+<p>Lifetimes let us trace where the reference goes, like the string that connects the crab to the kite.</p>
+<p>The kite can fly up and down the stack, so long as it never flies below the ground (where the crab is standing).</p>
+<p>A function can take any number of kites in and return any number of kites out.</p>
+<p>Sometimes it's obvious to us, which incoming kites are attached to which outgoing kites, we just have to tell the compiler which kite strings are which.</p>
+<p>Sometimes we can't determine that, in which case we tie kite strings together and the returned kites can only go as low as the highest crab on the hill.</p>
 
                     </main>
 

@@ -16,3 +16,7 @@
 # Channel Labs
 
 - [Long Live Fio's Quest](channel-news/001-fios-quest.md)
+
+# Shorts
+
+- [Lifetimes in 60s](shorts/001-sixty-seconds.md)
