@@ -4,17 +4,17 @@ Last time I showed you how to add functionality to types by building a state mac
 
 We identified a couple of issues with the state machine though: 
 
-- We couldn't access anything about the Cat from inside our State.
-- The behaviours didn't seem generally applicable.
-  Would `Hangry<Human>` make loud noises and bite someone? Mostly probably not.
+First, we couldn't access anything on the Cat type from inside our Generic States.
+
+Second, the behaviours didn't seem generally applicable. Would `Hangry<Human>` make loud noises and bite someone like a `Hangry<Cat>`? Usually not... usually.
 
 Today we're going to solve these problems using Rust's incredible Trait system
 
 As a note, we are going to be building on the code we developed last time so if you missed that, either follow the link appearing above me now,
 
-or see the relevant chapter in the free book that accompanies this series, check the description for a link straight to this chapter.
+or see the relevant chapter in the free book that accompanies this series, check the description for a link straight to that chapter.
 
-My name is Daniel, welcome to IRISS.
+Lets being, my name is Daniel, welcome to IRISS.
 
 ---
 
@@ -22,7 +22,7 @@ Traits describe common behaviour between types that implement the trait.
 
 For example, have you noticed that lots of types have a method called `to_string()`, including numbers, string slices (`&str`) and even strings?
 
-This is because there is a trait called `ToString` that describes the function header for a method called `to_string()` and all of these types implement that trait.
+This is bec ause there is a trait called `ToString` that describes the function header for a method called `to_string()` and all of these types implement that trait.
 
 This is what ToString looks like in the Rust standard library, if we remove the comments and annotations you can see how simple it is
 
@@ -32,7 +32,7 @@ Any type can implement this trait to provide the `to_string()` method.
 
 We've previously discussed generics which allow you to create a kind of template for a function or type where the specific types used within can be decided later.
 
-Previously, when we used this with our emotional states, this wasn't actually very handy, as we couldn't make any assumptions about what was inside the state.
+When we used this with our emotional states, this wasn't actually very handy, as we couldn't make any assumptions about what was inside the state.
 
 However, we can use what are called Trait Bounds to limit what types are allowed to slot into our generics.
 
