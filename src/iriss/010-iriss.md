@@ -6,7 +6,11 @@ We identified a couple of issues with the state machine though:
 
 First, we couldn't access anything on the Cat type from inside our Generic States.
 
-Second, the behaviours didn't seem generally applicable. Would `Hangry<Human>` make loud noises and bite someone like a `Hangry<Cat>`? Usually not... usually.
+Second, the behaviours didn't seem generally applicable. 
+
+Would `Hangry<Human>` make loud noises and bite someone like a `Hangry<Cat>`? 
+
+Usually not... usually.
 
 Today we're going to solve these problems using Rust's incredible Trait system
 
@@ -14,7 +18,7 @@ As a note, we are going to be building on the code we developed last time so if 
 
 or see the relevant chapter in the free book that accompanies this series, check the description for a link straight to that chapter.
 
-Lets begin, my name is Daniel, welcome to IRISS.
+Let's begin, my name is Daniel, welcome to IRISS.
 
 ---
 
@@ -22,7 +26,7 @@ Traits describe common behaviour between types that implement a given trait.
 
 For example, have you noticed that lots of types have a method called `to_string()`, including numbers, string slices (`&str`) and even strings?
 
-This is because there is a trait called `ToString` that describes the function header for a method called `to_string()` and all of these types implement that trait.
+This is because there is a trait called `ToString` that describes the function header for a method called `to_string()` and all of these types implement that trait. ⚠️
 
 This is what `ToString` looks like in the Rust standard library, if we remove the comments and annotations you can see how simple it is
 
@@ -38,7 +42,7 @@ However, we can use what are called Trait Bounds to limit what types are allowed
 
 For example here's a function called `say_hello` where we're using the generic `S` for the parameter.
 
-If we limit what types `S` can be to only those that implement `ToString`, then we can now use any methods that that trait provides because we know only types that implement that method can end up in this function.
+If we limit what types `S` can be to only those that implement `ToString`, then we can now use any methods that that trait provides because we know only types that implement that trait can end up in this function.
 
 For example, we could pass in all those types I mentioned before because they all implement `ToString`, however, `Vec` does not implement `ToString`, so this won't compile.
 
@@ -52,7 +56,7 @@ Because this `Person` type doesn't yet implement `ToString`, it can't be passed 
 
 To implement `ToString` for our `Person`,  ⚠️ huh, there it is again. I wonder what it means. ... anyway 
 
-To implement `ToString` for our `Person` it's very similar to our Implementation code from the last video but instead of Implementing `Person` we implement `ToString` for `Person`.
+To implement `ToString` for our `Person` it's very similar to our Implementation code from the last video but instead of Implementing `Person` we implement `ToString for Person`.
 
 We can use the format macro here to simply return the first and last name with a space between as a new String.
 
@@ -62,11 +66,11 @@ And now we can use `Person` inside of `say_hello`.
 
 As an aside, it's worth noting that in order to use methods associated with a trait, the trait must be in scope.
 
-We don't have to do this ourselves because `ToString` is part of the Rust prelude, a collection of types and traits that are always available in Rust.
+We don't have to do this in this case because `ToString` is part of the Rust prelude, a collection of types and traits that are always available in Rust.
 
 Often when people create libraries they'll make their own prelude module that contains the most commonly used types and traits so that you can import the entire prelude module rather than having to import everything separately.
 
-We'll talk more about in this in the future when we start talking about Rust's wider ecosystem. 
+We'll talk more about this in the future when we start talking about Rust's wider ecosystem. 
 
 `ToString` is one of many traits that are built into the Rust standard library, and we'll talk more about some of the other traits available to you the next video.
 
@@ -90,7 +94,7 @@ First lets create an animal module.
 
 In `main.rs` we'll add `mod animal` and then create a `mod.rs` file in an `animal` directory.
 
-Let's move `cat.rs` to the `animal` too, so that it's a submodule of `animal`.
+Let's move `cat.rs` to the `animal` directory too, so that it's a submodule of `animal`.
 
 Finally, we need to remember to add `pub mod cat` to `animal/mod.rs` and to update our use statement in `main.rs` to `animal::cat::Cat`.
 
@@ -116,7 +120,7 @@ What happens if we want to add more functionality to the getter? We'd have to re
 
 It'd be better to call the underlying `Cat::get_name` from `Animal::get_name`, but `self.get_name()` is the function we're in... how do we call the other one?
 
-Have you noticed that when calling methods with the dot syntax like `yuki.get_name()`, even though the methods first argument is `&self` (or similar), we don't actually pass anything in here, the self argument is skipped.
+Have you noticed that when calling methods with the dot syntax like `yuki.get_name()`, even though the methods first argument is `&self`, we don't actually pass anything in here, the self argument is skipped.
 
 This is because when we call a method with the dot syntax, we call it on a specific instance, so Rust, like many similar languages, can infer the value of `self` to be the instance the method was called on.
 
@@ -165,8 +169,8 @@ In fact, when I'm in a mischievous mood, I probably don't even behave the same a
 Can you change the code so that each states behaviours are defined when the structs are instantiated? 
 
 To do this you will need to:
-- modify the `Human` and `Cat` structs
-- add new methods to the `Animal` trait
+- modify the `Human` and `Cat` structs to store the behaviours
+- add new methods to the `Animal` trait to get the behaviours
 - and then implement those methods for each struct
 
 If you get stuck, I've implemented the code in this videos chapter of the IRISS book, just scroll to the blank code block at the bottom and hit the eye icon to reveal it.
@@ -205,11 +209,11 @@ In Rusts standard library, there is a generic implementation for `ToString` for 
 
 We'll cover this technique more in later videos, but for now your takeaway should be, don't implement `ToString`, implement `Display`.
 
-While it looks more intimidating, you can generally pass the formatter to the `write!` macro and the rest of the macro functions the same as the format macro but returns a Result instead of a String.
+While it looks more intimidating, you can generally pass the formatter to the `write!` macro and the rest of the macro works the same as the format macro but returns a Result instead of a String.
 
 Here's how we can change our `ToString` implementation for `Person` to use `Display` instead.
 
-Anything that has Display automatically has ToString, so we can still use our Person in our function
+Anything that has Display automatically has ToString, so we can still use our Person in our `say_hello` function
 
 Ok, now I'll see you next time.
 
