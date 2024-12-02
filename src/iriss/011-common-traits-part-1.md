@@ -1,10 +1,8 @@
 # Common Traits
 
-The Rust standard library itself provides a huge number of traits that you can implement on your own types
+The Rust standard library itself provides a huge number of traits Today we're going to discuss some of what I think are the most important to be aware of
 
-Today we're going to discuss some of what I think are the most important to be aware of, whether that's because you'll 
-want to implement them yourself, you'll want to consume types that implement them, or they have interesting knock on 
-effects you should be aware of.
+Whether that's because you'll want to implement them yourself, you'll want to consume types that implement them, or they have interesting knock on effects you should be aware of.
 
 As ever, this series is accompanied by a free book, check the description for a link straight to this chapter.
 
@@ -12,66 +10,49 @@ My name is Daniel, welcome to IRISS.
 
 ---
 
-As it happens, there are a _lot_ of really great Traits in the Rust standard library, so I'm splitting this video into
-two.
+As it happens, there are a _lot_ of really great Traits in the Rust standard library, so I'm splitting this video into two.
 
 This time we'll discuss: Markers, Derivables and Error Handling traits
 
-Next time we'll discuss: Converters, Referencing and Dereferncing traits and one other trait that didn't quite fit into
-any other category.
+Next time we'll discuss: Converters, Referencing and Dereferncing traits and one other trait that didn't quite fit into any other category.
 
-A notable exception from either of these videos are traits relating to iterators, specifically Iterator and 
-IntoIterator. These provide such rich a feature set, I wanted them to have their own separate place which will come
-after we discuss Collections.
+A notable exception from either of these videos are traits relating to iterators, specifically Iterator and IntoIterator.
+
+These provide such rich a feature set, I wanted them to have their own separate video which will come after we discuss Collections.
 
 Before we dive in to todays traits, I want to quickly cover something we didn't mention in the last chapter.
 
 Required and Provided Methods
 -----------------------------
 
-Traits can not only define the header for methods you need to provide yourself, but they can also define methods with
-default behaviour that you can optionally override. We call the methods you need to write _Required_ and the ones you
-can optionally override as _Provided_.
+Traits can not only define the header for methods you need to provide yourself, but they can also define methods with default behaviour that you can optionally override.
+
+We call the methods you need to write _Required_ and the ones you can optionally override as _Provided_.
 
 For example, in the last chapter we defined the trait `Animal` like this:
-
-```rust
-pub trait Animal {
-    fn get_name(&self) -> &str;
-}
-```
 
 In this case, `get_name` doesn't have a body, so anyone implementing `Animal` for their type must provide it. 
 
 This is a _Required_ method.
 
-If, instead, we were to write some default functionality, this becomes a _Provided_ method which implementors of the
-Animal trait can choose whether they want to override or to use as is
-
-```rust
-pub trait Animal {
-    fn get_name(&self) -> &str {
-        "Unknown"
-    }
-}
-```
+If, instead, we were to write some default functionality, this becomes a _Provided_ method which implementors of the Animal trait can choose whether they want to override or to use as is
 
 It's up to you to decide when it makes sense to provide default behaviour.
 
-In the case of `Animal::get_name`, I think keeping it a Required method, with no default behaviour, is the right way to
-go.
+In the case of `Animal::get_name`, this default behaviour isn't really "providing' anything meaningful, I think keeping it a Required method, with no default behaviour, is the right way to go.
 
 Markers
 -------
 
-Markers are special traits that describe intrinsic properties of types, that is they relate to what you might call the
-core essence of the type.
+Markers are special traits that describe intrinsic properties of types, that is they relate to what you might call the core essence of the type.
+
+That might not make much sense right now but don't worry, it will.
 
 ### Sized
 
-We're starting with a weird one here. 
+We're starting with a weird one here... well... all markers are a little weird but this one doubly so. 
 
-You never need to implement this yourself, but you may choose to manually opt out of it.
+You never need to implement `Sized` yourself, but you may choose to manually opt out of it, and it does have a use.
 
 Anything that is of known size at compile time is consider to be `Sized` and you don't need to specify this yourself.
 
@@ -79,7 +60,7 @@ For example, a `u8` has size 8 bits*, therefore it is sized.
 
 *cough and point*
 
-In fact all primitives are sized, except for string slices, which you can't use outside its reference form anyway.
+In fact all primitives are sized, except for string slices, which you can't use outside their reference form anyway.
 
 Any compound type you create from only `Sized` types is also considered to be `Sized`.
 
@@ -404,19 +385,19 @@ Unlike `PartialEq`, neither `PartialOrd` nor `Ord` are generic, they can only be
 
 ### Clone (and Copy)
 
-`Clone` is a bit like `Copy` in that it allows you to duplicate values, however, where `Copy` is implicitly very cheap,
-`Clone` can get away with doing a bit more work.
+`Clone` is a bit like `Copy` in that it allows you to duplicate values, however, where `Copy` is implicitly very cheap, `Clone` can get away with doing a bit more work.
 
-With `Copy`, we can make a copy of data on that is purely on the stack, however, this restricts us to `Sized` data. This
-means, for example, `String` which is a smart pointer to data on the heap, can not implement `Copy`. In order to
-duplicate `String` we'd need to request new memory on the Heap to place the data into, then copy the data to the new
-location, and create a new smart pointer on the stack to point to it.
+With `Copy`, we can make a copy of data on that is purely on the stack, however, this restricts us to `Sized` data. 
 
-Requesting heap memory is considered expensive as you have to wait for the operating system to provide you a location
-you can use, so it's really handy to differentiate `Clone` from `Copy`.
+This means, for example, `String` which is a smart pointer to data on the heap, can not implement `Copy`. 
 
-Luckily, you don't have to do all of this memory allocation stuff yourself. For any type that is built from other types
-that already implement `Clone` you can derive `Clone`.
+In order to duplicate `String` we'd need to request new memory on the Heap to place the data into, then copy the data to the new location, and create a new smart pointer on the stack to point to it.
+
+Requesting heap memory is considered expensive as you have to wait for the operating system to provide you a location you can use, so it's really handy to differentiate `Clone` from `Copy`.
+
+Luckily, you don't have to do all of this memory allocation stuff yourself. 
+
+For any type that is built from other types that already implement `Clone` you can derive `Clone`.
 
 ```rust
 #[derive(Clone, PartialEq, Debug)]
@@ -431,8 +412,7 @@ assert_eq!(a, b);
 # }
 ```
 
-If you need to implement `Clone` yourself (rare and only required in very specific and advanced circumstances), then you
-can do so:
+If you need to implement `Clone` yourself (rare and only required in very specific and advanced circumstances), then you can do so:
 
 ```rust,ignore
 struct MyNewType(String);
@@ -444,12 +424,7 @@ impl Clone for MyNewType {
 }
 ```
 
-Finally, there is an optional method in the `Clone` trait called `clone_from`. Its optional because there is a default
-implementation built into the trait itself but, again, allows you to override it in case you want to do something like
-provide more efficient memory allocation.
-
-In order to derive `Copy`, not only must your type be made from only other types that implement `Copy`, but your type
-must also implement `Clone`.
+In order to derive `Copy`, not only must your type be made from only other types that implement `Copy`, but your type must also implement `Clone`.
 
 ```rust
 #[derive(Copy, Clone, PartialEq, Debug)]
@@ -464,14 +439,13 @@ assert_eq!(a, b);
 # }
 ```
 
-Official Documentation: [`Clone`][Clone], [`Copy`][Copy]
-
 ### Default
 
-Many built in types in Rust have a default value. Defaults for numbers are typically zero, while `String`s, `Vec`s and
-other collections default to being empty. If your type is built from only types that implement `Default` then you can
-derive the behaviour of `Default` for your type to be, essentially, the instantiation of your type with all values set
-to _their_ default.
+Many types could be considered to have an obvious default state: 
+
+Defaults for numbers are typically zero, while `String`s and collections default to being empty.
+
+If your type is built from only types that implement `Default` then you can derive the behaviour of `Default` for your type to be, essentially, the instantiation of your type with all values set to _their_ default.
 
 ```rust
 #[derive(Default, Debug)]
@@ -518,8 +492,7 @@ println!("Default persons name is '{}' and their age is '{}'", person.name, pers
 # }
 ```
 
-You might be wondering if you can derive `Default` for Enums, or if you have to implement it directly, and you actually
-can, using an additional attribute that you apply to the value you want to be the default.
+You might be wondering if you can derive `Default` for Enums, or if you have to implement it directly, and you actually can, using an additional attribute that you apply to the value you want to be the default.
 
 ```rust
 #[derive(Default, Debug, PartialEq)]
@@ -537,8 +510,7 @@ assert_eq!(choice, SomeEnum::Variant2);
 # }
 ```
 
-Unfortunately the `default` attribute only works when deriving `Default` for unit enums, which means if your enum
-contains nested types, you _will_ have to implement `Default` manually:
+Unfortunately the `default` attribute only works when deriving `Default` for unit enums, which means if your enum contains nested types, you _will_ have to implement `Default` manually:
 
 ```rust
 // The nested types here mean we can't derive default
@@ -562,24 +534,21 @@ assert_eq!(choice, SomeEnum::Variant2("Hello".to_string()));
 # }
 ```
 
-Official Documentation: [`Default`][Default]
-
 ### Hash
 
-Hashing as a concept is more complex than we'll go in to here, however, to keep it simple, in Rust there is trait that
-describes a type that is `Hash` which means that it can be "[hashed](https://en.wikipedia.org/wiki/Hash_function)", and
-another trait called `Hasher` which does the hashing.
+Hashing is the process of taking a (usually) arbitrary amount of information and distilling it into a fixed size of data.
 
-You _generally_ don't need to worry too much about this, but it is useful if you want your type to work as a key in a
-`HashMap` or similar data structure.
+This is a one way process (kinda), but giving the same input will always give you the same output, and _that_ is pretty useful!
 
-So long as your type is constructed only of other types that implement `Hash`, then you can derive it, though if you
-need more control than that, then you can of course implement the trait methods yourself. This might be useful if you
-want to skip over types inside your compound type that can't be hashed _BUT_ when using `Eq`, if `A == B`, then
-`hash(A) == hash(B)` must also be true.
+There are lots of different ways to hash that are suitable for lots of different purposes.
 
-> 😉 I've actually secretly derived `Hash` on some types in the code examples in this chapter just to test my code
-> behaves correctly. See if you can spot them and the associated tests!
+In Rust there is a trait that describes a type that is `Hash` which means that it can be "hashed", and another trait called `Hasher` which does the hashing, but these traits aren't for general hashing, in Rust they have a specific use.
+
+You _generally_ don't need to worry too much about either trait, but `Hash` is useful if you want your type to work as a key in a`HashMap` or similar data structure.
+
+So long as your type is constructed only of other types that implement `Hash`, then you can derive it, though if you need more control than that, then you can of course implement the trait methods yourself. 
+
+This might be useful if you want to skip over some of the types that make up your compound type that can't be hashed _BUT_ when using `Eq`, if `A == B`, then`hash of A must == hash of B` must also be true.
 
 To derive it yourself simply use the derive attribute, and you'll be good to use it in a `HashMap`:
 
@@ -588,21 +557,20 @@ To derive it yourself simply use the derive attribute, and you'll be good to use
 struct Email(String);
 ```
 
-Official Documentation: [`Hash`][Hash]
-
 Error Handling
 --------------
 
 ### Display
 
-Before we jump straight into the `Error` trait, lets recap on `Display`. This trait allows us to display information
-related to the type that implements it. Once you implement it, if you pass a value of your type into a macro like
-`println!` or `format!`, then `Display` defines how the type will be rendered.
+Before we jump straight into the `Error` trait, lets recap on `Display`.
 
-`Display` only has one method which you must implement, it takes `&self`, and a mutable pointer to a `Formatter` and
-returns a `fmt::Result` which is a type alias for `Result<(), fmt::Error>`. The easiest way to implement it is with the
-`write!` macro which returns this same type, and to `use std::fmt` so that you can reference things in the module
-namespace rather than contaminating your own.
+This trait allows us to display information related to the type that implements it. 
+
+Once you implement it, if you pass a value of your type into a macro like `println!`, `eprintln!` or `format!`, then `Display` defines how the type will be rendered.
+
+`Display` has single Required method which takes a reference to `self`, and a mutable pointer to a `Formatter` and it returns a `fmt::Result` which is a type alias for `Result<(), fmt::Error>`. 
+
+The easiest way to implement it is with the `write!` macro which returns this same type, and to `use std::fmt` so that you can reference things in the module namespace rather than contaminating your own.
 
 ```rust
 use std::fmt;
@@ -616,58 +584,45 @@ impl fmt::Display for MyUnitStruct {
 }
 ```
 
-Official Documentation: [`Display`][Display]
-
 ### Error
 
-The `Error` trait is applied to types that are specifically used to represent something that went wrong during the
-execution of the code.
+The `Error` trait is applied to types that are specifically used to represent something that went wrong during the execution of code.
 
-Although `Result`s do not _require_ the `Error` trait be implemented for types in their Error variant, it is definitely
-worth doing as error types with the `Error` trait provide a lot of utility for very little effort.
+Although `Result`s do not _require_ the `Error` trait be implemented for types in their Error variant, it is definitely worth doing as error types with the `Error` trait provide a lot of utility for very little effort.
 
-The trait itself has several "provided" methods but none that you need to implement yourself. You're unlikely to want to
-alter the provided behaviour of the `Error` trait which means the only thing you need to do is make sure that your
-error type _also_ implements `Debug` and `Display`. As we know, `Debug` is usually derivable, so that just leaves
-`Display`. Let's create a custom Error for a fridge to demonstrate how we _might_ do this.
+The trait itself has several "provided" methods but no Required methods. 
 
-```rust
-use std::{fmt, error};
+You're unlikely to want to alter the provided behaviour of the `Error` trait which means the only thing you need to do is make sure that your error type _also_ implements `Debug` and `Display`. 
 
-#[derive(Debug)]
-enum FridgeError {
-    TooHot(f32),
-    TooCold(f32),
-    PowerFailure,
-}
+As we know, `Debug` is usually derivable, so that just leaves `Display`. 
 
-impl fmt::Display for FridgeError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            FridgeError::TooHot(temp) => write!(f, "Fridge temperature recorded at {temp} which is too hot"),
-            FridgeError::TooCold(temp) => write!(f, "Fridge temperature recorded at {temp} which is too cold"),
-            FridgeError::PowerFailure => write!(f, "A power failure has been detected in the fridge"),
-        }
-    }
-}
+Let's create a custom Error for a fridge to demonstrate how we _might_ do this.
 
-impl error::Error for FridgeError {}
-```
+We'll use an enum to represent the error states which are either, 
+- too warm, with a temperature
+- too cold with a temperature
+- or an alert that the power has failed
 
-While we've avoided talking about the wider ecosystem so far, it's worth mentioned there are some _extremely_ powerful
-Error libraries that might change the way you work with errors. We will cover these in the Ecosystem part of the book.
+We'll derive Debug, and we'll implement Display which will just produce a nice human readable message.
 
-Official Documentation: [`Error`][Error]
+Finally we can implement Error which will provide all the methods we need.
+
+While we've avoided talking about the wider ecosystem so far, it's worth mentioned there are some _extremely_ powerful Error libraries that might change the way you work with errors. 
+
+We will cover these in the Ecosystem part of the book.
 
 Converters
 ----------
 
 ### From / Into
 
-By now you're probably beginning to understand how important types are to Rust, but sometimes, you need to take the data
-from one type, and move it to another type. `From` and `Into` are the easiest ways to do this, providing the `from` and
-`into` methods respectively. For example, you'll regularly see people turning a string slice into a string in one of
-these two ways:
+By now you're probably beginning to understand how important types are to Rust, but sometimes, you need to take the data from one type, and move it to another type.
+
+`From` and `Into` are the easiest ways to do this, providing the `from` and `into` methods respectively. 
+
+For example, you'll regularly see people turning a string slice into a string in one of these two ways:
+
+We can create a String from a string slice, or we can turn a string slice into a String, though in this case we need to be specific about what we're converting the string slice into.
 
 ```rust
 # fn main() {
@@ -678,18 +633,11 @@ println!("{first}, {second}");
 # }
 ```
 
-You can immediately see a couple of difference here. In the first example, we don't need to type hint the variable as
-its clear that we're creating a `String` from another value. That value can be anything so long as there is a `From<T>`
-(in our case an `impl From<&str> for String`) implementation for the type of that value, and String has quite a few
-`From` implementations.
+What's really cool though is you rarely, if ever, have to implement `Into` yourself. 
 
-In the second example, we call `into` on the string slice however, we need to tell Rust "into what", so we use a type
-hint to say we're changing the reference to a string slice into a String. As with `From`, there could many types you can
-turn something into, so long as there is an `Into<T>` (in our case, `impl Into<String> for &str`) for that type.
+You might have realised that the functionality of `impl Into<String> for &str` is probably identical to `impl From<&str> for String`, and the good folks behind Rust realised that too!
 
-What's really cool though is you rarely have to implement `Into` yourself. You might have realised that the
-functionality of `impl Into<String> for &str` is probably identical to `impl From<&str> for String`, and Rusts
-maintainers realised that too! There is a generic implementation of `Into` that looks like this:
+There is a generic implementation of `Into` that looks like this:
 
 ```rust,ignore
 impl<T, U> Into<U> for T
@@ -702,24 +650,25 @@ where
 }
 ```
 
-We haven't talked about `where` yet, but it's a way of providing type bounds (like when we've used colons in previous
-examples) that's great for when the type bound is a little more complex. This generic implementation simply applies
-`Into<U>` for any type where `U` can already be gotten `From<T>`. Simple, but powerful. Because of this however, you
-should only ever implement `Into` if you _can't_ implement `From`, which rarely comes up outside of crate scoping which
-we'll discuss in the next section of the book.
+We haven't talked about `where` yet, but it's a way of providing type bounds (like when we've used colons in previous examples) that's great for when the type bound is a little more complex. 
 
-We'll give an example of implementing `From` yourself in the next section which covers one of the most common use cases.
+This generic implementation simply applies `Into<U>` for any type where `U` can already be gotten `From<T>`.
+
+Simple, but powerful. 
+
+Because of this however, you should only ever implement `Into` if you _can't_ implement `From`, which rarely comes up outside of crate scoping which we'll discuss much further into this series.
+
+To show you how to implement `From`, I'm going to teach you one of the best and most common uses for it!
 
 #### `From`, `Error` and the `?` Operator
 
-Once you understand `From` and `Error` you have access to another incredibly powerful tool in Rust's arsenal, the `?`
-operator.
+Once you understand `From` and `Error` you have access to another incredibly powerful tool in Rust's arsenal, the `?` operator.
 
-We've discussed previously that in Rust, we don't use exceptions, when a function can fail, it should return a
-`Result<T, E>`.
+We've discussed previously that in Rust, we don't use exceptions, when a function can fail, it should return a `Result<T, E>`.
 
-As you can imagine, when we have deeply nested function calls, all of which can fail, it would get a bit annoying to
-have to constantly handle each possible error separately. That's where we use `?`. When used on a `Result` it will,
+As you can imagine, when we have deeply nested function calls, all of which can fail, it would get a bit annoying to have to constantly handle each possible error separately. 
+
+That's where we use `?`. When used on a `Result` it will,
 immediately extract the `Ok` variant if the `Result` is `Ok`, otherwise it will return the `Err` variant as an `Error`
 of the current function.
 
