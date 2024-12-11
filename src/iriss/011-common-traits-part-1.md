@@ -22,8 +22,7 @@ Then we're going to have a break to talk about collections, before coming back t
 
 Before we dive in to todays traits, I want to quickly cover something we didn't mention in the last chapter.
 
-Required and Provided Methods
------------------------------
+## Required and Provided Methods
 
 Traits can not only define the header for methods you need to provide yourself, but they can also define methods with default behaviour that you can optionally override.
 
@@ -41,8 +40,7 @@ It's up to you to decide when it makes sense to provide default behaviour.
 
 In the case of `Animal::get_name`, this default behaviour isn't really "providing' anything meaningful, I think keeping it a Required method, with no default behaviour, is the right way to go.
 
-Markers
--------
+## Markers
 
 Markers are special traits that describe intrinsic properties of types, that is they relate to what you might call the core essence of the type.
 
@@ -75,12 +73,6 @@ While trait bounds usually restrict what types can be used in the concrete imple
 For example, in the last chapter, I mentioned that I was printing a simplified version of the `ToString` implementation for all types that implement `Display`.
 
 This was because I left out the "question mark Sized" trait bound, so the `ToString` generic implementation actually looks more like this:
-
-```rust,ignore
-impl<T: Display + ?Sized> ToString for T {
-    // ...
-}
-```
 
 The `+` means the type `T` must abide both trait bounds so `T` must implement `Display` but also does not need to be `Sized`.
 
@@ -120,23 +112,7 @@ This means, unlike normal, when you reassign a variable, or pass it to a functio
 
 So ordinarily we can't do something like this, you'll get a compile time error.
 
-```rust,compile_fail
-let x = "String is not Copy".to_string();
-let y = x;
-print!("y owns the str {y}"); 
-print!("x no longer owns the str {x}");
-```
-
 However, for types that do implement `Copy` that code does work thanks to Copy Semantics:
-
-```rust
-let mut x = 42;
-let y = x;
-print!("x still owns the value {x}, and so does y {y}");
-// As its a copy, we can change one without changing the other
-x += 10;
-print!("we've added 10 to x, which is now {x}, but y is still {y}");
-```
 
 You can implement `Copy` directly, though you must also implement a trait called `Clone` which we'll discuss later, but since both traits are derivable, its very rare you'd ever do it manually.
 
@@ -164,8 +140,7 @@ This means you don't even have to worry about implementing them for your own typ
 So long as your types are entirely constructed from other types that are `Send` and/or `Sync`, the Rust compiler knows that your type is `Send` and/or `Sync` too.
 
 
-Derivables
-----------
+## Derivables
 
 Apart from `Sized`, `Send` and `Sync`, most traits _need_ to be manually opted in to, however, for some traits, the behaviour is so simplistic that the trait can be derived.
 
@@ -331,52 +306,6 @@ The easiest way to handle this is you need to manually implement `PartialOrd` is
 
 Let's update our Rectangle
 
-```rust
-use std::cmp::Ordering;
-
-// Remember PartialEq is required for PartialOrd, Eq is required for Ord
-#[derive(Debug, Eq, PartialEq)]
-struct Rect {
-    width: u64,
-    height: u64,
-}
-
-impl Rect {
-    pub fn area(&self) -> u64 {
-        self.width * self.height
-    }
-}
-
-impl Ord for Rect {
-    fn cmp(&self, rhs: &Self) -> Ordering {
-        self.area().cmp(&rhs.area())
-    }
-}
-
-impl PartialOrd for Rect {
-    fn partial_cmp(&self, rhs: &Self) -> Option<Ordering> {
-        Some(self.cmp(rhs))
-    }
-}
-
-# fn main() {
-// --- Example comparison ---
-    
-let test_one_lhs = Rect { width: 2, height: 1 };
-let test_one_rhs = Rect { width: 1, height: 1000 };
-# assert_eq!(test_one_lhs.cmp(&test_one_rhs), Ordering::Less);
-println!("test one: lhs is {:?} than rhs", test_one_lhs.cmp(&test_one_rhs));
-
-// --- You still need to be careful with default behaviour ---
-// --- What do you think happens here? ---
-
-let two_one = Rect { width: 2, height: 1 };
-let one_two = Rect { width: 1, height: 2 };
-let four_four = Rect { width: 4, height: 4 };
-println!("{:?}", four_four.clamp(two_one, one_two));
-# }
-```
-
 Unlike `PartialEq`, neither `PartialOrd` nor `Ord` are generic, they can only be implemented where both the left hand side and the right hand side are the same type.
 
 ### Clone (and Copy)
@@ -395,45 +324,9 @@ Luckily, you don't have to do all of this memory allocation stuff yourself.
 
 For any type that is built from other types that already implement `Clone` you can derive `Clone`.
 
-```rust
-#[derive(Clone, PartialEq, Debug)]
-struct MyNewType(String); // String already implements Clone, PartialEq and Debug
-
-# fn main() {
-// --- Testing clone ---
-
-let a = MyNewType("Hello, world!".to_string());
-let b = a.clone();
-assert_eq!(a, b);
-# }
-```
-
 If you need to implement `Clone` yourself (rare and only required in very specific and advanced circumstances), then you can do so:
 
-```rust,ignore
-struct MyNewType(String);
-
-impl Clone for MyNewType {
-    fn clone(&self) -> Self {
-        // ...
-    }
-}
-```
-
 In order to derive `Copy`, not only must your type be made from only other types that implement `Copy`, but your type must also implement `Clone`.
-
-```rust
-#[derive(Copy, Clone, PartialEq, Debug)]
-struct MyNewType(u32); // This tuple struct uses a u32 which implements Copy and Clone
-
-// --- Testing copy ---
-
-# fn main() {
-let a = MyNewType(1);
-let b = a; // Copy is automatic when its available
-assert_eq!(a, b);
-# }
-```
 
 ### Default
 
@@ -443,92 +336,11 @@ Defaults for numbers are typically zero, while `String`s and collections default
 
 If your type is built from only types that implement `Default` then you can derive the behaviour of `Default` for your type to be, essentially, the instantiation of your type with all values set to _their_ default.
 
-```rust
-#[derive(Default, Debug)]
-struct Person {
-    name: String,
-    age: u8,
-}
-
-# fn main() {
-// --- Usage ---
-    
-let person = Person::default();
-assert_eq!(&person.name, "");
-assert_eq!(person.age, 0);
-println!("Default persons name is '{}' and their age is '{}'", person.name, person.age);
-# }
-```
-
 Obviously, this may not always be the desired result, so you can obviously implement the trait directly:
-
-```rust
-#[derive(Debug)]
-struct Person {
-    name: String,
-    age: u8,
-}
-
-impl Default for Person {
-    fn default() -> Self {
-        Person {
-            name: "Jane Doe".to_string(),
-            age: 30,
-        }
-    }
-}
-
-# fn main() {
-// --- Usage ---
-
-let person = Person::default();
-assert_eq!(&person.name, "Jane Doe");
-assert_eq!(person.age, 30);
-println!("Default persons name is '{}' and their age is '{}'", person.name, person.age);
-# }
-```
 
 You might be wondering if you can derive `Default` for Enums, or if you have to implement it directly, and you actually can, using an additional attribute that you apply to the value you want to be the default.
 
-```rust
-#[derive(Default, Debug, PartialEq)]
-enum SomeEnum {
-    Variant1,
-    #[default]
-    Variant2,
-}
-
-# fn main() {
-// --- Usage ---
-
-let choice = SomeEnum::default();
-assert_eq!(choice, SomeEnum::Variant2);
-# }
-```
-
 Unfortunately the `default` attribute only works when deriving `Default` for unit enums, which means if your enum contains nested types, you _will_ have to implement `Default` manually:
-
-```rust
-// The nested types here mean we can't derive default
-#[derive(Debug, PartialEq)]
-enum SomeEnum {
-    Variant1(u32),
-    Variant2(String),
-}
-
-impl Default for SomeEnum {
-    fn default() -> Self {
-        SomeEnum::Variant2("Hello".to_string())
-    }
-}
-
-# fn main() {
-// --- Usage ---
-
-let choice = SomeEnum::default();
-assert_eq!(choice, SomeEnum::Variant2("Hello".to_string()));
-# }
-```
 
 ### Hash
 
@@ -548,13 +360,7 @@ This might be useful if you want to skip over some of the types that make up you
 
 To derive it yourself simply use the derive attribute, and you'll be good to use it in a `HashMap`:
 
-```rust
-#[derive(Hash)]
-struct Email(String);
-```
-
-Error Handling
---------------
+## Error Handling
 
 ### Display
 
@@ -567,18 +373,6 @@ Once you implement it, if you pass a value of your type into a macro like `print
 `Display` has single Required method which takes a reference to `self`, and a mutable pointer to a `Formatter` and it returns a `fmt::Result` which is a type alias for `Result<(), fmt::Error>`. 
 
 The easiest way to implement it is with the `write!` macro which returns this same type, and to `use std::fmt` so that you can reference things in the module namespace rather than contaminating your own.
-
-```rust
-use std::fmt;
-
-struct MyUnitStruct;
-
-impl fmt::Display for MyUnitStruct {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        writeln!(f, "My unit struct")
-    }
-}
-```
 
 ### Error
 
