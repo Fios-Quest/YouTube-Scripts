@@ -27,19 +27,19 @@ Before we dive in to today's traits, I want to quickly cover something we brushe
 
 ## Required and Provided Methods
 
-Traits can not only define the header for methods you need to provide yourself, but they can also define methods with default behaviour that you can optionally override.
+Traits can not only define the header for methods you need to write yourself, but they can also define methods with default behaviour that you can optionally override.
 
 We call the methods you need to write _Required_ and the ones with default behaviour _Provided_.
 
 🦀 For example, in the last video we defined the trait `Animal` like this
 
-🦀 In this case, `get name` doesn't have a body, so anyone implementing `Animal` for their type must write it themselves. 
+🦀 In this case, `get name` doesn't have a body, so anyone implementing `Animal` for their type must write it out themselves. 
 
 🦀 This is a _Required_ method.
 
 🦀 If, instead, we were to write some default functionality, this becomes a _Provided_ method which implementors of the Animal trait can choose whether they want to override or to use as is
 
-It's up to you to decide when it makes sense to provide default behaviour.
+🦀 It's up to you to decide when it makes sense to provide default behaviour.
 
 🦀 In the case of `Animal get_name`, this default behaviour isn't really "providing" anything meaningful, I think keeping it a Required method, with no default behaviour, is the right way to go.
 
@@ -95,17 +95,17 @@ Let's take `String` as an example of something that can't be copied in this way.
 
 `String` is a smart pointer that points to memory on the heap.
 
-The value inside the `String`, the raw string slice, can of course be duplicated, but the `String` type itself is actually just a pointer to a location in memory.
+The value of the `String`, the raw string slice, can of course be duplicated, but the `String` type itself is actually just a pointer to a location in memory.
 
 If we were to copy that location data, we'd have two pointers pointing to the same location.
 
-As soon as one of them is cleaned up, the data on the stack would also be cleaned up, and we'd be left with a `String` pointing at memory we no longer own.
+As soon as one of them is cleaned up, the data on the heap would also be cleaned up, and we'd be left with a `String` pointing at memory we no longer own.
 
 We'll talk more about how we can duplicate things like Strings and other smart pointers later in the video.
 
 Types that can exist on the Stack though can be `Copy`. 
 
-All primitives (again, excluding string slices, but including immutable reference) are `Copy` and compound types built from those types can choose to implement `Copy`.
+All primitives (again, excluding string slices, but including immutable reference) are `Copy`, and compound types built from those types can choose to implement `Copy`.
 
 You can implement `Copy` directly, though you must also implement a trait called `Clone` which we'll discuss later, but since both traits are derivable, its very rare you'd ever do it manually.
 
@@ -163,9 +163,9 @@ For _most_ derivable Rust traits there is a requirement that each child of your 
 
 To derive a trait we use the derive attribute.
 
-Attributes can be defined either inside or outside the item they are for, however, like Documentation, unless the attribute is being applied to a whole file (for example, as a module), we exclusively use external attributes that come before the item they apply to.
+🦀 Attributes can be defined either inside or outside the item they are for, however, like Documentation, unless the attribute is being applied to a whole file (for example, as a module), we exclusively use external attributes that come before the item they apply to.
 
-And like Documentation, we use an exclamation mark to differentiate the two
+🦀 And like Documentation, we use an exclamation mark to differentiate the two
 
 🦀 The derive attribute itself, looks a bit like a function, and it takes a list of what _looks_ like traits but are actually what we call "Derive Macros"
 
@@ -191,7 +191,7 @@ Ironically perhaps, you should try to avoid using `Debug` for debugging, that's 
 
 Importantly `Debug` is required for assertion macros like `assert EQ`, mainly used in testing.
 
-🦀 If you `assert EQ` two values, and they're not equivalent, the test suite will want to print the values to the screen and it wants to use Debug to do it. 
+🦀 If you `assert EQ` two values, and they're not equivalent, the test suite will want to print the values to the screen, and it wants to use Debug to do it. 
 
 We'll show this more when we talk about the equivalence traits in the next section.
 
@@ -199,7 +199,7 @@ The `Debug` trait is also useful for reporting during a running program, though 
 
 We won't go into it deeply here but `Debug` works very similarly to `Display` taking a formater as a parameter.
 
-📕 You might be worried about making sure your implementation of the `Debug` trait behaves similarly to official or derived implementations, well that's where the formatter gets _really_ cool.
+📕 You might be worried about making sure your implementation of the `Debug` trait behaves similarly to the official or derived implementations, well that's where the formatter gets _really_ cool.
 
 📕 It provides a ton of different tools that help you build a well-structured output.
 
@@ -233,7 +233,7 @@ For the most part in Rust, we're only concerned with Partial Equivalence, this i
 
 You can derive `Partial EQ` so long as all the parts of your type also implement `Partial EQ`, or you can implement it yourself.
 
-Implementing it yourself can be really handy if you have a structure where some fields _can_ be different but the overal value still be considered the same overall "thing".
+Implementing it yourself can be really handy if you have a structure where some fields _can_ be different but the overall value still be considered the same "thing".
 
 The official Rust guide uses books with ISBNs as an example, but just to be different, lets consider how you might also want this kind of behaviour for aliased user information.
 
@@ -282,7 +282,7 @@ Unlike `Partial EQ`, `EQ` is not a generic that can be used with other types (si
 ### PartialOrd / Ord
 
 As you can imagine, `Partial Ord` and `Ord` have a similar relationship to each other as `Partial EQ` and `EQ`, and indeed:
-- `PartialOrd` can only be applied to types with `Partial EQ`
+- `Partial Ord` can only be applied to types with `Partial EQ`
 - and `Ord` can only be applied to types with `EQ` (and `Partial Ord`)
 
 Both `Partial Ord` and `Ord` have one Required method each (`partial comp` and `comp` respectively) as well as some Provided methods with default behaviour. 
@@ -297,7 +297,7 @@ Both `Partial Ord` and `Ord` have one Required method each (`partial comp` and `
 
 🦀 When comparing `NaN`, is it greater than, less than, or equal to `NaN`?
 
-🦀 We can't determine the answer, so we use the `None` variant to represent that.
+🦀 We can't determine an answer here, so we use the `None` variant to represent that.
 
 One important thing to bear in mind when deriving `Partial Ord` is that although, yes, you can do it if all parts of your type implement `Partial Ord`, there's a catch!
 
@@ -333,11 +333,11 @@ Like with `Partial Ord`, `Ord` can be derived but has the same ordering quirk.
 
 Importantly, when implementing both `Partial Ord` _and_ `Ord`, the result of `partial comp` _must_ match `comp`, though the compiler has no way of confirming this for you. 
 
-The easiest way to handle this is you need to manually implement `Partial Ord` is to simply call `comp` and wrap it in an `Option`.
+The easiest way to handle this is you need to manually implement `partial comp` by simply calling `comp` and wrap the result in an `Option`.
 
 🦀 Let's update our Rectangle
 
-Unlike `Partial EQ`, neither `Partial Ord` nor `Ord` are generic, they can only be implemented where both the left hand side and the right hand side are the same type.
+Unlike `Partial EQ`, neither `Partial Ord` nor `Ord` are generic, they can only be implemented where both the left and right hand side are the same type.
 
 ### Clone (and Copy)
 
@@ -347,7 +347,7 @@ With `Copy`, we can make a copy of any data that is purely on the stack, however
 
 This means, for example, `String` which is a smart pointer to data on the heap, can not implement `Copy`. 
 
-In order to duplicate `String` we'd need to request new memory on the Heap to place the data into, then copy the data to the new location, and create a new smart pointer on the stack to point to it.
+In order to duplicate a `String` we'd need to request new memory on the Heap to place the data into, then copy the data to the new location, and create a new smart pointer on the stack to point to it.
 
 Requesting heap memory is considered expensive as you have to wait for the operating system to provide you a location you can use, so it's really handy to differentiate `Clone` from `Copy`.
 
@@ -369,11 +369,11 @@ Defaults for numbers are typically zero, while `String`s and collections default
 
 🦀 The default `Default` behaviour is essentially the instantiation of your type with all values set to _their_ default.
 
-🦀 Obviously, this may not always be the desired result, so you can obviously implement the trait directly:
+🦀 Obviously, this may not always be the desired result, so you can implement the trait directly:
 
 🦀 You might be wondering if you can derive `Default` for Enums, or if you have to implement it directly, and you actually can, using an additional attribute that you apply to the value you want to be the default.
 
-🦀 Unfortunately the `default` attribute only works when deriving `Default` for unit enums, which means if your enum contains nested types, you _will_ have to implement `Default` manually:
+🦀 Unfortunately this only works when deriving `Default` for unit enums, which means if your enum contains nested types, you _will_ have to implement `Default` manually:
 
 ### Hash
 
@@ -466,11 +466,11 @@ Well, actually, we do, we always do... kind of.
 
 📕 There is a trait called `Termination`, and `main` must return something that implements it.
 
-📕 `Termination` will provide an `Exit Code` via a "Required" report method, and this is how we get our programs success of failure status.  
+📕 `Termination` will provide an `Exit Code` via a "Required" report method, and this is how we get our programs success or failure status.  
 
 You may have noticed though that we almost never return something from `main`, _but_, in Rust, when we don't specify a return type, the return type is the Unit Type.
 
-📕 And of course there's a built-in implementation of Termination for the Unit Type which will produce the success exit code, whatever that might be for your target operating system.
+📕 And of course there's a built-in implementation of `Termination` for the Unit Type which will produce the success exit code, whatever that might be for your target operating system.
 
 This means that, normally, so long as your code runs to completion, and you exit your program by reaching the end of the main function, your program will be considered successful.
 

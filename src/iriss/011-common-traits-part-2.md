@@ -149,11 +149,9 @@ You can also provide further implementations of `Borrow` yourself allowing you t
 
 This means you should never implement borrow when you only want to return part of the underlying data. 
 
-🦀 One way to check this is to be sure the hash of a value is the same as the hash.
-
 A common pattern in Rust is to use wrappers around other types, this is the "new type" pattern. 
 
-Imagine you want to store email address. 
+Imagine you want to store an email address. 
 
 Obviously a sensible type to store that data in might be `String`, however, there's no validation on creating a `String`, so how do we know if any given string contains a valid email. 
 
@@ -163,9 +161,9 @@ Obviously a sensible type to store that data in might be `String`, however, ther
 
 🦀 We'll add a method for validating if a string is a valid email.
 
-📕 A quick note here, email validation is complex, if you're coming from another language where you use some crazy regex, you're probably doing it wrong, for basic validation I recommend making sure there's an `@` symbol and its not the first or last character.
+📕 A quick note here, email validation is complex, if you're coming from another language where you use some crazy regex, you're probably doing it wrong, sorry, for basic validation I recommend making sure there's an `@` symbol and its not the first or last character.
 
-🦀 Finally let's add a constructor function that takes an existing string, validates it, and returns a Result with either the valid email or an error I'm leaving out of the code on screen for brevity 
+🦀 Finally let's add a constructor function that takes an existing string, validates it, and returns a Result with either the valid email or an error, which I'm leaving out of the code on screen for brevity 
 
 🦀 (check the iris book if you're curious)
 
@@ -186,7 +184,7 @@ Now, there's some important caveats to `Borrow` and `Borrow Mute`.
 - Furthermore, if `x is greater than y` then `a borrow of x is also greater than a borrow of y`, etc
 - Finally, if our type implements `Hash`, when `the hash of x is equivilant to the hash of y` then `the hash of a borrow of x must be equivilant to the hash of a borrow of y`
 
-There are no compiler checks for these caveats, you need to be sure that its true when you implement `Borrow` and, as you can probably guess, `Borrow` really only works for changing the exact binary representation of a value from one type to another, making it less useful for compound types.
+There are no compiler checks for these caveats, you need to be sure that its true when you implement `Borrow` and, as you can probably guess, `Borrow` really only works when the exact binary representation of a value is the same between the types, making it less useful for compound types.
 
 Knowing about this behaviour is important, but I actually don't think I've ever implement Borrow outside of working on iris.
 
@@ -200,13 +198,13 @@ If we have a more complex object and want to internally reference a part of it w
 
 Remember earlier we had our `Cat` type which only had a name.
 
-🦀 We could, if we wanted, implement `AsRef str slice` so that it can be used in the place of a `reference to a str slice`:
+🦀 We could, if we wanted, implement `As Ref str slice` so that it can be used in the place of a `reference to a str slice`:
 
-🦀 Arguably, we could make this code even friendly by changing the `cuddle` to take a generic, and then calling `.as_ref()` in the function itself. 
+🦀 Arguably, we could make this code even more friendly by changing the `cuddle` to take a generic, and then calling `.as_ref()` in the function itself. 
 
 🦀 This code looks a little scarier, but once you get used to seeing code like this, you can write far more flexible and easy to use code.
 
-`AsMut` is essentially the same as `AsRef` but for mutable references instead!
+`As Mute` is essentially the same as `As Ref` but for mutable references instead!
 
 ### Deref / DerefMut
 
@@ -216,12 +214,13 @@ This can be especially useful when working with references to references, or ref
 
 We've also talked a bit about smart pointers which are not references but a way to wrap data with additional functionality.
 
-To get inside a smart pointer, we can use the `Deref` trait, this is why `String` can be used as if it were a `string slice`.
-When a smart pointer wraps a mutable type (remember `string slices` are not themselves mutable) then you can also implement `DerefMut` _but_ you need to think carefully about when it's appropriate to do this.
+To get inside a smart pointer, we can use the `Deref` trait, this is why a reference to a `String` can be used as if it were a reference to a `string slice` with no extra work.
+
+When a smart pointer wraps a mutable type (remember `string slices` are not themselves mutable) then you can also implement `Deref Mute` _but_ you need to think carefully about when it's appropriate to do this.
 
 🦀 Let's return to our `Email` type, it makes sense to allow our `Email` to be used as an immutable String, so lets implement `Deref` for it:
 
-🦀 Let's think about this differently though, what if instead of dereferencing to a str, we dereferenced to a `String`, _and_ we allowed mutability.
+🦀 Let's think about this differently though, what if instead we dereferenced to a mutable `String`.
 
 🦀 Our `Email` type here does some rudimentary validation, if we allowed mutability of the inner `String`, we allow people to change the email to be invalid, and lose the benefit of the `Email` type.
 
@@ -235,7 +234,7 @@ Other
 ### Drop
 
 Rust is _very_ good at cleaning up after itself, especially when you use the standard library:
-- If your variable allocate heap memory, that memory is released when the variable that owns it goes out of scope
+- If your variable allocates heap memory, that memory is released when the variable that owns it goes out of scope
 - If you open a file to read or write, it's closed when the file handler goes out of scope
 - If you start a TCP connection, its ended when the handler goes our of scope
 
@@ -249,7 +248,7 @@ The Rust standard library is achieving all of this with the `Drop` trait.
 
 Depending on the type of programming you do you may not need to think about this trait very much... _except_, there is one thing worth considering.
 
-Each of the examples I gave above is "blocking".
+Each of the examples I gave is "blocking".
 
 That means that the program will have to wait until whatever the `drop` method of the `Drop` trait needs to do is complete before continuing.
 
@@ -273,5 +272,7 @@ Next Video
 There's still, I think, two big traits to talk about Iterator and Into Iterator, but, before we get to them, we're going to need some things to iterate through
 
 So, next time we'll look at collections!
+
+Let me know if I haven't covered one of your favourite traits in the comments below.
 
 If you've enjoyed this, don't forget to impl Drop for Like, I mean, drop me a Like, and if you want to see more, hit subscribe, and I'll see you next time! 
