@@ -115,19 +115,18 @@ Now, one awesome thing `Copy` does is it changes how the language itself works.
 
 To re-iterate, `Copy` can only apply to things on the Stack, so the memory for a copied value doesn't need to be requested from the operating system like it would with the heap
 
-Stack memory is pre-allocated and the actual copying part is very cheap.
+Stack memory is pre-allocated, and the actual copying part is very cheap.
 
-Because of this, Rust will use what are called "Copy Semantics" instead of "Move Semantics".
+Because of this, Rust will use what are called "Copy Semantics" instead of the default "Move Semantics".
 
-This means, unlike normal, when you reassign a variable, or pass it to a function, if the data in a variable has the `Copy` trait, you can still use the original variable after.
+Unlike normal, when you reassign a variable, or pass it to a function, if the data in a variable has the `Copy` trait, the value is copied instead of moved.
 
-So ordinarily we can't do something like this, you'll get a compile time error.
+This means you can still use the original variable after.
 
----
+🦀 So ordinarily we can't do something like this, you'll get a compile time error.
 
-However, for types that do implement `Copy` that code does work thanks to Copy Semantics:
+🦀 However, for types that do implement `Copy` that code does work thanks to Copy Semantics.
 
----
 
 ### Send / Sync
 
@@ -152,15 +151,15 @@ We'll talk a lot more about threaded programming later in the series so don't wo
 
 `Send` and `Sync`, like `Sized`, are automatically derived if all parts of your type are also `Send` and/or `Sync`
 
-Of course, you might still want implement `Send` and `Sync` for types that contain types that don't contain compatible types, and you can do this, but this requires us delving into "unsafe" Rust which isn't as scary as it sounds but is beyond the scope of this chapter.
+Of course, you might still want to implement `Send` and `Sync` for types that contain non-Send/Sync types, and you can do this, but this requires us delving into "unsafe" Rust which isn't as scary as it sounds but is beyond the scope of this video.
 
-For now, if you need to use non-send or sync types there are built in types to help that we'll cover in a future video.
+For now, if you need to use non-send or sync types there are built in types to help, and we'll cover them when we get into concurrency properly.
 
 ## Derivables
 
-Apart from `Sized`, `Send` and `Sync`, most traits _need_ to be manually opted in to, however, for some traits, the behaviour is so simplistic that the trait can be derived.
+Apart from `Sized`, `Send` and `Sync`, most traits _need_ to be manually opted in to, however, for some traits, the behaviour is so simplistic that the behaviour of the trait can be derived.
 
-For _most_ derivable Rust traits there is a requirement that each child of your type implements the trait you're attempting to implement yourself.
+For _most_ derivable Rust traits there is a requirement that each child of your type also implements the trait you're attempting to implement yourself.
 
 To derive a trait we use the derive attribute.
 
@@ -168,41 +167,43 @@ Attributes can be defined either inside or outside the item they are for, howeve
 
 And like Documentation, we use an exclamation mark to differentiate the two
 
-The derive attribute itself, looks a bit like a function, and it takes a list of what _looks_ like traits but are actually what we call "Derive Macros"
+🦀 The derive attribute itself, looks a bit like a function, and it takes a list of what _looks_ like traits but are actually what we call "Derive Macros"
 
 Not every trait has a Derive Macro meaning not all traits are derivable.
 
-You can write your own Derive Macros too, though this is a very advanced form of meta programming we probably won't cover in this series. 
+You can write your own Derive Macros too, though this is a very advanced form of meta programming we probably won't cover in this series.
 
-Many people do write their own though, to provide custom derive macros for traits provided in their own libraries, and we will talk about that when we start talking about the Rust ecosystem.
+*trauma*
+
+Many people do write their own though, so that they can provide custom derive macros for traits provided in their own libraries, and we will talk about that when we start talking about the wider Rust ecosystem.
 
 ### Debug
 
 `Debug` is an extremely useful utility Trait that creates a default way to write out types to places like standard out and standard error.
 
-Let's derive Debug for a Cat type like this.
+🦀 Let's derive `Debug` for a `Cat` type like this.
 
-When printing a `Debug` value, we use colon question inside curly brackets for a positional marker
+🦀 When printing a `Debug` value, we use colon question inside curly brackets for a positional marker
 
-Or you can put it after the name of a variable, like this.
+🦀 Or you can put it after the name of a variable, like this.
 
 Ironically perhaps, you should try to avoid using `Debug` for debugging, that's what a debugger is for, head back to our getting started video if you need a reminder.
 
-The `Debug` macro though is very useful for logging, though be careful not to leak private information this way, this might be where you want to implement `Debug` manually.
+Importantly `Debug` is required for assertion macros like `assert EQ`, mainly used in testing.
 
-Importantly `Debug` is required for assertion macros like `assert eq`, mainly used in testing.
-
-If you `assert eq` two values, and they're not equivalent, the test suite will want to print the values to the screen. 
+🦀 If you `assert EQ` two values, and they're not equivalent, the test suite will want to print the values to the screen and it wants to use Debug to do it. 
 
 We'll show this more when we talk about the equivalence traits in the next section.
 
+The `Debug` trait is also useful for reporting during a running program, though be careful not to leak private information this way, this might be where you want to implement `Debug` manually.
+
 We won't go into it deeply here but `Debug` works very similarly to `Display` taking a formater as a parameter.
 
-You might be worried about making sure your implementation of the `Debug` trait behaves similarly to official or derived implementations, well that's where the formatter gets _really_ cool.
+📕 You might be worried about making sure your implementation of the `Debug` trait behaves similarly to official or derived implementations, well that's where the formatter gets _really_ cool.
 
-It provides a ton of different tools that help you build a well-structured output.
+📕 It provides a ton of different tools that help you build a well-structured output.
 
-You can read more on this in the official `Debug` documentation.
+📕 You can read more on this in the official `Debug` documentation.
 
 ### PartialEq / Eq
 
@@ -210,13 +211,13 @@ You can read more on this in the official `Debug` documentation.
 
 What's the difference, what does equivalence mean and why are there two traits?
 
-Allow me to answer those questions with another question:
+Allow me to answer those questions with another two questions:
 
 Is zero equivalent to negative zero?
 
-Inside a floating point number the binary representation is different but Mathematically, zero is neither positive nor negative, so they're equivalent right?
+Inside a floating point number the binary representation is different but Mathematically, zero is neither positive nor negative, so they are equivalent right?
 
-Sticking with the binary representations inside of floating points, it's possible to represent something that's Not a Number (NaN).
+Sticking with the binary representations inside of floating points, it's possible to represent something that's Not a Number, or NaN.
 
 Should two NaNs, even if they have the same binary representation, be considered as the same value when you can get there in different ways?
 
@@ -224,39 +225,39 @@ Probably not.
 
 For the most part in Rust, we're only concerned with Partial Equivalence, this is what allows us to compare values with the equals-equals operator.
 
-Given what we've just discussed, consider this code, what do you think the output _should_ be?
+🦀 Given what we've just discussed, consider this code, what do you think the output _should_ be?
 
-Let's run it and see!
+🦀 Let's run it and see!
 
-That seems correct, right?
+🦀 That seems correct, right?
 
 You can derive `Partial EQ` so long as all the parts of your type also implement `Partial EQ`, or you can implement it yourself.
 
-Implementing it yourself can be really handy if you have a structure where some fields _can_ be different but still be considered the same overall "thing".
+Implementing it yourself can be really handy if you have a structure where some fields _can_ be different but the overal value still be considered the same overall "thing".
 
-The official Rust book uses books with ISBNs as an example, but just to be different, lets consider how you might also want this kind of behaviour for aliased user information.
+The official Rust guide uses books with ISBNs as an example, but just to be different, lets consider how you might also want this kind of behaviour for aliased user information.
 
-`Partial EQ` has two methods, `EQ` which is Required and `NE` which is Provided.
+📕 `Partial EQ` has two methods, `EQ` which is Required and `NE` which is Provided.
 
-Remember from earlier, we need to implement the required method, but can choose if we want to override the provided one.
+📕 Remember from earlier, we need to implement the required method, but can choose if we want to override the provided one.
 
-The default behaviour for `NE` is `not EQ` and I'm fine with that, but it's there if you need it.
+📕 The default behaviour for `NE` is `not EQ` and I'm fine with that, but it's there if you need it.
 
-In this case, I'm going to say two Users are the same so long as their ID is the same.
+🦀 In this case, I'm going to say two Users are the same so long as their ID is the same.
 
-Let's write a little test for this, if we derive `Debug`, and have implemented `Partial EQ` we can use the "assert EQ" macro to do that for us.
+🦀 Let's write a little test for this, if we derive `Debug`, and have implemented `Partial EQ` we can use the "assert EQ" macro to do that for us.
 
 `Partial EQ` has even more utility though!
 
-It's a generic trait where the generic parameter represents the type for the "right hand side" or RHS.
+📕 It's a generic trait where the generic parameter represents the type for the RHS or "right hand side".
 
 This generic parameter defaults to being the same type, but we can write code that allows us to compare the equivalence of different types too!
 
-Taking that User aliases example again, what if we had a "root" user type, and an aliased User type.
+🦀 Taking that User aliases example again, what if we had a "root" user type, and an aliased User type.
 
-Now we can check if the User is equivalent to its Alias.
+🦀 Now we can check if the User is equivalent to its Alias.
 
-Bear in mind though that "right hand side" means this equivalence check only works one way around, you'll need to write the implementation for UserAlias too if you want to go the other way around.
+🦀 Bear in mind though that "right hand side" means this equivalence check only works one way around, you'll need to write the implementation for UserAlias too if you want to go the other way around.
 
 So that's `Partial EQ`, but what is `EQ`?
 
@@ -272,65 +273,69 @@ There's no way for the compiler to guarantee the correct implementation of `EQ` 
 
 Unlike `Partial EQ`, `EQ` is not a generic that can be used with other types (since we're talking about exact equivalence, this wouldn't make sense).
 
-Earlier we chose to make that `User` type partially equivalent if the id matched.
+🦀 Earlier we chose to make that `User` type partially equivalent if the id matched.
 
-If we instead checked the entire object, it could be considered to be exactly equivalent:
+🦀 If we instead checked the entire object, it could be considered to be exactly equivalent:
 
-Of course, in this case, it'd be far easier _and safer_ to use the derived version, which protects us making mistakes in complex code, or forgetting to check changes we make in our type later
+🦀 Of course, in this case, it'd be far easier _and safer_ to use the derived version, which protects us making mistakes in complex code, or forgetting to check changes we make in our type later
 
 ### PartialOrd / Ord
 
-As you can imagine, `PartialOrd` and `Ord` have a similar relationship to each other as `Partial EQ` and `EQ`, and indeed:
+As you can imagine, `Partial Ord` and `Ord` have a similar relationship to each other as `Partial EQ` and `EQ`, and indeed:
 - `PartialOrd` can only be applied to types with `Partial EQ`
 - and `Ord` can only be applied to types with `EQ` (and `Partial Ord`)
 
-Both `PartialOrd` and `Ord` have one Required method each (`partial comp` and `comp` respectively) as well as some Provided methods with default behaviour. 
+Both `Partial Ord` and `Ord` have one Required method each (`partial comp` and `comp` respectively) as well as some Provided methods with default behaviour. 
 
-The required methods of each trait use the `Ordering` enum which looks roughly like this:
+🦀 The required methods of each trait use the `Ordering` enum which looks roughly like this:
 
-`Partial EQ` is what gives us our usual greater than (`>`), less than (`<`), greater or equal to (`>=`)  and less than or equal to (`<=`) behaviour, through the use of the methods `gt`, `lt`, `ge` and `le` respectively,
+`Partial EQ` is what gives us our usual `greater than`, `less than`, `greater or equal to` and `less than or equal to` behaviour, through the use of the methods `GT`, `LT`, `GE` and `LE` respectively,
 
-Unless these methods are implemented, their default behaviour relies on `partial_cmp`, which returns an `Option` of `Ordering`.
+📕 Unless these methods are implemented, their default behaviour relies on `partial comp`, which returns an `Option` of `Ordering`.
 
-Again, using floating point numbers, it's easy to see why we use an `Option` on our comparisons.
+🦀 Again, using floating point numbers, it's easy to see why we use an `Option` on our comparisons.
 
-When comparing `NaN`, is it greater than, less than, or equal to `NaN`?
+🦀 When comparing `NaN`, is it greater than, less than, or equal to `NaN`?
 
-We can't determine the answer, so we use the `None` variant to represent that.
+🦀 We can't determine the answer, so we use the `None` variant to represent that.
 
 One important thing to bear in mind when deriving `Partial Ord` is that although, yes, you can do it if all parts of your type implement `Partial Ord`, there's a catch!
 
 When derived on structs, it will first check the ordering of the first field, and only move on to the next field if the first fields are equal.
 
-To understand why that might not give us the behaviour we expect, lets imagine a rectangle with width and height.
+🦀 To understand why that might not give us the behaviour we expect, lets imagine a rectangle with width and height.
 
-By deriving the behaviour for `Partial Ord`, Rust will first compare the width, and only if those are equal compare the height.
+🦀 By deriving the behaviour for `Partial Ord`, Rust will first compare the width, and only if those are equal compare the height.
 
-This means that if the width is larger in one rectangle, then according to the derived behaviour, it's the larger rectangle, even if the height of the other rectangle is significantly larger.
+🦀 This means that if the width is larger in one rectangle, then according to the derived behaviour, it's the larger rectangle, even if the height of the other rectangle is significantly larger.
 
-For this reason, it's quite likely that you'd want to implement `Partial Ord` yourself, depending on how you think types should be compared.
+🦀 For this reason, it's quite likely that you'd want to implement `Partial Ord` yourself, depending on how you think types should be compared.
 
-Instead of using the derived behaviour, lets create an area method for our rectangles, and use that to compare them to each other.
+🦀 Instead of using the derived behaviour, lets create an area method for our rectangles, and use that to compare them to each other.
 
-I think, in this case, this makes more sense.
+🦀 I think, in this case, this makes more sense.
 
 Finally `Ord` isn't quite the same as `EQ` because it _does_ have methods:
-- `comp` which is like `partial comp` but returns `Ordering` without the `Option`
+- `comp` which is like `partial comp`, is also required, but returns `Ordering` without the `Option`
 - `max` which returns the greater of the two values
 - `min` which returns the lesser
 - and `clamp` which will return a value so long as its between two other values, or the closest value that is
 
 Like with `Partial Ord`, `Ord` can be derived but has the same ordering quirk. 
 
-If we want to implement it ourselves, we only need to implement `comp`, and the other methods can use that for their default behaviour.
+🦀 If we want to implement it ourselves, we only need to implement `comp`, and the other methods can use that for their default behaviour.
 
-However, you may still find some weird behaviour with `clamp` even if you do this so its anotther one you might want to override.
+🦀 However, you may still find some weird behaviour with `clamp` even if you fixed `comp` so its another one you might want to override.
+
+🦀 Here you can see some weird behaviour for clamp with our rectangles.
+
+🦀 Lets fix this by overriding its behaviour
 
 Importantly, when implementing both `Partial Ord` _and_ `Ord`, the result of `partial comp` _must_ match `comp`, though the compiler has no way of confirming this for you. 
 
 The easiest way to handle this is you need to manually implement `Partial Ord` is to simply call `comp` and wrap it in an `Option`.
 
-Let's update our Rectangle
+🦀 Let's update our Rectangle
 
 Unlike `Partial EQ`, neither `Partial Ord` nor `Ord` are generic, they can only be implemented where both the left hand side and the right hand side are the same type.
 
@@ -338,7 +343,7 @@ Unlike `Partial EQ`, neither `Partial Ord` nor `Ord` are generic, they can only 
 
 `Clone` is a bit like `Copy` in that it allows you to duplicate values, however, where `Copy` is implicitly very cheap, `Clone` can get away with doing a bit more work.
 
-With `Copy`, we can make a copy of data on that is purely on the stack, however, this restricts us to `Sized` data. 
+With `Copy`, we can make a copy of any data that is purely on the stack, however, this restricts us to `Sized` data. 
 
 This means, for example, `String` which is a smart pointer to data on the heap, can not implement `Copy`. 
 
@@ -348,11 +353,11 @@ Requesting heap memory is considered expensive as you have to wait for the opera
 
 Luckily, you don't have to do all of this memory allocation stuff yourself. 
 
-For any type that is built from other types that already implement `Clone` you can derive `Clone`.
+🦀 For any type that is built from other types that already implement `Clone` you can derive `Clone`.
 
 If you need to implement `Clone` yourself (rare and only required in very specific and advanced circumstances), then you can.
 
-In order to derive `Copy`, not only must your type be made from only other types that implement `Copy`, but your type must also implement `Clone`.
+🦀 In order to derive `Copy`, not only must your type be made from only other types that implement `Copy`, but your type must also implement `Clone`.
 
 ### Default
 
@@ -360,15 +365,15 @@ Many types could be considered to have an obvious default state
 
 Defaults for numbers are typically zero, while `String`s and collections default to being empty.
 
-If your type is built from only types that implement `Default` then you can derive `Default`.
+🦀 If your type is built from only types that implement `Default` then you can derive `Default`.
 
-The default behaviour is essentially the instantiation of your type with all values set to _their_ default.
+🦀 The default `Default` behaviour is essentially the instantiation of your type with all values set to _their_ default.
 
-Obviously, this may not always be the desired result, so you can obviously implement the trait directly:
+🦀 Obviously, this may not always be the desired result, so you can obviously implement the trait directly:
 
-You might be wondering if you can derive `Default` for Enums, or if you have to implement it directly, and you actually can, using an additional attribute that you apply to the value you want to be the default.
+🦀 You might be wondering if you can derive `Default` for Enums, or if you have to implement it directly, and you actually can, using an additional attribute that you apply to the value you want to be the default.
 
-Unfortunately the `default` attribute only works when deriving `Default` for unit enums, which means if your enum contains nested types, you _will_ have to implement `Default` manually:
+🦀 Unfortunately the `default` attribute only works when deriving `Default` for unit enums, which means if your enum contains nested types, you _will_ have to implement `Default` manually:
 
 ### Hash
 
@@ -380,15 +385,15 @@ There are lots of different ways to hash that are suitable for lots of different
 
 In Rust there is a trait that describes a type that is `Hash` which means that it can be "hashed", and another trait called `Hasher` which does the hashing.
 
-These traits aren't for general hashing, though, in Rust they have a specific use, can you guess what it is?
+These traits aren't for general hashing, though, in Rust they have a very specific use, can you guess what it is?
 
-The `Hash` trait only works with the `Hasher` trait and always results in a `u64`, this is rubbish for cryptography but great for generating numbers for lookup tables.
+The `Hash` trait only works with the `Hasher` trait and always results in a `u64`, this is rubbish for cryptography and security but great for generating numbers for lookup tables.
 
 You _generally_ don't need to worry too much about either trait, but `Hash` is useful if you want your type to work as a key in a `Hash Map` or similar data structure.
 
-So long as your type is constructed only of other types that implement `Hash`, then you can derive it, though if you need more control than that, then you can of course implement the trait methods yourself. 
+🦀 So long as your type is constructed only of other types that implement `Hash`, then you can derive it, though if you need more control than that, then you can of course implement the trait methods yourself. 
 
-This might be useful if you want to skip over some of the types that make up your compound type that can't be hashed _BUT_ when using `EQ`, if `A is equivalent to B`, then `the hash of A must be equivalent the hash of B`.
+This might be useful if you want to skip over some of the types that make up your compound type that can't be hashed _BUT_ if your type also implements `EQ`, if `A is equivalent to B`, then `the hash of A must be equivalent the hash of B`.
 
 ## Error Handling
 
@@ -398,11 +403,11 @@ Wait! Before we jump straight into the `Error` trait, lets recap on `Display`.
 
 This trait allows us to display information related to the type that implements it. 
 
-Once you implement it, if you pass a value of your type into a macro like `println!`, `eprintln!` or `format!`, then `Display` defines how the type will be rendered.
+Once you implement it, if you pass a value of your type into a macro like `print line`, `e print line` or `format`, then `Display` defines how the type will be rendered.
 
-🦀 `Display` has single Required method which takes a reference to `self`, and a mutable pointer to a `Formatter` and it returns a `fmt::Result` which is a type alias for `Result<(), fmt::Error>`. 
+🦀 `Display` has single Required method which takes a reference to `self`, and a mutable reference to a `Formatter` and it returns a `format Result` which is a type alias for `Result of unit type and format Error`. 
 
-🦀 The easiest way to implement it is with the `write!` macro which returns this same type, and to `use std::fmt` so that you can reference things in the module namespace rather than contaminating your own.
+🦀 The easiest way to implement it is with the `write` macro which returns this same type, and to `use standard format` so that you can reference things in the format module namespace rather than contaminating your own.
 
 ### Error
 
@@ -429,11 +434,11 @@ Let's create a custom Error for a fridge to demonstrate how we _might_ do this.
 
 While we've avoided talking about the wider ecosystem so far, it's worth mentioned there are some _extremely_ powerful Error libraries that might change the way you work with errors. 
 
-We will cover these in the Ecosystem part of the book.
+We will cover these in the Ecosystem part of this series.
 
 ## Next time
 
-Next time we're going to continue learning the top traits, but I particularly want you to keep Errors in mind as we're going to learn a very cool trick with them.
+Next time we're going to continue learning the most common traits, but I particularly want you to keep Errors in mind as we're going to learn a very cool trick with them.
 
 If this has been useful to you, don't forget to like and subscribe and I hope to see you... hey... what are you doing here, we'll see about this.
 
@@ -445,7 +450,7 @@ Ok so I wanted to sneak in a little bonus trait that I discovered while deep div
 
 I got away without knowing about this Trait for seven years so, so I don't think you need to know about it, but this trait is used in every single Rust program that you write even the pre-built Hello World template that cargo provides in a new binary project.
 
-This thing had been hiding in plain sight from me that whole time, and it blew my mind when I found it.
+This thing had been hiding from me in plain sight this whole time, and it blew my mind when I found it.
 
 If you've worked with other programming languages, you might be aware of "exit codes" or "exit status'"
 
@@ -463,18 +468,18 @@ Well, actually, we do, we always do... kind of.
 
 📕 `Termination` will provide an `Exit Code` via a "Required" report method, and this is how we get our programs success of failure status.  
 
-You may have noticed though that we almost never returns something from `main`, _but_, in Rust, when we don't specify a return type, the return type is the Unit Type.
+You may have noticed though that we almost never return something from `main`, _but_, in Rust, when we don't specify a return type, the return type is the Unit Type.
 
-And of course there is an implementation of Termination for the Unit Type which will produce the success exit code, whatever that might be for your target operating system.
+📕 And of course there's a built-in implementation of Termination for the Unit Type which will produce the success exit code, whatever that might be for your target operating system.
 
 This means that, normally, so long as your code runs to completion, and you exit your program by reaching the end of the main function, your program will be considered successful.
 
 You might have seen code examples (particularly hidden in documentation) where main returns a `Result`, usually where the Ok variant is a unit type.
 
-📕 And this is because there's also an implementation for `Result`s where the Ok variant already implements `Termination` and the Error variant implements `Debug` which, as we just discussed, Errors usually will!
+📕 And this is because there's also a `Termination` implementation for `Result`s where the Ok variant already implements `Termination` and the Error variant implements `Debug` which, as we just discussed, Errors types usually will!
 
 I have used both your usual no-return style main function, _and_ main functions that return a Result, and had thought that Rust was doing some magic here for exit codes, but never thought to look it up.
 
-I didn't need to know this, arugably you don't either, but isn't it awesome when your curiosity leads you down a little path and you find something cool like this!
+I didn't need to know this, arguably you don't either, but isn't it awesome when your curiosity leads you down a little path, and you find something cool like this!
 
-Ok, that's it for real this time, thanks for listening to me ramble about this useless bit of knowledge, I'll see you next time.
+Ok, that's it for real this time, thanks for listening to me ramble about this useless bit of knowledge, and I will see you next time.
