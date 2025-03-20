@@ -94,8 +94,7 @@ Secondly, and relatedly, you are reducing the risk area of making mistakes.
 
 🦀 To ask Rust to infer a type, we use an underscore.
 
-Referencing and Dereferencing
------------------------------
+## Referencing and Dereferencing
 
 We've talked a little about referencing already.
 
@@ -228,8 +227,7 @@ When a smart pointer wraps a mutable type (remember `string slices` are not them
 
 🦀 I personally prefer Deref to Borrow because it can be triggered automatically, we don't need to call extra methods, just pass a reference. 
 
-Other
------
+## Other
 
 ### Drop
 
@@ -266,8 +264,7 @@ Most of the time this isn't worth worrying too much about, however, if you do fi
 
 🦀 The intention of this function is that at the exact moment you want to cause a variable to be cleaned up, you pass ownership of that variable into this function, the function immediately ends, and, if the variable has a `Drop` implementation, then that code is run then and there.
 
-Next Video
-------------
+## Next Video
 
 There's still, I think, two big traits to talk about Iterator and Into Iterator, but, before we get to them, we're going to need some things to iterate through
 
