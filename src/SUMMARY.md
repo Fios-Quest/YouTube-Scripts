@@ -12,6 +12,8 @@
 - [Documentation](iriss/007-iriss.md)
 - [Clippy and Friends](iriss/008-iriss.md)
 - [Implementing Types](iriss/009-iriss.md)
+- [Traits](iriss/010-iriss.md)
+- [Common Traits - Part 1](iriss/011-common-traits-part-1.md)
 
 # Channel Labs
 
