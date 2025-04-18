@@ -15,6 +15,7 @@
 - [Traits](iriss/010-iriss.md)
 - [Common Traits - Part 1](iriss/011-common-traits-part-1.md)
 - [Common Traits - Part 2](iriss/012-common-traits-part-2.md)
+- [Collections](iriss/013-collections.md)
 
 # Channel Labs
 
