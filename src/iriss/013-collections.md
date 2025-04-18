@@ -8,13 +8,13 @@ As ever, this series is accompanied by a free book, check the description for a 
 
 My name is Daniel, welcome to iris.
 
-# Intro
+## Intro
 
 Two types you'll use a lot are `Vec` and `HashMap`, but there's actually quite a lot of collections in the Rust standard library, each with their own special use cases.
 
 Before we get to them though, we're going to start with the absolute basics.
 
-# Arrays
+## Arrays
 
 Arrays are... technically not collections. Or at least, they are quite different to the other collections in one key way.
 
@@ -75,8 +75,7 @@ won't even compile!
 
 🦀 If you want to pass an arbitrarily sized array into a function, you can... by using a slice.
 
-Slices
-------
+## Slices
 
 Obviously, passing exactly sized arrays around isn't particularly useful in most real world circumstances. 
 
@@ -130,8 +129,7 @@ That's right, `str` is another, special, kind of slice.
 
 🦀 Hopefully code like this is starting to make a lot more sense!
 
-Vectors
--------
+## Vectors
 
 `Vec` (short for Vector) is similar to an array (and can be dereferenced as an array slice), but unlike array, `Vec` can grow in size.
 
@@ -249,8 +247,7 @@ Where `LinkedList`s are useful though, is when splitting and merging your collec
 
 🦀 Pattern matching will also allow you to extract the inner data
 
-HashMap
--------
+## HashMap
 
 A `HashMap` is a key, value lookup table. 
 
@@ -303,7 +300,7 @@ There's more details on how hashing works in the official book, including how to
 
 ![hashmap-remove-entry.png](013-collections/hashmap-remove-entry.png)
 
-### BTreeMap
+## BTreeMap
 
 `BTreeMap` is a Binary Search Tree version of `HashMap`.
 
@@ -321,8 +318,7 @@ Now, for storing arbitrary data it's a touch slower than `HashMap`, but it inter
 
 🦀 Finally we can pop both the key and value from either the front or back of the BTreeMap, much like a `VecDeque`, but sorted!
 
-Sets
-----
+## Sets
 
 🦀 There are two Set types in Rust that allow you to store values with no duplicates, `HashSet` and `BTreeSet`. 
 
@@ -340,8 +336,7 @@ Sets
 🦀 We'll talk more about Iterators
 
 
-Next Time
----------
+## Next Time
 
 Haha, silly transitions! Yeah, next time, Iterators. 
 
