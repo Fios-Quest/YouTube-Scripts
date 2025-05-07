@@ -609,8 +609,35 @@ More Iterator Traits
 
 There's a few more traits you may want to be aware of when making your own iterators:
 
-`IntoIterator` can be implemented on any type that can be turned into an `Iterator`. One place you may find yourself
-using it is on newtypes.
+`IntoIterator` can be implemented on any type that can be turned into. an.. `Iterator`. 
+
+Ah, I see what they did there.
+
+One place you may find yourself using it is on newtypes, or types where the most important data inside is represented as some kind of collection.
+
+Lets say we have a newtype Albums, that contains a Vector of Album
+
+In our domain logic, it might make sense that we can start a new collection of Albums and add an Album to it by buying it.
+
+If we were to implement `IntoIterator` for `Albums` there are two important associated types that we need to specify.
+
+`Item` is easy, that'll be our `Album` type.
+
+`IntoIter` is the name of the type that _is_ the Iterator.
+
+Remember back at the start, we created a Fibonacci Iterator.
+
+Our struct `Fibonacci` is the Iterator type.
+
+What the trait is actually asking us for here is the data type that will manage the iteration process for us.
+
+We're using a Vec internally and Vec has a generic Iterator struct it uses when you turn a Vec into an Iterator, so we can use that, filling in the Generic with our Item type.
+
+All we need to do then is return the result of calling Vec `.into_iter()`... 
+
+Yeah it does feel overly simplistic, I find its better not to worry about it.
+
+Once we've done that, turning our Albums type into an Iterator of Album is trivial.
 
 ```rust
 {{# include iterators / src / bin / albums.rs: Albums}}
@@ -626,8 +653,11 @@ fn main() {
     }
 }
 ```
+But what if we want to go back to having our Albums type again.
 
-`FromIterator` allows you to turn an Iterator into another type, usually through the `.collect()` method on `Iterator`s
+`FromIterator` allows you to turn an Iterator into another type, usually through the `.collect()` method on an `Iterator`
+
+This is really just the same thing in reverse, but in a more complicated version, its perfectly sensible to step through each item in the Iterator and process it individually
 
 ```rust
 {{# include iterators / src / bin / albums.rs: Albums}}
@@ -644,18 +674,16 @@ fn main() {
 }
 ```
 
-Finally, the last two traits you should be aware of are `DoubleEndedIterator` and `ExactSizeIterator`. The Iterators
-returned from collections are all both of these (to my surprise, even the `Iter` structs used for `LinkedList` and
-`BinaryHeap` are `DoubleEndedIterator`).
+Finally, the last two traits you should be aware of are `DoubleEndedIterator` and `ExactSizeIterator`. 
 
-`ExactSizeIterator` can tell you the size of the iterator _without_ consuming it, using the `.len()` method (if you need
-to see if the iterator is empty, you should us `.is_empty()` instead).
+`ExactSizeIterator` can tell you the size of the iterator _without_ consuming it, using the `.len()` method (if you need to see if the iterator is empty, you should us `.is_empty()` instead).
 
 ```rust
 let v = vec![1, 2, 3, 4, 5];
 
 let iter = v.into_iter();
 
+assert_eq!(!iter.is_empty()); // not empty
 assert_eq!(iter.len(), 5); // iter still exists after this
 assert_eq!(iter.count(), 5); // iter is consumed
 ```
@@ -673,9 +701,16 @@ assert_eq!(iter.next(), Some(1));
 assert_eq!(iter.next(), None);
 ```
 
-Next Chapter
-------------
+The Iterators returned from collections are all both of these (even, to my surprise, the `Iter` structs used for `LinkedList` and `BinaryHeap` are both `DoubleEndedIterator`).
 
-We've now covered all of what I'd describe as the core, synchronous language features (at least... I hope). We're going
-move on to Threads in the next chapter, discuss what they are and some of the most important and useful tools to use
-when working with them.
+## Next Time
+
+We've now covered all of what I'd describe as the core, synchronous language features (at least... I hope).
+
+We're going move on to Threads in the next video, discuss what they are and some of the most important and useful tools to use when working with them.
+
+A huge thank you to my Patreon supporters.
+
+If you enjoyed the video, don't forget to like and subscribe, and I want to say a huge thank you to my Patreon supporters.
+
+And I'll see you next time.
