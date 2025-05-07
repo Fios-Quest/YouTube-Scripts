@@ -4,7 +4,8 @@ I've been foreshadowing it for a while but today we finally cover Iterators!
 
 Iterators are a way to produce, and perform operations on, a sequence of values.
 
-We often use them with collections (which we covered in our last video) so that we can perform the same operation on each item in a collection, or reduce a collection to a single value.
+We often use them with collections (which we covered in our last video) so that we can perform the same operation on
+each item in a collection, or reduce a collection to a single value.
 
 They're also often used implicitly in some forms of loop.
 
@@ -18,247 +19,200 @@ The Iterator trait can be applied to any type and has a single required method:
 
 ![iter-rust-doc.png](014-iterators/iter-rust-doc.png)
 
-📕 Iterator also has 75 provided methods, which I think goes to show how incredibly useful and flexible this trait is.
+📕 `.next()` returns an `Option` telling the caller there either is another item (Some), or there isn't (None).
 
-📕 We'll be talking about some of these methods, but it's well worth checking out the documentation to see what else is possible.
+📕 Iterator also has 75 provided methods, which I think goes to show how incredibly versatile this trait is.
 
-To show the power of Iterators, we're going to start by build an Iterator from scratch, one that produces the Fibonacci sequence.
+📕 We'll be talking about some of these methods, but it's well worth checking out the documentation to see what else is
+possible.
 
-The Fibonacci sequence is a sequence of numbers where each subsequent number is the previous two added together.
+While you'll usually get iterators from things like collections, it's possible to "Iterate" through anything.
 
-Depending on who you ask, the sequence either starts, "1, 2", "1, 1" or "0, 1". 
+To show the power of Iterators, we're going to start by building an Iterator from scratch, one that produces the
+Fibonacci sequence.
 
-Purists will say it's the former (as "Leonardo Bonacci" intended), software engineers usually use the latter... I'm sticking mine in the middle, but it really doesn't matter.
+The Fibonacci sequence is a sequence of numbers where each number is the sum of the previous two.
 
-To do this, we'll create a struct that stores the current state of the Iterator.
+Depending on whom you ask, the sequence either starts, `1, 2`, `1, 1`, or `0, 1`.
 
-We need the last number, and the next number
+Purists will say it's the former (as "Leonardo Bonacci" intended), software engineers usually use the latter... I'm
+sticking mine in the middle, but it really doesn't matter.
 
-To keep things simple, we'll use a `u8` to store the current number (that gives us numbers zero to two-five-five), and we'll use an `Option` to prevent overflowing the `u8`.
+🦀 Anyway, let's start by making a Struct to store the state of the Iterator.
 
-```rust,ignore
-{{#include iterators/src/bin/fib.rs:struct}}
-# fn main() {}
-```
+![fib-base.png](014-iterators/fib-base.png)
 
-The only method we need to provide to implement Iterator is `next`, though we also use an associated type to provide
-the information on what is returned from `next`. The reason for the associated type is that it is re-used multiple times
-throughout the Provided methods, and there should only ever be one Iterator trait applied to a type, so generics aren't
-the right solution.
+🦀 We'll need to know the previous number and the next number, and to keep it simple we'll use a `u8` so we'll only get
+numbers zero to two-five-five.
 
-```rust,ignore
-{{#include iterators/src/bin/fib.rs:impl_iterator}}
-# fn main() {}
-```
+🦀 Let's make a constructor so that the Iterator always starts in a valid state.
 
-So now we have our iterator type! We can now get each item off the iterator one at a time by calling the next function:
+🦀 So, let's move on to implementing Iterator itself.
 
-```rust
-# {{#rustdoc_include iterators/src/fibonacci.rs:0}}
-# 
-# fn main() {
-{{#include iterators/src/bin/fib.rs:next}}
-# }
-```
+![fib-impl-iterator.png](014-iterators/fib-impl-iterator.png)
 
-You can see that each item in the sequence is wrapped in an `Option`. When an Iterator has no more items to provide, it
-will produce a `None`. The final number this Iterator will produce is `233`, after which we would overflow the `u8`
-we've used.
+🦀 The trait has an associated type `Item` that describes the type returned by each iterator.
 
-Just calling `.next()` is pretty boring, no one wants to iterate through things by hand. What if we want to print out
-all the Fibonacci values that fit inside a `u8`? You can give an Iterator to a `for ... in ...` loop, and it will
-automatically unwrap the `Option` for you. Once the loop hits a `None` the loop ends.
+🦀 It's an associated type rather than a generic type as it needs to be referenced a _lot_ but, it's type is dictated by
+the process used to create the Iterator.
 
-This code will print out each number on a new line, try hitting the play button to see it in action!
+🦀 To implement the `next` method, we'll temporarily store the current value of the value `next`.
 
-```rust
-# {{#rustdoc_include iterators/src/fibonacci.rs:0}}
-# 
-# fn main() {
-{{#include iterators/src/bin/fib.rs:loop}}
-# }
-```
+🦀 Because `self.next` is an Option, and the `next` method returns an Option, we can use the same question mark operator
+to either unwrap a `Some` variant, or immediate return a `None` variant depending on what's in there.
+
+🦀 If there is a `None` at this point, then we've reached the end of our sequence.
+
+🦀 Next we'll update our internal state, our new next is the current value plus the previous, and our previous becomes
+the old current.
+
+🦀 By using `checked_add` here we get an `Option` that is `None` if the result is out of bounds.
+
+🦀 Finally, we return the stored "current" value, though we'll have to re-wrap it in an Option after unwrapping it
+earlier.
+
+🦀 So now we have our iterator type!
+
+![fib-next-next-next.png](014-iterators/fib-next-next-next.png)
+
+🦀 We can now get each item off the iterator one at a time by calling the next function:
+
+🦀 You can see that each item in the sequence is wrapped in an `Option`.
+
+🦀 When an Iterator has no more items to provide, it will produce a `None`.
+
+🦀 The final number this Iterator will produce is `233`, after which we would overflow the `u8` we've used.
+
+🦀 Just calling `.next()` is pretty boring, no one wants to iterate through things by hand.
+
+🦀 What if we want to print out all the Fibonacci values that fit inside a `u8`?
+
+![fib-for-in.png](014-iterators/fib-for-in.png)
+
+🦀 You can give an Iterator to a `for ... in ...` loop, and it will automatically unwrap the `Option` for you.
+
+🦀 This code will print out each number on a new line
+
+🦀 Once the loop hits a `None` the loop ends.
 
 That's cool, but on its own, it's still not very interesting.
 
-Iterators are designed to be chained. Those 75 provided methods I mentioned earlier allow you to do some exceptional
-tricks. For example, a list of Fibonacci numbers might be more useful if we knew what number in the sequence we're on.
-We can chain a method called `.enumerate` which will take the old iterator and give us a new one where each `next`
-now returns a tuple of `(position, T)` where `T` was the original piece of data.
+Iterators are designed to be chained.
 
-```rust
-# {{#rustdoc_include iterators/src/fibonacci.rs:0}}
-# 
-# fn main() {
-{{#include iterators/src/bin/fib.rs:enumerate}}
-# }
-```
+Those 75 provided methods I mentioned earlier allow you to do some exceptional tricks.
 
-What's brilliant about this though is that when I say it "takes the iterator", it doesn't try to process every item
-in the iterator (a process in Rust we refer to as "consuming" the iterator), it merely takes ownership of it. Rust
-iterators are "lazy" meaning that they only call `next` when its necessary to get the next item in the list.
+🦀 For example, a list of Fibonacci numbers might be more useful if we knew what number in the sequence we're on.
 
-For example, we can chain another method that only takes the first `n` items:
+![fib-for-in-enumerate.png](014-iterators/fib-for-in-enumerate.png)
 
-```rust
-# {{#rustdoc_include iterators/src/fibonacci.rs:0}}
-#
-# fn main() {
-{{#include iterators/src/bin/fib.rs:take}}
-# }
-```
+🦀 We can chain a method called `.enumerate` which will take the old iterator and give us a new one where each `next` now
+returns a tuple of `(usize, T)` where the `T` is the original item and the `usize` is the position.
 
-This gives us a new iterator that only produces 4 items, but it only calls `enumerate` four times, which only calls our
-Fibonacci Iterator four times. This has huge performance benefits, and we'll talk more about this later in the chapter.
+🦀 What's brilliant about this though is that when I say it "takes the old iterator", it doesn't try to process every
+item in the iterator (a process in Rust we refer to as "consuming" the iterator), it merely takes ownership of it.
 
-To recap:
+🦀 When we call `.next()` on the iterator returned by `.enumerate()`, _it_ calls next on the iterator being enumerated.
 
-- Iterators are designed to be chained together.
-- Iterators in Rust are "lazy". That means that each item is only processed as it's needed.
+Rust iterators are "lazy" meaning that they try to avoid doing any unnecessary work.
 
 Getting Iterators
 -----------------
 
-I wanted to show you how to make your own Iterator to give you an understanding of how they work, but usually you'll get
-an Iterator from a collection.
+Having built our own, hopefully you now have a _vague_ understanding of how Iterators work, but usually you'll get an
+Iterator from a collection.
 
-As with most things in Rust, Iterators (or specifically, the items being iterated) can be thought of in three groups,
-and all the collections we discussed in [the last chapter](collections.md) can give you an iterator in any of the following forms.
+As with most things in Rust, Iterators (or specifically, the items being iterated) can be thought of in three groups.
 
-### 1. Referenced data (`&T`)
+All the collections we discussed in the last video can give you an iterator in any of the following forms.
 
-Often we don't actually need to _own_ the data we're iterating over, it can be enough to just read it. All built in
-collections have a method called `.iter()` which returns an Iterator type where the items are references to the data
-held in the collection.
+Firstly, referenced data
 
+Often we don't need to _own_ the data we're iterating over, it can be enough to just read it.
 
-```rust
-let hello = String::from("Hello");
-let world = String::from("World");
+All built in collections have a method called `.iter()` which returns an Iterator type where the items are references to
+the data held in the collection.
 
-// Ownership moves into v
-let v = vec![hello, world];
+🦀 Here we have two variables that _own_ the Strings inside them.
 
-let mut iter = v.iter();
+![iter-iter.png](014-iterators/iter-iter.png)
 
-// The iterator contains references to the original data
-assert_eq!(iter.next(), Some(&String::from("Hello")));
-assert_eq!(iter.next(), Some(&String::from("World")));
-assert_eq!(iter.next(), None);
+🦀 We move ownership of the variables inside the Vector
 
-// The vector still exists and contains the original data
-assert_eq!(
-    v, 
-    vec![
-        String::from("Hello"),
-        String::from("World"),
-    ]
-);
-```
-> ℹ️ The specific struct returned varies per collection because, while they all implement `Iterator`, the internal data
-> for each can be slightly different.
+🦀 And then we create an Iterator with the Iter method which will iterate over references that point to the data now
+owned by the vector
 
-One thing to bear in mind is that if the collection contains references, then `.iter()` will give you an Iterator that
+🦀 So calling `.next()` on the iterator gives as a reference, not the original data.
+
+🦀 This means the vector still owns the data
+
+🦀 One thing to bear in mind is that if the collection contains references, then `.iter()` will give you an Iterator that
 produces references to references.
 
-```rust
-let hello = String::from("Hello");
-let world = String::from("World");
+![iter-iter-ref.png](014-iterators/iter-iter-ref.png)
 
-// This time we'll reference the original data
-let v = vec![&hello, &world];
+🦀 So if we change the original vector to reference the Strings rather than take ownership
 
-let mut iter = v.iter();
+🦀 When we call `.next()` we get a reference to a reference
 
-// The iterator contains references to references to the original data
-assert_eq!(iter.next(), Some(&&hello));
-assert_eq!(iter.next(), Some(&&world));
-assert_eq!(iter.next(), None);
+Sometimes, you need to edit things while iterating through them; our second option lets us do that.
 
-// The vector still exists and contains the original references
-assert_eq!(v, vec![&hello, &world]);
-```
+`.iter_mut()` can give you a mutable iterator, and all of Rust's built-in collections support it (so long as the
+underlying collection is mutable).
 
-### 2. Mutably referenced (`&mut T`)
+🦀 In this example, we'll use a Vector of numbers, as I mentioned, we need this Vector to be mutable.
 
-Sometimes, you need to edit things while iterating through them. There's actually a couple of ways to take an item from
-an iterator and get new data from it, but in the event that you want to edit data in place, the right way to do this is
-with an iterator of mutable references.
+![iter-iter-mut.png](014-iterators/iter-iter-mut.png)
 
-All Rusts built in collections can give you a mutable iterator (if the underlying collection is mutable) using
-`.iter_mut()`.
+🦀 We'll use a for ... in ... loop like earlier, using `.iter_mut()`.
 
-```rust 
-// The source data must be mutable, not just the iterator
-let mut v = vec![1, 2, 3, 4, 5];
+🦀 So here, n, is a mutable reference to the value stored in the vector.
 
-for n in v.iter_mut() {
-    // Dereferencing to edit the underlying data
-    *n += 10
-}
+🦀 By dereferencing n, we can add 10 to the original value.
 
-// The original Vec, v, has had 10 added to each number
-assert_eq!(v, vec![11, 12, 13, 14, 15]);
-```
+🦀 If we check the original Vector now, we can see all values have increased by 10.
 
-### 3. Owned data (`T`)
+Finally, you may want to take ownership of the underlying data, and that's where our third option comes in.
 
-Finally, you may want to take ownership of the underlying data. This can be very useful in particular if you want to
-turn one collection type into another collection type, though there are other reasons you may want ownership of the
-underlying data without duplicating it.
+`.into_iter()` takes ownership of the collection (meaning that collection will no longer be available) and the data
+inside.
+
+One place this is particularly useful is when converting between types, either on the item level or for the entire
+collection.
 
 There is a trait called `FromIterator<A>` that is implemented for types that can consume an iterator and populate
-themselves. This is almost always used with the `.collect()` iterator method, though you need to be explicit about what
-you're collecting into, either by typing the variable you're collecting into, or by using the turbofish operator that
-allows you to be explicit about the concrete types to fill in generics.
+themselves.
 
-```rust
-use std::collections::LinkedList;
+This is almost always used with the `.collect()` iterator method, though you need to be explicit about what you're
+collecting into.
 
-let hello = String::from("Hello");
-let world = String::from("World");
+You can do this either by typing the variable you're collecting into, or by using the turbofish operator that allows you
+to be explicit about the concrete types to fill in generics.
 
-// String ownership moves into ll
-let mut ll = LinkedList::new();
-ll.push_back(hello);
-ll.push_back(world);
+🦀 In this example, we'll go back to our Strings as they aren't `Copy`.
 
-// The inner type can be elided as Rust can work out that its String 
-let v: Vec<_> = ll
-    .into_iter() // This takes ownership of the contents of the linked list 
-    .collect(); // This collects the data into the vector which now owns the inner data
+![iter-into-iter.png](014-iterators/iter-into-iter.png)
 
-assert_eq!(
-    v,
-    vec![
-        String::from("Hello"),
-        String::from("World"),
-    ]
-);
-```
-Sometimes you may not want to have an additional variable just to provide type information, that's when the turbofish
-operator comes in handy.
+🦀 Instead of using a Vector this time, we'll use a LinkedList, and push our strings onto the end.
 
-```rust
-# use std::collections::LinkedList;
-#
-# let hello = String::from("Hello");
-# let world = String::from("World");
-# 
-# // String ownership moves into v
-# let mut ll = LinkedList::new();
-# // Adding the words backwards because we can in a LinkedList
-# ll.push_front(world);
-# ll.push_front(hello);
-# 
-assert_eq!(
-    ll.into_iter().collect::<Vec<_>>(),
-    vec![
-        String::from("Hello"),
-        String::from("World"),
-    ]
-);
-```
+🦀 This moves ownership from the variables into the LinkedList.
+
+🦀 To turn the LinkedList into a Vector, we'll first convert the LinkedList into an Iterator that owns the original data
+with `.into_iter()`.
+
+🦀 Then we'll "collect" that Iterator into a collection.
+
+🦀 Because `v` is explicitly typed, Rust knows to use the `FromIterator` implementation of `Vector` when calling
+`.collect()`.
+
+Honestly, even after years of using Rust, this backwards way of writing code that makes it super modular still makes me
+think: "wow"
+
+🦀 In this example, we've created a variable _basically_ just to provide type information.
+
+![iter-into-iter-turbofish.png](014-iterators/iter-into-iter-turbofish.png)
+
+🦀 You can skip this step using the turbofish operator which looks like this.
+
 
 Copying and cloning Items
 -------------------------
@@ -268,119 +222,58 @@ Using what we've learned above, what if we want to use owned data, but we need t
 
 There are two methods on `Iterator` for this purpose: `.copied()` and `.cloned()`.
 
+Each one takes the old iterator and returns a new one where the appropriate action is applied to the next Item as its
+called.
+
 `.copied()` only works on Iterators where the item is `Copy` will take the iterator and return a new iterator which
 returns each Item copied.
 
-```rust
-let v = vec![1, 2, 3, 4, 5];
-
-let iter: Vec<_> = v.iter().collect();
-let copied: Vec<_> = v.iter().copied().collect();
-
-assert_eq!(iter, vec![&1, &2, &3, &4, &5]);
-assert_eq!(copied, vec![1, 2, 3, 4, 5]);
-```
+![copied.png](014-iterators/copied.png)
 
 `.cloned()` does the same for types that are `Clone`.
 
-```rust
-let v = vec![String::from("Hello"), String::from("World")];
-
-let iter: Vec<_> = v.iter().collect();
-let cloned: Vec<_> = v.iter().cloned().collect();
-
-assert_eq!(iter, vec![&"Hello", &"World"]);
-assert_eq!(cloned, vec![String::from("Hello"), String::from("World")]);
-```
+![cloned.png](014-iterators/cloned.png)
 
 Other Ways to get Iterators
 ---------------------------
 
-Beyond collections there are other things that can be iterated through.
+Beyond collections, there are other things that can be iterated through.
 
-Ranges are iterators, it's why you often see them used in for loops:
+🦀 Ranges _are_ iterators, it's why you often see them used in for loops:
 
-```rust
-for n in 0..5 {
-    println!("Number: {n}");
-}
+![other-iter-range.png](014-iterators/other-iter-range.png)
 
-assert_eq!((0..5).collect::<Vec<_>>(), vec![0, 1, 2, 3, 4]);
-```
+🦀 But they implement all the same methods so we can collect them like any other iterator.
 
-As previously highlighted, you can create an infinitely repeating iterator with the `repeat(T)` function. You can
-repeat any value of any type so long as that type implements the `Clone` trait.
+🦀 You can make an infinitely repeating iterator of anything so long as it implements `Clone`, using `std::iter::repeat`.
 
-```rust
-use std::iter::repeat;
+![other-iter-repeat.png](014-iterators/other-iter-repeat.png)
 
-let mut repeater = repeat("Badger".to_string());
+🦀 Now, because immutable references implement `Clone` we could use this function to repeat a reference to string slice
+like "hi".
 
-assert_eq!(repeater.next(), Some("Badger".to_string()));
-assert_eq!(repeater.next(), Some("Badger".to_string()));
-assert_eq!(repeater.next(), Some("Badger".to_string()));
-assert_eq!(repeater.next(), Some("Badger".to_string()));
-# // Mushroom Mushroom (no I don't know "what's wrong with me", why?)
-```
+🦀 Um, I said "hi".
 
-This can have benefits over using something like an open range which will eventually overflow and panic
+🦀 Wait!
 
-```rust,should_panic
-// ‼️ This code panics because the iterator overflows u8 ‼️
-let iter = u8::MIN..;
-assert_eq!(iter.count(), 255);
-```
-```rust
-// This is fine though
-let iter = u8::MIN..u8::MAX;
-assert_eq!(iter.count(), 255);
-```
+🦀 It literally never ends, every time you call `.next()` it just clones a new value
 
-Fun fact, if you want to take an existing finite Iterator and repeat that infinitely, there's a method for that too,
-though the Item type must implement `Clone`.
+🦀 Ok enough of that.
 
-```rust
-let mut iter = vec![0, 1, 2].into_iter().cycle();
+🦀 We can also repeat existing iterators infinitely using a method on the iterator called `.cycle()`
 
-assert_eq!(iter.next(), Some(0));
-assert_eq!(iter.next(), Some(1));
-assert_eq!(iter.next(), Some(2));
-assert_eq!(iter.next(), Some(0)); // <- Repeat
-assert_eq!(iter.next(), Some(1));
-assert_eq!(iter.next(), Some(2));
-assert_eq!(iter.next(), Some(0)); // <- Repeat
-// ...and so on
-```
+![other-iter-cycle.png](014-iterators/other-iter-cycle.png)
 
-Though don't forget, immutable references are `Clone`.
+🦀 Once the iterator has run out of items, instead of returning a `None`, it simply starts again.
 
-```rust
-#[derive(Debug, PartialEq)]
-struct NotCloneable;
+You can also create iterators by combining other iterators, although they have to be of the same type:
 
-// Value will own our data
-let value = NotCloneable {};
+![other-iter-chain.png](014-iterators/other-iter-chain.png)
 
-// The vec we base the iterator on will contain a reference
-let mut iter = vec![&value].into_iter().cycle();
+Many other Types in Rust can also be broken down into Iterators.
 
-assert_eq!(iter.next(), Some(&NotCloneable {}));
-assert_eq!(iter.next(), Some(&NotCloneable {}));
-assert_eq!(iter.next(), Some(&NotCloneable {}));
-```
-
-You can also create iterators by combining other iterators, but they must be of the same type:
-
-```rust
-let mut i1 = vec![0, 1, 2].into_iter();
-let i2 = vec![3, 4, 5].into_iter(); // i2 does not need to be mutable as we're taking ownership
-
-assert_eq!(i1.chain(i2).collect::<Vec<_>>(), vec![0, 1, 2, 3, 4, 5]);
-```
-
-Many other Types in Rust can also be broken down into Iterators. This Chapter of the book, for example, can be
-represented as one large `str`, which you can break the data down by `.lines()`, `.chars()` or `.bytes()`. Don't forget
-a `char` is not the same as a byte (`u8`) in Rust, and in this Chapter I've used several multibyte characters 😉
+This script for this video, for example, can be represented as one large `str`, which you can break the data down by
+`.lines()`, `.chars()` or `.bytes()`.
 
 Cool ways to use Iterators
 --------------------------
@@ -393,7 +286,7 @@ For iterators of items that implement the `Sum` trait (eg, numbers) `.sum()` wil
 
 ```rust
 assert_eq!(
-    vec![1, 2, 3, 4].iter().sum::<i32>(), 
+    vec![1, 2, 3, 4].iter().sum::<i32>(),
     10
 );
 ```
@@ -403,7 +296,7 @@ in the iterator, eg:
 
 ```rust
 assert_eq!(
-    vec![1, 2, 3, 4].iter().product::<i32>(), 
+    vec![1, 2, 3, 4].iter().product::<i32>(),
     24
 );
 ```
@@ -412,14 +305,14 @@ Its worth noting that some surprising things implement `Sum` and `Product`, incl
 `Option<T>` and `Result<T, E>` where `T` already implements the trait.
 
 ```rust
-let v: Vec<Option<usize>> = vec![
+let v: Vec<Option<usize> > = vec![
     Some(10),
     Some(20),
     Some(12),
 ];
 
 // Note: the Option needs to be owned, references won't work, so we'll use .into_iter()
-let total: Option<usize> = v.into_iter().sum(); 
+let total: Option<usize> = v.into_iter().sum();
 assert_eq!(total, Some(42));
 ```
 
@@ -487,7 +380,8 @@ assert_eq!(banana_phone.next(), Some("ring"));
 
 ### Applying a Process over each item
 
-One of the most common uses for Iterators is process a set of Items one at a time. There are a number of methods on the
+One of the most common uses for Iterators is to process a set of Items one at a time. There are a number of methods on
+the
 Iterator trait (that themselves return new Iterators) that are really helpful for this.
 
 You can take one iterator and exclude Items based on the result of a predicate using the `.filter(P)`. For example, we
@@ -495,7 +389,7 @@ could take a range of numbers, and filter out all odd numbers like this:
 
 ```rust
 // Many iterator methods return a new iterator which is great for chaining
-let mut iter = (1..=10).filter(|n| n % 2 == 0);
+let mut iter = (1..=10).filter( | n| n % 2 == 0);
 
 assert_eq!(iter.next(), Some(2));
 assert_eq!(iter.next(), Some(4));
@@ -509,7 +403,7 @@ If we were to look at the length of the iterators before and after this filter y
 
 ```rust
 let full_iter = (1..=10);
-let filtered_iter = full_iter.clone().filter(|n| n % 2 == 0);
+let filtered_iter = full_iter.clone().filter( | n| n % 2 == 0);
 
 // We need to use count as ranges do not implement ExactSizeIterator 
 assert_eq!(full_iter.count(), 10);
@@ -522,7 +416,7 @@ type, the Iterator you get back will also be of that new type:
 
 ```rust
 let mut iter = (1..=3) // An Iterator where Item is i32
-    .map(|n| format!("This is item number {n}")); // New Iterator where Item is String
+.map( | n| format!("This is item number {n}")); // New Iterator where Item is String
 
 assert_eq!(iter.next(), Some("This is item number 1".to_string()));
 assert_eq!(iter.next(), Some("This is item number 2".to_string()));
@@ -538,7 +432,7 @@ combining this with filter_map, we'll get only the items that were Some, and tho
 
 ```rust
 let mut iter = (1..=u8::MAX)
-    .filter_map(|n| n.checked_add(250u8));
+.filter_map( | n| n.checked_add(250u8));
 
 assert_eq!(iter.next(), Some(251)); // 1 + 250
 assert_eq!(iter.next(), Some(252)); // 2 + 250
@@ -575,7 +469,7 @@ As with most iterators, you can chain them:
 
 ```rust
 # let v = vec![1, 2, 3, 4, 5, 6];
-# 
+#
 assert_eq!(v.iter().skip(1).take(4).collect::<Vec<_>>(), vec![&2, &3, &4, &5]);
 ```
 
@@ -587,11 +481,11 @@ do that by chaining together several of the Iterators we've just learned.
 ```rust
 let v1 = vec!["This", "sentence", "is", "not", "shorter"];
 
-let v2: Vec<_> = v1.into_iter()
-    .enumerate()
-    .filter(|(i, _)| i % 2 == 0) // Use the index added by enumerate to skip odd items
-    .map(|(_, s)| s) // Turn the iterator (usize, T) back into T
-    .collect();
+let v2: Vec<_ > = v1.into_iter()
+.enumerate()
+.filter( | (i, _) | i % 2 == 0) // Use the index added by enumerate to skip odd items
+.map( | (_, s) | s) // Turn the iterator (usize, T) back into T
+.collect();
 
 assert_eq!(v2, vec!["This", "is", "shorter"]);
 ```
@@ -602,10 +496,10 @@ be turned into `Option`s with `.then_some()`:
 ```rust
 let v1 = vec!["This", "sentence", "is", "not", "shorter"];
 
-let v2: Vec<_> = v1.into_iter()
-    .enumerate()
-    .filter_map(|(i, s)| (i % 2 == 0).then_some(s))
-    .collect();
+let v2: Vec<_ > = v1.into_iter()
+.enumerate()
+.filter_map( | (i, s) | (i % 2 == 0).then_some(s))
+.collect();
 
 assert_eq!(v2, vec!["This", "is", "shorter"]);
 ```
@@ -628,28 +522,29 @@ let v: Vec<u8> = vec![1, 2, 3, 4, 5, 6];
 // the first value in the closure, usually called `acc`, is the accumulated value
 // the second value in the closure, often called `cur`, is the current item
 let good_sum = (1u8..=6)
-    .into_iter()
-    .fold(Ok(0u8), |acc, cur| acc.and_then(|total| total.checked_add(cur).ok_or(OverflowError)));
+.into_iter()
+.fold(Ok(0u8), | acc, cur| acc.and_then( | total| total.checked_add(cur).ok_or(OverflowError)));
 
 assert_eq!(good_sum, Ok(21));
 
 let bad_sum = (100u8..=106)
-    .into_iter()
-    .fold(Ok(0u8), |acc, cur| acc.and_then(|total| total.checked_add(cur).ok_or(OverflowError)));
+.into_iter()
+.fold(Ok(0u8), | acc, cur| acc.and_then( | total| total.checked_add(cur).ok_or(OverflowError)));
 
 assert_eq!(bad_sum, Err(OverflowError));
 ```
+
 That said, in this kind of case, once our fold function returns a `Err`, we can't process any more items, we can break
 out of this early with `.try_fold()` which will stop iterating immediately:
 
 ```rust
 # #[derive(Debug, PartialEq)]
 # struct OverflowError;
-# 
+#
 let bad_sum = (100u8..=106)
-    .into_iter()
-    .try_fold(0u8, |acc, cur| acc.checked_add(cur)) // Consumes iterator, returns Option
-    .ok_or(OverflowError); // Converts the option into our error
+.into_iter()
+.try_fold(0u8, | acc, cur| acc.checked_add(cur)) // Consumes iterator, returns Option
+.ok_or(OverflowError); // Converts the option into our error
 
 assert_eq!(bad_sum, Err(OverflowError));
 ```
@@ -663,24 +558,34 @@ There's a few more traits you may want to be aware of when making your own itera
 using it is on newtypes.
 
 ```rust
-{{#include iterators/src/bin/albums.rs:Albums}}
+{{# include iterators / src / bin / albums.rs: Albums}}
 
-{{#include iterators/src/bin/albums.rs:IntoIterator}}
+{{# include iterators / src / bin / albums.rs: IntoIterator}}
 
 fn main() {
-{{#include iterators/src/bin/albums.rs:UseIntoIterator}}
+    {
+        {
+            # include
+            iterators / src / bin / albums.rs: UseIntoIterator
+        }
+    }
 }
 ```
 
 `FromIterator` allows you to turn an Iterator into another type, usually through the `.collect()` method on `Iterator`s
 
 ```rust
-{{#include iterators/src/bin/albums.rs:Albums}}
+{{# include iterators / src / bin / albums.rs: Albums}}
 
-{{#include iterators/src/bin/albums.rs:FromIterator}}
+{{# include iterators / src / bin / albums.rs: FromIterator}}
 
 fn main() {
-{{#include iterators/src/bin/albums.rs:UseFromIterator}}
+    {
+        {
+            # include
+            iterators / src / bin / albums.rs: UseFromIterator
+        }
+    }
 }
 ```
 

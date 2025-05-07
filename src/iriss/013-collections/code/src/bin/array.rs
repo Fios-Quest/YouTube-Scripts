@@ -1,5 +1,4 @@
 fn main() {
-
     let a1 = [0, 1, 1 + 1, 9 / 3];
     assert_eq!(a1, [0, 1, 2, 3]);
 
@@ -13,10 +12,15 @@ fn main() {
     //
     // let arr = [0, 1, 2, 3, 4];
     // println!("{}", arr[5]);
-    
+
     let arr = [0, 1, 2, 3, 4];
     assert_eq!(arr.get(4), Some(&4));
     assert_eq!(arr.get(5), None);
+
+    let x = 1;
+    let y = 2;
+
+    let a = [x..y];
 
     let mut arr = [10, 11, 12, 13, 14];
     assert_eq!(arr.get(4), Some(&14));
@@ -32,11 +36,8 @@ fn main() {
 
     let a2 = [1, 2, 3];
     // pass_an_array(a2);
-
 }
 
 fn pass_an_array(arr: [i32; 5]) {
     println!("{arr:?}");
 }
-
-

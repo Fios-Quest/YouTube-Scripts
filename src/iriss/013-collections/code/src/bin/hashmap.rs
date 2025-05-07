@@ -28,9 +28,7 @@ fn main() {
 
     // use std::collections::HashMap;
 
-    let mut map = HashMap::from([
-        ("Existing Key".to_string(), "Value".to_string()),
-    ]);
+    let mut map = HashMap::from([("Existing Key".to_string(), "Value".to_string())]);
 
     map.entry("Existing Key".to_string())
         .and_modify(|value| value.push_str(" Changed"))
@@ -46,7 +44,6 @@ fn main() {
         Some(&"Inserted Value".to_string())
     );
 
-
     // use std::collections::HashMap;
 
     let key = "Key".to_string();
@@ -60,9 +57,8 @@ fn main() {
 
     // Here 👇🏻 we move ownership out of the hashmap
     let recovered_value = map.remove("Key").expect("key not found");
-    
+
     assert_eq!(&recovered_value, "Value");
-    
 
     use std::collections::HashMap;
 
@@ -76,14 +72,11 @@ fn main() {
     // Here 👆🏻 we move ownership into the hashmap
 
     // Here 👇🏻 we move ownership out of the hashmap
-    let (recovered_key, recovered_value) = map
-        .remove_entry("Key")
-        .expect("key not found");
+    let (recovered_key, recovered_value) = map.remove_entry("Key").expect("key not found");
 
     assert_eq!(&recovered_key, "Key");
     assert_eq!(&recovered_value, "Value");
 
-    // Obviously the key abd value will no longer be part of the HashMap
+    // Obviously the key and value will no longer be part of the HashMap
     assert_eq!(map.get("Key"), None);
-    
 }
