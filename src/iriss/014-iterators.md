@@ -280,7 +280,16 @@ Cool ways to use Iterators
 
 ### Mathematics
 
-A common use case for iterators over things like numbers is adding all the items together, or multiplying them together.
+One common thing we might want to do is consume an iterator of numeric values and get some new value from it.
+
+A quick warning though!
+
+Unlike some other operations we might perform on iterators which add some step that _will_ be performed when we call
+`.next`, methods that "consume" the Iterator will actually try to process everything in the Iterator.
+
+This means if you call them on an infinite iterator, like those created by `.repeat()` or `.cycle()`, your code will enter an infinite loop and never end.  
+
+However, when that's not the case there's some useful mechanisms we can use:
 
 For iterators of items that implement the `Sum` trait (eg, numbers) `.sum()` will add all the items in the iterator:
 
@@ -316,8 +325,17 @@ let total: Option<usize> = v.into_iter().sum();
 assert_eq!(total, Some(42));
 ```
 
-For iterators of items that implement `Ord` you can use `.min()` and `.max()` to find the largest and smallest values
-respectively:
+I want to add another quick warning here, `.sum()` and `.product()` use the basic `add` and `multiply` operators respectively.
+
+This can be problematic because there's no check to see if the result still fits inside the numeric type. 
+
+For example, this will panic.
+
+Usually this won't be a problem as you'll likely be using number types with a lot of space, but we'll touch on slower (but safer) ways to get around this later 
+
+Anyway, carrying on:
+
+For iterators of items that implement `Ord` you can use `.min()` and `.max()` to find the largest and smallest values respectively:
 
 ```rust
 let v = vec!['H', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd'];
@@ -326,10 +344,7 @@ assert_eq!(v.iter().min(), Some(&'H'));
 assert_eq!(v.iter().max(), Some(&'w'));
 ```
 
-These methods are "consuming" methods, which means they will process every element in the iterator before giving a
-result.
-
-Another example of a consuming iterator is `.count()` which merely tells us how many items are in an iterator.
+If you just want to know how many items there are, you can use `.count()` which merely tells us how many items are in an iterator.
 
 ```rust
 let v = vec!['H', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd'];
@@ -339,8 +354,9 @@ assert_eq!(iter.count(), v.len()); // iter has same number of items as v is long
 // iter no longer exists
 ```
 
-However, if the iterator implements `ExactSizeIterator`, which many of the built-in ones do, then you can use
-`.len()` without consuming the iterator to get the same result:
+However, if the iterator implements `ExactSizeIterator`, which many of the built-in ones do, then you can use `.len()` instead
+
+Not only does this not consume the iterator, it's almost always faster to get the same result:
 
 ```rust
 let v = vec!['H', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd'];
@@ -350,42 +366,15 @@ assert_eq!(iter.len(), v.len());
 assert_eq!(iter.next(), Some(&'H'));
 ```
 
-#### ⚠️ Warning!
-
-Methods like `sum` and `product` do a simple `+` or `*` respectively, which means that if the result overflows, the
-_best_ thing that can happen is your program panics. For more robust (but slower) code you may want to implement the
-operation yourself using `fold` which is an iterator method we'll talk about later.
-
-Furthermore, methods like `sum`, `product`, `min`, `max` and anything else that "consumes" an iterator, expect that
-iterator to have an end to give you a final result, but it is possible to create infinite iterators. For example, the
-function `repeat("hi")` will just continue to produce a reference to the string slice `"hi"` forever.
-
-```rust
-use std::iter::repeat;
-
-let mut banana_phone = repeat("ring"); // Wait, that's not "hi"
-
-assert_eq!(banana_phone.next(), Some("ring"));
-
-// No!
-assert_eq!(banana_phone.next(), Some("ring"));
-assert_eq!(banana_phone.next(), Some("ring"));
-
-// It never ends
-assert_eq!(banana_phone.next(), Some("ring"));
-
-// Calling something like `.max()` on this iterator will cause an infinite loop
-# // Hahahaha, now its in your head 😈
-```
-
 ### Applying a Process over each item
 
-One of the most common uses for Iterators is to process a set of Items one at a time. There are a number of methods on
-the
-Iterator trait (that themselves return new Iterators) that are really helpful for this.
+One of the most common uses for Iterators is to process a set of Items one at a time.
 
-You can take one iterator and exclude Items based on the result of a predicate using the `.filter(P)`. For example, we
-could take a range of numbers, and filter out all odd numbers like this:
+There are a number of methods on the Iterator trait (that themselves return new Iterators) that are really helpful for this.
+
+You can take one iterator and exclude Items based on the result of a predicate using the `.filter(P)`.
+
+For example, we could take a range of numbers, and filter out all odd numbers like this:
 
 ```rust
 // Many iterator methods return a new iterator which is great for chaining
@@ -399,7 +388,17 @@ assert_eq!(iter.next(), Some(10));
 assert_eq!(iter.next(), None);
 ```
 
-If we were to look at the length of the iterators before and after this filter you'll see they've changed!
+If we were to look at the length of the iterators before and after this filter you'll see they've changed! 
+
+But here's where things get a little... interesting.
+
+I mentioned earlier that ideally we should try to use `.len()` instead of `.count()` when the Iterator implements `ExactSizeIterator`
+
+For the obvious reasons we don't know if an Item is included or not before an item is processed by the filter, we don't get an `ExactSizeIterator` back from the `.filter()` method, so we have to count each item.
+
+But, to my surprise, `ExactSizeIterator` is not implemented for `RangeInclusive`... but it is for `Range`.
+
+I don't know why this is, if you do, let me know in the comments, but I think it's a sign to prefer `Range` over `RangeInclusive`.
 
 ```rust
 let full_iter = (1..=10);
@@ -410,30 +409,45 @@ assert_eq!(full_iter.count(), 10);
 assert_eq!(filtered_iter.count(), 5);
 ```
 
-Another great way to process Iterators one Item at a time is to take that Item and transform it in some way. We can use
-pass a function into the `.map()` method that receives the item and returns a new value. If that value is of a different
-type, the Iterator you get back will also be of that new type:
+Anyway, another great way to process Iterators one Item at a time is to take that Item and transform it in some way.
+
+We can pass a function into the `.map()` method that receives the item and returns a new value.
+
+If that value is of a different type, the Iterator you get back will also be of that new type:
+
+If we start off with a Range like this, this is an Iterator where the Item is of type `i32`.
+
+We can then use `.map()` to take the number and return the result of the format macro. 
+
+And now we have an Iterator where the Item is of type `String`.
 
 ```rust
-let mut iter = (1..=3) // An Iterator where Item is i32
+let mut iter = (0..3) // An Iterator where Item is i32
 .map( | n| format!("This is item number {n}")); // New Iterator where Item is String
 
+assert_eq!(iter.next(), Some("This is item number 0".to_string()));
 assert_eq!(iter.next(), Some("This is item number 1".to_string()));
 assert_eq!(iter.next(), Some("This is item number 2".to_string()));
-assert_eq!(iter.next(), Some("This is item number 3".to_string()));
 assert_eq!(iter.next(), None);
 ```
 
-Sometimes the process you apply to an item might itself result in an `Option`, and rather than having an iterator of
-`Options` you may want to discard `None`s and unwrap the `Ok`, this is where `.filter_map()` is really handy.
+Sometimes the process you apply to an item might itself result in an `Option`, and rather than having an iterator of `Options` you may want to discard `None`s and unwrap the `Ok`, this is where `.filter_map()` is really handy.
 
-In the example below we use `.checked_add` which returns an `Option` with an `Ok` so long as the result is inbounds. By
-combining this with filter_map, we'll get only the items that were Some, and those items will be unwrapped.
+This range gives us every valid `u8` number in sequence from smallest to largest (this time it has to be RangeInclusive obviously).
+
+If we add 250 to each number, most of them will no longer fit inside of a `u8`.
+
+The `.checked_add()` method found on most numeric types in Rust will return an Option, where the `None` variant represents an overflow.
+
+If we combine this with a `.filter_map()` all numbers that overflow will automatically be excluded (because of the None) and all numbers in the `Some` variant are automatically unwrapped
+
+That leaves us with these 6 numbers.
 
 ```rust
-let mut iter = (1..=u8::MAX)
+let mut iter = (u8::MIN..=u8::MAX)
 .filter_map( | n| n.checked_add(250u8));
 
+assert_eq!(iter.next(), Some(250)); // 0 + 250
 assert_eq!(iter.next(), Some(251)); // 1 + 250
 assert_eq!(iter.next(), Some(252)); // 2 + 250
 assert_eq!(iter.next(), Some(253)); // 3 + 250
@@ -442,18 +456,18 @@ assert_eq!(iter.next(), Some(255)); // 5 + 250
 assert_eq!(iter.next(), None);
 ```
 
-This not only saves us from having to deal with doubly wrapped options from `next` (eg `Some(Some(255))`) but entirely
-removes the items from the iterator. See this example comparing map and filter map:
+This not only saves us from having to deal with doubly wrapped options from `next` (for example `Some(Some(255))`) but entirely removes the items from the iterator meaning anything else we chain doesn't have to deal with it either.
 
 ```rust
-assert_eq!((1..=u8::MAX).map(|n| n.checked_add(250u8)).count(), 255);
-assert_eq!((1..=u8::MAX).filter_map(|n| n.checked_add(250u8)).count(), 5);
+assert_eq!((u8::MIN..=u8::MAX).map(|n| n.checked_add(250u8)).count(), 256);
+assert_eq!((u8::MIN..=u8::MAX).filter_map(|n| n.checked_add(250u8)).count(), 6);
 ```
 
 Another way to reduce how many items we want to deal with in an iterator is by using `.take(n)` and `.skip(n)`.
 
-We can end an iterator earlier by only taking a certain number of items from it with `.take(n)` or we can skip over a
-number of items with `.skip(n)` before resuming the iterator from that point.
+We can end an iterator earlier by only taking a certain number of items from it with `.take(n)` 
+
+Or we can skip over a number of items with `.skip(n)` before resuming the iterator from that point.
 
 ```rust
 let v = vec![1, 2, 3, 4, 5, 6];
@@ -465,7 +479,7 @@ assert_eq!(iter_take.collect::<Vec<_>>(), vec![&1, &2, &3]);
 assert_eq!(iter_skip.collect::<Vec<_>>(), vec![&4, &5, &6]);
 ```
 
-As with most iterators, you can chain them:
+As with most iterators, you can chain them together too!
 
 ```rust
 # let v = vec![1, 2, 3, 4, 5, 6];
@@ -473,10 +487,25 @@ As with most iterators, you can chain them:
 assert_eq!(v.iter().skip(1).take(4).collect::<Vec<_>>(), vec![&2, &3, &4, &5]);
 ```
 
-An Iterator method we used earlier, `.enumerate()`, allows us to add an index to our Iterator by changing the type of
-the iterator `T` to a tuple: `(usize, T)`. This can be really handy in combination with other iterators when the
-position in an iterator is important. For example, lets say we want to filter every other item out of a `Vec`. We can
-do that by chaining together several of the Iterators we've just learned.
+An Iterator method we used earlier, `.enumerate()`, allows us to add an index to our Iterator by changing the type of the iterator `T` to a tuple of `(usize, T)`.
+
+This can be really handy in combination with other iterators when the position in an iterator is important.
+
+Here's a silly example, we'll do a sensible one at the end of the video, but let's say we want to filter every other item out of a `Vec`. 
+
+We can do that by chaining together several of the Iterators we've just learned.
+
+We'll take ownership of the data because we don't need the original after this.
+
+We'll enumerate the iterator so we get the index from the point we're at in the iterator onwards (in this case we're at the start but that might not always be the case)
+
+The index starts at zero so by checking the modulo of the index we can take every other item starting with the first.
+
+Filter doesn't change the data only decides if it should be kept or not
+
+Since we no longer need the index, we can map the tuple and return just the data we care about
+
+When we collect it we can see this method works
 
 ```rust
 let v1 = vec!["This", "sentence", "is", "not", "shorter"];
@@ -490,8 +519,11 @@ let v2: Vec<_ > = v1.into_iter()
 assert_eq!(v2, vec!["This", "is", "shorter"]);
 ```
 
-Any time you see a `filter` and a `map` next to each other, you might be able to abbreviate this. Booleans can
-be turned into `Option`s with `.then_some()`:
+Any time you see a `filter` and a `map` next to each other though, you might be able to abbreviate your code.
+
+Booleans can be turned into `Option`s with `.then_some()`, so this works, but...
+
+in my opinion, you should always go with the code that's easiest to read, and its up to you to decide what that is 
 
 ```rust
 let v1 = vec!["This", "sentence", "is", "not", "shorter"];
@@ -504,50 +536,73 @@ let v2: Vec<_ > = v1.into_iter()
 assert_eq!(v2, vec!["This", "is", "shorter"]);
 ```
 
-Finally, similar to `.sum()`, `.product()` and `.count()` you might want to take an iterator and reduce it down to a
-single value. This is where methods like `fold` and `reduce` come in. Each of these processes each item one at a time
-returning a singular value that is modified by each item, however where `.fold()` lets you specify the initial value for
-the returned value, `.reduce()` uses the first item in the iterator as the initial value and continues processing from
-the next item.
+Finally, there's three more consuming methods I want to cover for processing data
 
-Earlier we mentioned the risk of overflow in methods like `.sum()` and `.product()`. We can use these consuming methods
-to write safer (but slower) versions of those methods:
+`.fold()` and `.reduce()` consume iterators and return a single value by modifying that value for each item in the Iterator. 
 
-```rust
-#[derive(Debug, PartialEq)]
-struct OverflowError;
+`.fold()` lets you specify the initial value for the returned value, but `.reduce()` uses the first item in the iterator as the initial value and continues processing from the next item.
 
-let v: Vec<u8> = vec![1, 2, 3, 4, 5, 6];
+Earlier I mentioned some risk with `.sum()` and `.product()` and promised slower but safer ways to do the same thing.
 
-// the first value in the closure, usually called `acc`, is the accumulated value
-// the second value in the closure, often called `cur`, is the current item
-let good_sum = (1u8..=6)
-.into_iter()
-.fold(Ok(0u8), | acc, cur| acc.and_then( | total| total.checked_add(cur).ok_or(OverflowError)));
+So now we'll use `.fold()`, it takes two parameters, the first being the initial value, and the second being a closure with two parameters
 
-assert_eq!(good_sum, Ok(21));
+We'll use an Option with a 0 for the initial value, which is why we can't use `.reduce()` in this specific case.
 
-let bad_sum = (100u8..=106)
-.into_iter()
-.fold(Ok(0u8), | acc, cur| acc.and_then( | total| total.checked_add(cur).ok_or(OverflowError)));
+For the clusure, I usually stick to calling the parameters `acc` and `cur` representing the "acc-umulated" value which starts as our initial value, and the "cur-rent" value, which is the current Item in the iterator.
 
-assert_eq!(bad_sum, Err(OverflowError));
-```
+This closure is called for every Item in the iterator and returns the _next_ accumulated value.
 
-That said, in this kind of case, once our fold function returns a `Err`, we can't process any more items, we can break
-out of this early with `.try_fold()` which will stop iterating immediately:
+We're simply going to add the values together, our accumulated value is an Option and we only need to add if it's a `Some` varient
+
+We can use `.and_then()` to get inside the Option, and we'll use the same `checked_add` to increase the value
+
+This maps our Option to the Option that comes out of checked_add so we don't need to do anything else to 
 
 ```rust
-# #[derive(Debug, PartialEq)]
-# struct OverflowError;
-#
-let bad_sum = (100u8..=106)
-.into_iter()
-.try_fold(0u8, | acc, cur| acc.checked_add(cur)) // Consumes iterator, returns Option
-.ok_or(OverflowError); // Converts the option into our error
+let good_sum = (1u8..6)
+    .into_iter()
+    .fold(Some(0u8), |acc, cur| {
+        acc.and_then(|total| total.checked_add(cur))
+    });
 
-assert_eq!(bad_sum, Err(OverflowError));
+assert_eq!(good_sum, Some(15));
+
+let bad_sum = (100u8..106)
+    .into_iter()
+    .fold(Some(0u8), |acc, cur| {
+        acc.and_then(|total| total.checked_add(cur))
+    });
+
+assert_eq!(bad_sum, None);
 ```
+
+That said, there's actually a better way to provide this functionality. 
+
+The way we've built this, once we hit our first `None`, we _know_ the answer is going to be `None` too
+
+There's a method designed exactly for this, `.try_fold()` which not only will stop iterating on it's first `None`, potentially ending very early, but because it knows we're dealing with `Option`s will automatically unwrap our option for us, making the code much simpler!
+
+```rust
+let bad_sum = (100u8..106)
+    .into_iter()
+    .try_fold(0u8, | acc, cur| acc.checked_add(cur)) // Consumes iterator, returns Option
+
+assert_eq!(bad_sum, None);
+```
+
+The last consumer method I wanted to talk about is `.for_each()`.
+
+It lets you do something with each item in the iterator without returning anything.
+
+The simplest example might be, if we went back to our Fibonacci sequence instead of printing the value in a loop, we can use `.for_each()` to print the value.
+
+```rust
+Fibonacci::new().enumerate().take(5).for_each(|(i, f)| {
+    println!("{}: {f}", i + 1);
+});
+```
+
+The lack of return value might _feel_ like it rather limits the usefulness of this function, but it can be useful when doing things like sending data somewhere else, for example across threads. 
 
 More Iterator Traits
 --------------------
