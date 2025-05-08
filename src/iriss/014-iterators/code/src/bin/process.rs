@@ -1,7 +1,6 @@
 fn main() {
     // --- Filter ---
 
-    // Many iterator methods return a new iterator which is great for chaining
     let mut iter = (1..=10).filter(|n| n % 2 == 0);
 
     assert_eq!(iter.next(), Some(2));
@@ -10,6 +9,21 @@ fn main() {
     assert_eq!(iter.next(), Some(8));
     assert_eq!(iter.next(), Some(10));
     assert_eq!(iter.next(), None);
+
+    assert_eq!((1..=10).count(), 10);
+    assert_eq!((1..=10).filter(|n| n % 2 == 0).count(), 5);
+
+    let mut iter = (1..11).filter(|n| n % 2 == 0);
+
+    assert_eq!(iter.next(), Some(2));
+    assert_eq!(iter.next(), Some(4));
+    assert_eq!(iter.next(), Some(6));
+    assert_eq!(iter.next(), Some(8));
+    assert_eq!(iter.next(), Some(10));
+    assert_eq!(iter.next(), None);
+
+    assert_eq!((1..11).len(), 10);
+    assert_eq!((1..11).filter(|n| n % 2 == 0).count(), 5);
 
     // --- Filter len/count ---
 
@@ -29,8 +43,7 @@ fn main() {
 
     // --- Map ---
 
-    let mut iter = (0..3) // An Iterator where Item is i32
-        .map(|n| format!("This is item number {n}")); // New Iterator where Item is String
+    let mut iter = (0..3).map(|n| format!("This is item number {n}"));
 
     assert_eq!(iter.next(), Some("This is item number 0".to_string()));
     assert_eq!(iter.next(), Some("This is item number 1".to_string()));
@@ -52,30 +65,42 @@ fn main() {
     // --- Filter Map Count ---
 
     assert_eq!(
-        (u8::MIN..=u8::MAX).map(|n| n.checked_add(250u8)).count(),
-        256
-    );
-    assert_eq!(
         (u8::MIN..=u8::MAX)
             .filter_map(|n| n.checked_add(250u8))
             .count(),
         6
+    );
+    assert_eq!(
+        (u8::MIN..=u8::MAX).map(|n| n.checked_add(250u8)).count(),
+        256
     );
 
     // --- Take / Skip ---
 
     let v = vec![1, 2, 3, 4, 5, 6];
 
-    let taken: Vec<_> = v.iter().take(3).collect();
-    let skipped: Vec<_> = v.iter().skip(3).collect();
+    let taken: Vec<_> = v.iter().take(2).collect();
+    let skipped: Vec<_> = v.iter().skip(4).collect();
 
-    assert_eq!(taken, vec![&1, &2, &3]);
-    assert_eq!(skipped, vec![&4, &5, &6]);
+    assert_eq!(taken, vec![&1, &2]);
+    assert_eq!(skipped, vec![&5, &6]);
 
     assert_eq!(
         v.iter().skip(1).take(4).collect::<Vec<_>>(),
         vec![&2, &3, &4, &5]
     );
+
+    // --- repeat take chain ---
+
+    use std::iter::repeat;
+
+    let badger = repeat("badger").take(12);
+    let mushroom = repeat("mushroom").take(2);
+    let song = badger.chain(mushroom).cycle();
+
+    for line in song.take(42) {
+        println!("{line}")
+    }
 
     // --- Enumerate ---
 
@@ -84,8 +109,8 @@ fn main() {
     let collected: Vec<_> = initial_data
         .into_iter()
         .enumerate()
-        .filter(|(i, _)| i % 2 == 0) // Use the index added by enumerate to skip odd items
-        .map(|(_, s)| s) // Turn the iterator (usize, T) back into T
+        .filter(|(i, _)| i % 2 == 0)
+        .map(|(_, s)| s)
         .collect();
 
     assert_eq!(collected, vec!["This", "is", "shorter"]);
@@ -104,27 +129,23 @@ fn main() {
 
     // --- Fold ---
 
-    let good_sum = (1u8..6)
-        .into_iter()
-        .fold(Some(0u8), |acc, cur| {
-            acc.and_then(|total| total.checked_add(cur))
-        });
+    let good_sum = (1u8..6).into_iter().fold(Some(0u8), |acc, cur| {
+        acc.and_then(|total| total.checked_add(cur))
+    });
 
     assert_eq!(good_sum, Some(15));
 
-    let bad_sum = (100u8..=106)
-        .into_iter()
-        .fold(Some(0u8), |acc, cur| {
-            acc.and_then(|total| total.checked_add(cur))
-        });
+    let bad_sum = (100u8..=106).into_iter().fold(Some(0u8), |acc, cur| {
+        acc.and_then(|total| total.checked_add(cur))
+    });
 
     assert_eq!(bad_sum, None);
-    
+
     // --- Try Fold ---
 
     let bad_sum = (100u8..106)
         .into_iter()
-        .try_fold(0u8, | acc, cur| acc.checked_add(cur));
+        .try_fold(0u8, |acc, cur| acc.checked_add(cur));
 
     assert_eq!(bad_sum, None);
 
@@ -159,7 +180,7 @@ fn main() {
             Some(current)
         }
     }
-    
+
     Fibonacci::new().enumerate().take(5).for_each(|(i, f)| {
         println!("{}: {f}", i + 1);
     });

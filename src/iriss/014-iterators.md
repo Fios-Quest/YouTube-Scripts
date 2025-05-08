@@ -51,14 +51,14 @@ numbers zero to two-five-five.
 
 ![fib-impl-iterator.png](014-iterators/fib-impl-iterator.png)
 
-🦀 The trait has an associated type `Item` that describes the type returned by each iterator.
+🦀 The trait has an associated type `Item` that describes the type returned by each call of `.next()` on the iterator.
 
 🦀 It's an associated type rather than a generic type as it needs to be referenced a _lot_ but, it's type is dictated by
-the process used to create the Iterator.
+the process used to create the Iterator, so it isn't generic.
 
 🦀 To implement the `next` method, we'll temporarily store the current value of the value `next`.
 
-🦀 Because `self.next` is an Option, and the `next` method returns an Option, we can use the same question mark operator
+🦀 Because `self.next` is an Option, and the `next` method returns an Option, we can use the question mark operator
 to either unwrap a `Some` variant, or immediate return a `None` variant depending on what's in there.
 
 🦀 If there is a `None` at this point, then we've reached the end of our sequence.
@@ -115,8 +115,7 @@ item in the iterator (a process in Rust we refer to as "consuming" the iterator)
 
 Rust iterators are "lazy" meaning that they try to avoid doing any unnecessary work.
 
-Getting Iterators
------------------
+## Getting Iterators
 
 Having built our own, hopefully you now have a _vague_ understanding of how Iterators work, but usually you'll get an
 Iterator from a collection.
@@ -173,20 +172,15 @@ underlying collection is mutable).
 
 Finally, you may want to take ownership of the underlying data, and that's where our third option comes in.
 
-`.into_iter()` takes ownership of the collection (meaning that collection will no longer be available) and the data
-inside.
+`.into_iter()` takes ownership of the collection and the data inside (meaning that the collection will no longer be available).
 
-One place this is particularly useful is when converting between types, either on the item level or for the entire
-collection.
+One place this is particularly useful is when converting between types, either converting the items themselves or for the entire collection.
 
-There is a trait called `FromIterator<A>` that is implemented for types that can consume an iterator and populate
-themselves.
+There is a trait called `FromIterator<A>` that is implemented for types that can consume an iterator and populate themselves.
 
-This is almost always used with the `.collect()` iterator method, though you need to be explicit about what you're
-collecting into.
+This is almost always used with the `.collect()` iterator method, though you need to be explicit about what you're collecting into.
 
-You can do this either by typing the variable you're collecting into, or by using the turbofish operator that allows you
-to be explicit about the concrete types to fill in generics.
+You can do this either by typing the variable you're collecting into, or by using the turbofish operator that allows you to be explicit about the concrete types to fill in generics.
 
 🦀 In this example, we'll go back to our Strings as they aren't `Copy`.
 
@@ -196,16 +190,13 @@ to be explicit about the concrete types to fill in generics.
 
 🦀 This moves ownership from the variables into the LinkedList.
 
-🦀 To turn the LinkedList into a Vector, we'll first convert the LinkedList into an Iterator that owns the original data
-with `.into_iter()`.
+🦀 To turn the LinkedList into a Vector, we'll first convert the LinkedList into an Iterator that owns the original data with `.into_iter()`.
 
 🦀 Then we'll "collect" that Iterator into a collection.
 
-🦀 Because `v` is explicitly typed, Rust knows to use the `FromIterator` implementation of `Vector` when calling
-`.collect()`.
+🦀 Because `v` is explicitly typed, Rust knows to use the `FromIterator` implementation of `Vector` when calling `.collect()`.
 
-Honestly, even after years of using Rust, this backwards way of writing code that makes it super modular still makes me
-think: "wow"
+Honestly, even after years of using Rust, this backwards way of writing code that makes it super modular still makes me think: "wow"
 
 🦀 In this example, we've created a variable _basically_ just to provide type information.
 
@@ -214,19 +205,15 @@ think: "wow"
 🦀 You can skip this step using the turbofish operator which looks like this.
 
 
-Copying and cloning Items
--------------------------
+## Copying and cloning Items
 
-Using what we've learned above, what if we want to use owned data, but we need to keep the original collection, so
-`.into_iter()` is out of the question?
+Using what we've learned above, what if we want to use owned data, but we need to keep the original collection, so `.into_iter()` is out of the question?
 
 There are two methods on `Iterator` for this purpose: `.copied()` and `.cloned()`.
 
-Each one takes the old iterator and returns a new one where the appropriate action is applied to the next Item as its
-called.
+Each one takes the old iterator and returns a new iterator that applies the appropriate action lazily as its called.
 
-`.copied()` only works on Iterators where the item is `Copy` will take the iterator and return a new iterator which
-returns each Item copied.
+`.copied()` only works on Iterators where the item is `Copy` and will take the iterator and return a new iterator which returns each Item copied.
 
 ![copied.png](014-iterators/copied.png)
 
@@ -234,8 +221,7 @@ returns each Item copied.
 
 ![cloned.png](014-iterators/cloned.png)
 
-Other Ways to get Iterators
----------------------------
+## Other Ways to get Iterators
 
 Beyond collections, there are other things that can be iterated through.
 
@@ -249,8 +235,9 @@ Beyond collections, there are other things that can be iterated through.
 
 ![other-iter-repeat.png](014-iterators/other-iter-repeat.png)
 
-🦀 Now, because immutable references implement `Clone` we could use this function to repeat a reference to string slice
-like "hi".
+🦀 Now, because immutable references implement `Clone` we could use this function to repeat a reference to string slice like "hi".
+
+// FIXME
 
 🦀 Um, I said "hi".
 
@@ -266,17 +253,15 @@ like "hi".
 
 🦀 Once the iterator has run out of items, instead of returning a `None`, it simply starts again.
 
-You can also create iterators by combining other iterators, although they have to be of the same type:
+You can also create iterators by combining other iterators with `.chain()`, although they have to be of the same type:
 
 ![other-iter-chain.png](014-iterators/other-iter-chain.png)
 
 Many other Types in Rust can also be broken down into Iterators.
 
-This script for this video, for example, can be represented as one large `str`, which you can break the data down by
-`.lines()`, `.chars()` or `.bytes()`.
+The script for this video, for example, can be represented as one large `str`, which you can break the data down by `.lines()`, `.chars()` or `.bytes()` all of which produce iterators.
 
-Cool ways to use Iterators
---------------------------
+## Cool ways to use Iterators
 
 ### Mathematics
 
@@ -284,87 +269,69 @@ One common thing we might want to do is consume an iterator of numeric values an
 
 A quick warning though!
 
-Unlike some other operations we might perform on iterators which add some step that _will_ be performed when we call
-`.next`, methods that "consume" the Iterator will actually try to process everything in the Iterator.
+Unlike some other operations we might perform on iterators which add some step that _will_ be performed when we call `.next`, methods that "consume" the Iterator will actually try to process everything in the Iterator.
 
-This means if you call them on an infinite iterator, like those created by `.repeat()` or `.cycle()`, your code will enter an infinite loop and never end.  
+This means if you call them on an infinite iterator, like those created by `.repeat()` or `.cycle()`, your code will enter an infinite loop and never end.
 
 However, when that's not the case there's some useful mechanisms we can use:
 
-For iterators of items that implement the `Sum` trait (eg, numbers) `.sum()` will add all the items in the iterator:
+🦀 For iterators of items that implement the `Sum` trait (for example numbers) `.sum()` will add all the items in the iterator:
 
-```rust
-assert_eq!(
-    vec![1, 2, 3, 4].iter().sum::<i32>(),
-    10
-);
-```
+![maths-sum.png](014-iterators/maths-sum.png)
 
-For iterators of items that implement the `Product` trait (eg, again, numbers) `.product()` will multiply all the items
-in the iterator, eg:
+🦀 You'll notice we have the turbofish operator again as we need to know what type to sum to
 
-```rust
-assert_eq!(
-    vec![1, 2, 3, 4].iter().product::<i32>(),
-    24
-);
-```
+🦀 For iterators of items that implement the `Product` trait (eg, again, numbers) `.product()` will multiply all the items in the iterator
 
-Its worth noting that some surprising things implement `Sum` and `Product`, including blanket implementations for
-`Option<T>` and `Result<T, E>` where `T` already implements the trait.
+![maths-product.png](014-iterators/maths-product.png)
 
-```rust
-let v: Vec<Option<usize> > = vec![
-    Some(10),
-    Some(20),
-    Some(12),
-];
+🦀 Its worth noting that some surprising things implement `Sum` and `Product`, including blanket implementations for `Option<T>` and `Result<T, E>` where `T` already implements the trait.
 
-// Note: the Option needs to be owned, references won't work, so we'll use .into_iter()
-let total: Option<usize> = v.into_iter().sum();
-assert_eq!(total, Some(42));
-```
+![maths-sum-option.png](014-iterators/maths-sum-option.png)
 
-I want to add another quick warning here, `.sum()` and `.product()` use the basic `add` and `multiply` operators respectively.
+🦀 Doing it this way, for some reason, the Option _needs_ to be owned, so we can `.into_iter()` on the collection, if we don't need to use the collection afterward.
 
-This can be problematic because there's no check to see if the result still fits inside the numeric type. 
+🦀 Or, if we need to keep the collection, because i32 is Copy, we could chain `.iter()` with `.copied()`
 
-For example, this will panic.
+![maths-sum-option-copied.png](014-iterators/maths-sum-option-copied.png)
 
-Usually this won't be a problem as you'll likely be using number types with a lot of space, but we'll touch on slower (but safer) ways to get around this later 
+🦀 I want to add another quick warning here, `.sum()` and `.product()` use the basic `add` and `multiply` operators respectively.
 
-Anyway, carrying on:
+🦀 This can be problematic because there's no check to see if the result still fits inside the numeric type.
 
-For iterators of items that implement `Ord` you can use `.min()` and `.max()` to find the largest and smallest values respectively:
+🦀 For example, this is fine
 
-```rust
-let v = vec!['H', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd'];
+![maths-product-safe.png](014-iterators/maths-product-safe.png)
 
-assert_eq!(v.iter().min(), Some(&'H'));
-assert_eq!(v.iter().max(), Some(&'w'));
-```
+// FIXME
 
-If you just want to know how many items there are, you can use `.count()` which merely tells us how many items are in an iterator.
+🦀 But this will panic
 
-```rust
-let v = vec!['H', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd'];
+![maths-product-panic.png](014-iterators/maths-product-panic.png)
 
-let iter = v.clone().into_iter();
-assert_eq!(iter.count(), v.len()); // iter has same number of items as v is long
-// iter no longer exists
-```
+🦀 But you won't know that until runtime.
 
-However, if the iterator implements `ExactSizeIterator`, which many of the built-in ones do, then you can use `.len()` instead
+🦀 Usually this won't be a problem as you'll likely be using number types with a lot of space, not `u8`s, but we'll touch on slower (but safer) ways to get around this later.
 
-Not only does this not consume the iterator, it's almost always faster to get the same result:
+🦀 Anyway, carrying on:
 
-```rust
-let v = vec!['H', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd'];
+🦀 For iterators of items that implement `Ord` you can use `.min()` and `.max()` to find the largest and smallest values respectively.
 
-let mut iter = v.iter();
-assert_eq!(iter.len(), v.len());
-assert_eq!(iter.next(), Some(&'H'));
-```
+![maths-min-max.png](014-iterators/maths-min-max.png)
+
+🦀 Chars are ordered by their numeric value so capitals come first, making "H" the smallest value and "w" the "largest" value
+
+🦀 If you just want to know how many items there are, you can use `.count()` which merely tells us how many items are in an iterator.
+
+// Count consumes iterator
+
+![maths-count.png](014-iterators/maths-count.png)
+
+🦀 However, if the iterator implements `ExactSizeIterator`, and many iterators do, then you can use `.len()` instead.
+
+![maths-count.png](014-iterators/maths-len.png)
+
+🦀 Not only does this not consume the iterator, it's almost always faster to get the same result:
 
 ### Applying a Process over each item
 
@@ -372,42 +339,31 @@ One of the most common uses for Iterators is to process a set of Items one at a 
 
 There are a number of methods on the Iterator trait (that themselves return new Iterators) that are really helpful for this.
 
-You can take one iterator and exclude Items based on the result of a predicate using the `.filter(P)`.
+In fact, it's common to chain multiple iterators together in this way.
 
-For example, we could take a range of numbers, and filter out all odd numbers like this:
+Let's start with one of the simplest.
 
-```rust
-// Many iterator methods return a new iterator which is great for chaining
-let mut iter = (1..=10).filter( | n| n % 2 == 0);
+You can take an iterator and exclude Items based on the result of a predicate using the `.filter()`.
 
-assert_eq!(iter.next(), Some(2));
-assert_eq!(iter.next(), Some(4));
-assert_eq!(iter.next(), Some(6));
-assert_eq!(iter.next(), Some(8));
-assert_eq!(iter.next(), Some(10));
-assert_eq!(iter.next(), None);
-```
+🦀 For example, we could take a range of numbers, and filter out all odd numbers like this:
 
-If we were to look at the length of the iterators before and after this filter you'll see they've changed! 
+![process-filter-range.png](014-iterators/process-filter-range.png)
 
-But here's where things get a little... interesting.
+🦀 If we were to look at the count of the iterators before and after the filter, you'll see they've changed!
 
-I mentioned earlier that ideally we should try to use `.len()` instead of `.count()` when the Iterator implements `ExactSizeIterator`
+🦀 Now, I was going to point out that ideally we should use `.len()` but that `.filter()` can not return an `ExactSizeIterator`.
 
-For the obvious reasons we don't know if an Item is included or not before an item is processed by the filter, we don't get an `ExactSizeIterator` back from the `.filter()` method, so we have to count each item.
+![process-filter-range-inclusive.png](014-iterators/process-filter-range-inclusive.png)
 
-But, to my surprise, `ExactSizeIterator` is not implemented for `RangeInclusive`... but it is for `Range`.
+🦀 But, to my surprise, `ExactSizeIterator` isn't implemented for `RangeInclusive` either... but it is for `Range`.
 
-I don't know why this is, if you do, let me know in the comments, but I think it's a sign to prefer `Range` over `RangeInclusive`.
+🦀 So, here's a quick edit to the code that does the same thing.
 
-```rust
-let full_iter = (1..=10);
-let filtered_iter = full_iter.clone().filter( | n| n % 2 == 0);
+🦀 Now we can use `.len()` on the range, much better
 
-// We need to use count as ranges do not implement ExactSizeIterator 
-assert_eq!(full_iter.count(), 10);
-assert_eq!(filtered_iter.count(), 5);
-```
+🦀 For the obvious reasons we don't know if an Item is included or not before an item is processed by the filter, so we don't get an `ExactSizeIterator` back from the `.filter()` method, so we have to count each item.
+
+🦀 I don't know why `RangeInclusive` isn't `ExactSizeIterator`, if you do, let me know in the comments, but I think it's a sign to prefer `Range` over `RangeInclusive`.
 
 Anyway, another great way to process Iterators one Item at a time is to take that Item and transform it in some way.
 
@@ -415,106 +371,82 @@ We can pass a function into the `.map()` method that receives the item and retur
 
 If that value is of a different type, the Iterator you get back will also be of that new type:
 
-If we start off with a Range like this, this is an Iterator where the Item is of type `i32`.
+🦀 If we start off with a Range like this, this is an Iterator where the Item is of type `i32`.
 
-We can then use `.map()` to take the number and return the result of the format macro. 
+![process-map.png](014-iterators/process-map.png)
 
-And now we have an Iterator where the Item is of type `String`.
+🦀 We can then use `.map()` to take the number and return the result of the format macro.
 
-```rust
-let mut iter = (0..3) // An Iterator where Item is i32
-.map( | n| format!("This is item number {n}")); // New Iterator where Item is String
+🦀 And now we have an Iterator where the Item is of type `String`.
 
-assert_eq!(iter.next(), Some("This is item number 0".to_string()));
-assert_eq!(iter.next(), Some("This is item number 1".to_string()));
-assert_eq!(iter.next(), Some("This is item number 2".to_string()));
-assert_eq!(iter.next(), None);
-```
+🦀 Sometimes the process you apply to an item might itself result in an `Option`, and rather than having an iterator of `Options` you may want to discard `None`s and unwrap `Ok`s, this is where `.filter_map()` is really handy.
 
-Sometimes the process you apply to an item might itself result in an `Option`, and rather than having an iterator of `Options` you may want to discard `None`s and unwrap the `Ok`, this is where `.filter_map()` is really handy.
+![process-filter-map.png](014-iterators/process-filter-map.png)
 
-This range gives us every valid `u8` number in sequence from smallest to largest (this time it has to be RangeInclusive obviously).
+🦀 This range gives us every valid `u8` number in sequence from smallest, 0, to largest, 255 
 
-If we add 250 to each number, most of them will no longer fit inside of a `u8`.
+🦀 (Despite what we just discussed this time it has to be `RangeInclusive`).
 
-The `.checked_add()` method found on most numeric types in Rust will return an Option, where the `None` variant represents an overflow.
+🦀 If we add 250 to each number, most of them will no longer fit inside a `u8`.
 
-If we combine this with a `.filter_map()` all numbers that overflow will automatically be excluded (because of the None) and all numbers in the `Some` variant are automatically unwrapped
+🦀 The `.checked_add()` method found on most numeric types in Rust will return an Option, where the `None` variant represents an overflow.
 
-That leaves us with these 6 numbers.
+🦀 If we combine this with a `.filter_map()` all numbers that overflow will automatically be excluded (because of the `None`) and all numbers in the `Some` variant are automatically unwrapped
 
-```rust
-let mut iter = (u8::MIN..=u8::MAX)
-.filter_map( | n| n.checked_add(250u8));
+🦀 That leaves us with these six numbers.
 
-assert_eq!(iter.next(), Some(250)); // 0 + 250
-assert_eq!(iter.next(), Some(251)); // 1 + 250
-assert_eq!(iter.next(), Some(252)); // 2 + 250
-assert_eq!(iter.next(), Some(253)); // 3 + 250
-assert_eq!(iter.next(), Some(254)); // 4 + 250
-assert_eq!(iter.next(), Some(255)); // 5 + 250
-assert_eq!(iter.next(), None);
-```
+🦀 This not only saves us from having to deal with doubly wrapped options from `next` (for example `Some(Some(255))`) but entirely removes the items from the iterator meaning anything else we chain doesn't have to deal with it either.
 
-This not only saves us from having to deal with doubly wrapped options from `next` (for example `Some(Some(255))`) but entirely removes the items from the iterator meaning anything else we chain doesn't have to deal with it either.
+🦀 By comparison, if we just used a map, we'd have 256 Options, 250 of which are `None`.
 
-```rust
-assert_eq!((u8::MIN..=u8::MAX).map(|n| n.checked_add(250u8)).count(), 256);
-assert_eq!((u8::MIN..=u8::MAX).filter_map(|n| n.checked_add(250u8)).count(), 6);
-```
+![process-filter-map-count.png](014-iterators/process-filter-map-count.png)
 
-Another way to reduce how many items we want to deal with in an iterator is by using `.take(n)` and `.skip(n)`.
+🦀 Another way to reduce how many items we want to deal with in an iterator is by using `.take(n)` and `.skip(n)`.
 
-We can end an iterator earlier by only taking a certain number of items from it with `.take(n)` 
+![process-take-skip.png](014-iterators/process-take-skip.png)
 
-Or we can skip over a number of items with `.skip(n)` before resuming the iterator from that point.
+🦀 We can end an iterator earlier by only taking a certain number of items from it with `.take(n)`
 
-```rust
-let v = vec![1, 2, 3, 4, 5, 6];
+🦀 Or we can skip over a number of items with `.skip(n)` before resuming the iterator from that point.
 
-let iter_take = v.iter().take(3);
-let iter_skip = v.iter().skip(3);
+🦀 `.take()` can be particularly useful when working with infinite iterators too
 
-assert_eq!(iter_take.collect::<Vec<_>>(), vec![&1, &2, &3]);
-assert_eq!(iter_skip.collect::<Vec<_>>(), vec![&4, &5, &6]);
-```
+![process-repeat-take-cycle.png](014-iterators/process-repeat-take-cycle.png)
 
-As with most iterators, you can chain them together too!
+🦀 I want you to consider the output of the following program.
 
-```rust
-# let v = vec![1, 2, 3, 4, 5, 6];
-#
-assert_eq!(v.iter().skip(1).take(4).collect::<Vec<_>>(), vec![&2, &3, &4, &5]);
-```
+🦀 Consider it!
 
-An Iterator method we used earlier, `.enumerate()`, allows us to add an index to our Iterator by changing the type of the iterator `T` to a tuple of `(usize, T)`.
+🦀 *cough cough*
 
-This can be really handy in combination with other iterators when the position in an iterator is important.
+🦀 An Iterator method we used earlier, `.enumerate()`, allows us to add an index to our Iterator by changing the type of the Item `T` to a tuple of `(usize, T)`.
 
-Here's a silly example, we'll do a sensible one at the end of the video, but let's say we want to filter every other item out of a `Vec`. 
+🦀 This can be really handy in combination with other iterators when the position in an iterator is important.
+
+Here's a silly example, we'll do a _slightly_ more sensible one in moment, but let's say we want to filter every other item out of a `Vec`.
 
 We can do that by chaining together several of the Iterators we've just learned.
 
-We'll take ownership of the data because we don't need the original after this.
+We'll take ownership of the data because we don't need the original Vector this.
 
-We'll enumerate the iterator so we get the index from the point we're at in the iterator onwards (in this case we're at the start but that might not always be the case)
+We'll enumerate the iterator so we get the index from the point we're at in the iterator onwards (here we're at the start, but that might not always be the case)
 
-The index starts at zero so by checking the modulo of the index we can take every other item starting with the first.
+The index starts at zero, so by checking the modulo of the index, we can take every other item starting with the first.
 
-Filter doesn't change the data only decides if it should be kept or not
+Filter doesn't change the data only decides if it should be kept or not, this means we can ignore the original data here
 
-Since we no longer need the index, we can map the tuple and return just the data we care about
+Since we no longer need the index after this, we can map the tuple and return just the data we care about
 
-When we collect it we can see this method works
+Finally ,we'll collect it and test the result
 
 ```rust
 let v1 = vec!["This", "sentence", "is", "not", "shorter"];
 
 let v2: Vec<_ > = v1.into_iter()
-.enumerate()
-.filter( | (i, _) | i % 2 == 0) // Use the index added by enumerate to skip odd items
-.map( | (_, s) | s) // Turn the iterator (usize, T) back into T
-.collect();
+    .enumerate()
+    .filter( | (i, _) | i % 2 == 0) // Use the index added by enumerate to skip odd items
+    .map( | (_, s) | s) // Turn the iterator (usize, T) back into T
+    .collect();
 
 assert_eq!(v2, vec!["This", "is", "shorter"]);
 ```
@@ -523,7 +455,7 @@ Any time you see a `filter` and a `map` next to each other though, you might be 
 
 Booleans can be turned into `Option`s with `.then_some()`, so this works, but...
 
-in my opinion, you should always go with the code that's easiest to read, and its up to you to decide what that is 
+in my opinion, you should always go with the code that's easiest to read, and its up to you to decide what that is
 
 ```rust
 let v1 = vec!["This", "sentence", "is", "not", "shorter"];
@@ -538,45 +470,45 @@ assert_eq!(v2, vec!["This", "is", "shorter"]);
 
 Finally, there's three more consuming methods I want to cover for processing data
 
-`.fold()` and `.reduce()` consume iterators and return a single value by modifying that value for each item in the Iterator. 
+`.fold()` and `.reduce()` consume iterators and return a single value by modifying that value for each item in the Iterator.
 
 `.fold()` lets you specify the initial value for the returned value, but `.reduce()` uses the first item in the iterator as the initial value and continues processing from the next item.
 
-Earlier I mentioned some risk with `.sum()` and `.product()` and promised slower but safer ways to do the same thing.
+Earlier I mentioned some risk with `.sum()` and `.product()` and promised a slower but safer way to do the same thing.
 
 So now we'll use `.fold()`, it takes two parameters, the first being the initial value, and the second being a closure with two parameters
 
 We'll use an Option with a 0 for the initial value, which is why we can't use `.reduce()` in this specific case.
 
-For the clusure, I usually stick to calling the parameters `acc` and `cur` representing the "acc-umulated" value which starts as our initial value, and the "cur-rent" value, which is the current Item in the iterator.
+For the closure, I usually stick to calling the parameters `acc` and `cur` representing the "acc-umulated" value which starts as our initial value, and the "cur-rent" value, which is the current Item in the iterator.
 
 This closure is called for every Item in the iterator and returns the _next_ accumulated value.
 
-We're simply going to add the values together, our accumulated value is an Option and we only need to add if it's a `Some` varient
+We're simply going to add the values together, our accumulated value is an Option, and we only need to add if it's a `Some` varient
 
 We can use `.and_then()` to get inside the Option, and we'll use the same `checked_add` to increase the value
 
-This maps our Option to the Option that comes out of checked_add so we don't need to do anything else to 
+This maps our Option to another Option that comes out of checked_add so we don't need to do anything else before returning from the closure
 
 ```rust
 let good_sum = (1u8..6)
-    .into_iter()
-    .fold(Some(0u8), |acc, cur| {
-        acc.and_then(|total| total.checked_add(cur))
-    });
+.into_iter()
+.fold(Some(0u8), | acc, cur| {
+acc.and_then( | total | total.checked_add(cur))
+});
 
 assert_eq!(good_sum, Some(15));
 
 let bad_sum = (100u8..106)
-    .into_iter()
-    .fold(Some(0u8), |acc, cur| {
-        acc.and_then(|total| total.checked_add(cur))
-    });
+.into_iter()
+.fold(Some(0u8), | acc, cur| {
+acc.and_then( | total | total.checked_add(cur))
+});
 
 assert_eq!(bad_sum, None);
 ```
 
-That said, there's actually a better way to provide this functionality. 
+That said, there's actually a better way to provide this functionality.
 
 The way we've built this, once we hit our first `None`, we _know_ the answer is going to be `None` too
 
@@ -584,8 +516,8 @@ There's a method designed exactly for this, `.try_fold()` which not only will st
 
 ```rust
 let bad_sum = (100u8..106)
-    .into_iter()
-    .try_fold(0u8, | acc, cur| acc.checked_add(cur)) // Consumes iterator, returns Option
+.into_iter()
+.try_fold(0u8, | acc, cur| acc.checked_add(cur)) // Consumes iterator, returns Option
 
 assert_eq!(bad_sum, None);
 ```
@@ -597,25 +529,24 @@ It lets you do something with each item in the iterator without returning anythi
 The simplest example might be, if we went back to our Fibonacci sequence instead of printing the value in a loop, we can use `.for_each()` to print the value.
 
 ```rust
-Fibonacci::new().enumerate().take(5).for_each(|(i, f)| {
-    println!("{}: {f}", i + 1);
+Fibonacci::new().enumerate().take(5).for_each( | (i, f)| {
+println ! ("{}: {f}", i + 1);
 });
 ```
 
-The lack of return value might _feel_ like it rather limits the usefulness of this function, but it can be useful when doing things like sending data somewhere else, for example across threads. 
+The lack of return value might _feel_ like it rather limits the usefulness of this function, but it can be useful when doing things like sending data somewhere else, for example, across threads, which we'll be looking at in the next video.
 
-More Iterator Traits
---------------------
+## More Iterator Traits
 
-There's a few more traits you may want to be aware of when making your own iterators:
+There are a few more traits you may want to be aware of when making your own iterators, or consuming others.
 
-`IntoIterator` can be implemented on any type that can be turned into. an.. `Iterator`. 
+`IntoIterator` can be implemented on any type that can be turned into. an... `Iterator`.
 
 Ah, I see what they did there.
 
 One place you may find yourself using it is on newtypes, or types where the most important data inside is represented as some kind of collection.
 
-Lets say we have a newtype Albums, that contains a Vector of Album
+Let's say we have a newtype Albums, that contains a Vector of Album
 
 In our domain logic, it might make sense that we can start a new collection of Albums and add an Album to it by buying it.
 
@@ -631,11 +562,11 @@ Our struct `Fibonacci` is the Iterator type.
 
 What the trait is actually asking us for here is the data type that will manage the iteration process for us.
 
-We're using a Vec internally and Vec has a generic Iterator struct it uses when you turn a Vec into an Iterator, so we can use that, filling in the Generic with our Item type.
+We're using a Vec internally, and Vec has a generic Iterator struct it uses when you turn a Vec into an Iterator, so we can use that, filling in the Generic part with our Item type.
 
-All we need to do then is return the result of calling Vec `.into_iter()`... 
+All we need to do then is return the result of calling Vec `.into_iter()`...
 
-Yeah it does feel overly simplistic, I find its better not to worry about it.
+Yeah, it does feel overly simplistic, I find its better not to worry about it.
 
 Once we've done that, turning our Albums type into an Iterator of Album is trivial.
 
@@ -653,6 +584,7 @@ fn main() {
     }
 }
 ```
+
 But what if we want to go back to having our Albums type again.
 
 `FromIterator` allows you to turn an Iterator into another type, usually through the `.collect()` method on an `Iterator`
@@ -674,9 +606,11 @@ fn main() {
 }
 ```
 
-Finally, the last two traits you should be aware of are `DoubleEndedIterator` and `ExactSizeIterator`. 
+Finally, the last two traits you should be aware of are `DoubleEndedIterator` and `ExactSizeIterator`.
 
-`ExactSizeIterator` can tell you the size of the iterator _without_ consuming it, using the `.len()` method (if you need to see if the iterator is empty, you should us `.is_empty()` instead).
+We've spoken about `ExactSizeIterator`, it can tell you the size of the iterator _without_ consuming it, using the `.len()` method 
+
+It also provides `.is_empty()` if you specifically need to see if the iterator is empty.
 
 ```rust
 let v = vec![1, 2, 3, 4, 5];
@@ -705,12 +639,12 @@ The Iterators returned from collections are all both of these (even, to my surpr
 
 ## Next Time
 
-We've now covered all of what I'd describe as the core, synchronous language features (at least... I hope).
+First, I want to say a huge thank-you to my Patreons, your support for the channel so early on really helps!
 
-We're going move on to Threads in the next video, discuss what they are and some of the most important and useful tools to use when working with them.
+And if you enjoyed the video, don't forget to like and subscribe, you'd be surprised how much of a positive impact that has for creators! 
 
-A huge thank you to my Patreon supporters.
+We've now covered all of what I'd describe as the core, synchronous language features (at least... I hope, let me know if you think I've missed something crucial).
 
-If you enjoyed the video, don't forget to like and subscribe, and I want to say a huge thank you to my Patreon supporters.
+We're moving on to Threads in the next video, we'll discuss what they are, why you'd use them, and some of the most important and useful tools to use when working with them.
 
-And I'll see you next time.
+With that, I'll see you next time.
