@@ -1,6 +1,6 @@
 # Iterators
 
-I've been foreshadowing it for a while but today we finally cover Iterators!
+I've been foreshadowing it for a while, but today we finally cover Iterators!
 
 Iterators are a way to produce, and perform operations on, a sequence of values.
 
@@ -507,96 +507,69 @@ Ah, I see what they did there.
 
 One place you may find yourself using it is on newtypes, or types where the most important data inside is represented as some kind of collection.
 
-Let's say we have a newtype Albums, that contains a Vector of Album
+🦀 Let's say we have a newtype Albums, that contains a Vector of Album
 
-In our domain logic, it might make sense that we can start a new collection of Albums and add an Album to it by buying it.
+![albums.png](014-iterators/albums.png)
 
-If we were to implement `IntoIterator` for `Albums` there are two important associated types that we need to specify.
+🦀 In our domain logic, it might make sense that we can start a new collection of Albums and add an Album to it by buying it.
 
-`Item` is easy, that'll be our `Album` type.
+🦀 So we can build and Albums struct like this
 
-`IntoIter` is the name of the type that _is_ the Iterator.
+![albums-new.png](014-iterators/albums-new.png)
 
-Remember back at the start, we created a Fibonacci Iterator.
+🦀 If we were to implement `IntoIterator` for `Albums` there are two important associated types that we need to specify.
 
-Our struct `Fibonacci` is the Iterator type.
+![albums-into-iterator.png](014-iterators/albums-into-iterator.png)
 
-What the trait is actually asking us for here is the data type that will manage the iteration process for us.
+🦀 `Item` is easy, that'll be our `Album` type.
 
-We're using a Vec internally, and Vec has a generic Iterator struct it uses when you turn a Vec into an Iterator, so we can use that, filling in the Generic part with our Item type.
+🦀 `IntoIter` is the name of the type that _is_ the Iterator.
 
-All we need to do then is return the result of calling Vec `.into_iter()`...
+🦀 Remember back at the start, we created a Fibonacci Iterator.
 
-Yeah, it does feel overly simplistic, I find its better not to worry about it.
+🦀 Our struct `Fibonacci` is the Iterator type.
 
-Once we've done that, turning our Albums type into an Iterator of Album is trivial.
+🦀 What the trait is actually asking us for here is the data type that will manage the iteration process for us.
 
-```rust
-{{# include iterators / src / bin / albums.rs: Albums}}
+🦀 We're using a Vec internally, and Vec has a generic Iterator struct it uses when you turn a Vec into an Iterator, so we can use that, filling in the Generic part with our Item type.
 
-{{# include iterators / src / bin / albums.rs: IntoIterator}}
+🦀 All we need to do in our case then, is return the result of calling Vec `.into_iter()`
 
-fn main() {
-    {
-        {
-            # include
-            iterators / src / bin / albums.rs: UseIntoIterator
-        }
-    }
-}
-```
+🦀 Once we've done that, turning our Albums type into an Iterator of Album is trivial.
 
-But what if we want to go back to having our Albums type again.
+![albums-to-artists.png](014-iterators/albums-to-artists.png)
 
-`FromIterator` allows you to turn an Iterator into another type, usually through the `.collect()` method on an `Iterator`
+🦀 But what if we want to go back to having our Albums type again.
 
-This is really just the same thing in reverse, but in a more complicated version, its perfectly sensible to step through each item in the Iterator and process it individually
+🦀 `FromIterator` allows you to turn an Iterator into another type, usually through the `.collect()` method on an `Iterator`
 
-```rust
-{{# include iterators / src / bin / albums.rs: Albums}}
+🦀 In our case, again, we could really just lean into the existing Vec type's utilities, 
 
-{{# include iterators / src / bin / albums.rs: FromIterator}}
+![albums-from-iterator-manual.png](014-iterators/albums-from-iterator-manual.png)
 
-fn main() {
-    {
-        {
-            # include
-            iterators / src / bin / albums.rs: UseFromIterator
-        }
-    }
-}
-```
+🦀 But you could also rely on the structs own implementation to do the same thing by looping through the iterator.
+
+![albums-from-iterator-vec.png](014-iterators/albums-from-iterator-vec.png)
+
+🦀 Now we can create our Albums struct from any Iterator of Album
+
+![albums-vec-to-albums-struct.png](014-iterators/albums-vec-to-albums-struct.png)
 
 Finally, the last two traits you should be aware of are `DoubleEndedIterator` and `ExactSizeIterator`.
 
-We've spoken about `ExactSizeIterator`, it can tell you the size of the iterator _without_ consuming it, using the `.len()` method 
+We could implement these for our Album type but we'd really just be wrapping Vec, so I'll give some more direct examples.
 
-It also provides `.is_empty()` if you specifically need to see if the iterator is empty.
+🦀 We've spoken about `ExactSizeIterator`, it can tell you the size of the iterator _without_ consuming it, using the `.len()` method 
 
-```rust
-let v = vec![1, 2, 3, 4, 5];
+🦀 `DoubleEndedIterator` allows you to reverse the order of an Iterator with `.rev()`.
 
-let iter = v.into_iter();
+![other-traits.png](014-iterators/other-traits.png)
 
-assert_eq!(!iter.is_empty()); // not empty
-assert_eq!(iter.len(), 5); // iter still exists after this
-assert_eq!(iter.count(), 5); // iter is consumed
-```
+🦀 The Iterators returned from all collections in the standard library are all both of these 
 
-`DoubleEndedIterator` allows you to reverse the order of an Iterator with `.rev()`.
+🦀 To my surprise, even the `Iter` structs used for `LinkedList` and `BinaryHeap` are both `DoubleEndedIterator`, I didn't expect that.
 
-```rust
-let v = vec![1, 2, 3];
-
-let mut iter = v.into_iter().rev();
-
-assert_eq!(iter.next(), Some(3));
-assert_eq!(iter.next(), Some(2));
-assert_eq!(iter.next(), Some(1));
-assert_eq!(iter.next(), None);
-```
-
-The Iterators returned from collections are all both of these (even, to my surprise, the `Iter` structs used for `LinkedList` and `BinaryHeap` are both `DoubleEndedIterator`).
+![other-traits-ll.png](014-iterators/other-traits-ll.png)
 
 ## Next Time
 
