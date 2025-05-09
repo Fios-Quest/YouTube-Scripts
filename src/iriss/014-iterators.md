@@ -43,11 +43,13 @@ sticking mine in the middle, but it really doesn't matter.
 ![fib-base.png](014-iterators/fib-base.png)
 
 🦀 We'll need to know the previous number and the next number, and to keep it simple we'll use a `u8` so we'll only get
-numbers zero to two-five-five.
+numbers between zero and two-five-five.
+
+🦀 I've chosen to make next an option for reasons you'll see in a moment
 
 🦀 Let's make a constructor so that the Iterator always starts in a valid state.
 
-🦀 So, let's move on to implementing Iterator itself.
+🦀 Moving on to implementing Iterator itself.
 
 ![fib-impl-iterator.png](014-iterators/fib-impl-iterator.png)
 
@@ -140,7 +142,7 @@ the data held in the collection.
 🦀 And then we create an Iterator with the Iter method which will iterate over references that point to the data now
 owned by the vector
 
-🦀 So calling `.next()` on the iterator gives as a reference, not the original data.
+🦀 So calling `.next()` on the iterator gives us a reference, not the original data.
 
 🦀 This means the vector still owns the data
 
@@ -192,7 +194,7 @@ You can do this either by typing the variable you're collecting into, or by usin
 
 🦀 To turn the LinkedList into a Vector, we'll first convert the LinkedList into an Iterator that owns the original data with `.into_iter()`.
 
-🦀 Then we'll "collect" that Iterator into a collection.
+🦀 Then we'll "collect" that Iterator into a Vector.
 
 🦀 Because `v` is explicitly typed, Rust knows to use the `FromIterator` implementation of `Vector` when calling `.collect()`.
 
@@ -275,13 +277,13 @@ This means if you call them on an infinite iterator, like those created by `.rep
 
 However, when that's not the case there's some useful mechanisms we can use:
 
-🦀 For iterators of items that implement the `Sum` trait (for example numbers) `.sum()` will add all the items in the iterator:
+🦀 For iterators of items that implement the `Sum` trait (for example numbers) the `.sum()` method will add all the items in the iterator together:
 
 ![maths-sum.png](014-iterators/maths-sum.png)
 
 🦀 You'll notice we have the turbofish operator again as we need to know what type to sum to
 
-🦀 For iterators of items that implement the `Product` trait (eg, again, numbers) `.product()` will multiply all the items in the iterator
+🦀 For iterators of items that implement the `Product` trait (eg, again, numbers) the `.product()` method will multiply all the items in the iterator together:
 
 ![maths-product.png](014-iterators/maths-product.png)
 
@@ -289,9 +291,9 @@ However, when that's not the case there's some useful mechanisms we can use:
 
 ![maths-sum-option.png](014-iterators/maths-sum-option.png)
 
-🦀 Doing it this way, for some reason, the Option _needs_ to be owned, so we can `.into_iter()` on the collection, if we don't need to use the collection afterward.
+🦀 When doing it this way, for some reason, the Option _needs_ to be owned, so here we've `.into_iter()`'d the collection, as we don't need to use the collection afterward.
 
-🦀 Or, if we need to keep the collection, because i32 is Copy, we could chain `.iter()` with `.copied()`
+🦀 Or, if we do need to keep the collection, because i32 is Copy, we could chain `.iter()` with `.copied()`
 
 ![maths-sum-option-copied.png](014-iterators/maths-sum-option-copied.png)
 
@@ -315,7 +317,7 @@ However, when that's not the case there's some useful mechanisms we can use:
 
 🦀 Anyway, carrying on:
 
-🦀 For iterators of items that implement `Ord` you can use `.min()` and `.max()` to find the largest and smallest values respectively.
+🦀 For iterators of items that implement `Ord` you can use `.min()` and `.max()` to find the smallest and largest values respectively.
 
 ![maths-min-max.png](014-iterators/maths-min-max.png)
 
@@ -323,11 +325,11 @@ However, when that's not the case there's some useful mechanisms we can use:
 
 🦀 If you just want to know how many items there are, you can use `.count()` which merely tells us how many items are in an iterator.
 
-// Count consumes iterator
-
 ![maths-count.png](014-iterators/maths-count.png)
 
-🦀 However, if the iterator implements `ExactSizeIterator`, and many iterators do, then you can use `.len()` instead.
+🦀 However, count consumes iterator, meaning you can't use the iterator after using count
+
+🦀 If the iterator implements `ExactSizeIterator` though, and many iterators do, then you can use `.len()` instead.
 
 ![maths-count.png](014-iterators/maths-len.png)
 
@@ -343,7 +345,7 @@ In fact, it's common to chain multiple iterators together in this way.
 
 Let's start with one of the simplest.
 
-You can take an iterator and exclude Items based on the result of a predicate using the `.filter()`.
+You can take an iterator and exclude Items based on the result of a predicate using `.filter()`.
 
 🦀 For example, we could take a range of numbers, and filter out all odd numbers like this:
 
@@ -361,11 +363,11 @@ You can take an iterator and exclude Items based on the result of a predicate us
 
 🦀 Now we can use `.len()` on the range, much better
 
-🦀 For the obvious reasons we don't know if an Item is included or not before an item is processed by the filter, so we don't get an `ExactSizeIterator` back from the `.filter()` method, so we have to count each item.
-
 🦀 I don't know why `RangeInclusive` isn't `ExactSizeIterator`, if you do, let me know in the comments, but I think it's a sign to prefer `Range` over `RangeInclusive`.
 
-Anyway, another great way to process Iterators one Item at a time is to take that Item and transform it in some way.
+🦀 Anyway, for the obvious reasons we don't know if an Item is included or not before an item is processed by the filter, so we don't get an `ExactSizeIterator` back from the `.filter()` method, so we have to count each item.
+
+Another great way to process Iterators one Item at a time is to take that Item and transform it in some way.
 
 We can pass a function into the `.map()` method that receives the item and returns a new value.
 
@@ -383,7 +385,7 @@ If that value is of a different type, the Iterator you get back will also be of 
 
 ![process-filter-map.png](014-iterators/process-filter-map.png)
 
-🦀 This range gives us every valid `u8` number in sequence from smallest, 0, to largest, 255 
+🦀 This range gives us every valid `u8` number in sequence from smallest, zero, to largest, two-five-five 
 
 🦀 (Despite what we just discussed this time it has to be `RangeInclusive`).
 
@@ -409,7 +411,7 @@ If that value is of a different type, the Iterator you get back will also be of 
 
 🦀 Or we can skip over a number of items with `.skip(n)` before resuming the iterator from that point.
 
-🦀 `.take()` can be particularly useful when working with infinite iterators too
+🦀 `.take()` can be particularly useful when working with infinite iterators
 
 ![process-repeat-take-cycle.png](014-iterators/process-repeat-take-cycle.png)
 
@@ -441,7 +443,7 @@ If that value is of a different type, the Iterator you get back will also be of 
 
 🦀 Finally, we'll collect it and test the result
 
-🦀 Any time you see a `filter` and a `map` next to each other though, you might be able to abbreviate your code.
+🦀 Any time you see a `filter` and a `map` next to each other though, you might be able to abbreviate your code with `filter_map`.
 
 🦀 Booleans can be turned into `Option`s with `.then_some()`, so this works, but...
 
@@ -469,21 +471,21 @@ Earlier I mentioned some risk with `.sum()` and `.product()` and promised a slow
 
 🦀 This closure is called for every Item in the iterator and returns the _next_ accumulated value.
 
-🦀 We're simply going to add the values together, our accumulated value is an Option, and we only need to add if it's a `Some` varient
+🦀 We're simply going to add the values together, our accumulated value is an Option, and we only need to add if it's a `Some` variant
 
 🦀 We can use `.and_then()` to get inside the Option, and we'll use the same `checked_add` to increase the value
 
-🦀 This maps our Option to another Option that comes out of checked_add so we don't need to do anything else before returning from the closure
+🦀 This maps our Option to another Option that comes out of `checked_add` so we don't need to do anything else before returning from the closure
 
 🦀 That said, there's actually a better way to provide this functionality.
 
-🦀 The way we've built this, once we hit our first `None`, we _know_ the answer is going to be `None` too
+🦀 The way we've built this, once we hit our first `None`, we _know_ the answer is going to be `None` too, yet we keep processes items
 
 🦀 There's a method designed exactly for this, `.try_fold()` 
 
 ![process-try-fold.png](014-iterators/process-try-fold.png)
 
-🦀 Not only will stop iterating on it's first `None`, potentially ending very early, but because it knows we're dealing with `Option`s will automatically unwrap our option for us, making the code much simpler!
+🦀 Not only will stop iterating on it's first `None`, potentially ending very early, but because it knows we're dealing with `Option`s will automatically unwrap our accumulated option for us, making the code much simpler!
 
 🦀 The last consumer method I wanted to talk about is `.for_each()`.
 
@@ -493,7 +495,7 @@ Earlier I mentioned some risk with `.sum()` and `.product()` and promised a slow
 
 ![process-try-fold.png](014-iterators/process-try-fold.png)
 
-🦀 The lack of return value might _feel_ like it rather limits the usefulness of this function.
+🦀 The lack of return value might _feel_ like it rather limits the usefulness of this method.
 
 🦀 However, it can be useful when doing things like sending data somewhere else, for example, across threads, which we'll be looking at in the next video.
 
@@ -507,13 +509,13 @@ Ah, I see what they did there.
 
 One place you may find yourself using it is on newtypes, or types where the most important data inside is represented as some kind of collection.
 
-🦀 Let's say we have a newtype Albums, that contains a Vector of Album
+🦀 Let's say we have a newtype "Albums", that contains a Vector of "Album"
 
 ![albums.png](014-iterators/albums.png)
 
 🦀 In our domain logic, it might make sense that we can start a new collection of Albums and add an Album to it by buying it.
 
-🦀 So we can build and Albums struct like this
+🦀 So we can build an Albums struct like this
 
 ![albums-new.png](014-iterators/albums-new.png)
 
@@ -539,6 +541,8 @@ One place you may find yourself using it is on newtypes, or types where the most
 
 ![albums-to-artists.png](014-iterators/albums-to-artists.png)
 
+🦀 This code turns our Albums collection into a list of Artists
+
 🦀 But what if we want to go back to having our Albums type again.
 
 🦀 `FromIterator` allows you to turn an Iterator into another type, usually through the `.collect()` method on an `Iterator`
@@ -557,15 +561,15 @@ One place you may find yourself using it is on newtypes, or types where the most
 
 Finally, the last two traits you should be aware of are `DoubleEndedIterator` and `ExactSizeIterator`.
 
-We could implement these for our Album type but we'd really just be wrapping Vec, so I'll give some more direct examples.
+We could implement these for our Album type, but we'd really just be wrapping Vec, so I'll give some more direct examples.
 
 🦀 We've spoken about `ExactSizeIterator`, it can tell you the size of the iterator _without_ consuming it, using the `.len()` method 
 
-🦀 `DoubleEndedIterator` allows you to reverse the order of an Iterator with `.rev()`.
-
 ![other-traits.png](014-iterators/other-traits.png)
 
-🦀 The Iterators returned from all collections in the standard library are all both of these 
+🦀 `DoubleEndedIterator` allows you to reverse the order of an Iterator with `.rev()`.
+
+🦀 The Iterators returned from all collections in the standard library are all, both of these 
 
 🦀 To my surprise, even the `Iter` structs used for `LinkedList` and `BinaryHeap` are both `DoubleEndedIterator`, I didn't expect that.
 
