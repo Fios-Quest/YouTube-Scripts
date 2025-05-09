@@ -423,52 +423,33 @@ If that value is of a different type, the Iterator you get back will also be of 
 
 🦀 This can be really handy in combination with other iterators when the position in an iterator is important.
 
-Here's a silly example, we'll do a _slightly_ more sensible one in moment, but let's say we want to filter every other item out of a `Vec`.
+🦀 Let's say we want to filter every other item out of a `Vec`.
 
-We can do that by chaining together several of the Iterators we've just learned.
+![process-enumerate.png](014-iterators/process-enumerate.png)
 
-We'll take ownership of the data because we don't need the original Vector this.
+🦀 We can do that by chaining together several of the Iterators we've just learned.
 
-We'll enumerate the iterator so we get the index from the point we're at in the iterator onwards (here we're at the start, but that might not always be the case)
+🦀 We'll take ownership of the data because we don't need the original Vector after this.
 
-The index starts at zero, so by checking the modulo of the index, we can take every other item starting with the first.
+🦀 We'll enumerate the iterator so we get the index from the point we're at in the iterator onwards (here we're at the start, but that might not always be the case)
 
-Filter doesn't change the data only decides if it should be kept or not, this means we can ignore the original data here
+🦀 The index starts at zero, so by checking the modulo of the index, we can take every other item starting with the first.
 
-Since we no longer need the index after this, we can map the tuple and return just the data we care about
+🦀 Filter doesn't change the data only decides if it should be kept or not, this means we can ignore the original data inside the predicate
 
-Finally ,we'll collect it and test the result
+🦀 Since we no longer need the index after this, we can map the tuple and return just the data we care about
 
-```rust
-let v1 = vec!["This", "sentence", "is", "not", "shorter"];
+🦀 Finally, we'll collect it and test the result
 
-let v2: Vec<_ > = v1.into_iter()
-    .enumerate()
-    .filter( | (i, _) | i % 2 == 0) // Use the index added by enumerate to skip odd items
-    .map( | (_, s) | s) // Turn the iterator (usize, T) back into T
-    .collect();
+🦀 Any time you see a `filter` and a `map` next to each other though, you might be able to abbreviate your code.
 
-assert_eq!(v2, vec!["This", "is", "shorter"]);
-```
+🦀 Booleans can be turned into `Option`s with `.then_some()`, so this works, but...
 
-Any time you see a `filter` and a `map` next to each other though, you might be able to abbreviate your code.
+![process-enumerate-filtermap.png](014-iterators/process-enumerate-filtermap.png)
 
-Booleans can be turned into `Option`s with `.then_some()`, so this works, but...
+🦀 in my opinion, you should always go with the code that's easiest to read, and its up to you to decide what that is
 
-in my opinion, you should always go with the code that's easiest to read, and its up to you to decide what that is
-
-```rust
-let v1 = vec!["This", "sentence", "is", "not", "shorter"];
-
-let v2: Vec<_ > = v1.into_iter()
-.enumerate()
-.filter_map( | (i, s) | (i % 2 == 0).then_some(s))
-.collect();
-
-assert_eq!(v2, vec!["This", "is", "shorter"]);
-```
-
-Finally, there's three more consuming methods I want to cover for processing data
+Finally, there are three more consuming methods I want to cover for processing data
 
 `.fold()` and `.reduce()` consume iterators and return a single value by modifying that value for each item in the Iterator.
 
@@ -476,65 +457,45 @@ Finally, there's three more consuming methods I want to cover for processing dat
 
 Earlier I mentioned some risk with `.sum()` and `.product()` and promised a slower but safer way to do the same thing.
 
-So now we'll use `.fold()`, it takes two parameters, the first being the initial value, and the second being a closure with two parameters
+🦀 So let's try doing that with `.fold()`
 
-We'll use an Option with a 0 for the initial value, which is why we can't use `.reduce()` in this specific case.
+![process-fold.png](014-iterators/process-fold.png)
 
-For the closure, I usually stick to calling the parameters `acc` and `cur` representing the "acc-umulated" value which starts as our initial value, and the "cur-rent" value, which is the current Item in the iterator.
+🦀 it takes two parameters, the first being the initial value, and the second being a closure with two parameters
 
-This closure is called for every Item in the iterator and returns the _next_ accumulated value.
+🦀 We'll use an Option with a 0 for the initial value, which is why we can't use `.reduce()` in this specific case.
 
-We're simply going to add the values together, our accumulated value is an Option, and we only need to add if it's a `Some` varient
+🦀 For the closure, I usually stick to calling the parameters `acc` and `cur` representing the "acc-umulated" value which starts as our initial value, and the "cur-rent" value, which is the current Item in the iterator.
 
-We can use `.and_then()` to get inside the Option, and we'll use the same `checked_add` to increase the value
+🦀 This closure is called for every Item in the iterator and returns the _next_ accumulated value.
 
-This maps our Option to another Option that comes out of checked_add so we don't need to do anything else before returning from the closure
+🦀 We're simply going to add the values together, our accumulated value is an Option, and we only need to add if it's a `Some` varient
 
-```rust
-let good_sum = (1u8..6)
-.into_iter()
-.fold(Some(0u8), | acc, cur| {
-acc.and_then( | total | total.checked_add(cur))
-});
+🦀 We can use `.and_then()` to get inside the Option, and we'll use the same `checked_add` to increase the value
 
-assert_eq!(good_sum, Some(15));
+🦀 This maps our Option to another Option that comes out of checked_add so we don't need to do anything else before returning from the closure
 
-let bad_sum = (100u8..106)
-.into_iter()
-.fold(Some(0u8), | acc, cur| {
-acc.and_then( | total | total.checked_add(cur))
-});
+🦀 That said, there's actually a better way to provide this functionality.
 
-assert_eq!(bad_sum, None);
-```
+🦀 The way we've built this, once we hit our first `None`, we _know_ the answer is going to be `None` too
 
-That said, there's actually a better way to provide this functionality.
+🦀 There's a method designed exactly for this, `.try_fold()` 
 
-The way we've built this, once we hit our first `None`, we _know_ the answer is going to be `None` too
+![process-try-fold.png](014-iterators/process-try-fold.png)
 
-There's a method designed exactly for this, `.try_fold()` which not only will stop iterating on it's first `None`, potentially ending very early, but because it knows we're dealing with `Option`s will automatically unwrap our option for us, making the code much simpler!
+🦀 Not only will stop iterating on it's first `None`, potentially ending very early, but because it knows we're dealing with `Option`s will automatically unwrap our option for us, making the code much simpler!
 
-```rust
-let bad_sum = (100u8..106)
-.into_iter()
-.try_fold(0u8, | acc, cur| acc.checked_add(cur)) // Consumes iterator, returns Option
+🦀 The last consumer method I wanted to talk about is `.for_each()`.
 
-assert_eq!(bad_sum, None);
-```
+🦀 It lets you do something with each item in the iterator without returning anything.
 
-The last consumer method I wanted to talk about is `.for_each()`.
+🦀 The simplest example might be, if we went back to our Fibonacci sequence instead of printing the value in a loop, we can use `.for_each()` to print the value.
 
-It lets you do something with each item in the iterator without returning anything.
+![process-try-fold.png](014-iterators/process-try-fold.png)
 
-The simplest example might be, if we went back to our Fibonacci sequence instead of printing the value in a loop, we can use `.for_each()` to print the value.
+🦀 The lack of return value might _feel_ like it rather limits the usefulness of this function.
 
-```rust
-Fibonacci::new().enumerate().take(5).for_each( | (i, f)| {
-println ! ("{}: {f}", i + 1);
-});
-```
-
-The lack of return value might _feel_ like it rather limits the usefulness of this function, but it can be useful when doing things like sending data somewhere else, for example, across threads, which we'll be looking at in the next video.
+🦀 However, it can be useful when doing things like sending data somewhere else, for example, across threads, which we'll be looking at in the next video.
 
 ## More Iterator Traits
 

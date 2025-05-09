@@ -129,13 +129,17 @@ fn main() {
 
     // --- Fold ---
 
-    let good_sum = (1u8..6).into_iter().fold(Some(0u8), |acc, cur| {
+    let v: Vec<u8> = vec![1, 2, 3, 4, 5];
+
+    let good_sum = v.into_iter().fold(Some(0u8), |acc, cur| {
         acc.and_then(|total| total.checked_add(cur))
     });
 
     assert_eq!(good_sum, Some(15));
 
-    let bad_sum = (100u8..=106).into_iter().fold(Some(0u8), |acc, cur| {
+    let v: Vec<u8> = vec![101, 102, 103, 104, 105];
+
+    let bad_sum = v.into_iter().fold(Some(0u8), |acc, cur| {
         acc.and_then(|total| total.checked_add(cur))
     });
 
@@ -143,9 +147,9 @@ fn main() {
 
     // --- Try Fold ---
 
-    let bad_sum = (100u8..106)
-        .into_iter()
-        .try_fold(0u8, |acc, cur| acc.checked_add(cur));
+    let v: Vec<u8> = vec![101, 102, 103, 104, 105];
+
+    let bad_sum = v.into_iter().try_fold(0u8, |acc, cur| acc.checked_add(cur));
 
     assert_eq!(bad_sum, None);
 
