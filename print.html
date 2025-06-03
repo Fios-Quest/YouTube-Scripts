@@ -42,6 +42,17 @@
         <script src="toc.js"></script>
     </head>
     <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
     <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
@@ -119,7 +130,7 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -3401,6 +3412,83 @@ underlying collection is mutable).</p>
 compiler which kite strings are which.</p>
 <p>Sometimes we can't determine that, in which case we tie kite strings together and the returned kites can only go as low
 as the highest crab on the hill.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="lets-build-a-job-tracker---part-5"><a class="header" href="#lets-build-a-job-tracker---part-5">Let’s Build: A Job Tracker - Part 5</a></h1>
+<p>What’s wrong with what we have:</p>
+<ul>
+<li>StoreContext is in UI for some reason</li>
+<li>Lots of <em>very</em> similar repeated code</li>
+<li>Adding new types requires a lot of boilerplate (eg, Values aren’t really any
+different from Flags or Roles in the way they are stored and recalled)</li>
+</ul>
+<p>Storable objects have specific traits to allow them to optionally be:</p>
+<ul>
+<li>stored (needs an ID)</li>
+<li>recalled by ID (needs an ID)</li>
+<li>recalled by name (needs a name)</li>
+<li>recalled by company ID (needs a company name)</li>
+</ul>
+<p>This is going to be a <em>lot</em> of traits which need to be inscope, we should use a
+prelude</p>
+<p>A store for a generic Storable can use the traits to apply logic. There’s no
+real difference between a flag and a role in terms of how its stored and
+recalled, therefore there should be no difference in logic.</p>
+<p>So we can have something like:</p>
+<ul>
+<li><code>trait StoreById&lt;T&gt; where T: GetId</code></li>
+<li><code>trait RecallById&lt;T&gt; where T: GetId</code></li>
+<li><code>trait RecallByName&lt;T&gt; where T: GetName</code></li>
+</ul>
+<p>We can create generic stores for storables that match certain traits, then
+build those generics together. Eg, a CompanyStore can be a trait that combines</p>
+<ul>
+<li><code>StoreById&lt;Company&gt;</code></li>
+<li><code>RecallById&lt;Company&gt; </code></li>
+<li><code>RecallByName&lt;Company&gt;</code></li>
+</ul>
+<p>If we have a store that already implements those traits, then we get it for free</p>
+<p>A collection of stores should be able to determine which store an object
+belongs to by its type. &lt;- This will be the harder part, may need phantom data
+in Store types 🤔</p>
+<p>A collection of stores can implement the trait CompanyStore but we may be able
+to make it even more generic than that if we can go from generic type to
+property in stores</p>
+<p>One way to do this might be to have a trait called <code>HasStore&lt;T&gt; -&gt; S</code> and then
+implement:</p>
+<ul>
+<li><code>HasStore&lt;Company&gt; -&gt; impl CompanyStore</code></li>
+<li><code>HasStore&lt;Role&gt; -&gt; impl RoleStore</code></li>
+<li>Etc</li>
+</ul>
+<p>Suggested structure:</p>
+<pre><code class="language-text">/storable
+  /property
+    mod.rs
+    has_id.rs
+    has_name.rs
+    has_company.rs
+  /object
+    mod.rs
+    company.rs
+    role.rs
+    flag.rs
+    value.rs
+/store
+  /property
+    mod.rs
+    store.rs (probably both store and recall by id)
+    recall_by_name.rs
+    recall_by_company.rs
+  /medium
+    mod.rs
+    stub.rs
+    json.rs
+  /object_store
+    (probably collections of compound traits?)
+/stores
+  mod.rs // HasStore&lt;T&gt; trait here?
+  /mediums
+    mod.rs
+</code></pre>
 
                     </main>
 
