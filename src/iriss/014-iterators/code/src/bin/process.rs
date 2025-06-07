@@ -185,7 +185,8 @@ fn main() {
         }
     }
 
-    Fibonacci::new().enumerate().take(5).for_each(|(i, f)| {
-        println!("{}: {f}", i + 1);
-    });
+    Fibonacci::new()
+        .enumerate()
+        .for_each(|(i, f)| println!("{i}: {f}"));
+    println!("Loop complete!");
 }

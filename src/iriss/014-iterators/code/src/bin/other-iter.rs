@@ -57,4 +57,19 @@ fn main() {
     let i2 = vec![3, 4, 5].into_iter();
 
     assert_eq!(i1.chain(i2).collect::<Vec<_>>(), vec![0, 1, 2, 3, 4, 5]);
+
+    // --- str ---
+
+    let script = r#"Many other Types in Rust can also be broken
+        down into Iterators.
+
+        The script for this video, for example, can be represented as one large
+        `str`, which you can break the data down by `.lines()`, `.chars()` or
+         `.bytes()` all of which produce iterators.
+
+        ## Using Iterators - Mathematics"#;
+
+    let script_lines = script.lines();
+    let script_chars = script.chars();
+    let script_bytes = script.bytes();
 }
