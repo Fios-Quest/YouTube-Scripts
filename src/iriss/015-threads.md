@@ -27,7 +27,7 @@ We'll also be touching again on our marker traits Send and Sync
 
 ## What is a thread?
 
-Before we get into the Rust, it's worth discussing what a thread is.
+Before we get into the Rust, it's worth discussing what a thread actually is.
 
 When you run a program, that specific instance of the program is called a Process.
 
@@ -43,212 +43,139 @@ Threads are scheduled by the operating system independently, allowing one proces
 
 ## Starting a thread
 
-Your program always has at least one thread, even your basic hello-world program runs in a thread.
+![01-thread-main.png](015-threads/01-thread-main.png)
 
-```rust
-fn main() {
-    println!("Hello, I am in a thread!")
-}
-```
+🦀👨🏻 Your program always has at least one thread, even your basic hello-world program runs in a thread.
 
-What we're interested in today is how we start more threads.
+🦀👨🏻 What we're interested in today is how we start more threads.
 
-This is a process called Spawning.
+🦀👨🏻 This is a process called Spawning.
 
-To spawn a thread, we use `std::thread::spawn`... but, this will do little on its own.
+![02-thread-spawn.png](015-threads/02-thread-spawn.png)
 
-If we run this code, can you see what's missing in the output?
+🦀👨🏻 To spawn a thread, we use `std::thread::spawn`... but, this will do little on its own.
 
-```rust
-use std::thread::spawn;
+🦀👨🏻 If we run this code, can you see what's missing in the output?
 
-fn main() {
-    println!("This is the main thread");
-    spawn(|| {
-        println!("This is a child thread");
-    });
-    println!("This is the end of the main thread");
-}
-```
+![02-thread-spawn-output-nix.png](015-threads/02-thread-spawn-output-nix.png)
 
-It looks like our thread didn't run but that's not quite true.
+🦀👨🏻 It looks like our thread didn't run... but actually, its even worse than that.
 
-Spawning a thread returns a join handler.
+🦀👨🏻 When writing this portion of the book, this is the output I consistently got from my Mac, and from Rust Playground.
 
-The join handler is what ties the spawned thread to the thread that spawned it.
+🦀👨🏻 That consistency actually surprised me a little, but then when writing the script for this video on my Windows machine...
 
-When the join handler is dropped, which in this case happens instanly, the thread is orphaned.
+![02-thread-spawn-output-win.png](015-threads/02-thread-spawn-output-win.png)
 
-It may still run but, in this case, the process ends at the end of main, so our spawned thread never got a chance to do anything.
+🦀👨🏻 I got this.
 
-We can tell our main thread to pause and wait for a running thread to end by using the join handler.
+🦀👨🏻 This is the inconsistency I was actually expecting, its not that our thread doesn't run, it's that it might... or it might not.
 
-```rust
-use std::thread::spawn;
+![02-thread-spawn.png](015-threads/02-thread-spawn.png)
 
-fn main() {
-    println!("This is the main thread");
-    let handler = spawn(|| {
-        println!("This is a child thread");
-    });
-    handler.join().expect("Child thread panicked");
-    println!("This is the end of the main thread");
-}
-```
+🦀👨🏻 Spawning a thread returns a `JoinHandle`.
 
-We're using closures here, but functions work just as well and can be better for more complex programs.
+🦀👨🏻 The `JoinHandle` is what ties the spawned thread to the thread that spawned it.
 
-The only restrictions are: 
-- the function needs to be "FnOnce returning T, Send and static"
-- and T also needs to be "Send and static"
+🦀👨🏻 When the `JoinHandle` is dropped, which in this case happens instantly, the thread is orphaned.
 
-```rust
-use std::thread::spawn;
+🦀👨🏻 It may still run but, in this case, the process ends at the end of main, so whether the child thread runs or not, is no longer up to us.
 
-fn child() {
-    println!("This is also a child thread");
-}
+![03-thread-join.png](015-threads/03-thread-join.png)
 
-fn main() {
-    println!("This is the main thread");
-    let handler = spawn(child);
-    handler.join().expect("Child thread panicked");
-    println!("This is the end of the main thread");
-}
-```
+🦀👨🏻 We can tell our main thread to pause and wait for a running thread to end by calling `join` on the `JoinHandle`.
+
+![04-thread-join-fn.png](015-threads/04-thread-join-fn.png)
+
+🦀👨🏻 We've been using closures, but functions work just as well and can be better for more complex programs.
+
+🦀👨🏻 The only restrictions are:
+
+🦀👨🏻 - the function needs to be "FnOnce returning T, Send and static"
+
+🦀👨🏻 - and T also needs to be "Send and static"
 
 Exactly _when_ threads are allowed to execute code is controlled by a scheduler which we can't directly manage ourselves, but we can influence it.
 
 Putting one thread to sleep can allow another thread to run.
 
-If we run this code initially, you'll see the main thread runs to completion before the child thread starts
+![05-thread-sans-sleep.png](015-threads/05-thread-sans-sleep.png)
 
-If we add some 
+🦀 If we run this code as-is, you'll see the main thread runs to completion before the child thread starts
 
-```rust,editable
-use std::thread::{sleep, spawn};
-use std::time::Duration;
+![05-thread-sans-sleep-output.png](015-threads/05-thread-sans-sleep-output.png)
 
-fn main() {
-    let handler = spawn(|| {
-        for i in 0..10 {
-            println!("Child iteration: {i}");
-            // sleep(Duration::from_millis(1));
-        }
-    });
+🦀 If we put each thread to sleep after it writes to standard out, we can "encourage" the scheduler to start work on the other thread if it isn't already.
 
-    for i in 0..10 {
-        println!("Main iteration: {i}");
-        // sleep(Duration::from_millis(1));
-    }
+![06-thread-sleep.png](015-threads/06-thread-sleep.png)
 
-    handler.join().expect("Child thread panicked");
-}
-```
+![06-thread-sleep-output.png](015-threads/06-thread-sleep-output.png)
+
+🦀👨🏻 There's two _very_ important things I want you to note here though
+
+🦀👨🏻 Firstly, thread::sleep is _not_ a timer, your thread may sleep for longer than you requested or not at all in certain situations.
+
+🦀👨🏻 Secondly, the scheduler ultimately decides when code is run, so there's no guarantee you will get this _exact_ output, so bare that in mind if _when code runs_ matters to you.
 
 So now we can run threads, let's start looking at how to send data back and forth between them.
 
 We can pass data into a thread before it starts so long as the data is `Send`.
 
-We previously talked about this trait in the Traits video, but to recap, data is `Send` so long as it can be safely sent between threads, and this trait is auto-implemented for all types that can be `Send` (though it is also possible to opt out of it).
+We previously talked about this trait in the Traits video, but to recap, data is `Send` so long as it can be safely sent between threads.
 
-We can move data into the closure that will be sent to the thread using the `move` keyword.
+This trait is automatically implemented for all types that can be `Send` (though it is also possible to opt out of it).
 
-For example:
+![07-thread-move.png](015-threads/07-thread-move.png)
 
-```rust
-use std::thread::spawn;
+![07-thread-move-output.png](015-threads/07-thread-move-output.png)
 
-fn main() {
-    let data = vec![1, 2, 3, 4, 5];
+🦀👨🏻 We can move data into the closure that will be sent to the thread using the `move` keyword.
 
-    let handler = spawn(move || {
-        data
-            .into_iter()
-            .for_each(|i| println!("Processing item {i} from the main thread"));
-    });
+🦀👨🏻 Here we move the entire data vector into the spawned thread.
 
-    handler.join().expect("Child thread panicked");
-}
-```
+![08-thread-return.png](015-threads/08-thread-return.png)
 
-You can also return data via the join handler.
+🦀👨🏻 You can also return data via the join handler.
 
-This means you could pass hard work to a thread and do other work, coming back to check on the thread at a later time.
+🦀👨🏻 This means you could pass hard work to a thread and do other work, coming back to check on the thread at a later time.
 
-We can check if the thread is finished with `.is_finished()`;
+🦀👨🏻 A little side note, if it's helpful, you can check if the thread is finished with `.is_finished()`.
 
-```rust
-use std::thread::{sleep, spawn};
-use std::time::Duration;
-
-fn main() {
-    let data = u16::MIN..u16::MAX;
-
-    let handler = spawn(move || {
-        data.map(|i| i as u32).sum::<u32>()
-    });
-
-    while !handler.is_finished() {
-        println!("Still working!");
-        sleep(Duration::from_nanos(100));
-    }
-
-    let answer = handler.join().expect("Child thread panicked");
-
-    assert_eq!(answer, 2147385345);
-}
-```
+🦀👨🏻 Here I'm using it to let the person running the program know we're still waiting on the thread to do its work, but the program is still running.
 
 ## Sending messages
 
 Now we can start one thread, there's no stopping us!
 
-Modern schedulers can manage a _lot_ of threads at once, however, so far we can only send data between a child thread and the parent that started it.
+Modern schedulers can manage a _lot_ of threads at once, however, so far, we can only send data between a child thread and the parent that started it, and before and after that thread runs, not during.
 
-What if we want to communicate across multiple threads, or send data to a thread after we already started it?
+What if we want to communicate across multiple threads, or send data to a thread while its running?
 
-Multi-producer, single-consumer (MPSC) is a queue pattern that allows us to create channels with multiple `Sender`s that can send messages, and a single `Reciever` that can receive them.
+![channel-doc.png](015-threads/channel-doc.png)
 
-As per the name, Multi-producer, you can clone `Sender`s but each of those clones can only send to a single `Reciever`.
+📕 Multi-producer, single-consumer (MPSC) is a queue pattern that allows us to create channels with multiple `Sender`s that can send messages, and a single `Reciever` that can receive them.
+
+📕 As per the name, Multi-producer, you can clone `Sender`s but each of those clones can only send to a single `Reciever`.
 
 The `Sender` and `Receiver` types are `Send` meaning that you can create them in one thread and send them to another.
 
-Let's create a bunch of threads and give each of them a `Sender` that points back to a single `Reciever`, we'll send that `Reciever` to a final thread that will collect the data from the other threads.
+![09-channel.png](015-threads/09-channel.png)
 
-```rust
-use std::sync::mpsc::channel;
-use std::thread::spawn;
+🦀👨🏻 Let's create a bunch of threads and give each of them a `Sender` that points back to a single `Reciever`
 
-fn main() {
-    let (sender, receiver) = channel();
+🦀👨🏻 We move the sender into the closure being run in the map method of an iterator.
 
-    let thread_ids = 0..10;
+🦀👨🏻 Because the closure now owns it, we can clone it for each thread we're spawning
 
-    // move sender into the closure
-    let sending_handlers = thread_ids.map(move |id| {
-        // sender is owned by this closure, we want to pass a copy to each
-        // child thread so we'll clone it on each iteration
-        let cloned_sender = sender.clone();
-        // move the cloned sender to the next thread
-        spawn(move || {
-            cloned_sender.send(format!("Reporting in from thread {id}"))
-                .expect("The Receiver was dropped");
-        })
-    });
+🦀👨🏻 And _move_ the cloned sender to the child thread.
 
-    let receiving_handler = spawn(move || {
-        while let Ok(message) = receiver.recv() {
-            println!("Received message: {message}");
-        }
-    });
+🦀👨🏻 We'll send the `Reciever` to a final thread that will collect the data from the other threads.
 
+🦀👨🏻 Finally, we'll join all the threads with a sender, before we join the thread with the receiver.
 
-    sending_handlers.for_each(|h| h.join().expect("A sending thread panicked"));
+🦀👨🏻 This is important because this is the first bit of code we've produced that can cause a deadlock, where two or more threads get blocked by each other
 
-    receiving_handler.join().expect("receiving thread panicked");
-}
-```
+🦀👨🏻 If you forget to join the senders first, they won't send their messages but will block the receiver thread here, so your program gets stuck.
 
 For what its worth, there's no built-in way to create a channel with multiple receivers (`Receiver` is not `Clone`), however, there's nothing stopping you building your own type for that, or there are crates that support it like [Crossbeam](https://docs.rs/crossbeam/latest/crossbeam/).
 
@@ -260,49 +187,33 @@ To do this, we need to use types that implement the `Sync` trait.
 
 Something is `Send` if it can be sent between threads, but doing this moves ownership from one thread to another.
 
-Something is `Sync` if a reference to it can be sent between threads, i.e. `T` is `Sync` if `&T` is `Send`.
+Something is `Sync` if a reference to it can be sent between threads
 
-Most things are `Sync`, but we still have to abide the rules of references in that we can have as many immutable references as we like, but we can only have one mutable reference.
+i.e. `T` is `Sync` if a reference `T` is `Send`.
+
+Most things are `Sync`, but we still have to abide the rules of references in that we can have as many immutable references to something as we like, but we can only have one mutable reference.
 
 Furthermore, references cannot outlive the data they reference... which is a little harder to confirm with threads.
 
 How do you know the thread referencing your data doesn't exist for longer than the data it's referenced?
 
-This is where `std::thread::scope` can help us, by providing scoped threads.
+One option is using scoped threads which we can create with `std::thread::scope`.
 
-```rust
-// We will create a scope and use that to spawn threads instead of spawning 
-// them directly.
-use std::thread::scope;
+![10-state-immutable-references.png](015-threads/10-state-immutable-references.png)
 
-fn main() {
-    let mut data = String::from("This data is owned by the main thread");
+🦀👨🏻 The scope function takes a closure with a single parameter that gives us the scope context.
 
-    // The scope function takes a closure with a single parameter that contains
-    // the scope context. You use the context to spawn threads
-    scope(|s| {
-        (0..10).for_each(|_| {
-            // We don't _need_ to track the join handler this time, all scoped
-            // threads are joined at the end of the scope closure, but if you
-            // want to handle a potential thread panic, you can still do that
-            // in a scoped thread, by joining the join_handle you get from
-            // the `.spawn` method like you would with an unscoped thread from
-            // the `spawn` function.
-            s.spawn(|| {
-                println!("Thread accessing data {}", &data)
-            });
-        });
-    });
+🦀👨🏻 We can use the scope context to spawn threads.
 
-    // All scoped threads are joined before the scope function ends, so we are
-    // safe to modify the original data.
-    data.push_str(" still");
+🦀👨🏻 We don't need to keep track of `JoinHandle`s this time, all scoped threads are joined at the end of the scope closure.
 
-    assert_eq!(&data, "This data is owned by the main thread still");
-}
-```
+🦀👨🏻 However, the spawn method on the scope context does still return a `JoinHandle` if you want to handle potential thread panics.
 
-This also works with mutable references but, bear in mind, only one thread can access the mutable reference, and it must end before we can access our data again.
+🦀👨🏻 The scope function blocks the thread that called it, until all the threads it started have been joined, so after that we're safe to modify the data again, which here would require a mutable reference. 
+
+![11-state-mutable-references.png](015-threads/11-state-mutable-references.png)
+
+🦀👨🏻 You can also send mutable references across threads like this, but, bear in mind, only one thread can access the mutable reference, and it must end before we can access our data again.
 
 ```rust
 use std::thread::scope;
@@ -327,14 +238,18 @@ So we can share readable data across multiple threads with immutable references,
 
 Let's start by thinking why we can't do this with just references.
 
-When we're using threads, multiple parts of our program can be executed at the same time.
+When we're using threads, multiple parts of our program _can_ be executed at the same time.
 
-Imagine we have two threads that want to change the data behind a reference based on what is currently stored there, something simple like each thread wants to multiply the data.
+---
+
+Imagine we have two threads that want to change the data, behind a reference, based on what is currently stored there, something simple like each thread wants to multiply a numeric value.
 
 1. Thread 1 reads the value from memory into a register
 2. Thread 2 reads the value from memory into a register
 3. Thread 1 multiplies the data and stores it back in memory
 4. Thread 2 multiplies the data and stores it back in memory
+
+---
 
 In this situation, we've lost the effect of Thread 1, which _could_ be a bug.
 
@@ -344,6 +259,8 @@ Imagine the data rather than just being a single value, is an image stored in an
 
 This time, if one thread were to override another's work, we have a much more obvious problem.
 
+---
+
 To get around this, we need to prevent two threads accessing the same piece of data at the same time.
 
 There is a general software abstraction concept called a "mutex" that makes access to the data MUTually EXclusive.
@@ -352,36 +269,15 @@ Rust provides it's mutex through `std::sync::Mutex`.
 
 Once you place data inside a Mutex, to access it again, you need to "lock" the Mutex.
 
-If the Mutex is already locked, then the thread currently trying to access the data needs to wait for the existing lock to be released.
+![12-state-mutex.png](015-threads/12-state-mutex.png)
 
-```rust
-use std::thread::scope;
-use std::sync::Mutex;
+🦀👨🏻 If the Mutex is already locked, then the thread currently trying to access the data needs to wait for the existing lock to be released.
 
-fn main() {
-    let mut data = Mutex::new(Vec::with_capacity(10));
+🦀👨🏻 the lock method on a `Mutex` returns a `MutexGuard`
 
-    scope(|s| {
-        (0..10).for_each(|_| {
-            s.spawn(|| {
-                // .lock() returns a MutexGuard. When it goes out of scope,
-                // the lock is dropped. MutexGuard implements Deref and
-                // DerefMut for the type inside the Mutex
-                let mut guard = data.lock()
-                    .expect("another thread with the lock panicked");
-                guard.push("Thread reporting in!".to_string());
-                // The MutexGuard is dropped after this line
-            });
-        });
-    });
+🦀👨🏻 When the MutexGuard goes out of scope, the lock is dropped, allowing other threads to use the Mutex
 
-    let guard = data.lock().unwrap();
-    assert_eq!(guard.len(), 10);
-    guard
-        .iter()
-        .for_each(|s| assert_eq!(s, &"Thread reporting in!".to_string()));
-}
-```
+🦀👨🏻 If a thread panics while holding a MutexGuard, this poisons the Mutex, so locking a Mutex returns a result.
 
 However, there's still a slight problem here.
 
@@ -393,7 +289,9 @@ The problem, of course, is that we don't know when the owned data will go out of
 
 We can solve this problem using an Atomic Reference Count.
 
-We haven't discussed reference counting yet as it's usually fairly niche, however, reference counting allows you to share data around an application without needing to clone it and side stepping complex reference rules.
+---
+
+We haven't discussed reference counting yet as it's usually fairly niche, however, reference counting allows you to share data around an application without needing to clone it and side stepping complex reference rules or lifetimes.
 
 It works by moving the data you want to share onto the heap, and allowing access through a reference count type.
 
@@ -401,11 +299,13 @@ When you clone the reference count value, instead of the data being cloned, it m
 
 Every time a reference count type goes out of scope, the count is decreased.
 
-Once the count hits zero, there are no further references to the data and so it can be cleaned up.
+Once the count hits zero, there are no further references to the data and so it can be safely dropped.
+
+---
 
 Now, if you've paid attention as to why we need a Mutex for modifying data across threads, you'll see that using a normal reference count won't work.
 
-If the reference counter is cloned or dropped while also being cloned or dropped in another thread, you could end up with an inconsistent number count of references, meaning data gets dropped at the wrong time.
+If the reference counter is cloned or dropped while also being cloned or dropped in another thread, you could end up with an inconsistent count of references, meaning data gets dropped at the wrong time.
 
 This is why we need a special reference count type, `std::sync::Arc`, an Atomic Reference Count.
 
@@ -415,42 +315,36 @@ Atomic changes are guaranteed to appear to be instantaneous to all external obse
 
 `Arc` is a little slower than Rusts built in basic reference counting type `std::rc::Rc`, but prevents corruption across threads.
 
-> Authors note: I don't think I've _ever_ used `Rc`, but I use `Arc` all the time, so don't worry that we didn't cover it in this book. If you need to pass data around wrapped in its own container its there to use
+> Editors note: I don't think I've _ever_ used `Rc`, but I use `Arc` all the time, so don't worry that we didn't cover it in this series.
+> 
+> If you need to pass data around a single thread, wrapped in its own container, it's there for you to use
 
-So, armed with this knowledge, we can go back to unscoped threads!
+![13-state-arc-mutex.png](015-threads/13-state-arc-mutex.png)
 
-```rust
-use std::thread::spawn;
-use std::sync::{Arc, Mutex};
+🦀👨🏻 So, armed with this knowledge, we can go back to unscoped threads!
 
-fn main() {
-    let mut data = Arc::new(Mutex::new(Vec::with_capacity(10)));
+🦀👨🏻 Like earlier, we can clone the arc in the map method of the iterator, and move the cloned value to the thread.
 
-    let handles = (0..10).map(|_| {
-        // We'll clone the arc and move it into the thread
-        let cloned_arc = data.clone();
-        spawn(move || {
-            // Arc also impls Deref for its containing type so we can call lock
-            // on the Mutex from the Arc
-            let mut guard = cloned_arc
-                .lock()
-                .expect("another thread with the lock panicked");
-            guard.push("Thread reporting in!".to_string());
-        })
-    });
+🦀👨🏻 Arc also implements Deref for its internal type, so we can call lock on the Mutex from the Arc.
 
-    handles.for_each(|handle| handle.join().expect("thread panicked"));
+And that's it!
 
-    let guard = data.lock().unwrap();
-    assert_eq!(guard.len(), 10);
-    guard
-        .iter()
-        .for_each(|s| assert_eq!(s, &"Thread reporting in!".to_string()));
-}
-```
+Hopefully threads feel a lot more accessible now, but let me know in the comments if you have any other questions or want to share tips, tricks, or things I missed with others.
 
 ## Next Video
 
-I'm not sure! 😅
+Once again, a massive thank-you to my Patreons, your support for the channel so early on really helps!
 
-What happens in the next chapter will depend on the approach to async, and whether it requires "unsafe" or `macro_rules!`.
+If you enjoyed the video, remember to like and subscribe!
+
+I've changed the order of the last three videos; Async Rust is now going to be the final boss of IRISS, using a _lot_ of what we've already learned.
+
+Instead of Async then, next video will be on macros, specifically `macro_rules!` which is a built-in tool that allows metaprogramming in Rust.
+
+This is great to mitigate lots of repeated boilerplate code, can be used to create domain-specific languages (DSLs), and I'll be showing off my specific recent use case.
+
+I don't think I've mentioned it on the main channel, but I've started streaming, here on Tuesdays, 7pm UK time.
+
+We're building a Job Tracking app, and the stream's chat has been filled with really wonderful people with amazing thoughts and ideas and encouragement, if that interests you do drop by and say hi!
+
+So, whether on stream or in the macros IRISS video, I'll see you next time.

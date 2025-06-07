@@ -1,3 +1,3 @@
 fn main() {
-    println!("Hello, I am in a thread!")
+    println!("Hello, I am in a thread!");
 }
