@@ -17,6 +17,7 @@
 - [Common Traits - Part 2](iriss/012-common-traits-part-2.md)
 - [Collections](iriss/013-collections.md)
 - [Iterators](iriss/014-iterators.md)
+- [Threads](iriss/015-threads.md)
 
 # Channel Labs
 
