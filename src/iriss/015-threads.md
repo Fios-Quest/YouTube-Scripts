@@ -8,9 +8,9 @@ For example:
 
 - As a web developer, I would like the server framework I'm using to start responding to the next request before it's finished responding to the previous request
 - As a game developer, I would like my game engine to capture player inputs without being blocked by the renderer
-- As a data engineer, I would like to process large sets of data in parallel
+- As a data engineer, I would like to process large sets of data with parallelism
 
-As ever, this series is accompanied by a free book, check the description for a link straight to this chapter.
+This series is accompanied by a free book, check the description for a link straight to this chapter.
 
 My name is Daniel, welcome to IRISS.
 
@@ -21,7 +21,7 @@ We're going to step through:
 1. how we can run code in a thread, including sending data before it starts
 2. how we can wait for a thread to end, including receiving data when it ends
 3. how we can communicate with running threads
-4. how we can share state between threads
+4. and how we can share state between threads
 
 We'll also be touching again on our marker traits Send and Sync
 
@@ -89,11 +89,13 @@ Threads are scheduled by the operating system independently, allowing one proces
 
 🦀👨🏻 We've been using closures, but functions work just as well and can be better for more complex programs.
 
-🦀👨🏻 The only restrictions are:
+![spawn-doc.png](015-threads/spawn-doc.png)
 
-🦀👨🏻 - the function needs to be "FnOnce returning T, Send and static"
+📕 The only restrictions are:
 
-🦀👨🏻 - and T also needs to be "Send and static"
+📕 - the function needs to be "FnOnce returning T, Send and static"
+
+📕 - and T also needs to be "Send and static"
 
 Exactly _when_ threads are allowed to execute code is controlled by a scheduler which we can't directly manage ourselves, but we can influence it.
 
@@ -147,7 +149,7 @@ This trait is automatically implemented for all types that can be `Send` (though
 
 Now we can start one thread, there's no stopping us!
 
-Modern schedulers can manage a _lot_ of threads at once, however, so far, we can only send data between a child thread and the parent that started it, and before and after that thread runs, not during.
+Modern schedulers can manage a _lot_ of threads at once, however, so far, we can only send data between a child thread and the parent that started it before and after that thread runs, not during.
 
 What if we want to communicate across multiple threads, or send data to a thread while its running?
 
@@ -263,7 +265,7 @@ This time, if one thread were to override another's work, we have a much more ob
 
 To get around this, we need to prevent two threads accessing the same piece of data at the same time.
 
-There is a general software abstraction concept called a "mutex" that makes access to the data MUTually EXclusive.
+There is a general software abstraction concept called a "mutex" that makes access to data MUTually EXclusive.
 
 Rust provides it's mutex through `std::sync::Mutex`.
 
@@ -311,7 +313,7 @@ This is why we need a special reference count type, `std::sync::Arc`, an Atomic 
 
 Atomic data types guarantee atomic changes.
 
-Atomic changes are guaranteed to appear to be instantaneous to all external observers, meaning that two threads can change the value, but that this change cannot overlap.
+Atomic changes are guaranteed to appear to be instantaneous to all external observers, meaning that two threads can change the value, but that these changes cannot overlap.
 
 `Arc` is a little slower than Rusts built in basic reference counting type `std::rc::Rc`, but prevents corruption across threads.
 
@@ -329,11 +331,11 @@ Atomic changes are guaranteed to appear to be instantaneous to all external obse
 
 And that's it!
 
-Hopefully threads feel a lot more accessible now, but let me know in the comments if you have any other questions or want to share tips, tricks, or things I missed with others.
+Hopefully threads feel a lot more accessible now, but let me know in the comments if you have any questions or want to share tips, tricks, or things I missed with others.
 
 ## Next Video
 
-Once again, a massive thank-you to my Patreons, your support for the channel so early on really helps!
+Once again, a massive thank-you to my Patreons, your support has been amazing!
 
 If you enjoyed the video, remember to like and subscribe!
 
@@ -343,7 +345,7 @@ Instead of Async then, next video will be on macros, specifically `macro_rules!`
 
 This is great to mitigate lots of repeated boilerplate code, can be used to create domain-specific languages (DSLs), and I'll be showing off my specific recent use case.
 
-I don't think I've mentioned it on the main channel, but I've started streaming, here on Tuesdays, 7pm UK time.
+I don't think I've mentioned it on the IRISS videos, but I've started streaming, here on Tuesdays, 7pm UK time.
 
 We're building a Job Tracking app, and the stream's chat has been filled with really wonderful people with amazing thoughts and ideas and encouragement, if that interests you do drop by and say hi!
 
