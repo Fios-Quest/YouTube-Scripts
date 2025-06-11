@@ -1,4 +1,4 @@
-Job Tracker 05
+Job Tracker 06
 ==============
 
 Reminder:
@@ -10,15 +10,15 @@ Goals:
 ------
 
 Before we get started:
-- [ ] Do people want to see how I did the store?
-- [ ] Storage and log bugs
-- [ ] Setting up Dependabot
+- [x] Do people want to see how I did the store?
+- [x] Storage and log bugs
+- [x] Setting up Dependabot
 
 Actual Tailwind Stuff:
-- [ ] Discuss set up and problems (intellij, git/ci/cd)
-- [ ] Discuss loose layout
+- [x] Discuss set up and problems (intellij, git/ci/cd)
+- [x] Discuss loose layout
+- [x] Test out how utility functions can be reused for consistent theming
 - [ ] Create a loose theme
-- [ ] Test out how utility functions can be reused for consistent theming
 - [ ] Work out how to make tailwind.css ignored
 
 By the end:
