@@ -31,3 +31,4 @@
 
 - [Job Tracker 05](./streams/lets-build/job-tracker-05.md)
 - [Job Tracker 06](./streams/lets-build/job-tracker-06.md)
+- [Job Tracker 07](./streams/lets-build/job-tracker-07.md)
