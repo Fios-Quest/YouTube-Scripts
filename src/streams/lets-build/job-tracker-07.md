@@ -6,28 +6,30 @@ Start
 
 Latest changes:
 
-- [ ] Using the id in the url for state
-- [ ] Moved some of the tailwind stuff to input (not sure I like )
-- [ ] Slight rename of app (and funky icon)
-- [ ] Details view nav bar
-- [ ] Fixed logs, BUT,
+- [x] Using the id in the url for state
+- [x] Moved some of the tailwind stuff to input (not sure I like )
+- [x] Slight rename of app (and funky icon)
+- [x] Details view nav bar
+- [x] Fixed logs, BUT,
   - Getting a lot of errors
   - Adds up quickly
-- [ ] Still getting very confused with when components redrawn
+- [x] Still getting very confused with when components redrawn
   - Home redraws when I don't think it should
   - Some components don't redraw to after edit
 
 The concern
 -----------
 
-- [ ] wry vs Blitz
+- [x] wry vs Blitz
 
 Work
 ----
 
 - [x] Adding the config
-- [ ] Set initial window size
-- [ ] Set an icon
-- [ ] Set up and react to event listeners
-
+- [x] Set initial window size
+- [x] Set an icon
+- [x] Set up and react to event listeners
+  - When Alt+C is pressed, if the company is selected, the view should set to
+    company
+  - When Alt+R is pressed, if the role is selected, the view should set to role
 
