@@ -1,12 +1,35 @@
-Let’s Build: A Job Tracker - Part 5
-===================================
+Job Tracker 06
+==============
 
-Quickly cover changes from last stream
+Reminder:
+---------
 
-- How the general store works
-- How the macros work
+Project is planned to be monetised (donate but free to use)
 
-Tailwind
+Goals:
+------
 
-- What is it / why are we using it
+Before we get started:
+- [x] Do people want to see how I did the store?
+- [x] Storage and log bugs
+- [x] Setting up Dependabot
 
+Actual Tailwind Stuff:
+- [x] Discuss set up and problems (intellij, git/ci/cd)
+- [x] Discuss loose layout
+- [x] Test out how utility functions can be reused for consistent theming
+- [ ] Create a loose theme
+- [ ] Work out how to make tailwind.css ignored
+
+By the end:
+- [ ] Decide if Tailwind is right for Job Tracker
+
+Next time?
+----------
+
+Options:
+
+- Rest of the storage types we need?
+- Diving into window control (keyboard input etc)
+- Packaging and releasing (probably too early)
+- Other suggestions?
