@@ -10,28 +10,34 @@ fn main() {
     let v: Vec<u8> = vec![1, 2, 3, 4, 5];
     let product: u8 = v.iter().product();
 
-    assert_eq!(product, 0);
+    assert_eq!(product, 120);
 
     // --- Option ---
 
-    let v: Vec<Option<usize>> = vec![Some(10), Some(20), Some(12)];
+    let v: Vec<Option<i32>> = vec![Some(10), Some(20), Some(12)];
 
-    let total: Option<usize> = v.iter().copied().sum();
+    let total: Option<i32> = v.iter().copied().sum();
     assert_eq!(total, Some(42));
 
     // --- Min / Max ---
 
-    let v = vec!['H', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd'];
+    let hello = "Helloworld";
 
-    assert_eq!(v.iter().min(), Some(&'H'));
-    assert_eq!(v.iter().max(), Some(&'w'));
+    assert_eq!(hello.chars().min(), Some('H'));
+    assert_eq!(hello.chars().max(), Some('w'));
 
     // --- Count ---
 
-    let v = vec!['H', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd'];
+    let v = vec!["Hello".to_string(), "world".to_string()];
 
-    let iter = v.clone().into_iter();
-    assert_eq!(iter.count(), v.len());
+    let mut i = v.iter();
+
+    assert_eq!(i.count(), 2); // `i` can't be used after this
+    assert_eq!(i.next(), Some(&"Hello".to_string()));
+
+    let mut i = v.iter();
+    assert_eq!(i.len(), 2); // `i` is not consumed
+    assert_eq!(i.next(), Some(&"Hello".to_string()));
 
     // --- Len ---
 
