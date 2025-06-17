@@ -74,8 +74,14 @@ Suggested structure:
     json.rs
   /object_store
     (probably collections of compound traits?)
-/stores
-  mod.rs // HasStore<T> trait here?
-  /mediums
-    mod.rs
+  /stores
+    mod.rs // HasStore<T> trait here?
+    /mediums
+      mod.rs
 ````
+
+Notes
+----
+
+- Check what `impl` does on parameters
+
