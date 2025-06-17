@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Job Tracker 05 - IRISS Scripts</title>
+        <title>Job Tracker 06 - IRISS Scripts</title>
 
 
         <!-- Custom HTML head -->
@@ -166,99 +166,54 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="lets-build-a-job-tracker---part-5"><a class="header" href="#lets-build-a-job-tracker---part-5">Let’s Build: A Job Tracker - Part 5</a></h1>
-<p>What’s wrong with what we have:</p>
+                        <h1 id="job-tracker-06"><a class="header" href="#job-tracker-06">Job Tracker 06</a></h1>
+<h2 id="reminder"><a class="header" href="#reminder">Reminder:</a></h2>
+<p>Project is planned to be monetised (donate but free to use)</p>
+<h2 id="goals"><a class="header" href="#goals">Goals:</a></h2>
+<p>Before we get started:</p>
 <ul>
-<li>StoreContext is in UI for some reason</li>
-<li>Lots of <em>very</em> similar repeated code</li>
-<li>Adding new types requires a lot of boilerplate (eg, Values aren’t really any
-different from Flags or Roles in the way they are stored and recalled)</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Do people want to see how I did the store?</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Storage and log bugs</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Setting up Dependabot</li>
 </ul>
-<p>Storable objects have specific traits to allow them to optionally be:</p>
+<p>Actual Tailwind Stuff:</p>
 <ul>
-<li>stored (needs an ID)</li>
-<li>recalled by ID (needs an ID)</li>
-<li>recalled by name (needs a name)</li>
-<li>recalled by company ID (needs a company name)</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Discuss set up and problems (intellij, git/ci/cd)</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Discuss loose layout</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Test out how utility functions can be reused for consistent theming</li>
+<li><input disabled="" type="checkbox"/>
+Create a loose theme</li>
+<li><input disabled="" type="checkbox"/>
+Work out how to make tailwind.css ignored</li>
 </ul>
-<p>This is going to be a <em>lot</em> of traits which need to be inscope, we should use a
-prelude</p>
-<p>A store for a generic Storable can use the traits to apply logic. There’s no
-real difference between a flag and a role in terms of how its stored and
-recalled, therefore there should be no difference in logic.</p>
-<p>So we can have something like:</p>
+<p>By the end:</p>
 <ul>
-<li><code>trait StoreById&lt;T&gt; where T: GetId</code></li>
-<li><code>trait RecallById&lt;T&gt; where T: GetId</code></li>
-<li><code>trait RecallByName&lt;T&gt; where T: GetName</code></li>
+<li><input disabled="" type="checkbox"/>
+Decide if Tailwind is right for Job Tracker</li>
 </ul>
-<p>We can create generic stores for storables that match certain traits, then
-build those generics together. Eg, a CompanyStore can be a trait that combines</p>
+<h2 id="next-time"><a class="header" href="#next-time">Next time?</a></h2>
+<p>Options:</p>
 <ul>
-<li><code>StoreById&lt;Company&gt;</code></li>
-<li><code>RecallById&lt;Company&gt; </code></li>
-<li><code>RecallByName&lt;Company&gt;</code></li>
-</ul>
-<p>If we have a store that already implements those traits, then we get it for free</p>
-<p>A collection of stores should be able to determine which store an object
-belongs to by its type. &lt;- This will be the harder part, may need phantom data
-in Store types 🤔</p>
-<p>A collection of stores can implement the trait CompanyStore but we may be able
-to make it even more generic than that if we can go from generic type to
-property in stores</p>
-<p>One way to do this might be to have a trait called <code>HasStore&lt;T&gt; -&gt; S</code> and then
-implement:</p>
-<ul>
-<li><code>HasStore&lt;Company&gt; -&gt; impl CompanyStore</code></li>
-<li><code>HasStore&lt;Role&gt; -&gt; impl RoleStore</code></li>
-<li>Etc</li>
-</ul>
-<p>Suggested structure:</p>
-<pre><code class="language-text">/storable
-  /property
-    mod.rs
-    has_id.rs
-    has_name.rs
-    has_company.rs
-  /object
-    mod.rs
-    company.rs
-    role.rs
-    flag.rs
-    value.rs
-/store
-  /property
-    mod.rs
-    store.rs (probably both store and recall by id)
-    recall_by_name.rs
-    recall_by_company.rs
-  /medium
-    mod.rs
-    stub.rs
-    json.rs
-  /object_store
-    (probably collections of compound traits?)
-  /stores
-    mod.rs // HasStore&lt;T&gt; trait here?
-    /mediums
-      mod.rs
-</code></pre>
-<h2 id="notes"><a class="header" href="#notes">Notes</a></h2>
-<ul>
-<li>Check what <code>impl</code> does on parameters</li>
+<li>Rest of the storage types we need?</li>
+<li>Diving into window control (keyboard input etc)</li>
+<li>Packaging and releasing (probably too early)</li>
+<li>Other suggestions?</li>
 </ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../shorts/001-sixty-seconds.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../streams/lets-build/job-tracker-05.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../streams/lets-build/job-tracker-06.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -266,13 +221,10 @@ implement:</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../shorts/001-sixty-seconds.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../streams/lets-build/job-tracker-05.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../streams/lets-build/job-tracker-06.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
