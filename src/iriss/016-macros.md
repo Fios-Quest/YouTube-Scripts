@@ -359,46 +359,54 @@ This is because if we were to try to match `($name:literal, $($rest:literal)*)` 
 
 Instead, we've moved the comma token to the beginning of the repeat pattern which can contain things that aren't metavariables too.
 
+Ok, so I wasn't quite lying about not being able to treat the first and last differently with macro repeats, we can't do it with _just_ macro repeats
 
-Ok, so I wasn't quite lying about not being able to treat the first and last differently with macro repeats, we can't
-do it with _just_ macro repeats, BUT, we can work around that with very low-cost language features like slices.
+BUT, we can work around that with very low-cost language features like slices.
+
+🦀👨🏻 We can split the names out directly into an array.
+
+🦀👨🏻 This will be parto of the binary, created at compile time, so doesn't require any heap allocations
+
+🦀👨🏻 Next lets get an iterator over the array.
+
+🦀👨🏻 By precisely specifying the type of the iterator here we can avoid Rust not knowing what to do if the iterator is empty.
+
+🦀👨🏻 We'll initialise our string as before.
+
+// ToDo: This line was a mess in the original
+
+🦀👨🏻 If no metavariables were passed then the array will be empty so we'll use our default value
+
+🦀👨🏻 We'll loop until no more items are in the iterator
+
+🦀👨🏻 By looking ahead to see if there's more items we can now use grammatically correct separators
+
+🦀👨🏻 And we'll add an exclamation mark for funsies!
+
+🦀👨🏻 Finally lets update our tests for the new output
 
 ```rust
 macro_rules! hello {
     ($($names:literal),*) => {
         {
-            // We split the names out directly into an array. This is done at
-            // compile time so doesn't require any heap allocations
             let names = [$($names, )*];
 
-            // We get an iterator over the array. By precisely specifying the
-            // type of the iterator here we can avoid Rust not knowing what to
-            // do if the iterator is empty.
             use std::iter::Peekable;
             use std::slice::Iter;
             let mut names_iter: Peekable<Iter<&str>> = names.iter().peekable();
 
-            // We initialise our string as before.
             let mut output = String::from("Hello, ");
-            // If there are no metavariables were passed then the array will be
-            // empty so we'll use our default value
             output.push_str(names_iter.next().unwrap_or(&"world"));
 
-            // We'll loop until no more items are in the iterator
             while let Some(next_name) = names_iter.next() {
-
-                // By looking ahead to see if there's more items we can now use
-                // grammatically correct separators
                 match names_iter.peek() {
                     Some(_) => output.push_str(", "),
                     None => output.push_str(" and "),
                 }
-
                 output.push_str(next_name);
 
             };
 
-            // Finally we'll add an exclamation mark for funsies!
             output.push_str("!");
             output
         }
@@ -420,71 +428,115 @@ Being able to quickly compose macros like this can save us a lot of time when re
 
 ## Tokens, Metavariables and Fragment-Specifiers
 
-Rust (like most languages) turns your human written code into tokens. Groups of tokens form a token trees. If tokens are
-protons and neutrons, then token trees are atoms, and are the smallest thing that we can process in `macro_rules!`. An
-important differentiation with Token Trees to a simple list of tokens are that delimiters (bracket pairs, eg `()`, `{}`
-and `[]`) are matched up for us.
+Rust (like most languages) turns your human written code into tokens.
+
+Groups of tokens form a token trees.
+
+If tokens are protons and neutrons, then token trees are atoms, and are the smallest thing that we can process in `macro_rules!`.
+
+An important differentiation with Token Trees to a simple list of tokens are that delimiters (bracket pairs, eg `()`, `{}` and `[]`) are matched up for us.
 
 For example, the token tree for the Rust statement `let hello = String::from("Hello");` might look like this:
 
 ![TokenTreeLight.svg](macros/TokenTreeLight.svg)
 
-In the previous `hello!` example, we captured tokens that were literals into metavariables with fragment-specifiers, but
-we can categorise tokens and token trees as more than just literals in `macro_rules!`.
+In the previous `hello!` example, we captured tokens that were literals into metavariables with fragment-specifiers, but we can categorise tokens and token trees as more than just literals in `macro_rules!`.
 
 Here's a quick rundown of some of the most common fragment-specifiers:
 
-- `tt` matches a token tree, which is any single token or valid collection of tokens. Remember when we wrote
-  `this must be present` in our silly example, that's technically a token tree, but so was `"yuki"` which it not only
-  a literal, but also a token tree consisting of a single token. Every other fragment-specifier overlaps with `tt` since
-  they're just sub-categorisations of token trees.
-- `literal` is the specifier we already used to match against a literal value. This matches integers, floats, booleans,
-  characters and a whole set of string types (string literals, raw string literals, byte string literals, C string
-  literals).
-- `expr` short for "expression". An expression is any token tree that has a value (eg, `String::from("Hello")` is an
-  expression, but `let hello = String::from("Hello");` is not).
-- `block` is specifically a block expression, this is like the code we were generating in our `hello!` example which we
-  surrounded in `{...}` to make it a block expression.
-- `stmt` short for "statement". This is a line of code or a statement, e.g. both `String::from("Hello")` and
-  `let hello = String::from("Hello");` are statements.
-- `ident` short for "identifier". These are things like variable names, type names, or anything that's not specifically
-  a keyword (though you can make a raw identifier using `r#`, e.g. `true` is not an identifier because it's a keyword
-  but `r#true` is an identifier). In our earlier `this must be present`, each of those tokens is also an identifier,
-  they don't need to exist in code.
-- `path` is a type path. This could be an identifier on its own, or a sequence of identifiers seperated by `::` tokens.
-  Like with identifiers, they don't need to exist within the code, they just need to fit the pattern.
-- `ty` short for "type". This could be a type or a type description. For example `(dyn Clone + Send)` is what's called a
-  parenthesised type.
-- `item` is anything that could belong to a crate, such as functions, modules, static items, use statements, etc.
-- `vis` short for "visibility" describes the visibility of something else eg `pub`, `pub(crate)`, or `pub(super)`.
-- `lifetime` matches lifetimes such as `'a` or `'static`
-- `meta`, this is a weird one, it matches attributes. Could be useful if you want to construct a type and pass in
-  attributes to apply to it.
+---
 
-There's a lot here, and I've ignored the backwards compatible fragment specifiers (some specifiers have changed
-behaviour over the years). If you want to see the full list of fragment-specifiers, or more complete descriptions of
-each of them check out the official documentation here:
-https://doc.rust-lang.org/reference/macros-by-example.html#metavariables
+`tt` matches a token tree, which is any single token or valid collection of tokens.
+
+Remember when we wrote `this must be present` in our silly example, each word is a token tree.
+
+Token trees can be delimited by parenthisis, square brackets or curly bracks so while `this must be present` is four token trees, we can make it a single token tree containaing four token trees by surrounding it in brackets.
+
+---
+
+`literal` is the specifier we already used to match against a literal value.
+
+This matches integers, floats, booleans, characters and a whole set of string types (string literals, raw string literals, byte string literals, C string literals).
+
+---
+
+`expr` it short for "expression".
+
+An expression is any token tree that has a value (eg, `String::from("Hello")` is an  expression, but `let hello = String::from("Hello");` is not).
+
+---
+
+`block` is specifically a block expression.
+
+Like the code we were generating in our `hello!` example, blocks can have multiple statements surrounded with curly brackets `{...}` to make it a block expression.
+
+Of course, all block expressions are also expressions so you may not end up using this fragment specifier too often
+
+---
+
+`stmt` is short for "statement".
+
+This is a line of code or a statement, e.g. both `String::from("Hello")` and `let hello = String::from("Hello");` are statements.
+
+---
+
+`ident` is short for "identifier".
+
+These are things like variable names, type names, or any word that's not specifically a keyword.
+
+That said, you can make a raw identifier using `r#`, so while `true` is not an identifier because it's a keyword but `r#true` is an identifier.
+
+You're most likely to see raw identifiers in macros, particularly ones that are for domain specific languages.
+
+In our earlier `this must be present`, each of those tokens is also an identifier, identifiers don't need to exist in code.
+
+---
+
+`path` is a type path.
+
+This could be an identifier on its own, or a sequence of identifiers seperated by `::` tokens.
+
+Like with identifiers, they don't need to exist within the code, they just need to fit the pattern.
+
+---
+
+`ty` is short for "type".
+
+This could be a type or a type description.
+
+For example `(dyn Clone + Send)` is what's called a parenthesised type, though traits like Clone and Send are also types on their own, as are structs like String.
+
+---
+
+`item` is anything that could belong to a crate, such as functions, modules, static items, use statements, etc.
+
+---
+
+`vis` short for "visibility" describes the visibility of something else for example `pub`, `pub(crate)`, or `pub(super)`.
+
+---
+
+`lifetime` matches lifetimes such as `'a` or `'static`
+
+---
+
+`meta`, this is a weird one, it matches attributes. Could be useful if you want to construct a type and pass in attributes to apply to it.
+
+There's a lot here, and I've ignored the backwards compatible fragment specifiers (some specifiers have changed behaviour over the years).
+
+If you want to see the full list of fragment-specifiers, or more complete descriptions of each of them, check out the official documentation, link in the description
 
 ## Usefully DRY
 
-> ℹ️ I've slightly altered the code in this section to not rely on third party crates, such as
-> [Uuid](https://crates.io/crates/uuid) and [paste](https://crates.io/crates/paste). If you're comfortable with crates
-> then bellow is a permalink straight to the `storage` crate of the Job Application repository where you'll find the
-> real examples. For example, if you look in the `storable` module, you'll find test macros defined in the `property`
-> module which are consumed in the `object` module.
->
-> [https://github.com/Fios-Quest/job-tracker/tree/c1eba63311ff954de0d80cdd9f55984051c620ef/storage/src/](https://github.com/Fios-Quest/job-tracker/tree/c1eba63311ff954de0d80cdd9f55984051c620ef/storage/src/storable)
+I'm going to show you how I'm using macros in my own code, but for the purposes of IRISS I've modified the examples to avoid using crates which, if you haven't notice, I've avoided in this series to focus purely on the core language.
 
-The example we've run through to build up our understanding of how macro's work is very abstract and not very useful,
-so I wanted to go over a quick example of how I've started using Macro's.
+If you're comfortable with crates and async Rust, and are curious what the differences are in my real code, there's a link to the app I've been building on stream in the description of this video.
 
-In the [Fio's Job Tracker](https://github.com/Fios-Quest/job-tracker/) app I've been building with the help of folks in
-the chat of my [streams](https://www.youtube.com/playlist?list=PLW2L8KbM0O7Z2KroHNNBWY1UApqmeiyqe), I've leaned heavily
-into composing my types using Traits to form common behaviour.
+The example we ran through to build up our understanding of how macro's work is very abstract and not very useful, so I wanted to go over a quick example of how I've started using Macro's.
 
-For example, at time of writing, I allow the user to create `Company`s, `Role`s, and `Flag`s. `Role`s and `Flag`s
-belong to `Company`s so those types implement the following trait:
+In the Fio's Job Tracker app I've been building with the help of folks in the chat of my streams, I've leaned heavily into composing my types using Traits to form common behaviour.
+
+For example, at time of writing, I allow the user to create things like `Flags`, `Roles` and `Values` that belong to `Company`s, so those types implement the trait `HasCompany`.
 
 ```rust
 pub trait HasCompany {
@@ -492,15 +544,15 @@ pub trait HasCompany {
 }
 ```
 
-The trait itself does not provide any code, so each item that implements this code must decide on its behaviour. I'm
-a big believer in unit tests so lets look at how that works with a test using `Role` as an example.:
+The trait itself does not provide any code, so each item that implements this code must decide on its behaviour, lets use Role as an example.
+
+I'm also a huge advocate of unit tests so lets look at how that works with a test
 
 ```rust
-# pub trait HasCompany {
-    # fn get_company_id(&self) -> u128;
-    #
+pub trait HasCompany {
+    fn get_company_id(&self) -> u128;
 }
-#
+
 #[derive(Clone, Debug)]
 pub struct Role {
     pub id: u128,
@@ -528,23 +580,61 @@ mod tests {
 }
 ```
 
-That's fine, but we're going to be doing this for every item that implements that trait, as well as for every
-implementation of every other trait. Every time we add a new storable item we'll have to add tests for its
-implementation.
+That's fine, but we're going to be doing this for every item that implements that trait, as well as for every implementation of every other trait.
 
-The way I worked around this was, first I created a trait allowing me to create test instances of the types I want to
-test, then I created macros that use that trait to run the test:
+Every time we add a new storable item we'll have to add implement the trait and write tests for its implementation.
+
+To minimise the work I created two traits.
+
+The first, allows us to implement `HasCompany` for any type that has a `company_id` field.
 
 ```rust
-// This trait exists in a central location
+macro_rules! impl_has_company {
+    ($name:ty) => {
+        impl HasCompany for $name {
+            fn get_company_id(&self) -> u128 {
+                self.company_id
+            }
+        }
+    }
+}
+```
+
+Obviously if you try to implement this trait on something without this field, the macro will generate code that can't compile, but it wouldn't stop you writing your own implementation if you need to.
+
+Role does implement this field though so we can now implement the trait with one short line:
+
+```rust
+impl_has_company(Role);
+```
+
+Replacing the test is a little harder though.
+
+We can't easily write a generic test that will work for `Role` and `Flag` as these types are instantiated in different ways.
+
+What we need to do is have a consistent way to create test instances of the thing being tested.
+
+To do this, I created a TestHelper that can be applied to almost any type, its only job is to return an instantiated 
+
+🦀👨🏻 This trait exists in a central location
+
+🦀👨🏻 Each test macro sits alongside the trait it creates tests for
+
+🦀👨🏻 We can make this test by taking two metavariables separated by a comma token.
+
+🦀👨🏻 Test name is an ident which we'll use to name the thest function
+
+🦀👨🏻 Storable is what I call any object in this project that can be stored, and in this case is the test subject.
+
+🦀👨🏻 The test here is super rudimentary, we're just going to make sure that when we request the id, we get something back.
+ 
+```rust
 pub trait TestHelper: Sized {
-    // Aside: I'm _actually_ using anyhow for Result which is more flexible
     fn new_test() -> Result<Self, String>;
 }
 
-// Each test macro sits alongside the trait it creates tests for
 macro_rules! test_has_company_id {
-    ($test_name:ident, $storable:ident) => {
+    ($test_name:ident, $storable:ty) => {
         #[test]
         fn $test_name() {
             let storable = $storable::new_test()
@@ -555,7 +645,7 @@ macro_rules! test_has_company_id {
 }
 ```
 
-By implementing the trait for each type that I want to test, I can add tests trivially like this:
+🦀👨🏻 By implementing the trait for each type that I want to test, I can add tests trivially like this:
 
 ```rust
 # pub trait TestHelper: Sized {
@@ -605,27 +695,19 @@ mod tests {
 }
 ```
 
-While this is a _very_ simple example, there are more complex examples in the Job Tracker like the ones that manage the
-act of storing and recalling these storable objects.
+This might initially seem like just as much work as before, as we add more traits and more types that implement those traits, the amount of extra work drops dramatically.
+
+Furthermore, there are more complex examples in the Job Tracker like the ones that manage the storing and recalling of these storable objects.
 
 ## Domain Specific Languages
 
 Ever wanted to write your own language?
 
-We're going to get a little bit silly here, but Domain Specific Languages (DSLs) can be incredibly useful for
-conceptualising code in meaningful ways. For example, JSX is a DSL for writing React in Javascript.
+We're going to get a little bit silly here, but Domain Specific Languages (DSLs) can be incredibly useful for conceptualising code in meaningful ways.
 
-This:
+For example, JSX is a DSL for writing React in Javascript.
 
-```javascript
-const heading = (
-    <h1 className="example">
-        Hello, world!
-    </h1>
-);
-```
-
-Is undeniably easier to understand for web developers who are outputting HTML than writing:
+If you're a web develop, ultimately creating HTML, which of these is more readable:
 
 ```javascript
 const heading = React.createElement(
@@ -635,27 +717,50 @@ const heading = React.createElement(
 );
 ```
 
+```javascript
+const heading = (
+    <h1 className="example">
+        Hello, world!
+    </h1>
+);
+```
+
+I think its undeniably easier to understand the latter
+
 So, I promised silly, lets write our own DSL... a Brain Fudge interpreter.
 
-The programming language Brain Fudge (which is not in fact called Brain Fudge) was created by Urban Müller in 1993. The
-language is what's known as an "esoteric" language which is, generally, a fully functional language that you would never
-actually want to use. Often they're considered jokes, but Brain Fudge actually lets us write real programs with just
-eight instructions. This makes it ideal for creating a full DSL with little effort.
+The programming language Brain Fudge (which is not in fact called Brain Fudge) was created by Urban Müller in 1993.
 
-The language operates on theoretically infinite sequential memory initialised to `0`. You start with a pointer
-pointing to the first cell in memory and then process instructions that allow you to move the pointer, modify the data
-at that point in memory and either output or input data at the current pointer location.
+The language is what's known as an "esoteric" language which is, loosely speaking, a fully functional language that you would never actually want to use.
+
+Often they're considered jokes, but Brain Fudge actually lets us write real programs with just eight instructions.
+
+This makes it ideal for creating a full DSL with little effort.
+
+The language operates on theoretically infinite sequential memory initialised to `0`.
+
+You start with a pointer pointing to the first cell in memory and then process instructions that allow you to move the pointer, modify the data at that point in memory and either output or input data at the current pointer location.
+
+---
 
 This is what the instructions do:
 
-- `>` increments the pointer position, moving it to the next position in memory
-- `<` decrements the pointer position, moving it to the previous position in memory
-- `+` increments the value at the current position in memory
-- `-` decrements the value at the current position in memory
-- `.` outputs the value at the current position in memory
-- `,` takes one byte of input and stores it in memory (we won't use this in this example though)
-- `[` and `]` contain a loop that repeats the contained code. Each time the loop begins the value at the current
-  position is checked, and the loop is then skipped if the value is 0.
+
+greater than, increments the pointer position, moving it to the next position in memory
+
+less than, decrements the pointer position, moving it to the previous position in memory
+
+add, increments the value at the current position in memory
+
+minus, decrements the value at the current position in memory
+
+period, outputs the value at the current position in memory
+
+comma, takes one byte of input and stores it in memory (we won't use this in this example though)
+
+square brackets contain a loop that repeats the contained code.
+
+Each time the loop begins the value at the current position is checked, and the loop is then skipped if the value is 0.
 
 That sounds easy enough, right... well, here's Hello World in Brain Fudge.
 
@@ -663,10 +768,15 @@ That sounds easy enough, right... well, here's Hello World in Brain Fudge.
 ++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.
 ```
 
-Don't panic! For now, we'll just trust that this is the Hello World program, we'll implement the instructions and see
-what happens when we run it.
+---
 
-We're going to use two macros. First let's create a macro that initialises the program.
+Don't panic! We're not here to learn Brain Fudge ourselves.
+
+We'll just trust that this is the Hello World program, we'll implement the instructions and see what happens when we run it.
+
+We're going to use two macros.
+
+First let's create a macro that initialises the program.
 
 ```rust
 macro_rules! brain_fudge {
@@ -686,25 +796,38 @@ macro_rules! brain_fudge {
 
 Let's break it down:
 
-- `$($token:tt)+` is the input to our interpreter. We're using the `tt` fragment-specifier which means that our
-  repeating metavariable `$token` represents a token tree. As it happens `>`, `<`, `+`, `-`, `.`, `,`, `[` and `]` are
-  all tokens in Rust so this _should_ work well... (**foreshadowing**).
-- `memory` is going to be our programs' memory. We're using a Vec with a single initialised value of `0` under the
-  assumption that even the smallest program requires one word of memory. We'll expand the Vec as necessary. Maybe not
-  the most time effective but it'll be ok. For our memory we're using `u8` to represent one word. You can use larger
-  words if you like but different programs might function differently depending on what word size is used and how
-  overflows are handled (more on that later).
-- `pointer` points to the current position in memory (our Vector)
-- `output` is where we'll store output data from the program. We're using a Vec<u8> here, but actually any type that has
-  a method `.push(u8)` will work.
-- At the end of the macro we take the output Vec of `u8`s we've stored in output and collect it into a string by naively
-  considering each byte to be a character. Again, this won't be appropriate for every use case which is why utilising
-  `Write` might be better but do you _really_ want to use this DSL properly 😅
+The input to our interpreter is a repeat pattern of token tree, which we'll store in the metavariable token.
 
-So now we need to handle the token stream, but before we do that, lets write some tests. We'll keep it simple for now,
-while `++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.`
-outputs "Hello, world!\n", so does the following, with only 3 of the 8 possible instructions:
+As it happens the individual characters that make up Brain Fudge are all tokens in Rust so this _should_ work well... (**foreshadowing**).
 
+`memory` is going to be our programs' memory.
+
+We're using a Vec with a single initialised value of `0` under the assumption that even the smallest program requires one word of memory.
+
+We'll expand the Vec as necessary.
+
+This may not be the most efficient way to do this but it'll be ok.
+
+For our memory we're using `u8` to represent one word (the width of our memory).
+
+You can use larger words if you like but different programs might function differently depending on what word size is used and how overflows are handled (more on that later).
+
+`pointer` points to the current position in memory (our Vector)
+
+`output` is where we'll store output data from the program.
+
+We're using a Vec<u8> here, but actually any type that has a method `.push(u8)` will work.
+
+At the end of the macro we take the output Vec of `u8`s we've stored in output and collect it into a string by naively considering each byte to be a character.
+
+Again, this won't be appropriate for every use case which is why utilising `Write` might be better but do you _really_ want to use this DSL properly 😅
+
+So now we need to handle the token stream, but before we do that, lets write some tests.
+
+We'll keep it simple for now, while this is the official Hello World, we _can_ output the same thing with only 3 of the 8 possible instructions:
+```bf
+++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.
+```
 ```rust,should_panic
 # macro_rules! brain_fudge {
 #     ($($token:tt)+) => {
@@ -757,35 +880,40 @@ assert_eq!(
 # }
 ```
 
-So lets work out how to handle `>`, `+` and `.`
+So now we have a test, lets work out how to handle greater than, add, and period.
 
-We'll create a new helper macro that can handle these tokens by having a rule that matches a token string that starts
-with the token we want to handle and passes remaining tokens back to itself. We also need a special arm to handle when
-there are no tokens left so we have an endpoint to our recursive calls.
+We'll create a new helper macro that can handle each of these tokens with its by having a rule that matches a specific token.
 
-Unlike before, when we create our match arms, we're going to use a semicolon as a separator. The reason for this is
-that Brain Fudge uses `,`s as part of its syntax (even if we're not using it here). This doesn't actually cause a
-problem with matching (even if the first character of your Brain Fudge program is a comma, it still matches based on
-position relative to the other commas), but we _can_ use semicolons as separators in our macro which aren't part of the
-Brain Fudge language, and it _will_ help readability when we get to the final part of this video.
+We also need a special rule to handle when there are no tokens left so we have an endpoint to our recursive calls.
 
-Each arm will also expect the memory, the pointer, and the output buffer before matching on the specific token:
+To make it work, each rule will need to access the memory, the pointer and the output buffer, so we'll add an expectation of those to the match pattern.
+
+Additionally, because each rule only handles one instruction, we need to pass the rest of the instructiosn to the macro again recursively.
+
+Unlike before, when we create our match arms, we're going to use a semicolon as a separator.
+
+The reason for this is that Brain Fudge uses `,`s as part of its syntax (even if we're not using it here).
+
+This doesn't actually cause a problem with matching because we _always_ expect a comma before the start of the Brain Fudge program, but we _can_ use semicolons as a separator and as they don't appear in the Brain Fudge language, and it _will_ help readability, particularly if you opt in to the challenge at the end of the video.
+
+So here we go.
+
+This arm matches +, it adds 1 to the value at the current position We'll use wrapping_add to avoid overflows, so in our interpreter, adding 1 to 255 makes 0.
+
+This arm matches >, it adds 1 to the pointer position. This time we're using saturating_add for the specific reason we want to be consistent and don't want to wrap a  usize on -, you'll see why later! We also need to make sure that any time we go outside of the Vec we resize the Vec appropriately and zero memory, we can do this with a quick loop, pushing 0's
+
+This arm matches ., it takes the value at the current pointer and writes it to our output buffer
+
+This arm matches there being no Brain Fudge tokens left, it does nothing
 
 ```rust,no_run
 macro_rules! brain_fudge_helper {
-    // This arm matches +, it adds 1 to the value at the current position We'll
-    // use wrapping_add to avoid overflows, so in our interpreter, adding 1 to
-    // 255 makes 0.
+    // +
     ($memory:ident; $pointer:ident; $buffer:ident; + $($tokens:tt)*) => {
         $memory[$pointer] = $memory[$pointer].wrapping_add(1);
         brain_fudge_helper!($memory; $pointer; $buffer; $($tokens)*);
     };
-    // This arm matches >, it adds 1 to the pointer position. This time we're
-    // using saturating_add for the specific reason we want to be consistent
-    // and don't want to wrap a  usize on -, you'll see why later!
-    // We also need to make sure that any time we go outside of the Vec we
-    // resize the Vec appropriately and zero memory, we can do this with a
-    // quick loop, pushing 0's
+    // >
     ($memory:ident; $pointer:ident; $buffer:ident; > $($tokens:tt)*) => {
         $pointer = $pointer.saturating_add(1);
         while $pointer >= $memory.len() {
@@ -793,18 +921,17 @@ macro_rules! brain_fudge_helper {
         }
         brain_fudge_helper!($memory; $pointer; $buffer; $($tokens)*);
     };
-    // This arm matches ., it takes the value at the current pointer and writes
-    // it to our output buffer
+    // .
     ($memory:ident; $pointer:ident; $buffer:ident; . $($tokens:tt)*) => {
         $buffer.push($memory[$pointer]);
         brain_fudge_helper!($memory; $pointer; $buffer; $($tokens)*);
     };
-    // This arm matches there being no Brain Fudge tokens left, it does nothing
+    // NOP
     ($memory:ident; $pointer:ident; $buffer:ident; ) => {};
 }
 ```
 
-And update our brain_fudge! macro to call the helper, passing in the program state.
+Now we can update our `brain_fudge!` macro to call the helper, passing in the program state.
 
 ```rust,compile_fail
 # macro_rules! brain_fudge_helper {
@@ -878,18 +1005,21 @@ assert_eq!(
 # }
 ```
 
-Aaaand, it errors.
+And, when we run our program errors.
 
 ```text
 error: recursion limit reached while expanding `brain_fudge_helper!`
 ```
 
-Rust keeps track of how many times we recurse (call a function/macro from the same function/macro), and by default, the
-maximum amount of times we can do this is 128. Our macro, using our silly Hello World example, recurses 1120 times!
+Rust keeps track of how many times we recurse, that is, call a function or macro from the same function or macro.
 
-So, we _could_ avoid recursing by looping through the tokens instead, and that will work for our Hello World... but it
-won't work for loops when we come to do that so for now, we're going to play a dangerous game and manually tell Rust
-it's fine for it to recurse 2048 times.
+By default, the maximum amount of times we can do this is 128.
+
+Our macro, when parsing our silly Hello World example, recurses 1120 times!
+
+So, we _could_ avoid recursing by looping through the tokens instead, and that will work for this current instruction set... but it won't work for loops.
+
+We probably could come up with a way of mixing loops and recurssion but to keep things simple, we're going to play a dangerous game and manually tell Rust it's fine for it to recurse 2048 times.
 
 The `recursion_limit` attribute applies at the crate level so be careful with this one!
 
@@ -967,15 +1097,23 @@ assert_eq!(
 # }
 ```
 
-Huzzah! We've made a good start. Dealing with `>` and `-` will be easy enough, they're the opposite of what we already
-have. More complex is the loop `[`...`]`. Luckily, we aren't dealing with characters, we're dealing with token trees!
+And now our code runs!
 
-In Rust, the bracket pairs `()`, `[]`, and `{}` are all considered tokens that wrap other tokens, so Rust will correctly
-handle them in pairs, even when nested. Eg, with the token tree `[+[-]]` Rust will correctly match the first `[` token
-with the final `]` rather than the first `]`.
+We've made a great start, we've got almost half the language done already.
 
-This means to make our loop arm work, we can match against any token tree that starts with a `[`, contains more tokens
-which may include more `[]` pairs, matches its ending `]` and is followed by yet more tokens! How cool is that!?
+Dealing with less than and minus will be easy enough, they're the opposite of what we already have.
+
+More complex is the loop.
+
+Luckily, we aren't dealing with individual tokens, we're dealing with token trees!
+
+In Rust, these bracket pairs soecifically are all considered tokens that wrap other tokens.
+
+They're treated as a single token trees that contain more token trees.
+
+So Rust will correctly handle them in pairs, even when nested.
+
+This means to make our loop arm work, we can match against any token tree that starts with a `[`, contains more tokens which may include more `[]` pairs, matches its ending `]` and is followed by yet more tokens! How cool is that!?
 
 Let's write up the missing arms and run our test against the original Hello World program:
 
@@ -1036,8 +1174,6 @@ macro_rules! brain_fudge {
 #             let mut pointer = 0_usize;
 #             let mut output: Vec<u8> = Vec::new();
 # 
-#             // We update our brain_fudge macro to pass the program state to the
-#             // helper
 #             brain_fudge_helper!(data; pointer; output; $($token)+);
 #             
 #             output.into_iter().map(char::from).collect::<String>()
@@ -1087,9 +1223,9 @@ assert_eq!(
 # }
 ```
 
-And when we run this... it doesn't work again 🤦🏻‍♂️
+And when we run this... it doesn't work again 
 
-The exact error we get is:
+The important part of the error is this.
 
 ```text
 67 |         ++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.
@@ -1097,11 +1233,15 @@ The exact error we get is:
    |
 ```
 
-Why is it pointing at `>>`? We have a match on `>`.
+Why is it pointing at two greater than signs? We have a match on those already right?
 
-Well here's the problem with using tokens for our DSL. Rust considers `>>` to be a single token. Specifically it's a
-"right shift" operator. Tokens in Rust can be multiple characters. Here are our problem tokens and what they mean in
-each language:
+Well here's the problem with using tokens for our DSL.
+
+Rust considers two greater than signs to be a single token.
+
+Specifically it's a "right shift" operator.
+
+Tokens in Rust can be multiple characters. Here are our problem tokens and what they mean in each language:
 
 | token | Rust                         | Brain Fudge                        |
 |-------|------------------------------|------------------------------------|
@@ -1111,9 +1251,11 @@ each language:
 | `->`  | function/closure return type | decrement value, increment pointer |
 | `<-`  | unused but reserved          | decrement pointer, decrement value |
 
-Soooo... we need to take care of these special cases, unfortunately. Luckily, while `>>` is a right shift token, `> >`
-_is_ two greater than tokens. Tokens can be seperated by whitespace and will still match the `tt` fragment-specifier,
-all we need to do is split the token and pass it back into the macro
+Soooo... we need to take care of these special cases, unfortunately.
+
+Luckily, while `>>` is a right shift token, `> >` _is_ two greater than tokens.
+
+Tokens can be seperated by whitespace and will still match the `tt` fragment-specifier, all we need to do is split the token and pass it back into the macro
 
 ```rust
 #![recursion_limit = "2048"]
@@ -1196,38 +1338,6 @@ assert_eq!(
     brain_fudge!(++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.),
     "Hello World!\n"
 );
-# // keeping the old test to make sure we don't have a regression
-# assert_eq!(
-#     brain_fudge!(
-#         // H
-#         ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // e
-#         >+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // l
-#         >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // l
-#         >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // o
-#         >+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         //
-#         >++++++++++++++++++++++++++++++++.
-#         // W
-#         >+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // o
-#         >+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // r
-#         >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // l
-#         >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // d
-#         >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // !
-#         >+++++++++++++++++++++++++++++++++.
-#         // \n
-#         >++++++++++.
-#     ),
-#     "Hello World!\n"
-# );
 # }
 ```
 
@@ -1237,8 +1347,9 @@ And we just created an interpreter for another language inside Rust! That's kind
 
 I stopped setting homework, but I thought I'd set a little challenge for anyone who wants to do it.
 
-Can you edit our `brain_fudge!` macro to work with programs that take input via the `,` token? To do this I recommend
-making the following change to the `brain_fudge!` macro:
+Can you edit our `brain_fudge!` macro to work with programs that take input via the comma token?
+
+To do this I recommend making the following change to the `brain_fudge!` macro:
 
 ```rust
 macro_rules! brain_fudge {
@@ -1250,101 +1361,21 @@ macro_rules! brain_fudge {
 }
 ```
 
-If you need help, the code below shows the test for a ROT13 Brain Fudge program and has the answer to the homework
-hidden if you want to reveal it
+There is a test in the IRISS book that you can copy for a ROT13 program, that's a program that takes each alphabetical letter and shifts it 13 characters.
 
-```rust
-# #![recursion_limit = "2048"]
-# 
-# macro_rules! brain_fudge {
-#     ($input:ident; $output:ident; $($token:tt)+) => {
-#         {
-#             use std::io::{Read, Write};
-#             
-#             let mut memory = vec![0u8];
-#             let mut pointer = 0_usize;
-# 
-#             brain_fudge_helper!(memory; pointer; $input; $output; $($token)+);
-#         }
-#     };
-# }
-# 
-# macro_rules! brain_fudge_helper {
-#     // +
-#     ($memory:ident; $pointer:ident; $input:ident; $output:ident; + $($token:tt)*) => {
-#         $memory[$pointer] = $memory[$pointer].wrapping_add(1);
-#         brain_fudge_helper!($memory; $pointer; $input; $output; $($token)*);
-#     };
-#     // -
-#     ($memory:ident; $pointer:ident; $input:ident; $output:ident; - $($token:tt)*) => {
-#         $memory[$pointer] = $memory[$pointer].wrapping_sub(1);
-#         brain_fudge_helper!($memory; $pointer; $input; $output; $($token)*);
-#     };
-#     // >
-#     ($memory:ident; $pointer:ident; $input:ident; $output:ident; > $($token:tt)*) => {
-#         $pointer = $pointer.saturating_add(1);
-#         while $pointer >= $memory.len() {
-#             $memory.push(0);
-#         }
-#         brain_fudge_helper!($memory; $pointer; $input; $output; $($token)*);
-#     };
-#     // <
-#     ($memory:ident; $pointer:ident; $input:ident; $output:ident; < $($token:tt)*) => {
-#         $pointer = $pointer.saturating_sub(1);
-#         brain_fudge_helper!($memory; $pointer; $input; $output; $($token)*);
-#     };
-#     // .
-#     ($memory:ident; $pointer:ident; $input:ident; $output:ident; . $($token:tt)*) => {
-#         $output.push($memory[$pointer]);
-#         brain_fudge_helper!($memory; $pointer; $input; $output; $($token)*);
-#     };
-#     // ,
-#     ($memory:ident; $pointer:ident; $input:ident; $output:ident; , $($token:tt)*) => {
-#         $memory[$pointer] = $input.next().unwrap_or(0);
-#         brain_fudge_helper!($memory; $pointer; $input; $output; $($token)*);
-#     };
-#     // []
-#     ($memory:ident; $pointer:ident; $input:ident; $output:ident; [$($loop_statement:tt)+] $($token:tt)*) => {
-#         while $memory[$pointer] != 0 {
-#             brain_fudge_helper!($memory; $pointer; $input; $output; $($loop_statement)+);
-#         }
-#         brain_fudge_helper!($memory; $pointer; $input; $output; $($token)*);
-#     };
-#     // End of program
-#     ($memory:ident; $pointer:ident; $input:ident; $output:ident; ) => {};
-#     // Special "token" cases
-#     ($memory:ident; $pointer:ident; $input:ident; $output:ident; >> $($token:tt)*) => {
-#         brain_fudge_helper!($memory; $pointer; $input; $output; > > $($token)*);
-#     };
-#     ($memory:ident; $pointer:ident; $input:ident; $output:ident; << $($token:tt)*) => {
-#         brain_fudge_helper!($memory; $pointer; $input; $output; < < $($token)*);
-#     };
-#     ($memory:ident; $pointer:ident; $input:ident; $output:ident; .. $($token:tt)*) => {
-#         brain_fudge_helper!($memory; $pointer; $input; $output; . . $($token)*);
-#     };
-#     ($memory:ident; $pointer:ident; $input:ident; $output:ident; <- $($token:tt)*) => {
-#         brain_fudge_helper!($memory; $pointer; $input; $output; < - $($token)*);
-#     };
-#     ($memory:ident; $pointer:ident; $input:ident; $output:ident; -> $($token:tt)*) => {
-#         brain_fudge_helper!($memory; $pointer; $input; $output; - > $($token)*);
-#     };
-# }
-# 
-# fn main() {
-let input_string = String::from("Fios Quest");
-let mut input = input_string.bytes();
-let mut output = Vec::new();
-brain_fudge!(
-    input; 
-    output;
-    ,[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>++++++++++++++<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>>+++++[<----->-]<<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>++++++++++++++<-[>+<-[>+<-[>+<-[>+<-[>+<-[>++++++++++++++<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>>+++++[<----->-]<<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>+<-[>++++++++++++++<-[>+<-]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]>.[-]<,]
-);
-let output_string: String = output.into_iter().map(char::from).collect();
-assert_eq!(&output_string, "Svbf Dhrfg");
-println!("{}", output_string);
-# }
-```
+There's no prize, its just for you to practice.
+
 ## Next Time
 
-Next time we're going to take a brief look at unsafe Rust. We'll talk about what makes certain things unsafe and
-cover some best practices to make unsafe as safe as possible!
+As ever thank-you so much to my Patreons, I'm not sure if we'd have made it so far without your support!
+
+For everyone else, 
+
+Next time, in the penultimate video in the IRISS series, we're going to look at "unsafe" Rust, and specifically, how we keep ourselves... well... safe, while using it.
+
+If you enjoyed the video, remember to like and subscribe!
+
+Don't forget I stream on YouTube on Tuesday's at 7pm UK time, if you're interested in seeing me work on other projects.
+
+And whether there or here, I'll see you next time.
+
