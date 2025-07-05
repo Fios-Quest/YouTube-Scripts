@@ -302,10 +302,9 @@ The repeat pattern contains a metavariable, `$rest:literal`, which will be used 
 
 It uses a `+` to show that there must be at least one additional metavariable, but there may be many.
 
-In the body of the macro, we initialise our output in much the same way as we do in the version with no inputs, by
-calling the hello macro with the first metavariable. We then have another repeat pattern that contains the `$rest`
-metavariable. Because we have a repeated metavariable inside a repeated block, this block will be repeated for every
-`literal` that `$rest` matched to.
+In the body of the macro, we initialise our output in much the same way as we do in the version with no inputs, by calling the hello macro with the first metavariable.
+
+We then have another repeat pattern that contains the `$rest` metavariable. Because we have a repeated metavariable inside a repeated block, this block will be repeated for every `literal` that `$rest` matched to.
 
 If we were to unwrap the code generated for the final test, it would look something like this:
 
@@ -324,12 +323,11 @@ If we were to unwrap the code generated for the final test, it would look someth
 );
 ```
 
-Hopefully you're probably starting to see why writing a quick macro can really cut down on repeated boilerplate code,
-and we're really only making a quick toy macro to demonstrate the power they provide!
+Hopefully you're probably starting to see why writing a quick macro can really cut down on repeated boilerplate code, and we're really only making a quick toy macro to demonstrate the power they provide!
 
-You might be wondering if we can use repeats to reduce the number of arms we have. We unfortunately can't do things
-like treat the first or last element of a repeat differently using macro repeats *cough*foreshadowing*cough*, but we
-can merge the second and third arms using a `*`.
+You might be wondering if we can use repeats to reduce the number of arms we have.
+
+We unfortunately can't do things like treat the first or last element of a repeat differently using macro repeats *cough*foreshadowing*cough*, but we can merge the second and third arms using a `*`.
 
 ```rust
 macro_rules! hello {
@@ -353,42 +351,48 @@ fn main() {
     assert_eq!(hello!("Yuki", "Daniel", "Indra"), "Hello, Yuki and Daniel and Indra".to_string());
 }
 ```
-You'll notice that the `,` after `$name:literal` has moved inside the repeat pattern, and the `,` being used as a separator has been dropped.
+
+You'll notice that the `,` after `$name:literal` has moved inside the repeat pattern, and the `,` being used as a separator for the repeat has been dropped.
 
 This is because if we were to try to match `($name:literal, $($rest:literal)*)` then we'd _have_ to use the comma after the first literal so `hello!("Yuki")` would _have_ to be `hello!("Yuki", )` to work.
 
 Instead, we've moved the comma token to the beginning of the repeat pattern which can contain things that aren't metavariables too.
 
+Ok, so I wasn't quite lying about not being able to treat the first and last differently with macro repeats, we can't do it with _just_ macro repeats, BUT, we can work around that with very low-cost language features like slices.
 
-Ok, so I wasn't quite lying about not being able to treat the first and last differently with macro repeats, we can't
-do it with _just_ macro repeats, BUT, we can work around that with very low-cost language features like slices.
+🦀👨🏻 We split the names out directly into an array. 
+
+🦀👨🏻 This is done at compile time so doesn't require any heap allocations
+
+🦀👨🏻 We get an iterator over the array and by precisely specifying the type of the iterator here we can avoid Rust not knowing what to do if the iterator would be empty.
+
+🦀👨🏻 We initialise our string as before.
+
+🦀👨🏻 If there are no metavariables were passed then the array will be empty so we'll use our default value
+
+🦀👨🏻 We'll loop until no more items are in the iterator
+
+🦀👨🏻 By looking ahead to see if there's more items we can now use grammatically correct separators
+
+🦀👨🏻 Finally, we'll add an exclamation mark for funsies!
+
+🦀👨🏻 The macro produces a slightly different output now so we'll update the tests
 
 ```rust
 macro_rules! hello {
     ($($names:literal),*) => {
         {
-            // We split the names out directly into an array. This is done at
-            // compile time so doesn't require any heap allocations
             let names = [$($names, )*];
 
-            // We get an iterator over the array. By precisely specifying the
-            // type of the iterator here we can avoid Rust not knowing what to
-            // do if the iterator is empty.
             use std::iter::Peekable;
             use std::slice::Iter;
             let mut names_iter: Peekable<Iter<&str>> = names.iter().peekable();
 
-            // We initialise our string as before.
             let mut output = String::from("Hello, ");
-            // If there are no metavariables were passed then the array will be
-            // empty so we'll use our default value
             output.push_str(names_iter.next().unwrap_or(&"world"));
 
-            // We'll loop until no more items are in the iterator
             while let Some(next_name) = names_iter.next() {
 
-                // By looking ahead to see if there's more items we can now use
-                // grammatically correct separators
                 match names_iter.peek() {
                     Some(_) => output.push_str(", "),
                     None => output.push_str(" and "),
@@ -398,7 +402,6 @@ macro_rules! hello {
 
             };
 
-            // Finally we'll add an exclamation mark for funsies!
             output.push_str("!");
             output
         }
@@ -420,20 +423,33 @@ Being able to quickly compose macros like this can save us a lot of time when re
 
 ## Tokens, Metavariables and Fragment-Specifiers
 
-Rust (like most languages) turns your human written code into tokens. Groups of tokens form a token trees. If tokens are
-protons and neutrons, then token trees are atoms, and are the smallest thing that we can process in `macro_rules!`. An
-important differentiation with Token Trees to a simple list of tokens are that delimiters (bracket pairs, eg `()`, `{}`
-and `[]`) are matched up for us.
+Rust (like most languages) turns your human written code into tokens.
 
-For example, the token tree for the Rust statement `let hello = String::from("Hello");` might look like this:
+Tokens are like the atoms of a programming language, the smallest meaningfully divisible parts.
 
-![TokenTreeLight.svg](macros/TokenTreeLight.svg)
+For example, the statement `let hello = String::from("Hello");` can be broken into the following tokens:
 
-In the previous `hello!` example, we captured tokens that were literals into metavariables with fragment-specifiers, but
-we can categorise tokens and token trees as more than just literals in `macro_rules!`.
+![Tokens](016-macros/TokenTreeLight.svg)
+
+When working with `macro_rules!` though, Rust actually won't allow us to work with tokens directly.
+
+Instead, the smallest part we get are token trees.
+
+A token tree can be either any individual token _except_ delimiter tokens (parentheses, square brackets, and curly brackets) or a group of token trees wrapped in delimiter tokens.
+
+That statement broken into token trees looks similar but isn't _quite_ the same:
+
+![Token Trees](016-macros/TokenTree.svg)
+
+We'll see later in the video as to how this subtle difference can be extremely useful.
+
+`macro_rules!` also allows us to match against categorisations of token trees, or groups of token trees.
+
+When we wrote the `hello!` macro, we captured tokens that were specifically literals into metavariables with fragment-specifiers
+
+But we can categorise tokens tree and groups of token trees in other ways too.
 
 Here's a quick rundown of some of the most common fragment-specifiers:
-
 - `tt` matches a token tree, which is any single token or valid collection of tokens. Remember when we wrote
   `this must be present` in our silly example, that's technically a token tree, but so was `"yuki"` which it not only
   a literal, but also a token tree consisting of a single token. Every other fragment-specifier overlaps with `tt` since
