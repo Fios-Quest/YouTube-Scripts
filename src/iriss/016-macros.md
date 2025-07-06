@@ -1,12 +1,12 @@
 # Macros
 
-Macro's let us do meta programming in Rust. This allows us to treat our code as data, manipulating it, expanding it, and creating new code.
+Macro's let us do meta-programming in Rust. This allows us to treat our code as data; manipulate it, expand it, and create new code.
 
 Through this video we'll learn how to do three things with macros:
 
 1. Generate boilerplate code to minimise repeating ourselves
 2. Create pseudo-functions that can take any number of parameters
-3. Implement another programming language within Rust to demonstrate how you can create domain specific languages (DSLs)
+3. Implement another programming language within Rust to demonstrate how you can create domain-specific languages (DSLs)
 
 This series is accompanied by a free book, check the description for a link straight to this chapter.
 
@@ -30,9 +30,11 @@ This gets very powerful and, honestly, very weird.
 
 Let's take it slow.
 
+![00-macro-rules-structure.png](016-macros/00-macro-rules-structure.png)
+
 🦀👨🏻 The general layout of `macro_rules!` looks like this:
 
-🦀👨🏻 We use the macro rules macro, and then write name the macro we're creating.
+🦀👨🏻 We write `macro_rules!`, followed by the name the macro we're creating.
 
 🦀👨🏻 We then have a block containing a list of rules.
 
@@ -40,7 +42,7 @@ Let's take it slow.
 
 🦀👨🏻 Each rule also has a block that describes how code will be generated when a matching macro is invoked.
 
-Rather than it being a copy-paste, `macro_rules!` works on the Abstract Syntax Tree, an intermediate step of the compilation process where your code has already been turning into a datastructures that represents what your program does.
+Rather than it generating code with a simple copy/paste, `macro_rules!` works on the Abstract Syntax Tree, an intermediate step of the compilation process where your code has already been turning into a datastructures that represents what your program does.
 
 This makes it much safer and more fully featured that a copy-paste.
 
@@ -48,127 +50,75 @@ This makes it much safer and more fully featured that a copy-paste.
 
 We'll start by making a hello world macro that produces a string.
 
-```rust
-macro_rules! hello {
-    () => { String::from("Hello, world") };
-}
+![01-hello.png](016-macros/01-hello.png)
 
-fn main() {
-    assert_eq!(hello!(), "Hello, world".to_string());
-}
-```
+🦀👨🏻 As we said a moment ago, immediately after `macro_rules!` we provide the name of the macro we're creating, in this case `hello`.
 
-As we said above, immediately after `macro_rules!` we provide the name of the macro we're creating, in this case `hello`.
+🦀👨🏻 Our first draft won't match anything between the brackets, so we leave those empty.
 
-Our first draft won't match anything between the brackets, so we leave those empty.
+🦀👨🏻 We then have an arrow, followed by some curly brackets surrounding what our macro will generate.
 
-We then have an arrow, followed by some curly brackets surrounding what our macro will generate.
+🦀👨🏻 Here's a little test for it to show how it might be used.
 
-Here's a little test for it to show how it might be used.
+🦀👨🏻 Our `hello` macro simply creates a string containing `"Hello, world"` at the site where the macro is called (in this case inside an `assert_eq!` macro).
 
-Our `hello` macro simply creates a string containing `"Hello, world"` at the site where the macro is called (in this case inside an `assert_eq!` macro).
+🦀👨🏻 This type of macro _could_ be useful if you have a block of code you need to repeat but don't want to put it in a function, but let's be honest, that's not going to come up too often.
 
-This type of macro _could_ be useful if you have a block of code you need to repeat but don't want to put it in a function, but let's be honest, that's not going to come up too often.
+🦀👨🏻 Let's upgrade our macro to match a pattern.
 
-Let's upgrade our macro to match a pattern.
+![02-hello-tokens.png](016-macros/02-hello-tokens.png)
 
+🦀👨🏻 What madness is this?!
 
-```rust,editable
-macro_rules! hello {
-    (this must be present) => { String::from("Hello, world") };
-}
+🦀👨🏻 What kind of parameters are we passing to this macro?
 
-fn main() {
-    assert_eq!(hello!(this must be present), "Hello, world".to_string());
-    // assert_eq!(hello!(this wont compile), "Hello, world".to_string());
-}
-```
+🦀👨🏻 The key to understanding the power of macros is that they _don't_ take parameters.
 
-What madness is this?!
+🦀👨🏻 The thing in the brackets at the start of each rule is a pattern, and that pattern can be _almost_ anything.
 
-What kind of parameters are we passing to this macro?
+🦀👨🏻 The content of the macro's invocation is broken up into something called a token tree, which we'll talk about in the next section.
 
-The key to understanding the power of macros is that they _don't_ take parameters.
+🦀👨🏻 Here, `this must be present` is considered a token tree made of four tokens: `this`, `must`, `be`, `present`.
 
-The thing in the brackets at the start of each rule is a pattern, and that pattern can be _almost_ anything.
+🦀👨🏻 Different tokens won't match, so this won't compile.
 
-The contents of the macro's invocation is broken up into something called a token tree, which we'll talk about in the next section.
+🦀👨🏻 We can invoke different rules based on the matched pattern.
 
-Here, `this must be present` is considered a token tree made of four tokens: `this`, `must`, `be`, `present`.
+![03-hello-token-rules.png](016-macros/03-hello-token-rules.png)
 
-Different tokens won't match, so this won't compile.
+🦀👨🏻 We obviously can't write out _every_ possible thing that we might want match on, what if we want to be able to say "hello" to lots of different people
 
-We can invoke different rules based on the matched pattern.
+🦀👨🏻 We can capture tokens into metavariables.
 
-```rust,editable
-macro_rules! hello {
-    (world) => { String::from("Hello, world") };
-    (yuki) => { String::from("Hello, yuki") };
-}
+![04-hello-metavariables.png](016-macros/04-hello-metavariables.png)
 
-fn main() {
-    assert_eq!(hello!(world), "Hello, world".to_string());
-    assert_eq!(hello!(yuki), "Hello, yuki".to_string());
-}
-```
+🦀👨🏻 Things got a little bit weird here, right?
 
-We obviously can't write out every possible thing that we might want match on, what if we want to be able to say "hello" to lots of different people
+🦀👨🏻 Let's step through our changes.
 
-We can capture tokens into metavariables.
+🦀👨🏻 First, we added a metavariable, and you'll immediately notice this looks nothing like a normal function parameter in Rust.
 
+🦀👨🏻 In `macro_rules!`, we can parameterise tokens into "metavariables" which are preceded by a dollar symbol, followed by a colon, and what's called a fragment-specifier.
 
-```rust
-macro_rules! hello {
-    ($name:literal) => { 
-        { 
-            let mut output = String::from("Hello, ");
-            output.push_str($name);
-            output
-        }
-    };
-}
+🦀👨🏻 Fragment-specifiers are a bit like types but are specific to how we think about how Rust classifies tokens trees.
 
-fn main() {
-    assert_eq!(hello!("Yuki"), "Hello, Yuki".to_string());
-}
-```
+🦀👨🏻 We can't specify "str" here, but we can specify that we expect a `literal`, which is any raw value, such as a string slice, a number, a boolean, etc.
 
-Things got a little bit weird here, right?
+🦀👨🏻 You might still wonder what happens if our macro gets a literal that's not a `str` and the answer is it won't compile.
 
-Lets step through our changes.
+🦀👨🏻 The person who passed in the non-`str` _will_ get an error relating to the `.push_str` method on `String` though admitedly errors like this can be a little harder to work with.
 
-First, we added a metavariable, and you'll immediately notice this looks nothing like a normal function parameter in Rust.
+🦀👨🏻 That said, over the 10 years since Rust came out, contributors have done a lot of work to clarify these errors.
 
-In `macro_rules!`, we can parameterise tokens into "metavariables" which are preceded by a dollar symbol, followed by a colon, and what's called a fragment-specifier.
+🦀👨🏻 Anyway, there are a number of different fragment-specifiers, some of which overlap with each other, we'll go over more of them later in the section.
 
-Fragment-specifiers are a bit like types but are specific to how we think about how Rust classifies tokens trees.
+🦀👨🏻 The second change we've made here is that inside of the code block... we've added _another_ block.
 
-We can't specify "str" here, but we can specify that we expect a `literal`, which is any raw value, such as a string slice, a number, a boolean, etc.
+🦀👨🏻 The reason for this is that when we invoke the macro, Rust generates code at the point that you place the macro.
 
-You might still wonder what happens if our macro gets a literal that's not a `str` and the answer is it won't compile.
+🦀👨🏻 If we didn't have the extra brackets, when we use the macro in our `assert_eq!`, our code would look to Rust as if it were this:
 
-The person who passed in the non-`str` _will_ get an error relating to the `.push_str` method on `String` though admitedly errors like this can be a little harder to work with.
-
-That said, over the 10 years since Rust came out, contributors have done a lot of work to clarify these errors.
-
-Anyway, there are a number of different fragment-specifiers, some of which overlap with each other, we'll go over more of them later in the section.
-
-The second change we've made here is that inside of the code block... we've added _another_ block.
-
-The reason for this is that when we invoke the macro, Rust generates code at the point that you place the macro.
-
-If we didn't have the extra brackets, when we use the macro in our `assert_eq!`, our code would look to Rust as if it were this:
-
-```rust,compile_fail
-# fn main() {
-assert_eq!(
-    let mut output = String::from("Hello, ");
-    output.push_str("Yuki");
-    output,
-    "Hello, Yuki".to_string()
-);
-}
-```
+![04-hello-metavariables-b.png](016-macros/04-hello-metavariables-b.png)
 
 This doesn't work because `assert_eq!`, which is also a macro, expects to match expressions, represented by the fragment-specifier `:expr`.
 
@@ -184,65 +134,21 @@ When we wrap our macro in curly brackets then, and have the output as the final 
 
 This means that when we add those extra curly brackets to our macro, the generate code now looks like this, which is valid!
 
-```rust
-# fn main() {
-    assert_eq!(
-        {
-            let mut output = String::from("Hello, ");
-            output.push_str("Yuki");
-            output
-        },
-        "Hello, Yuki".to_string()
-    );
-    #
-}
-```
+![04-hello-metavariables-c.png](016-macros/04-hello-metavariables-c.png)
 
 Expressions in Rust are particularly useful as they have a type and a value, just like variables, allowing you to use them inside other expressions.
 
 Let's go deeper and add another rule. Let's bring back our original behaviour for an empty `hello!` macro:
 
-```rust
-macro_rules! hello {
-    () => { String::from("Hello, world") };
-    ($name:literal) => { 
-        { 
-            let mut output = String::from("Hello, ");
-            output.push_str($name);
-            output
-        }
-    };
-}
-
-fn main() {
-    assert_eq!(hello!(), "Hello, world".to_string());
-    assert_eq!(hello!("Yuki"), "Hello, Yuki".to_string());
-}
-```
+![05-hello-metavariables-rules.png](016-macros/05-hello-metavariables-rules.png)
 
 This is fine, but we're repeating ourselves a little bit.
 
 In case we might want to change our greeting later, lets not have `"Hello, "` twice.
 
-To maintain consistency we can call our macro from inside our macro!
+To maintain consistency, we can call our macro from inside our macro!
 
-```rust
-macro_rules! hello {
-    () => { hello!("world") };
-    ($name:literal) => { 
-        { 
-            let mut output = String::from("Hello, ");
-            output.push_str($name);
-            output
-        }
-    };
-}
-
-fn main() {
-    assert_eq!(hello!(), "Hello, world".to_string());
-    assert_eq!(hello!("Yuki"), "Hello, Yuki".to_string());
-}
-```
+![05-hello-metavariables-rules-b.png](016-macros/05-hello-metavariables-rules-b.png)
 
 We're nearly there now, but I think our hello macro is missing one critical feature; what if I want to greet lots of people at the same time?
 
@@ -262,39 +168,11 @@ The most common separators you're likely to use are commas or semicolons but you
 
 Repeats are used in rule matchers to match metavariables multiple times, and in code generation to repeat code for each used repeated metavariable.
 
-We already have zero and one metavariable dealt with, so we want a rule in our macro that takes two or more inputs:
+We already have zero and one metavariable dealt with, so we want a rule in our macro that takes two or more inputs
 
-```rust
-macro_rules! hello {
-    () => { hello!("world") };
-    ($name:literal) => { 
-        { 
-            let mut output = String::from("Hello, ");
-            output.push_str($name);
-            output
-        }
-    };
-    ($name:literal, $($rest:literal),+) => {
-        {
-            let mut output = hello!($name);
-            $(
-                output.push_str(" and ");
-                output.push_str($rest);
-            )+;
-            output
-        }
-    }
-}
+For want of space, I'm going to condense the formatting from now on, so keep an eye out for those double curly brackets
 
-fn main() {
-    assert_eq!(hello!(), "Hello, world".to_string());
-    assert_eq!(hello!("Yuki"), "Hello, Yuki".to_string());
-    assert_eq!(
-        hello!("Yuki", "Daniel", "Indra"),
-        "Hello, Yuki and Daniel and Indra".to_string()
-    );
-}
-```
+![05-hello-metavariables-rules-c.png](016-macros/05-hello-metavariables-rules-c.png)
 
 Our new rule looks a bit like the previous one, but now there's a comma after `$name:literal` and then a repeat pattern.
 
@@ -308,22 +186,9 @@ We then have another repeat pattern that contains the `$rest` metavariable. Beca
 
 If we were to unwrap the code generated for the final test, it would look something like this:
 
-```rust
-    assert_eq!(
-    {
-        let mut output = String::from("Hello, ");
-        output.push_str("Yuki");
-        output.push_str(" and ");
-        output.push_str("Daniel");
-        output.push_str(" and ");
-        output.push_str("Indra");
-        output
-    },
-    "Hello, Yuki and Daniel and Indra".to_string()
-);
-```
+![05-hello-metavariables-rules-d.png](016-macros/05-hello-metavariables-rules-d.png)
 
-Hopefully you're probably starting to see why writing a quick macro can really cut down on repeated boilerplate code, and we're really only making a quick toy macro to demonstrate the power they provide!
+Hopefully, you're starting to see why writing a quick macro can really cut down on repeated boilerplate code, and we're really only making a quick toy macro to demonstrate the power they provide!
 
 You might be wondering if we can use repeats to reduce the number of arms we have.
 
@@ -386,31 +251,27 @@ BUT, we can work around that with very low-cost language features like slices.
 
 ```rust
 macro_rules! hello {
-    ($($names:literal),*) => {
-        {
-            let names = [$($names, )*];
+    ($($names:literal),*) => {{
+        let names = [$($names, )*];
 
-            use std::iter::Peekable;
-            use std::slice::Iter;
-            let mut names_iter: Peekable<Iter<&str>> = names.iter().peekable();
+        use std::iter::Peekable;
+        use std::slice::Iter;
+        let mut names_iter: std::iter::Peekable<Iter<&str>> = names.iter().peekable();
 
-            let mut output = String::from("Hello, ");
-            output.push_str(names_iter.next().unwrap_or(&"world"));
+        let mut output = String::from("Hello, ");
+        output.push_str(names_iter.next().unwrap_or(&"world"));
 
-            while let Some(next_name) = names_iter.next() {
+        while let Some(next_name) = names_iter.next() {
+            match names_iter.peek() {
+                Some(_) => output.push_str(", "),
+                None => output.push_str(" and "),
+            }
+            output.push_str(next_name);
+        };
 
-                match names_iter.peek() {
-                    Some(_) => output.push_str(", "),
-                    None => output.push_str(" and "),
-                }
-                output.push_str(next_name);
-
-            };
-
-            output.push_str("!");
-            output
-        }
-    }
+        output.push_str("!");
+        output
+    }}
 }
 
 fn main() {
