@@ -90,7 +90,7 @@ We'll start by making a hello world macro that produces a string.
 
 🦀👨🏻 We can capture tokens into metavariables.
 
-![04-hello-metavariables.png](016-macros/04-hello-metavariables.png)
+![04-hello-metavariables.png](016-macros/04-hello-metavariables-a.png)
 
 🦀👨🏻 Things got a little bit weird here, right?
 
@@ -120,9 +120,9 @@ We'll start by making a hello world macro that produces a string.
 
 ![04-hello-metavariables-b.png](016-macros/04-hello-metavariables-b.png)
 
-This doesn't work because `assert_eq!`, which is also a macro, expects to match expressions, represented by the fragment-specifier `:expr`.
+🦀👨🏻 This doesn't work because `assert_eq!`, which is also a macro, expects to match expressions, represented by the fragment-specifier `:expr`.
 
-Oh no, I'm going to have to work out how to vocalise a few weird things this episode, wish me luck!
+🦀👨🏻 Oh no, I'm going to have to work out how to vocalise a few unique things this episode, wish me luck!
 
 In Rust, an expression is a segment of code that produces a value.
 
@@ -132,27 +132,27 @@ Blocks of code, even multiple statements, surrounded by `{ ... }` are expression
 
 When we wrap our macro in curly brackets then, and have the output as the final line, our code block becomes a single expression the value of which is the `output`.
 
-This means that when we add those extra curly brackets to our macro, the generate code now looks like this, which is valid!
+🦀👨🏻 This means that when we add those extra curly brackets to our macro, the generate code now looks like this, which is valid!
 
 ![04-hello-metavariables-c.png](016-macros/04-hello-metavariables-c.png)
 
-Expressions in Rust are particularly useful as they have a type and a value, just like variables, allowing you to use them inside other expressions.
+🦀👨🏻 Expressions in Rust are particularly useful as they have a type and a value, just like variables, allowing you to use them inside other expressions.
 
-Let's go deeper and add another rule. Let's bring back our original behaviour for an empty `hello!` macro:
+🦀👨🏻 Let's go deeper and add another rule. Let's bring back our original behaviour for an empty `hello!` macro:
 
-![05-hello-metavariables-rules.png](016-macros/05-hello-metavariables-rules.png)
+![05-hello-metavariables-rules.png](016-macros/05-hello-metavariables-rules-a.png)
 
-This is fine, but we're repeating ourselves a little bit.
+🦀👨🏻 This is fine, but we're repeating ourselves a little bit.
 
-In case we might want to change our greeting later, lets not have `"Hello, "` twice.
+🦀👨🏻 We should avoid having the `"Hello, "` string slice twice.
 
-To maintain consistency, we can call our macro from inside our macro!
+🦀👨🏻 To maintain consistency, we can call our macro from inside our macro!
 
 ![05-hello-metavariables-rules-b.png](016-macros/05-hello-metavariables-rules-b.png)
 
-We're nearly there now, but I think our hello macro is missing one critical feature; what if I want to greet lots of people at the same time?
+We're nearly there now, but I think our hello macro is missing one critical feature; what if we want to greet lots of people at the same time?
 
-We can "repeat" patterns inside macros by surrounding them with `$(...)` followed by either a `?`, a `+`, or a `*`.
+We can "repeat" patterns inside macros by surrounding them with parenthesis preceded by a dollar and followed by either a `?`, a `+`, or a `*`.
 
 Similar to regex rules:
 
@@ -162,29 +162,33 @@ Similar to regex rules:
 
 You can add a separator to the repeat pattern by placing it before the repeat character.
 
-This token can be almost anything except the repeat symbols, or token used for delimiters.
+This token can be almost anything except the repeat symbols or delimiter tokens.
 
-The most common separators you're likely to use are commas or semicolons but you could use tilde's if you're twisted.
+The most common separators you're likely to use are commas or semicolons, but you could use something like tilde's... if you're twisted.
 
-Repeats are used in rule matchers to match metavariables multiple times, and in code generation to repeat code for each used repeated metavariable.
+---
+
+Repeats are used in rule matchers to match patterns, including metavariables, multiple times
+
+They're also used in code generation to repeat code for each repeated metavariable.
 
 We already have zero and one metavariable dealt with, so we want a rule in our macro that takes two or more inputs
 
 For want of space, I'm going to condense the formatting from now on, so keep an eye out for those double curly brackets
 
-![05-hello-metavariables-rules-c.png](016-macros/05-hello-metavariables-rules-c.png)
+🦀👨🏻 ![05-hello-metavariables-rules-c.png](016-macros/05-hello-metavariables-rules-c.png)
 
-Our new rule looks a bit like the previous one, but now there's a comma after `$name:literal` and then a repeat pattern.
+🦀👨🏻 Our new rule looks a bit like the previous one, but now there's a comma after `$name:literal` and then a repeat pattern.
 
-The repeat pattern contains a metavariable, `$rest:literal`, which will be used to store all metavariables passed to the macro after the first.
+🦀👨🏻 The repeat pattern contains a metavariable, `$rest:literal`, which will be used to store all metavariables passed to the macro after the first.
 
-It uses a `+` to show that there must be at least one additional metavariable, but there may be many.
+🦀👨🏻 It uses a `+` to show that there must be at least one additional metavariable, but there may be many.
 
-In the body of the macro, we initialise our output in much the same way as we do in the version with no inputs, by calling the hello macro with the first metavariable.
+🦀👨🏻 In the body of the macro, we initialise our output in much the same way as we do in the version with no inputs, by calling the hello macro with the first metavariable.
 
-We then have another repeat pattern that contains the `$rest` metavariable. Because we have a repeated metavariable inside a repeated block, this block will be repeated for every `literal` that `$rest` matched to.
+🦀👨🏻 We then have another repeat pattern that contains the `$rest` metavariable. Because we have a repeated metavariable inside a repeated block, this block will be repeated for every `literal` that `$rest` matched to.
 
-If we were to unwrap the code generated for the final test, it would look something like this:
+🦀👨🏻 If we were to unwrap the code generated for the final test, it would look something like this:
 
 ![05-hello-metavariables-rules-d.png](016-macros/05-hello-metavariables-rules-d.png)
 
@@ -192,46 +196,29 @@ Hopefully, you're starting to see why writing a quick macro can really cut down 
 
 You might be wondering if we can use repeats to reduce the number of arms we have.
 
-We unfortunately can't do things like treat the first or last element of a repeat differently using macro repeats *cough*foreshadowing*cough*, but we can merge the second and third arms using a `*`.
+We unfortunately can't do things like treat the first or last element of a repeat differently using macro repeats *undecided look*,
 
-```rust
-macro_rules! hello {
-    () => { hello!("world") };
-    ($name:literal $(, $rest:literal)*) => {
-        {
-            let mut output = String::from("Hello, ");
-            output.push_str($name);
-            $(
-                output.push_str(" and ");
-                output.push_str($rest);
-            )*;
-            output
-        }
-    }
-}
+but we can merge the second and third arms using a `*`.
 
-fn main() {
-    assert_eq!(hello!(), "Hello, world".to_string());
-    assert_eq!(hello!("Yuki"), "Hello, Yuki".to_string());
-    assert_eq!(hello!("Yuki", "Daniel", "Indra"), "Hello, Yuki and Daniel and Indra".to_string());
-}
-```
+![06-hello-better-loops.png](016-macros/06-hello-better-loops.png)
 
-You'll notice that the `,` after `$name:literal` has moved inside the repeat pattern, and the `,` being used as a separator for the repeat has been dropped.
+🦀👨🏻 You'll notice that the `,` after `$name:literal` has moved inside the repeat pattern, and the `,` being used as a separator for the repeat has been dropped.
 
-This is because if we were to try to match `($name:literal, $($rest:literal)*)` then we'd _have_ to use the comma after the first literal so `hello!("Yuki")` would _have_ to be `hello!("Yuki", )` to work.
+🦀👨🏻 This is because if we were to try to match `($name:literal, $($rest:literal)*)` then we'd _have_ to use the comma after the first literal so `hello!("Yuki")` would _have_ to be `hello!("Yuki", )` to work.
 
-Instead, we've moved the comma token to the beginning of the repeat pattern which can contain things that aren't metavariables too.
+🦀👨🏻 Instead, we've moved the comma token to the beginning of the repeat pattern which can contain things that aren't metavariables too.
 
-Ok, so I wasn't quite lying about not being able to treat the first and last differently with macro repeats, we can't do it with _just_ macro repeats
+Ok, so I wasn't exactly lying about not being able to treat the first and last elements differently with macro repeats... we can't do it with _just_ macro repeats
 
 BUT, we can work around that with very low-cost language features like slices.
 
+![07-hello-with-simple-rust.png](016-macros/07-hello-with-simple-rust.png)
+
 🦀👨🏻 We can split the names out directly into an array.
 
-🦀👨🏻 This will be parto of the binary, created at compile time, so doesn't require any heap allocations
+🦀👨🏻 This will be part of the binary, created at compile time, so doesn't require any heap allocations
 
-🦀👨🏻 Next lets get an iterator over the array.
+🦀👨🏻 Next let's get an iterator over the array.
 
 🦀👨🏻 By precisely specifying the type of the iterator here we can avoid Rust not knowing what to do if the iterator is empty.
 
@@ -239,59 +226,23 @@ BUT, we can work around that with very low-cost language features like slices.
 
 // ToDo: This line was a mess in the original
 
-🦀👨🏻 If no metavariables were passed then the array will be empty so we'll use our default value
+🦀👨🏻 If no metavariables were passed, then the array will be empty, so we'll use our default value
 
 🦀👨🏻 We'll loop until no more items are in the iterator
 
-🦀👨🏻 By looking ahead to see if there's more items we can now use grammatically correct separators
+🦀👨🏻 By looking ahead to see if there are more items, we can now use grammatically correct separators
 
 🦀👨🏻 And we'll add an exclamation mark for funsies!
 
-🦀👨🏻 Finally lets update our tests for the new output
-
-```rust
-macro_rules! hello {
-    ($($names:literal),*) => {{
-        let names = [$($names, )*];
-
-        use std::iter::Peekable;
-        use std::slice::Iter;
-        let mut names_iter: std::iter::Peekable<Iter<&str>> = names.iter().peekable();
-
-        let mut output = String::from("Hello, ");
-        output.push_str(names_iter.next().unwrap_or(&"world"));
-
-        while let Some(next_name) = names_iter.next() {
-            match names_iter.peek() {
-                Some(_) => output.push_str(", "),
-                None => output.push_str(" and "),
-            }
-            output.push_str(next_name);
-        };
-
-        output.push_str("!");
-        output
-    }}
-}
-
-fn main() {
-    // Note, we've updated our tests with the new and improved output!
-    assert_eq!(hello!(), "Hello, world!".to_string());
-    assert_eq!(hello!("Yuki"), "Hello, Yuki!".to_string());
-    assert_eq!(
-        hello!("Yuki", "Daniel", "Indra"),
-        "Hello, Yuki, Daniel and Indra!".to_string()
-    );
-}
-```
+🦀👨🏻 Finally, we need to update our tests for the improved output
 
 Being able to quickly compose macros like this can save us a lot of time when repeating the same code over and over.
 
-## Tokens, Metavariables and Fragment-Specifiers
+## Tokens, Metavariables, and Fragment-Specifiers
 
-Rust (like most languages) turns your human written code into tokens.
+Rust (like most languages) turns your human written code into tokens that it can process.
 
-Groups of tokens form a token trees.
+Groups of tokens _can_ form a token tree.
 
 If tokens are protons and neutrons, then token trees are atoms, and are the smallest thing that we can process in `macro_rules!`.
 
@@ -399,47 +350,13 @@ In the Fio's Job Tracker app I've been building with the help of folks in the ch
 
 For example, at time of writing, I allow the user to create things like `Flags`, `Roles` and `Values` that belong to `Company`s, so those types implement the trait `HasCompany`.
 
-```rust
-pub trait HasCompany {
-    fn get_company_id(&self) -> u128;
-}
-```
+![08-usefully-dry-no-macros-a.png](016-macros/08-usefully-dry-no-macros-a.png)
 
 The trait itself does not provide any code, so each item that implements this code must decide on its behaviour, lets use Role as an example.
 
 I'm also a huge advocate of unit tests so lets look at how that works with a test
 
-```rust
-pub trait HasCompany {
-    fn get_company_id(&self) -> u128;
-}
-
-#[derive(Clone, Debug)]
-pub struct Role {
-    pub id: u128,
-    pub company_id: u128,
-    pub name: String,
-}
-
-impl HasCompany for Role {
-    fn get_company_id(&self) -> u128 {
-        self.company_id
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn test_role_get_company_by_id() {
-        let role = Role {
-            id: 1234,
-            company_id: 5678,
-            name: "Test company".into(),
-        };
-        assert_eq!(role.get_company_id(), 5678);
-    }
-}
-```
+![08-usefully-dry-no-macros-b.png.png](016-macros/08-usefully-dry-no-macros-b.png.png)
 
 That's fine, but we're going to be doing this for every item that implements that trait, as well as for every implementation of every other trait.
 
@@ -449,25 +366,11 @@ To minimise the work I created two traits.
 
 The first, allows us to implement `HasCompany` for any type that has a `company_id` field.
 
-```rust
-macro_rules! impl_has_company {
-    ($name:ty) => {
-        impl HasCompany for $name {
-            fn get_company_id(&self) -> u128 {
-                self.company_id
-            }
-        }
-    }
-}
-```
+![09-usefully-dry-impl-company.png](016-macros/09-usefully-dry-impl-company.png)
 
 Obviously if you try to implement this trait on something without this field, the macro will generate code that can't compile, but it wouldn't stop you writing your own implementation if you need to.
 
 Role does implement this field though so we can now implement the trait with one short line:
-
-```rust
-impl_has_company(Role);
-```
 
 Replacing the test is a little harder though.
 
@@ -489,72 +392,11 @@ To do this, I created a TestHelper that can be applied to almost any type, its o
 
 🦀👨🏻 The test here is super rudimentary, we're just going to make sure that when we request the id, we get something back.
  
-```rust
-pub trait TestHelper: Sized {
-    fn new_test() -> Result<Self, String>;
-}
-
-macro_rules! test_has_company_id {
-    ($test_name:ident, $storable:ty) => {
-        #[test]
-        fn $test_name() {
-            let storable = $storable::new_test()
-                .expect("Could not create storable");
-            assert!(storable.get_company_id() > 0);
-        }
-    };
-}
-```
+![10-usefully-dry-test-a.png](016-macros/10-usefully-dry-test-a.png)
 
 🦀👨🏻 By implementing the trait for each type that I want to test, I can add tests trivially like this:
 
-```rust
-# pub trait TestHelper: Sized {
-#     fn new_test() -> Result<Self, String>;
-# }
-# 
-# macro_rules! test_has_company_id {
-#     ($test_name:ident, $storable:ident) => {
-#         #[test]
-#         fn $test_name() {
-#             let storable = $storable::new_test().expect("Could not create storable");
-#             assert!(storable.get_company_id() > 0);
-#         }
-#     };
-# }
-# 
-# pub trait HasCompany {
-#     fn get_company_id(&self) -> u128;
-# }
-# 
-# #[derive(Clone, Debug)]
-# pub struct Role {
-#     pub id: u128,
-#     pub company_id: u128,
-#     pub name: String,
-# }
-# 
-# impl HasCompany for Role {
-#     fn get_company_id(&self) -> u128 {
-#         self.company_id
-#     }
-# }
-# 
-impl TestHelper for Role {
-    fn new_test() -> Result<Role, String> {
-        Ok(Role {
-            id: 1234,
-            company_id: 5678,
-            name: "Test company".into(),
-        })
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    test_has_company_id!(test_role_get_company_by_id, Role);
-}
-```
+![10-usefully-dry-test-b.png](016-macros/10-usefully-dry-test-b.png)
 
 This might initially seem like just as much work as before, as we add more traits and more types that implement those traits, the amount of extra work drops dramatically.
 
