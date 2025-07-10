@@ -340,11 +340,15 @@ If you want to see the full list of fragment-specifiers, or more complete descri
 
 ## Usefully DRY
 
-I'm going to show you how I'm using macros in my own code, but for the purposes of IRISS I've modified the examples to avoid using crates which, if you haven't notice, I've avoided in this series to focus purely on the core language.
+The example we've run through in this video to build up our understanding of how macro's work have been very abstract and not very useful, so I wanted to go over a quick example of how I've started using Macro's.
 
-If you're comfortable with crates and async Rust, and are curious what the differences are in my real code, there's a link to the app I've been building on stream in the description of this video.
+I'm going to show you how I'm using macros in my own code, but for the purposes of IRISS I've modified the examples to avoid using crates.
 
-The example we ran through to build up our understanding of how macro's work is very abstract and not very useful, so I wanted to go over a quick example of how I've started using Macro's.
+Crates are how we share reusable Rust code between each other but, if you haven't noticed, I've avoided using any in this series to focus purely on the core language.
+
+If you're comfortable with crates and async Rust already, and you're curious what the differences are in my real code, there's a link to the app I've been building on stream in the description of this video.
+
+---
 
 In the Fio's Job Tracker app I've been building with the help of folks in the chat of my streams, I've leaned heavily into composing my types using Traits to form common behaviour.
 
@@ -352,25 +356,41 @@ For example, at time of writing, I allow the user to create things like `Flags`,
 
 ![08-usefully-dry-no-macros-a.png](016-macros/08-usefully-dry-no-macros-a.png)
 
-The trait itself does not provide any code, so each item that implements this code must decide on its behaviour, lets use Role as an example.
+🦀👨🏻 Here's an example of how that might look for `Role`.
 
-I'm also a huge advocate of unit tests so lets look at how that works with a test
+🦀👨🏻 Role is pretty simple, it has an id of its own, an id that links it to a company, and a name.
+
+🦀👨🏻The `HasCompany` trait has a single method, `get_company_id`.
+
+🦀👨🏻 When we implement it for role, it just returns that `company_id` which is `Copy` so the code is nice and simple.
+
+🦀👨🏻 I'm also a huge advocate for unit testing and even for code like this we ought to provide a simple test.
 
 ![08-usefully-dry-no-macros-b.png.png](016-macros/08-usefully-dry-no-macros-b.png.png)
 
-That's fine, but we're going to be doing this for every item that implements that trait, as well as for every implementation of every other trait.
+🦀👨🏻 This is pretty nice code, even if I do say so myself.
 
-Every time we add a new storable item we'll have to add implement the trait and write tests for its implementation.
+🦀👨🏻 It's clean, easy to understand, easy to use.
 
-To minimise the work I created two traits.
+🦀👨🏻 But, is it DRY?
 
-The first, allows us to implement `HasCompany` for any type that has a `company_id` field.
+DRY in programming stands for "Don't Repeat Yourself"
+
+Every time we add a new storable item we'll have to implement the trait and write tests for its implementation.
+
+This isn't the only Trait that is applied to storable types, and we also have multiple storage types that also have lots of shared traits that all need implementing and testing.
+
+---
+
+🦀👨🏻 Let's look at how macros can help us generate boilerplate code.
 
 ![09-usefully-dry-impl-company.png](016-macros/09-usefully-dry-impl-company.png)
 
-Obviously if you try to implement this trait on something without this field, the macro will generate code that can't compile, but it wouldn't stop you writing your own implementation if you need to.
+🦀👨🏻 First, we'll create a macro that will implement `HasCompany` for any type that has a `company_id` field.
 
-Role does implement this field though so we can now implement the trait with one short line:
+🦀👨🏻 Obviously if you try to implement this trait on something without this field, the macro will generate code that won't compile, but if you _need_ to do that, you can still write your own implementation.
+
+🦀👨🏻 Role does implement this field though so we can now implement the trait with one short line
 
 Replacing the test is a little harder though.
 
@@ -398,9 +418,25 @@ To do this, I created a TestHelper that can be applied to almost any type, its o
 
 ![10-usefully-dry-test-b.png](016-macros/10-usefully-dry-test-b.png)
 
-This might initially seem like just as much work as before, as we add more traits and more types that implement those traits, the amount of extra work drops dramatically.
+🦀👨🏻 This might initially seem like just as much work as before, as we add more traits and more types that implement those traits, the amount of extra work drops dramatically.
 
-Furthermore, there are more complex examples in the Job Tracker like the ones that manage the storing and recalling of these storable objects.
+🦀👨🏻 Furthermore, there are more complex examples in Fio's Job Tracker like the ones that manage the storing and recalling of these storable objects.
+
+## Next Time
+
+A quick shout out to the folks supporting me on Patreon, you're all amazing!
+
+This was already quite a long video but there's so much more to cover with macros, so I've split this video in two!
+
+In the second part we're going to cover domain specific languages by making a macro that can parse a turing complete language.
+
+If that interests you don't forget to like and subscribe.
+
+If you're _really_ curious though, this part of the book is already published so if you can't wait for the next video, you can learn how we achieve this over there, link in the description.
+
+I'm still streaming on Tuesday's at 7pm UK time, but we're nearing the end of making our Job Tracking app, and I'd love to hear if anyone has any suggestions on what to do next.
+
+Whether I see you on the stream, or here, I'll see you next time.
 
 ## Domain Specific Languages
 
