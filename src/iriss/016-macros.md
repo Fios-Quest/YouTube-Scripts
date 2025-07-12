@@ -541,21 +541,7 @@ We're going to use two macros.
 
 First let's create a macro that initialises the program.
 
-```rust
-macro_rules! brain_fudge {
-    ($($token:tt)+) => {
-        {
-            let mut memory = vec![0u8];
-            let mut pointer = 0_usize;
-            let mut output: Vec<u8> = Vec::new();
-
-            // todo: breaking up the token tree
-
-            output.into_iter().map(char::from).collect::<String>()
-        }
-    };
-}
-```
+![11-brain-fudge-minimal-a.png](016-macros/11-brain-fudge-minimal-a.png)
 
 Let's break it down:
 
@@ -587,65 +573,39 @@ Again, this won't be appropriate for every use case which is why utilising `Writ
 
 So now we need to handle the token stream, but before we do that, lets write some tests.
 
-We'll keep it simple for now, while this is the official Hello World, we _can_ output the same thing with only 3 of the 8 possible instructions:
-```bf
-++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.
-```
-```rust,should_panic
-# macro_rules! brain_fudge {
-#     ($($token:tt)+) => {
-#         {
-#             let mut memory = vec![0u8];
-#             let mut pointer = 0_usize;
-#             let mut output: Vec<u8> = Vec::new();
-# 
-#             // todo: breaking up the token tree
-# 
-#             output.into_iter().map(char::from).collect::<String>()
-#         }
-#     };
-# }
-# 
-# fn main() {
-assert_eq!(
-    brain_fudge!(
-        // Comments are not part of the AST so will not be processed by macros
+We'll keep it simple for now, while this is the official Hello World
 
-        // H
-        ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-        // e
-        >+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-        // l
-        >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-        // l
-        >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-        // o
-        >+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-        //
-        >++++++++++++++++++++++++++++++++.
-        // W
-        >+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-        // o
-        >+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-        // r
-        >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-        // l
-        >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-        // d
-        >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-        // !
-        >+++++++++++++++++++++++++++++++++.
-        // \n
-        >++++++++++.
-    ),
-    "Hello World!\n"
-);
-# }
-```
+![11-brain-fudge-minimal-b.png](016-macros/11-brain-fudge-minimal-b.png)
+
+and... actually that's kinda hard to read, lets add some white space
+
+![11-brain-fudge-minimal-b2.png](016-macros/11-brain-fudge-minimal-b2.png)
+
+yeah... no that didn't help
+
+anyway, while this is hello world, so is this
+
+![11-brain-fudge-minimal-c.png](016-macros/11-brain-fudge-minimal-d.png)
+
+In the official hello world, loops are used to increment values, but in _this_ version, we're just adding to the current cell
+
+exporting it
+
+and moving to the next bit of memory
+
+Let's turn this into a test
+
+We're only using three characters out of the eight used in brain fudge, so to make this test pass, we only need to implement these operations
 
 So now we have a test, lets work out how to handle greater than, add, and period.
 
 We'll create a new helper macro that can handle each of these tokens with its by having a rule that matches a specific token.
+
+
+![11-brain-fudge-minimal-d.png](016-macros/11-brain-fudge-minimal-c.png)
+
+
+
 
 We also need a special rule to handle when there are no tokens left so we have an endpoint to our recursive calls.
 
@@ -669,110 +629,17 @@ This arm matches ., it takes the value at the current pointer and writes it to o
 
 This arm matches there being no Brain Fudge tokens left, it does nothing
 
-```rust,no_run
-macro_rules! brain_fudge_helper {
-    // +
-    ($memory:ident; $pointer:ident; $buffer:ident; + $($tokens:tt)*) => {
-        $memory[$pointer] = $memory[$pointer].wrapping_add(1);
-        brain_fudge_helper!($memory; $pointer; $buffer; $($tokens)*);
-    };
-    // >
-    ($memory:ident; $pointer:ident; $buffer:ident; > $($tokens:tt)*) => {
-        $pointer = $pointer.saturating_add(1);
-        while $pointer >= $memory.len() {
-            $memory.push(0);
-        }
-        brain_fudge_helper!($memory; $pointer; $buffer; $($tokens)*);
-    };
-    // .
-    ($memory:ident; $pointer:ident; $buffer:ident; . $($tokens:tt)*) => {
-        $buffer.push($memory[$pointer]);
-        brain_fudge_helper!($memory; $pointer; $buffer; $($tokens)*);
-    };
-    // NOP
-    ($memory:ident; $pointer:ident; $buffer:ident; ) => {};
-}
-```
-
 Now we can update our `brain_fudge!` macro to call the helper, passing in the program state.
 
-```rust,compile_fail
-# macro_rules! brain_fudge_helper {
-#     ($memory:ident; $pointer:ident; $buffer:ident; + $($token:tt)*) => {
-#         $memory[$pointer] = $memory[$pointer].wrapping_add(1);
-#         brain_fudge_helper!($memory; $pointer; $buffer; $($token)*);
-#     };
-#     ($memory:ident; $pointer:ident; $buffer:ident; > $($token:tt)*) => {
-#         $pointer = $pointer.wrapping_add(1);
-#         while $pointer >= $memory.len() {
-#             $memory.push(0);
-#         }
-#         brain_fudge_helper!($memory; $pointer; $buffer; $($token)*);
-#     };
-#     ($memory:ident; $pointer:ident; $buffer:ident; . $($token:tt)*) => {
-#         $buffer.push($memory[$pointer]);
-#         brain_fudge_helper!($memory; $pointer; $buffer; $($token)*);
-#     };
-#     ($memory:ident; $pointer:ident; $buffer:ident; ) => {};
-# }
-# 
-macro_rules! brain_fudge {
-    ($($token:tt)+) => {
-        {
-            let mut data = vec![0u8];
-            let mut pointer = 0_usize;
-            let mut output: Vec<u8> = Vec::new();
+![11-brain-fudge-minimal-e.png](016-macros/11-brain-fudge-minimal-e.png)
 
-            // We update our brain_fudge macro to pass the program state to the
-            // helper
-            brain_fudge_helper!(data; pointer; output; $($token)+);
-            
-            output.into_iter().map(char::from).collect::<String>()
-        }
-    };
-}
+So we now have a program that has our brain fudge macro, a brain fudge helper macro that passes 3 of the 8 tokens
 
-# fn main() {
-assert_eq!(
-    brain_fudge!(
-        // You know what's hidden here 😅
-#         // H
-#         ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // e
-#         >+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // l
-#         >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // l
-#         >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // o
-#         >+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         //
-#         >++++++++++++++++++++++++++++++++.
-#         // W
-#         >+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // o
-#         >+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // r
-#         >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // l
-#         >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // d
-#         >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // !
-#         >+++++++++++++++++++++++++++++++++.
-#         // \n
-#         >++++++++++.
-    ),
-    "Hello World!\n"
-);
-# }
-```
+and a test... when build the program
 
-And, when we run our program errors.
+we get this error
 
-```text
-error: recursion limit reached while expanding `brain_fudge_helper!`
-```
+![11-brain-fudge-minimal-f.png](016-macros/11-brain-fudge-minimal-f.png)
 
 Rust keeps track of how many times we recurse, that is, call a function or macro from the same function or macro.
 
@@ -786,79 +653,7 @@ We probably could come up with a way of mixing loops and recurssion but to keep 
 
 The `recursion_limit` attribute applies at the crate level so be careful with this one!
 
-```rust
-#![recursion_limit = "2048"]
-
-macro_rules! brain_fudge_helper {
-    // ... snip ...
-#     ($memory:ident; $pointer:ident; $buffer:ident; + $($token:tt)*) => {
-#         $memory[$pointer] = $memory[$pointer].wrapping_add(1);
-#         brain_fudge_helper!($memory; $pointer; $buffer; $($token)*);
-#     };
-#     ($memory:ident; $pointer:ident; $buffer:ident; > $($token:tt)*) => {
-#         $pointer = $pointer.wrapping_add(1);
-#         while $pointer >= $memory.len() {
-#             $memory.push(0);
-#         }
-#         brain_fudge_helper!($memory; $pointer; $buffer; $($token)*);
-#     };
-#     ($memory:ident; $pointer:ident; $buffer:ident; . $($token:tt)*) => {
-#         $buffer.push($memory[$pointer]);
-#         brain_fudge_helper!($memory; $pointer; $buffer; $($token)*);
-#     };
-#     ($memory:ident; $pointer:ident; $buffer:ident; ) => {};
-}
-
-macro_rules! brain_fudge {
-    // ... snip ...
-#     ($($token:tt)+) => {
-#         {
-#             let mut data = vec![0u8];
-#             let mut pointer = 0_usize;
-#             let mut output: Vec<u8> = Vec::new();
-#             
-#             brain_fudge_helper!(data; pointer; output; $($token)+);
-#             
-#             output.into_iter().map(char::from).collect::<String>()
-#         }
-#     };
-# }
-# 
-# fn main() {
-assert_eq!(
-    brain_fudge!(
-        // You know what's hidden here 😅
-#         // H
-#         ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // e
-#         >+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // l
-#         >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // l
-#         >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // o
-#         >+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         //
-#         >++++++++++++++++++++++++++++++++.
-#         // W
-#         >+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // o
-#         >+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // r
-#         >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // l
-#         >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // d
-#         >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // !
-#         >+++++++++++++++++++++++++++++++++.
-#         // \n
-#         >++++++++++.
-    ),
-    "Hello World!\n"
-);
-# }
-```
+![11-brain-fudge-minimal-z.png](016-macros/11-brain-fudge-minimal-z.png)
 
 And now our code runs!
 
@@ -880,69 +675,21 @@ This means to make our loop arm work, we can match against any token tree that s
 
 Let's write up the missing arms and run our test against the original Hello World program:
 
-```rust,compile_fail
-#![recursion_limit = "2048"]
 
-macro_rules! brain_fudge_helper {
-    // ... Snip previous arms ...
-#     // +
-#     ($memory:ident; $pointer:ident; $buffer:ident; + $($token:tt)*) => {
-#         $memory[$pointer] = $memory[$pointer].wrapping_add(1);
-#         brain_fudge_helper!($memory; $pointer; $buffer; $($token)*);
-#     };
-    // -: Like + but does a wrapping_sub instead 
-    ($memory:ident; $pointer:ident; $buffer:ident; - $($token:tt)*) => {
-        $memory[$pointer] = $memory[$pointer].wrapping_sub(1);
-        brain_fudge_helper!($memory; $pointer; $buffer; $($token)*);
-    };
-#     // >
-#     ($memory:ident; $pointer:ident; $buffer:ident; > $($token:tt)*) => {
-#         $pointer = $pointer.saturating_add(1);
-#         while $pointer >= $memory.len() {
-#             $memory.push(0);
-#         }
-#         brain_fudge_helper!($memory; $pointer; $buffer; $($token)*);
-#     };
+// -: Like + but does a wrapping_sub instead 
+![11-brain-fudge-minimal-h1.png](016-macros/12-brain-fudge-mostly-implemented-a.png)
+
     // <: Like > but does a saturating_sub instead. This is why saturating is
     // potentially better here as we don't want to wrap and have to fill a Vec
     // with around 18,446,744,073,709,551,615 zeros
-    ($memory:ident; $pointer:ident; $buffer:ident; < $($token:tt)*) => {
-        $pointer = $pointer.saturating_sub(1);
-        brain_fudge_helper!($memory; $pointer; $buffer; $($token)*);
-    };
+![11-brain-fudge-minimal-h2.png](016-macros/12-brain-fudge-mostly-implemented-b.png)
+
     // []: And here's the magic! We match against $loop_statement tokens inside
     // a square bracket pair potentially followed by more tokens. We then loop
     // while the data at the pointer isn't 0, and once it is, move on to the
     // rest of the tokens
-    ($memory:ident; $pointer:ident; $buffer:ident; [$($loop_statement:tt)+] $($token:tt)*) => {
-        while $memory[$pointer] != 0 {
-            brain_fudge_helper!($memory; $pointer; $buffer; $($loop_statement)+);
-        }
-        brain_fudge_helper!($memory; $pointer; $buffer; $($token)*);
-    };
-#     // .
-#     ($memory:ident; $pointer:ident; $buffer:ident; . $($token:tt)*) => {
-#         $buffer.push($memory[$pointer]);
-#         brain_fudge_helper!($memory; $pointer; $buffer; $($token)*);
-#     };
-#     // end of program
-#     ($memory:ident; $pointer:ident; $buffer:ident; ) => {};
-}
- 
-macro_rules! brain_fudge {
-    // ... Snip ...
-#     ($($token:tt)+) => {
-#         {
-#             let mut data = vec![0u8];
-#             let mut pointer = 0_usize;
-#             let mut output: Vec<u8> = Vec::new();
-# 
-#             brain_fudge_helper!(data; pointer; output; $($token)+);
-#             
-#             output.into_iter().map(char::from).collect::<String>()
-#         }
-#     };
-}
+![11-brain-fudge-minimal-h3.png](016-macros/12-brain-fudge-mostly-implemented-c.png)
+
 
 # fn main() {
 assert_eq!(
