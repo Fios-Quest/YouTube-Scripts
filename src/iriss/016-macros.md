@@ -677,71 +677,29 @@ Let's write up the missing arms and run our test against the original Hello Worl
 
 
 // -: Like + but does a wrapping_sub instead 
-![11-brain-fudge-minimal-h1.png](016-macros/12-brain-fudge-mostly-implemented-a.png)
+![12-brain-fudge-mostly-implemented-a.png](016-macros/12-brain-fudge-mostly-implemented-a.png)
 
     // <: Like > but does a saturating_sub instead. This is why saturating is
     // potentially better here as we don't want to wrap and have to fill a Vec
     // with around 18,446,744,073,709,551,615 zeros
-![11-brain-fudge-minimal-h2.png](016-macros/12-brain-fudge-mostly-implemented-b.png)
+![12-brain-fudge-mostly-implemented-b.png](016-macros/12-brain-fudge-mostly-implemented-b.png)
 
     // []: And here's the magic! We match against $loop_statement tokens inside
     // a square bracket pair potentially followed by more tokens. We then loop
     // while the data at the pointer isn't 0, and once it is, move on to the
     // rest of the tokens
-![11-brain-fudge-minimal-h3.png](016-macros/12-brain-fudge-mostly-implemented-c.png)
+![12-brain-fudge-mostly-implemented-c.png](016-macros/12-brain-fudge-mostly-implemented-c.png)
 
+Now proper test
 
-# fn main() {
-assert_eq!(
-    brain_fudge!(
-        ++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.
-    ),
-    "Hello World!\n"
-);
-# // keeping the old test to make sure we don't have a regression
-# assert_eq!(
-#     brain_fudge!(
-#         // H
-#         ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // e
-#         >+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // l
-#         >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // l
-#         >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // o
-#         >+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         //
-#         >++++++++++++++++++++++++++++++++.
-#         // W
-#         >+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // o
-#         >+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // r
-#         >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // l
-#         >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // d
-#         >++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.
-#         // !
-#         >+++++++++++++++++++++++++++++++++.
-#         // \n
-#         >++++++++++.
-#     ),
-#     "Hello World!\n"
-# );
-# }
-```
+![12-brain-fudge-mostly-implemented-d.png](016-macros/12-brain-fudge-mostly-implemented-d.png)
 
 And when we run this... it doesn't work again 
 
 The important part of the error is this.
 
-```text
-67 |         ++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.
-   |                                                          ^^ no rules expected this token in macro call
-   |
-```
+![12-brain-fudge-mostly-implemented-e.png](016-macros/12-brain-fudge-mostly-implemented-e.png)
+
 
 Why is it pointing at two greater than signs? We have a match on those already right?
 
@@ -753,13 +711,7 @@ Specifically it's a "right shift" operator.
 
 Tokens in Rust can be multiple characters. Here are our problem tokens and what they mean in each language:
 
-| token | Rust                         | Brain Fudge                        |
-|-------|------------------------------|------------------------------------|
-| `..`  | range literal                | output the current value twice     |
-| `>>`  | right shift                  | increment pointer twice            |
-| `<<`  | left shift                   | decrement pointer twice            |
-| `->`  | function/closure return type | decrement value, increment pointer |
-| `<-`  | unused but reserved          | decrement pointer, decrement value |
+![12-brain-fudge-mostly-implemented-f.png](016-macros/12-brain-fudge-mostly-implemented-f.png)
 
 Soooo... we need to take care of these special cases, unfortunately.
 
@@ -767,89 +719,7 @@ Luckily, while `>>` is a right shift token, `> >` _is_ two greater than tokens.
 
 Tokens can be seperated by whitespace and will still match the `tt` fragment-specifier, all we need to do is split the token and pass it back into the macro
 
-```rust
-#![recursion_limit = "2048"]
-
-macro_rules! brain_fudge {
-    // snip
-#     ($($token:tt)+) => {
-#         {
-#             let mut data = vec![0u8];
-#             let mut pointer = 0_usize;
-#             let mut output = Vec::new();
-#             
-#             brain_fudge_helper!(data; pointer; output; $($token)+);
-#             
-#             output.into_iter().map(char::from).collect::<String>()
-#         }
-#     };
-}
-
-macro_rules! brain_fudge_helper {
-    // ... Snip existing tokens ...
-#     // +
-#     ($memory:ident; $pointer:ident; $buffer:ident; + $($token:tt)*) => {
-#         $memory[$pointer] = $memory[$pointer].wrapping_add(1);
-#         brain_fudge_helper!($memory; $pointer; $buffer; $($token)*);
-#     };
-#     // -
-#     ($memory:ident; $pointer:ident; $buffer:ident; - $($token:tt)*) => {
-#         $memory[$pointer] = $memory[$pointer].wrapping_sub(1);
-#         brain_fudge_helper!($memory; $pointer; $buffer; $($token)*);
-#     };
-#     // >
-#     ($memory:ident; $pointer:ident; $buffer:ident; > $($token:tt)*) => {
-#         $pointer = $pointer.saturating_add(1);
-#         while $pointer >= $memory.len() {
-#             $memory.push(0);
-#         }
-#         brain_fudge_helper!($memory; $pointer; $buffer; $($token)*);
-#     };
-#     // <
-#     ($memory:ident; $pointer:ident; $buffer:ident; < $($token:tt)*) => {
-#         $pointer = $pointer.saturating_sub(1);
-#         brain_fudge_helper!($memory; $pointer; $buffer; $($token)*);
-#     };
-#     // .
-#     ($memory:ident; $pointer:ident; $buffer:ident; . $($token:tt)*) => {
-#         $buffer.push($memory[$pointer]);
-#         brain_fudge_helper!($memory; $pointer; $buffer; $($token)*);
-#     };
-#     // []
-#     ($memory:ident; $pointer:ident; $buffer:ident; [$($loop_statement:tt)+] $($token:tt)*) => {
-#         while $memory[$pointer] != 0 {
-#             brain_fudge_helper!($memory; $pointer; $buffer; $($loop_statement)+);
-#         }
-#         brain_fudge_helper!($memory; $pointer; $buffer; $($token)*);
-#     };
-#     // end of program
-#     ($memory:ident; $pointer:ident; $buffer:ident; ) => {};
-
-    // Special "token" cases
-    ($memory:ident; $pointer:ident; $buffer:ident; >> $($token:tt)*) => {
-        brain_fudge_helper!($memory; $pointer; $buffer; > > $($token)*);
-    };
-    ($memory:ident; $pointer:ident; $buffer:ident; << $($token:tt)*) => {
-        brain_fudge_helper!($memory; $pointer; $buffer; < < $($token)*);
-    };
-    ($memory:ident; $pointer:ident; $buffer:ident; .. $($token:tt)*) => {
-        brain_fudge_helper!($memory; $pointer; $buffer; . . $($token)*);
-    };
-    ($memory:ident; $pointer:ident; $buffer:ident; <- $($token:tt)*) => {
-        brain_fudge_helper!($memory; $pointer; $buffer; < - $($token)*);
-    };
-    ($memory:ident; $pointer:ident; $buffer:ident; -> $($token:tt)*) => {
-        brain_fudge_helper!($memory; $pointer; $buffer; - > $($token)*);
-    };
-}
-
-# fn main() {
-assert_eq!(
-    brain_fudge!(++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.),
-    "Hello World!\n"
-);
-# }
-```
+![12-brain-fudge-mostly-implemented-g.png](016-macros/12-brain-fudge-mostly-implemented-g.png)
 
 And we just created an interpreter for another language inside Rust! That's kind of wild, right?!
 
@@ -861,15 +731,7 @@ Can you edit our `brain_fudge!` macro to work with programs that take input via 
 
 To do this I recommend making the following change to the `brain_fudge!` macro:
 
-```rust
-macro_rules! brain_fudge {
-     ($input:ident, $output:ident, $($token:tt)+) => {
-        {
-          // That's all you get!
-        }
-     };
-}
-```
+![13-brain-fudge-challenge.png](016-macros/13-brain-fudge-challenge.png)
 
 There is a test in the IRISS book that you can copy for a ROT13 program, that's a program that takes each alphabetical letter and shifts it 13 characters.
 
