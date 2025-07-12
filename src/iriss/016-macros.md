@@ -1,12 +1,18 @@
 # Macros
 
-Macro's let us do meta-programming in Rust. This allows us to treat our code as data; manipulate it, expand it, and create new code.
+Macro's let us do meta-programming in Rust. 
 
-Through this video we'll learn how to do three things with macros:
+Metaprogramming allows us to treat our code as data; manipulate it, expand it, and generate new code.
 
-1. Generate boilerplate code to minimise repeating ourselves
-2. Create pseudo-functions that can take any number of parameters
-3. Implement another programming language within Rust to demonstrate how you can create domain-specific languages (DSLs)
+Macro's let us do a _lot_ of things so I've split this video into two parts.
+
+This time we're going to go through the basics of creating macro's with macro rules.
+
+That includes pattern matching, metavariables and repetitions.
+
+I also want to show you a real work example of how I use them.
+
+In part two of the video, we'll create a domain specific language (DSL) within Rust using macros.
 
 This series is accompanied by a free book, check the description for a link straight to this chapter.
 
@@ -14,17 +20,19 @@ My name is Daniel, welcome to IRISS.
 
 ---
 
-There are two types of macro in Rust, `macro_rules!`, also known as declarative macros, or macros by example, and `proc macro`s.
+There are two types of macro in Rust, `macro_rules!`, also known as declarative macros, or macros by example... and `proc macro`s.
 
-We won't be dealing with `proc macro`s in this book, but they are what allow you to create custom Derive macros, and custom attributes.
+We won't be dealing with `proc macro`s in this series, but they allow you to create custom Derive macros, custom attributes.
 
 They also let you make the same function style macros we'll be making with `macro_rules!` but can unlock even more power!
 
 If you'd like me to do a video on this after the IRISS series, let me know in the comments.
 
+Today though, we're just covering `macro_rules!`
+
 ## Anatomy of `macro_rules!`
 
-`macro_rules!` is, itself, a macro, providing its own DSL that allows you to create more macros.
+`macro_rules!` is, itself, a macro, providing its own domain specific language that allows you to create more macros.
 
 This gets very powerful and, honestly, very weird.
 
@@ -34,21 +42,23 @@ Let's take it slow.
 
 🦀👨🏻 The general layout of `macro_rules!` looks like this:
 
-🦀👨🏻 We write `macro_rules!`, followed by the name the macro we're creating.
+🦀👨🏻 We write `macro_rules!`, with an exclamation mark, followed by the name the macro we're creating.
 
 🦀👨🏻 We then have a block containing a list of rules.
 
-🦀👨🏻 The rule contains a pattern to match on, and potentially contains metavariables which we'll discuss later.
+🦀👨🏻 The rule contains a pattern to match on, which itself potentially contains metavariables which we'll discuss later.
 
-🦀👨🏻 Each rule also has a block that describes how code will be generated when a matching macro is invoked.
+🦀👨🏻 Each rule also has a block that describes how code will be generated when the macro is invoked with a matching pattern.
 
-Rather than it generating code with a simple copy/paste, `macro_rules!` works on the Abstract Syntax Tree, an intermediate step of the compilation process where your code has already been turning into a datastructures that represents what your program does.
+Rather than it generating code with a simple copy/paste, `macro_rules!` works on the Abstract Syntax Tree or AST.
 
-This makes it much safer and more fully featured that a copy-paste.
+This is an intermediate step of the compilation process where your code has already been turned into datastructures that represents what your program does.
+
+This makes it much safer and more fully featured that copy-paste style macros.
 
 ## Hello, macro!
 
-We'll start by making a hello world macro that produces a string.
+We'll start by making a hello world macro that produces a `String`.
 
 ![01-hello.png](016-macros/01-hello.png)
 
@@ -62,7 +72,7 @@ We'll start by making a hello world macro that produces a string.
 
 🦀👨🏻 Our `hello` macro simply creates a string containing `"Hello, world"` at the site where the macro is called (in this case inside an `assert_eq!` macro).
 
-🦀👨🏻 This type of macro _could_ be useful if you have a block of code you need to repeat but don't want to put it in a function, but let's be honest, that's not going to come up too often.
+🦀👨🏻 This type of macro _could_ be useful if you have a block of code you need to repeat but don't want to put in a function, but let's be honest, that's not going to come up very often.
 
 🦀👨🏻 Let's upgrade our macro to match a pattern.
 
@@ -78,7 +88,7 @@ We'll start by making a hello world macro that produces a string.
 
 🦀👨🏻 The content of the macro's invocation is broken up into something called a token tree, which we'll talk about in the next section.
 
-🦀👨🏻 Here, `this must be present` is considered a token tree made of four tokens: `this`, `must`, `be`, `present`.
+🦀👨🏻 Here, `this must be present` is parsed as four token trees: `this`, `must`, `be`, `present`.
 
 🦀👨🏻 Different tokens won't match, so this won't compile.
 
@@ -88,7 +98,7 @@ We'll start by making a hello world macro that produces a string.
 
 🦀👨🏻 We obviously can't write out _every_ possible thing that we might want match on, what if we want to be able to say "hello" to lots of different people
 
-🦀👨🏻 We can capture tokens into metavariables.
+🦀👨🏻 Instead, we can capture tokens into metavariables.
 
 ![04-hello-metavariables.png](016-macros/04-hello-metavariables-a.png)
 
@@ -100,17 +110,17 @@ We'll start by making a hello world macro that produces a string.
 
 🦀👨🏻 In `macro_rules!`, we can parameterise tokens into "metavariables" which are preceded by a dollar symbol, followed by a colon, and what's called a fragment-specifier.
 
-🦀👨🏻 Fragment-specifiers are a bit like types but are specific to how we think about how Rust classifies tokens trees.
+🦀👨🏻 Fragment-specifiers are a bit like types but are specific to how Rust classifies tokens trees.
 
-🦀👨🏻 We can't specify "str" here, but we can specify that we expect a `literal`, which is any raw value, such as a string slice, a number, a boolean, etc.
+🦀👨🏻 We can't specify `str` here, but we can specify that we expect a `literal`, which is any raw value, such as a string slice, a number, a boolean, etc.
 
 🦀👨🏻 You might still wonder what happens if our macro gets a literal that's not a `str` and the answer is it won't compile.
 
-🦀👨🏻 The person who passed in the non-`str` _will_ get an error relating to the `.push_str` method on `String` though admitedly errors like this can be a little harder to work with.
+🦀👨🏻 The person who passed in the non-`str` _will_ get an error relating to the `.push_str` method on `String` though admittedly errors like this can be a little harder to work with.
 
-🦀👨🏻 That said, over the 10 years since Rust came out, contributors have done a lot of work to clarify these errors.
+🦀👨🏻 That said, over the 10 years since Rust came out, contributors to the language have done a lot of work to clarify these errors.
 
-🦀👨🏻 Anyway, there are a number of different fragment-specifiers, some of which overlap with each other, we'll go over more of them later in the section.
+🦀👨🏻 Anyway, there are a number of different fragment-specifiers, some of which overlap with each other, we'll go over more of them in the next section.
 
 🦀👨🏻 The second change we've made here is that inside of the code block... we've added _another_ block.
 
@@ -128,11 +138,11 @@ In Rust, an expression is a segment of code that produces a value.
 
 So `String::from("Hello, ")` is an expression, but `let mut output = String::from("Hello, ");` is not, that's a `:stmt`, a statement.
 
-Blocks of code, even multiple statements, surrounded by `{ ... }` are expressions though, they have a value, even if the value is the unit type `()`.
+Blocks of code, even multiple statements, surrounded by curly brackets are expressions though, they have a value, even if the value is the unit type.
 
-When we wrap our macro in curly brackets then, and have the output as the final line, our code block becomes a single expression the value of which is the `output`.
+When we wrap our macro in curly brackets then, and have some value as the final line, our code block becomes a single expression the value and type of which matches that final value.
 
-🦀👨🏻 This means that when we add those extra curly brackets to our macro, the generate code now looks like this, which is valid!
+🦀👨🏻 This means that when we add those extra curly brackets to our macro, the generated code now looks like this, which is valid!
 
 ![04-hello-metavariables-c.png](016-macros/04-hello-metavariables-c.png)
 
@@ -144,9 +154,9 @@ When we wrap our macro in curly brackets then, and have the output as the final 
 
 🦀👨🏻 This is fine, but we're repeating ourselves a little bit.
 
-🦀👨🏻 We should avoid having the `"Hello, "` string slice twice.
+🦀👨🏻 We should avoid having two copies of the  `"Hello, "` string slice.
 
-🦀👨🏻 To maintain consistency, we can call our macro from inside our macro!
+🦀👨🏻 To maintain consistency, we can call our macro recursively!
 
 ![05-hello-metavariables-rules-b.png](016-macros/05-hello-metavariables-rules-b.png)
 
@@ -162,7 +172,7 @@ Similar to regex rules:
 
 You can add a separator to the repeat pattern by placing it before the repeat character.
 
-This token can be almost anything except the repeat symbols or delimiter tokens.
+This token can be almost anything except the repeat tokens or delimiter tokens.
 
 The most common separators you're likely to use are commas or semicolons, but you could use something like tilde's... if you're twisted.
 
@@ -186,7 +196,9 @@ For want of space, I'm going to condense the formatting from now on, so keep an 
 
 🦀👨🏻 In the body of the macro, we initialise our output in much the same way as we do in the version with no inputs, by calling the hello macro with the first metavariable.
 
-🦀👨🏻 We then have another repeat pattern that contains the `$rest` metavariable. Because we have a repeated metavariable inside a repeated block, this block will be repeated for every `literal` that `$rest` matched to.
+🦀👨🏻 We then have another repeat pattern that contains the `$rest` metavariable.
+
+🦀👨🏻 Because we have a repeated metavariable inside a repeated block, this block will be repeated for every `literal` that `$rest` matched to.
 
 🦀👨🏻 If we were to unwrap the code generated for the final test, it would look something like this:
 
@@ -204,7 +216,7 @@ but we can merge the second and third arms using a `*`.
 
 🦀👨🏻 You'll notice that the `,` after `$name:literal` has moved inside the repeat pattern, and the `,` being used as a separator for the repeat has been dropped.
 
-🦀👨🏻 This is because if we were to try to match `($name:literal, $($rest:literal)*)` then we'd _have_ to use the comma after the first literal so `hello!("Yuki")` would _have_ to be `hello!("Yuki", )` to work.
+🦀👨🏻 This is because if we were to try to match `($name:literal, $($rest:literal),*)` then we'd _have_ to use the comma after the first literal so `hello!("Yuki")` would _have_ to be `hello!("Yuki", )` to work.
 
 🦀👨🏻 Instead, we've moved the comma token to the beginning of the repeat pattern which can contain things that aren't metavariables too.
 
@@ -220,21 +232,19 @@ BUT, we can work around that with very low-cost language features like slices.
 
 🦀👨🏻 Next let's get an iterator over the array.
 
-🦀👨🏻 By precisely specifying the type of the iterator here we can avoid Rust not knowing what to do if the iterator is empty.
+🦀👨🏻 By precisely specifying the type of the iterator here we can avoid Rust not knowing what type to infer if the iterator is empty.
 
 🦀👨🏻 We'll initialise our string as before.
-
-// ToDo: This line was a mess in the original
 
 🦀👨🏻 If no metavariables were passed, then the array will be empty, so we'll use our default value
 
 🦀👨🏻 We'll loop until no more items are in the iterator
 
-🦀👨🏻 By looking ahead to see if there are more items, we can now use grammatically correct separators
+🦀👨🏻 By looking ahead to see if there are more items, we can now use grammatically correct separators between names
 
 🦀👨🏻 And we'll add an exclamation mark for funsies!
 
-🦀👨🏻 Finally, we need to update our tests for the improved output
+🦀👨🏻 Finally, we do need to update our tests for the improved grammar
 
 Being able to quickly compose macros like this can save us a lot of time when repeating the same code over and over.
 
@@ -246,9 +256,13 @@ Groups of tokens _can_ form a token tree.
 
 If tokens are protons and neutrons, then token trees are atoms, and are the smallest thing that we can process in `macro_rules!`.
 
-An important differentiation with Token Trees to a simple list of tokens are that delimiters (bracket pairs, eg `()`, `{}` and `[]`) are matched up for us.
+An important differentiation with Token Trees to a simple list of tokens are that delimiters (that's parentheses, square brackets and curly brackets) are matched up for us.
 
-For example, the token tree for the Rust statement `let hello = String::from("Hello");` might look like this:
+For example, if we break the statement `let hello = String::from("Hello");` into tokens, its looks like this.
+
+![Tokens.svg](016-macros/Tokens.svg)
+
+But if we break it into token trees, then the parenthesis is a single token tree containing the token tree "Hello".
 
 ![TokenTreeLight.svg](macros/TokenTreeLight.svg)
 
@@ -258,23 +272,25 @@ Here's a quick rundown of some of the most common fragment-specifiers:
 
 ---
 
-`tt` matches a token tree, which is any single token or valid collection of tokens.
+`tt` matches a token tree, which is any single token (other than delimiters) or valid collection of delimited tokens.
 
 Remember when we wrote `this must be present` in our silly example, each word is a token tree.
 
-Token trees can be delimited by parenthisis, square brackets or curly bracks so while `this must be present` is four token trees, we can make it a single token tree containaing four token trees by surrounding it in brackets.
+Token trees can be delimited by parentheses, square brackets or curly brackets so while `this must be present` is four token trees, we can make it a single token tree containing four token trees by surrounding it in brackets.
 
 ---
 
 `literal` is the specifier we already used to match against a literal value.
 
-This matches integers, floats, booleans, characters and a whole set of string types (string literals, raw string literals, byte string literals, C string literals).
+This matches integers, floats, booleans, characters and a whole set of string types, string literals, raw string literals, byte string literals, C string literals, and so on.
 
 ---
 
 `expr` it short for "expression".
 
-An expression is any token tree that has a value (eg, `String::from("Hello")` is an  expression, but `let hello = String::from("Hello");` is not).
+An expression is any token tree that has a value.
+
+For example, `String::from("Hello")` is an expression, but `let hello = String::from("Hello");` is not.
 
 ---
 
@@ -288,7 +304,9 @@ Of course, all block expressions are also expressions so you may not end up usin
 
 `stmt` is short for "statement".
 
-This is a line of code or a statement, e.g. both `String::from("Hello")` and `let hello = String::from("Hello");` are statements.
+This is a line of code or an item.
+
+For example `let hello = String::from("Hello");` is a statement but so are items like modules, structs and functions. 
 
 ---
 
@@ -296,17 +314,19 @@ This is a line of code or a statement, e.g. both `String::from("Hello")` and `le
 
 These are things like variable names, type names, or any word that's not specifically a keyword.
 
-That said, you can make a raw identifier using `r#`, so while `true` is not an identifier because it's a keyword but `r#true` is an identifier.
+That said, you can make a raw identifier using `r#`, so while `true` is not an identifier because it's a keyword, `r#true` is an identifier.
 
 You're most likely to see raw identifiers in macros, particularly ones that are for domain specific languages.
 
-In our earlier `this must be present`, each of those tokens is also an identifier, identifiers don't need to exist in code.
+For example, DSLs that are used to create HTML might want to let you use the "type" keyword, as it's an HTML attribute, so you might see `r#type` to make it a raw identifier.
+
+In our earlier `this must be present` example, each of those tokens is also an identifier, identifiers don't need to exist in code.
 
 ---
 
 `path` is a type path.
 
-This could be an identifier on its own, or a sequence of identifiers seperated by `::` tokens.
+This could be an identifier on its own, or a sequence of identifiers seperated by double colon tokens.
 
 Like with identifiers, they don't need to exist within the code, they just need to fit the pattern.
 
@@ -332,7 +352,11 @@ For example `(dyn Clone + Send)` is what's called a parenthesised type, though t
 
 ---
 
-`meta`, this is a weird one, it matches attributes. Could be useful if you want to construct a type and pass in attributes to apply to it.
+`meta`, this is a weird one, it matches attributes.
+
+It could be useful if you want to construct a type and pass in attributes to apply to it.
+
+---
 
 There's a lot here, and I've ignored the backwards compatible fragment specifiers (some specifiers have changed behaviour over the years).
 
@@ -340,7 +364,7 @@ If you want to see the full list of fragment-specifiers, or more complete descri
 
 ## Usefully DRY
 
-The example we've run through in this video to build up our understanding of how macro's work have been very abstract and not very useful, so I wanted to go over a quick example of how I've started using Macro's.
+The example we ran through earlier to build up our understanding of how macro's work was very abstract and not very useful, so I wanted to go over how I've started using Macro's.
 
 I'm going to show you how I'm using macros in my own code, but for the purposes of IRISS I've modified the examples to avoid using crates.
 
@@ -350,7 +374,7 @@ If you're comfortable with crates and async Rust already, and you're curious wha
 
 ---
 
-In the Fio's Job Tracker app I've been building with the help of folks in the chat of my streams, I've leaned heavily into composing my types using Traits to form common behaviour.
+In the Job Tracker app I've been building with the help of folks on my streams, I've leaned heavily into composing my types using Traits to form common behaviour.
 
 For example, at time of writing, I allow the user to create things like `Flags`, `Roles` and `Values` that belong to `Company`s, so those types implement the trait `HasCompany`.
 
@@ -374,11 +398,11 @@ For example, at time of writing, I allow the user to create things like `Flags`,
 
 🦀👨🏻 But, is it DRY?
 
-DRY in programming stands for "Don't Repeat Yourself"
+DRY in this context, stands for "Don't Repeat Yourself"
 
 Every time we add a new storable item we'll have to implement the trait and write tests for its implementation.
 
-This isn't the only Trait that is applied to storable types, and we also have multiple storage types that also have lots of shared traits that all need implementing and testing.
+This isn't the only Trait that is applied to storable types, and we have multiple storage types that also have lots of shared traits that all need implementing and testing.
 
 ---
 
@@ -390,15 +414,15 @@ This isn't the only Trait that is applied to storable types, and we also have mu
 
 🦀👨🏻 Obviously if you try to implement this trait on something without this field, the macro will generate code that won't compile, but if you _need_ to do that, you can still write your own implementation.
 
-🦀👨🏻 Role does implement this field though so we can now implement the trait with one short line
+🦀👨🏻 Role does have this field though so we can now implement the trait with one short line
 
 Replacing the test is a little harder though.
 
-We can't easily write a generic test that will work for `Role` and `Flag` as these types are instantiated in different ways.
+We can't easily write a generic test that will work for `Role` and `Flag` and `Values` as these types are instantiated in different ways.
 
 What we need to do is have a consistent way to create test instances of the thing being tested.
 
-To do this, I created a TestHelper that can be applied to almost any type, its only job is to return an instantiated 
+🦀👨🏻 To do this, I created a TestHelper that can be applied to almost any type, its only job is to return an instantiated value of that type.
 
 🦀👨🏻 This trait exists in a central location
 
