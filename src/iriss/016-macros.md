@@ -4,15 +4,13 @@ Macro's let us do meta-programming in Rust.
 
 Metaprogramming allows us to treat our code as data; manipulate it, expand it, and generate new code.
 
-Macro's let us do a _lot_ of things so I've split this video into two parts.
+Macro's let us do a _lot_ of things, but I've broken this video into three parts
 
-This time we're going to go through the basics of creating macro's with macro rules.
+1. We'll go over the basics of how you can use `macro_rules!` to make your own macros
 
-That includes pattern matching, metavariables and repetitions.
+2. I'll show a somewhat real life use case I've been working with lately
 
-I also want to show you a real work example of how I use them.
-
-In part two of the video, we'll create a domain specific language (DSL) within Rust using macros.
+3. And we'll implement another programming language within Rust to demonstrate how you can create domain-specific languages (DSLs)
 
 This series is accompanied by a free book, check the description for a link straight to this chapter.
 
@@ -22,7 +20,7 @@ My name is Daniel, welcome to IRISS.
 
 There are two types of macro in Rust, `macro_rules!`, also known as declarative macros, or macros by example... and `proc macro`s.
 
-We won't be dealing with `proc macro`s in this series, but they allow you to create custom Derive macros, custom attributes.
+We won't be dealing with `proc macro`s in this series, but they allow you to create custom Derive macros and custom attributes.
 
 They also let you make the same function style macros we'll be making with `macro_rules!` but can unlock even more power!
 
@@ -50,11 +48,11 @@ Let's take it slow.
 
 🦀👨🏻 Each rule also has a block that describes how code will be generated when the macro is invoked with a matching pattern.
 
-Rather than it generating code with a simple copy/paste, `macro_rules!` works on the Abstract Syntax Tree or AST.
+Rather than it generating code with a simple copy/paste, macros work on the Abstract Syntax Tree or AST.
 
 This is an intermediate step of the compilation process where your code has already been turned into datastructures that represents what your program does.
 
-This makes it much safer and more fully featured that copy-paste style macros.
+This makes it much safer and more fully featured that copy-paste style macros you might have worked with in the past.
 
 ## Hello, macro!
 
@@ -72,7 +70,9 @@ We'll start by making a hello world macro that produces a `String`.
 
 🦀👨🏻 Our `hello` macro simply creates a string containing `"Hello, world"` at the site where the macro is called (in this case inside an `assert_eq!` macro).
 
-🦀👨🏻 This type of macro _could_ be useful if you have a block of code you need to repeat but don't want to put in a function, but let's be honest, that's not going to come up very often.
+🦀👨🏻 This type of macro _could_ be useful if you have a block of code you need to repeat but don't want to put in a function.
+
+🦀👨🏻 But let's be honest, that's not going to come up very often.
 
 🦀👨🏻 Let's upgrade our macro to match a pattern.
 
@@ -88,15 +88,19 @@ We'll start by making a hello world macro that produces a `String`.
 
 🦀👨🏻 The content of the macro's invocation is broken up into something called a token tree, which we'll talk about in the next section.
 
-🦀👨🏻 Here, `this must be present` is parsed as four token trees: `this`, `must`, `be`, `present`.
+🦀👨🏻 Here, `this must be present` is parsed as four token trees: `this`, `must`, `be` and `present`.
 
-🦀👨🏻 Different tokens won't match, so this won't compile.
+🦀👨🏻 Different tokens won't match our pattern, so this won't compile.
 
 🦀👨🏻 We can invoke different rules based on the matched pattern.
 
 ![03-hello-token-rules.png](016-macros/03-hello-token-rules.png)
 
-🦀👨🏻 We obviously can't write out _every_ possible thing that we might want match on, what if we want to be able to say "hello" to lots of different people
+🦀👨🏻 So we could match several people by making a rule for each of them.
+
+🦀👨🏻 We obviously can't write out _every_ possible thing that we might want match on though.
+
+🦀👨🏻 What if we want to be able to say "hello" to lots of different people?
 
 🦀👨🏻 Instead, we can capture tokens into metavariables.
 
@@ -116,9 +120,9 @@ We'll start by making a hello world macro that produces a `String`.
 
 🦀👨🏻 You might still wonder what happens if our macro gets a literal that's not a `str` and the answer is it won't compile.
 
-🦀👨🏻 The person who passed in the non-`str` _will_ get an error relating to the `.push_str` method on `String` though admittedly errors like this can be a little harder to work with.
+🦀👨🏻 The person who passed in the non-`str` _will_ get an error relating to the `.push_str` method on `String` though admittedly errors on macros like this can be a little harder to work with.
 
-🦀👨🏻 That said, over the 10 years since Rust came out, contributors to the language have done a lot of work to clarify these errors.
+🦀👨🏻 That said, over the 10 years since Rust came out, contributors to the language have done a lot of work to clarify errors across the board.
 
 🦀👨🏻 Anyway, there are a number of different fragment-specifiers, some of which overlap with each other, we'll go over more of them in the next section.
 
@@ -132,7 +136,7 @@ We'll start by making a hello world macro that produces a `String`.
 
 🦀👨🏻 This doesn't work because `assert_eq!`, which is also a macro, expects to match expressions, represented by the fragment-specifier `:expr`.
 
-🦀👨🏻 Oh no, I'm going to have to work out how to vocalise a few unique things this episode, wish me luck!
+🦀👨🏻 Oh... I'm going to have to work out how to vocalise a few unique things this episode, wish me luck!
 
 In Rust, an expression is a segment of code that produces a value.
 
@@ -142,23 +146,25 @@ Blocks of code, even multiple statements, surrounded by curly brackets are expre
 
 When we wrap our macro in curly brackets then, and have some value as the final line, our code block becomes a single expression the value and type of which matches that final value.
 
-🦀👨🏻 This means that when we add those extra curly brackets to our macro, the generated code now looks like this, which is valid!
-
 ![04-hello-metavariables-c.png](016-macros/04-hello-metavariables-c.png)
+
+🦀👨🏻 This means that when we add those extra curly brackets to our macro, the generated code now looks like this, which is valid!
 
 🦀👨🏻 Expressions in Rust are particularly useful as they have a type and a value, just like variables, allowing you to use them inside other expressions.
 
-🦀👨🏻 Let's go deeper and add another rule. Let's bring back our original behaviour for an empty `hello!` macro:
+🦀👨🏻 Let's go deeper and add another rule.
+
+🦀👨🏻 Let's bring back our original behaviour for an empty `hello!` macro:
 
 ![05-hello-metavariables-rules.png](016-macros/05-hello-metavariables-rules-a.png)
 
 🦀👨🏻 This is fine, but we're repeating ourselves a little bit.
 
-🦀👨🏻 We should avoid having two copies of the  `"Hello, "` string slice.
-
-🦀👨🏻 To maintain consistency, we can call our macro recursively!
+🦀👨🏻 We should avoid having two copies of the `"Hello, "` string slice.
 
 ![05-hello-metavariables-rules-b.png](016-macros/05-hello-metavariables-rules-b.png)
+
+🦀👨🏻 To maintain consistency, we can call our macro recursively!
 
 We're nearly there now, but I think our hello macro is missing one critical feature; what if we want to greet lots of people at the same time?
 
@@ -174,7 +180,7 @@ You can add a separator to the repeat pattern by placing it before the repeat ch
 
 This token can be almost anything except the repeat tokens or delimiter tokens.
 
-The most common separators you're likely to use are commas or semicolons, but you could use something like tilde's... if you're twisted.
+The most common separators you're likely to use are commas or semicolons, but you could use something like tilde's... ya know... if you're twisted.
 
 ---
 
@@ -184,9 +190,9 @@ They're also used in code generation to repeat code for each repeated metavariab
 
 We already have zero and one metavariable dealt with, so we want a rule in our macro that takes two or more inputs
 
-For want of space, I'm going to condense the formatting from now on, so keep an eye out for those double curly brackets
+![05-hello-metavariables-rules-c.png](016-macros/05-hello-metavariables-rules-c.png)
 
-🦀👨🏻 ![05-hello-metavariables-rules-c.png](016-macros/05-hello-metavariables-rules-c.png)
+🦀👨🏻 For want of space, I'm going to condense the formatting from now on, so keep an eye out for those double curly brackets
 
 🦀👨🏻 Our new rule looks a bit like the previous one, but now there's a comma after `$name:literal` and then a repeat pattern.
 
@@ -196,7 +202,7 @@ For want of space, I'm going to condense the formatting from now on, so keep an 
 
 🦀👨🏻 In the body of the macro, we initialise our output in much the same way as we do in the version with no inputs, by calling the hello macro with the first metavariable.
 
-🦀👨🏻 We then have another repeat pattern that contains the `$rest` metavariable.
+🦀👨🏻 We then have another repeat pattern that contains code with the `$rest` metavariable.
 
 🦀👨🏻 Because we have a repeated metavariable inside a repeated block, this block will be repeated for every `literal` that `$rest` matched to.
 
@@ -206,7 +212,7 @@ For want of space, I'm going to condense the formatting from now on, so keep an 
 
 Hopefully, you're starting to see why writing a quick macro can really cut down on repeated boilerplate code, and we're really only making a quick toy macro to demonstrate the power they provide!
 
-You might be wondering if we can use repeats to reduce the number of arms we have.
+You might be wondering if we can use repeats to reduce the number of match arms we have.
 
 We unfortunately can't do things like treat the first or last element of a repeat differently using macro repeats *undecided look*,
 
@@ -236,15 +242,17 @@ BUT, we can work around that with very low-cost language features like slices.
 
 🦀👨🏻 We'll initialise our string as before.
 
-🦀👨🏻 If no metavariables were passed, then the array will be empty, so we'll use our default value
+🦀👨🏻 If no metavariables were passed, then the array will be empty, so we'll use our default value, otherwise we take the first item
 
-🦀👨🏻 We'll loop until no more items are in the iterator
+🦀👨🏻 Then we'll loop until no more items are in the iterator
 
 🦀👨🏻 By looking ahead to see if there are more items, we can now use grammatically correct separators between names
 
 🦀👨🏻 And we'll add an exclamation mark for funsies!
 
 🦀👨🏻 Finally, we do need to update our tests for the improved grammar
+
+--- Missing Image ---
 
 Being able to quickly compose macros like this can save us a lot of time when repeating the same code over and over.
 
@@ -264,7 +272,7 @@ For example, if we break the statement `let hello = String::from("Hello");` into
 
 But if we break it into token trees, then the parenthesis is a single token tree containing the token tree "Hello".
 
-![TokenTreeLight.svg](macros/TokenTreeLight.svg)
+![TokenTreeLight.svg](016-macros/TokenTree.svg)
 
 In the previous `hello!` example, we captured tokens that were literals into metavariables with fragment-specifiers, but we can categorise tokens and token trees as more than just literals in `macro_rules!`.
 
@@ -282,7 +290,7 @@ Token trees can be delimited by parentheses, square brackets or curly brackets s
 
 `literal` is the specifier we already used to match against a literal value.
 
-This matches integers, floats, booleans, characters and a whole set of string types, string literals, raw string literals, byte string literals, C string literals, and so on.
+This matches integers, floats, booleans, characters and a whole set of string types including; string literals, raw string literals, byte string literals, C string literals, and so on.
 
 ---
 
@@ -402,7 +410,7 @@ DRY in this context, stands for "Don't Repeat Yourself"
 
 Every time we add a new storable item we'll have to implement the trait and write tests for its implementation.
 
-This isn't the only Trait that is applied to storable types, and we have multiple storage types that also have lots of shared traits that all need implementing and testing.
+This isn't the only Trait that is applied to "storable" types, and we have multiple "storage" types that also have lots of shared traits that all need implementing and testing.
 
 ---
 
@@ -430,7 +438,7 @@ What we need to do is have a consistent way to create test instances of the thin
 
 🦀👨🏻 We can make this test by taking two metavariables separated by a comma token.
 
-🦀👨🏻 Test name is an ident which we'll use to name the thest function
+🦀👨🏻 Test name is an ident which we'll use to name the test function
 
 🦀👨🏻 Storable is what I call any object in this project that can be stored, and in this case is the test subject.
 
@@ -446,31 +454,19 @@ What we need to do is have a consistent way to create test instances of the thin
 
 🦀👨🏻 Furthermore, there are more complex examples in Fio's Job Tracker like the ones that manage the storing and recalling of these storable objects.
 
-## Next Time
-
-A quick shout out to the folks supporting me on Patreon, you're all amazing!
-
-This was already quite a long video but there's so much more to cover with macros, so I've split this video in two!
-
-In the second part we're going to cover domain specific languages by making a macro that can parse a turing complete language.
-
-If that interests you don't forget to like and subscribe.
-
-If you're _really_ curious though, this part of the book is already published so if you can't wait for the next video, you can learn how we achieve this over there, link in the description.
-
-I'm still streaming on Tuesday's at 7pm UK time, but we're nearing the end of making our Job Tracking app, and I'd love to hear if anyone has any suggestions on what to do next.
-
-Whether I see you on the stream, or here, I'll see you next time.
-
 ## Domain Specific Languages
 
 Ever wanted to write your own language?
 
-We're going to get a little bit silly here, but Domain Specific Languages (DSLs) can be incredibly useful for conceptualising code in meaningful ways.
+We're going to get a little bit silly shortly... 
+
+But Domain Specific Languages (DSLs) can be incredibly useful for conceptualising code in ways meaningful to your domain.
 
 For example, JSX is a DSL for writing React in Javascript.
 
-If you're a web develop, ultimately creating HTML, which of these is more readable:
+If you're a web developer, ultimately creating HTML, which of these is more readable:
+
+🦀👨🏻 This, which is valid Javascript
 
 ```javascript
 const heading = React.createElement(
@@ -480,6 +476,8 @@ const heading = React.createElement(
 );
 ```
 
+🦀👨🏻 Or this, which is not valid JavaScript 
+
 ```javascript
 const heading = (
     <h1 className="example">
@@ -488,26 +486,37 @@ const heading = (
 );
 ```
 
-I think its undeniably easier to understand the latter
+🦀👨🏻 I think it's undeniably easier to understand the one that _looks_ like HTML.
 
-So, I promised silly, lets write our own DSL... a Brain Fudge interpreter.
+🦀👨🏻 The React DSL will be converted back to JavaScript to be run in a JavaScript runtime.
 
-The programming language Brain Fudge (which is not in fact called Brain Fudge) was created by Urban Müller in 1993.
+So, I promised silly, lets write our own DSL... a Brain Fudge transpiler.
+
+--- pause ---
+
+A transpiler takes one language and turns it into another, like how Reacts DSL is transpiled into JavaScript
+
+The programming language Brain Fudge was created by Urban Müller in 1993.
 
 The language is what's known as an "esoteric" language which is, loosely speaking, a fully functional language that you would never actually want to use.
 
-Often they're considered jokes, but Brain Fudge actually lets us write real programs with just eight instructions.
+Often they're considered jokes, and Brain Fudge certainly is that, but it actually lets us write real programs with just eight instructions.
 
-This makes it ideal for creating a full DSL with little effort.
-
-The language operates on theoretically infinite sequential memory initialised to `0`.
-
-You start with a pointer pointing to the first cell in memory and then process instructions that allow you to move the pointer, modify the data at that point in memory and either output or input data at the current pointer location.
+This makes it ideal for demonstrating how to make a full language inside Rust.
 
 ---
 
-This is what the instructions do:
+Brain Fudge operates on a theoretically infinite sequence of memory initialised to `0`.
 
+You start with a pointer, pointing to the first cell in memory and then process instructions that allow you to:
+- move the pointer
+- modify the data at that point in memory
+- perform loops
+- and either output or input data at the current pointer location.
+
+---
+
+We do all this with the following eight instructions:
 
 greater than, increments the pointer position, moving it to the next position in memory
 
@@ -519,235 +528,279 @@ minus, decrements the value at the current position in memory
 
 period, outputs the value at the current position in memory
 
-comma, takes one byte of input and stores it in memory (we won't use this in this example though)
+comma, takes one word of input and stores it in memory (we won't use this in this section though)
 
-square brackets contain a loop that repeats the contained code.
+square brackets loop the contained code
 
-Each time the loop begins the value at the current position is checked, and the loop is then skipped if the value is 0.
-
-That sounds easy enough, right... well, here's Hello World in Brain Fudge.
-
-```text
-++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.
-```
+Each time the loop begins the value at the current position is checked, if the value is 0, it skips the loop.
 
 ---
 
-Don't panic! We're not here to learn Brain Fudge ourselves.
+![11-brain-fudge-minimal-b.png](016-macros/11-brain-fudge-minimal-b.png)
 
-We'll just trust that this is the Hello World program, we'll implement the instructions and see what happens when we run it.
+🦀👨🏻 That sounds easy enough, right...
 
-We're going to use two macros.
+🦀👨🏻 well, here's Hello World in Brain Fudge.
 
-First let's create a macro that initialises the program.
+🦀👨🏻 Don't panic! We're not here to learn Brain Fudge ourselves.
+
+🦀👨🏻 We'll just trust that this is the Hello World program, we'll implement the instructions and see what happens when we run it.
 
 ![11-brain-fudge-minimal-a.png](016-macros/11-brain-fudge-minimal-a.png)
+🦀👨🏻 We're going to use two macros.
 
-Let's break it down:
+🦀👨🏻 First let's create a macro that initialises the program.
 
-The input to our interpreter is a repeat pattern of token tree, which we'll store in the metavariable token.
+🦀👨🏻 The input to our transpiler is a repeat pattern of token tree, which we'll store in the metavariable token.
 
-As it happens the individual characters that make up Brain Fudge are all tokens in Rust so this _should_ work well... (**foreshadowing**).
+🦀👨🏻 As it happens the individual characters that make up Brain Fudge are all tokens in Rust so this _should_ work well... (**foreshadowing**).
 
-`memory` is going to be our programs' memory.
+🦀👨🏻 `memory` is going to be our programs' memory.
 
-We're using a Vec with a single initialised value of `0` under the assumption that even the smallest program requires one word of memory.
+🦀👨🏻 We're using a Vec with a single initialised value of `0` under the assumption that even the smallest program requires one word of memory.
 
-We'll expand the Vec as necessary.
+🦀👨🏻 Brain Fudge doesn't specify a word size, so we're going to use 8bits, and we'll expand the Vec as necessary.
 
-This may not be the most efficient way to do this but it'll be ok.
+🦀👨🏻 You can use larger words if you like but different programs might function differently depending on what word size is used and how overflows are handled (more on that later).
 
-For our memory we're using `u8` to represent one word (the width of our memory).
+🦀👨🏻 This is not the most efficient way to do this (we'll be doing a lot of heap reallocations) but are we taking this seriously?
 
-You can use larger words if you like but different programs might function differently depending on what word size is used and how overflows are handled (more on that later).
+🦀👨🏻 No, not at all.
 
-`pointer` points to the current position in memory (our Vector)
+🦀👨🏻 `pointer` points to the current position in memory, or, as we'll be using it, its the index into our vector
 
-`output` is where we'll store output data from the program.
+🦀👨🏻 `output` is where we'll store output data from the program.
 
-We're using a Vec<u8> here, but actually any type that has a method `.push(u8)` will work.
+🦀👨🏻 At the end of the macro we take the output Vec of `u8`s we've stored in output and collect it into a string by naively considering each byte to be an ascii character.
 
-At the end of the macro we take the output Vec of `u8`s we've stored in output and collect it into a string by naively considering each byte to be a character.
+🦀👨🏻 Again, depending on how you want to work with your programs, you may want to process the output data differently but this is fine for us.
 
-Again, this won't be appropriate for every use case which is why utilising `Write` might be better but do you _really_ want to use this DSL properly 😅
+---
 
-So now we need to handle the token stream, but before we do that, lets write some tests.
+🦀👨🏻 So now we need to handle the token stream, but before we do that, lets write some tests.
 
-We'll keep it simple for now, while this is the official Hello World
+🦀👨🏻 We'll keep it simple for now, while this is the official Hello World
 
 ![11-brain-fudge-minimal-b.png](016-macros/11-brain-fudge-minimal-b.png)
 
-and... actually that's kinda hard to read, lets add some white space
+🦀👨🏻 and... actually that's kinda hard to read, lets add some white space
 
 ![11-brain-fudge-minimal-b2.png](016-macros/11-brain-fudge-minimal-b2.png)
 
-yeah... no that didn't help
+🦀👨🏻 yeah... no that didn't help
 
-anyway, while this is hello world, so is this
+🦀👨🏻 Anyway, while this is hello world, so is this
 
 ![11-brain-fudge-minimal-c.png](016-macros/11-brain-fudge-minimal-d.png)
 
-In the official hello world, loops are used to increment values, but in _this_ version, we're just adding to the current cell
+🦀👨🏻 In the official hello world, loops are used to increment values, but in _this_ version, we're just adding to the current memory location
 
-exporting it
+🦀👨🏻 exporting it
 
-and moving to the next bit of memory
+🦀👨🏻 and moving to the next memory location.
 
-Let's turn this into a test
+🦀👨🏻 Let's turn this into a test
 
-We're only using three characters out of the eight used in brain fudge, so to make this test pass, we only need to implement these operations
+🦀👨🏻 I made this version of Hello World because it only uses three characters out of the eight used in brain fudge, so to make this test pass, we only need to implement three operations
 
-So now we have a test, lets work out how to handle greater than, add, and period.
+🦀👨🏻 So now we have a test, lets work out how to handle greater than, add, and period.
 
-We'll create a new helper macro that can handle each of these tokens with its by having a rule that matches a specific token.
-
+---
 
 ![11-brain-fudge-minimal-d.png](016-macros/11-brain-fudge-minimal-c.png)
 
+🦀👨🏻 We'll create a new helper macro that can handle each of these tokens, by having a rule that matches each specific token.
 
+🦀👨🏻 These rules will be called recursively so we will also need a special rule to handle when there are no tokens left so we have an endpoint to the recursion.
 
+🦀👨🏻 To make it work, each rule will need to access the memory, the pointer, and the output buffer, so we'll add an expectation of those to the match pattern.
 
-We also need a special rule to handle when there are no tokens left so we have an endpoint to our recursive calls.
+🦀👨🏻 Additionally, because each rule only handles one instruction, we need to pass the rest of the instructions to the macro again recursively.
 
-To make it work, each rule will need to access the memory, the pointer and the output buffer, so we'll add an expectation of those to the match pattern.
+🦀👨🏻 Unlike our earlier examples, we're going to use a semicolon as a separator in our pattern matching.
 
-Additionally, because each rule only handles one instruction, we need to pass the rest of the instructiosn to the macro again recursively.
+🦀👨🏻 The reason for this is that Brain Fudge uses commas as part of its syntax.
 
-Unlike before, when we create our match arms, we're going to use a semicolon as a separator.
+🦀👨🏻 We would still be able to correctly parse Brain Fudge code as, even were the first token in a program a comma, it still comes after the last comma we match against, but it will help with readability for anyone using the macro.
 
-The reason for this is that Brain Fudge uses `,`s as part of its syntax (even if we're not using it here).
+🦀👨🏻 So here we go.
 
-This doesn't actually cause a problem with matching because we _always_ expect a comma before the start of the Brain Fudge program, but we _can_ use semicolons as a separator and as they don't appear in the Brain Fudge language, and it _will_ help readability, particularly if you opt in to the challenge at the end of the video.
+🦀👨🏻 First lets handle plus token.
 
-So here we go.
+🦀👨🏻 All we need to do is add one to the value in memory at the pointer.
 
-This arm matches +, it adds 1 to the value at the current position We'll use wrapping_add to avoid overflows, so in our interpreter, adding 1 to 255 makes 0.
+🦀👨🏻 Brain Fudge is non-specific about what to do in the event of an overflows, so I'm going to choose to allow it to wrap around
 
-This arm matches >, it adds 1 to the pointer position. This time we're using saturating_add for the specific reason we want to be consistent and don't want to wrap a  usize on -, you'll see why later! We also need to make sure that any time we go outside of the Vec we resize the Vec appropriately and zero memory, we can do this with a quick loop, pushing 0's
+🦀👨🏻 Next lets implement the rule for the greater than token
 
-This arm matches ., it takes the value at the current pointer and writes it to our output buffer
+🦀👨🏻 In this case we're increment the value of the pointer but this time I don't want to wrap.
 
-This arm matches there being no Brain Fudge tokens left, it does nothing
+🦀👨🏻 We're using saturating_add for the specific reason we want to be consistent and I don't want to wrap a usize on subtract, you'll see why later!
 
-Now we can update our `brain_fudge!` macro to call the helper, passing in the program state.
+🦀👨🏻 We also need to make sure that any time we go out of bounds of the memory Vec, that we resize the Vec appropriately and zero memory
+
+🦀👨🏻 We can do this with a quick loop, pushing 0's onto the end
+
+🦀👨🏻 Next we want to match the dot operator.
+
+🦀👨🏻 It takes the value at the current pointer and writes it to our output buffer
+
+🦀👨🏻 Finally, we have a match arm for when there are no more tokens left that doesn't do anything.
+
+🦀👨🏻 Now we can update our `brain_fudge!` macro to call the helper, passing in the program state.
 
 ![11-brain-fudge-minimal-e.png](016-macros/11-brain-fudge-minimal-e.png)
 
-So we now have a program that has our brain fudge macro, a brain fudge helper macro that passes 3 of the 8 tokens
+🦀👨🏻 So we now have a program that has our brain fudge macro, a brain fudge helper macro that passes 3 of the 8 tokens, and a test...
 
-and a test... when build the program
+🦀👨🏻 when build the program
 
-we get this error
+🦀👨🏻 we get this error
 
 ![11-brain-fudge-minimal-f.png](016-macros/11-brain-fudge-minimal-f.png)
 
-Rust keeps track of how many times we recurse, that is, call a function or macro from the same function or macro.
+🦀👨🏻 Rust keeps track of how many times we recurse, that is, call a function or macro from the same function or macro.
 
-By default, the maximum amount of times we can do this is 128.
+🦀👨🏻 By default, the maximum amount of times we can do this is 128.
 
-Our macro, when parsing our silly Hello World example, recurses 1120 times!
+🦀👨🏻 Our macro, when parsing our silly Hello World example, recurses 1120 times!
 
-So, we _could_ avoid recursing by looping through the tokens instead, and that will work for this current instruction set... but it won't work for loops.
-
-We probably could come up with a way of mixing loops and recurssion but to keep things simple, we're going to play a dangerous game and manually tell Rust it's fine for it to recurse 2048 times.
-
-The `recursion_limit` attribute applies at the crate level so be careful with this one!
+🦀👨🏻 So, we _could_ avoid recursing by looping through the tokens instead, and that will work for this current instruction set... but it won't work for loops.
 
 ![11-brain-fudge-minimal-z.png](016-macros/11-brain-fudge-minimal-z.png)
 
-And now our code runs!
+🦀👨🏻 We probably could come up with a way of mixing loops and recursion but to keep things simple, we're going to play a dangerous game and manually tell Rust it's fine for it to recurse 2048 times.
 
-We've made a great start, we've got almost half the language done already.
+🦀👨🏻 The `recursion_limit` attribute applies at the crate level so be careful with this one!
 
-Dealing with less than and minus will be easy enough, they're the opposite of what we already have.
+🦀👨🏻 And now our code runs!
 
-More complex is the loop.
+We've made a great start, we've got almost half the language done already, and I think, hope(?), you'll agree this wasn't all that painful.
 
-Luckily, we aren't dealing with individual tokens, we're dealing with token trees!
+---
 
-In Rust, these bracket pairs soecifically are all considered tokens that wrap other tokens.
+🦀👨🏻 Lets implement some of the other operations.
 
-They're treated as a single token trees that contain more token trees.
+🦀👨🏻 Dealing with less than and minus is easy enough, they're the opposite of what we already have.
 
-So Rust will correctly handle them in pairs, even when nested.
-
-This means to make our loop arm work, we can match against any token tree that starts with a `[`, contains more tokens which may include more `[]` pairs, matches its ending `]` and is followed by yet more tokens! How cool is that!?
-
-Let's write up the missing arms and run our test against the original Hello World program:
-
-
-// -: Like + but does a wrapping_sub instead 
 ![12-brain-fudge-mostly-implemented-a.png](016-macros/12-brain-fudge-mostly-implemented-a.png)
 
-    // <: Like > but does a saturating_sub instead. This is why saturating is
-    // potentially better here as we don't want to wrap and have to fill a Vec
-    // with around 18,446,744,073,709,551,615 zeros
+🦀👨🏻 Minus similar to Add, does a wrapping subtract of the value at the pointer
+
 ![12-brain-fudge-mostly-implemented-b.png](016-macros/12-brain-fudge-mostly-implemented-b.png)
 
-    // []: And here's the magic! We match against $loop_statement tokens inside
-    // a square bracket pair potentially followed by more tokens. We then loop
-    // while the data at the pointer isn't 0, and once it is, move on to the
-    // rest of the tokens
+🦀👨🏻 Less than does a saturating subtract of our pointer.
+
+🦀👨🏻 This is where that saturating behaviour matters; were we to wrap it, 0 - 1 becomes a number so large I can't even say it.
+
+🦀👨🏻 More complex is the loop.
+
+🦀👨🏻 Luckily, we aren't dealing with individual tokens, we're dealing with token trees!
+
+🦀👨🏻 In Rust, these bracket pairs specifically are all considered tokens that wrap other tokens.
+
+🦀👨🏻 They're treated as a single token tree that contain more token trees.
+
+🦀👨🏻 So Rust will correctly handle them in pairs, even when nested.
+
 ![12-brain-fudge-mostly-implemented-c.png](016-macros/12-brain-fudge-mostly-implemented-c.png)
 
-Now proper test
+🦀👨🏻 This means to make our loop rule work, we can match against any token tree that starts with an open square bracket, contains more tokens which may include more square bracket pairs, and matches its ending close square bracket.
+
+🦀👨🏻 This is followed by yet more tokens! 
+
+🦀👨🏻 How cool is it that we got this for free!?
+
+🦀👨🏻 The loop is really easy to implement too! 
+
+🦀👨🏻 We check the value at the current pointer position, if it's not zero we run the code in the loop and check again.
+
+🦀👨🏻 If it is zero then we continue recursing with the rest of the code just like every other rule.
 
 ![12-brain-fudge-mostly-implemented-d.png](016-macros/12-brain-fudge-mostly-implemented-d.png)
 
-And when we run this... it doesn't work again 
-
-The important part of the error is this.
+🦀👨🏻 To make sure our new code works we'll update our test with the "real" Hello World.
 
 ![12-brain-fudge-mostly-implemented-e.png](016-macros/12-brain-fudge-mostly-implemented-e.png)
 
+🦀👨🏻 And when we build... it doesn't work again 
 
-Why is it pointing at two greater than signs? We have a match on those already right?
+🦀👨🏻 It actually gives us a number of errors, all different, all valid, but I'm only showing the first because it tells us what we need to know
+
+🦀👨🏻 Why is it pointing at two greater than signs?
+
+🦀👨🏻 We have a match on greater than already, right?
 
 Well here's the problem with using tokens for our DSL.
 
-Rust considers two greater than signs to be a single token.
+Rust considers two greater than symbols to be a single token.
 
 Specifically it's a "right shift" operator.
 
-Tokens in Rust can be multiple characters. Here are our problem tokens and what they mean in each language:
+Tokens in Rust can be multiple characters.
 
 ![12-brain-fudge-mostly-implemented-f.png](016-macros/12-brain-fudge-mostly-implemented-f.png)
 
-Soooo... we need to take care of these special cases, unfortunately.
+🦀👨🏻 Here are our problem tokens and what they mean in each language:
 
-Luckily, while `>>` is a right shift token, `> >` _is_ two greater than tokens.
+🦀👨🏻 "dot, dot" in Rust is a range literal, but in Brain Fudge it just means output the current value twice.
 
-Tokens can be seperated by whitespace and will still match the `tt` fragment-specifier, all we need to do is split the token and pass it back into the macro
+🦀👨🏻 "greater than, greater than" in Rust is a right shift operator, but in Brain Fudge it means increment the pointer twice
+
+🦀👨🏻 "less than, less than" in Rust is a left shift operator, but in Brain Fudge it means decrement the pointer twice
+
+🦀👨🏻 "dash, greater than" in Rust is used when writing function return types, in Brain Fudge it means decrement the value at the pointer then increment the pointer
+
+🦀👨🏻 "less than, dash" in Rust isn't used currently, but is reserved, in Brain Fudge it means decrement the pointer then decrement the value 
+
+---
+
+Soooo... unfortunately we need to take care of these special cases.
+
+Fortunately, while "greater than, greater than" is a right shift token, "greater than, space, greater than" _is_ two greater than tokens.
+
+Tokens can be seperated by whitespace which is ignored by the token tree fragment-specifier
 
 ![12-brain-fudge-mostly-implemented-g.png](016-macros/12-brain-fudge-mostly-implemented-g.png)
 
-And we just created an interpreter for another language inside Rust! That's kind of wild, right?!
+All we need to do is split the token and pass it back into the macro
+
+Now when we run our code it works!
+
+And we just created a transpiler for another language inside Rust!
+
+That's kind of wild, right?!
 
 ## Challenge
 
 I stopped setting homework, but I thought I'd set a little challenge for anyone who wants to do it.
 
-Can you edit our `brain_fudge!` macro to work with programs that take input via the comma token?
+We only implemented seven of the eight Brain Fudge operations.
 
-To do this I recommend making the following change to the `brain_fudge!` macro:
+Can you edit our `brain_fudge!` macro to work with programs that take input via the comma token?
 
 ![13-brain-fudge-challenge.png](016-macros/13-brain-fudge-challenge.png)
 
-There is a test in the IRISS book that you can copy for a ROT13 program, that's a program that takes each alphabetical letter and shifts it 13 characters.
+🦀👨🏻 To do this I recommend making the following change to the main `brain_fudge!` macro:
 
-There's no prize, its just for you to practice.
+🦀👨🏻 This will allow callers to control inputs and outputs as they please.
+
+🦀👨🏻 There is a test in the IRISS book that you can copy for a ROT13 program
+
+🦀👨🏻 That's a program that takes each alphabetical letter and shifts it 13 characters.
+
+🦀👨🏻 There's no prize for doing this except your own personal growth.
+
+🦀👨🏻 If you get stuck or just want to see the answer, it's over in the book, see the description. 
 
 ## Next Time
 
-As ever thank-you so much to my Patreons, I'm not sure if we'd have made it so far without your support!
-
-For everyone else, 
+As ever thank-you so much to my Patreons, as well as the growing community at large, I'm not sure if we'd have made it so far without your support!
 
 Next time, in the penultimate video in the IRISS series, we're going to look at "unsafe" Rust, and specifically, how we keep ourselves... well... safe, while using it.
 
-If you enjoyed the video, remember to like and subscribe!
+If you enjoyed this video, do me a solid and like and subscribe!
 
-Don't forget I stream on YouTube on Tuesday's at 7pm UK time, if you're interested in seeing me work on other projects.
+Don't forget I stream on YouTube on Tuesday's at 7pm UK time, if you're interested in seeing me work on real Rust projects.
 
 And whether there or here, I'll see you next time.
-
