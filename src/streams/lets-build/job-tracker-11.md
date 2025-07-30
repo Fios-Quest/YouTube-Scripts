@@ -6,16 +6,18 @@ Start
 
 Latest changes:
 
-- [ ] Interviews, Values, Questions, all working 🤞🏻
-- [ ] Partials!
-- [ ] How partials made forms easy
+- [x] Interviews, Values, Questions, all working 🤞🏻
+- [x] Partials!
+- [x] How partials made forms easy
 
 Work
 ----
 
-- [ ] Discuss approach for stream
-  - [ ] Use event loop
-  - [ ] Create a module to encapsulate behaviour
-  - [ ] Fire Signals when buttons pushed
-  - [ ] When modifier held, show hints
-  - [ ] When hint key hit with modifier navigate
+- [x] Discuss approach for stream
+  - [x] Use event loop
+    - [x] This doesn't work 
+  - [x] Create a module to encapsulate behaviour
+  - [x] Fire Signals when buttons pushed
+  - [x] When modifier held, show hints
+  - [x] When hint key hit with modifier navigate
+    - [x] Gracefully handle invalid navigation
