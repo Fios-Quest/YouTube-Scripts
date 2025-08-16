@@ -18,6 +18,7 @@
 - [Collections](iriss/013-collections.md)
 - [Iterators](iriss/014-iterators.md)
 - [Threads](iriss/015-threads.md)
+- [Macros](iriss/016-macros.md)
 
 # Channel Labs
 
@@ -32,3 +33,6 @@
 - [Job Tracker 05](./streams/lets-build/job-tracker-05.md)
 - [Job Tracker 06](./streams/lets-build/job-tracker-06.md)
 - [Job Tracker 07](./streams/lets-build/job-tracker-07.md)
+- [Job Tracker 10](./streams/lets-build/job-tracker-10.md)
+- [Job Tracker 11](./streams/lets-build/job-tracker-11.md)
+- [Job Tracker 12](./streams/lets-build/job-tracker-12.md)
