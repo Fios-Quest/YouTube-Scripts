@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Job Tracker 07 - IRISS Scripts</title>
+        <title>Job Tracker 12 - IRISS Scripts</title>
 
 
         <!-- Custom HTML head -->
@@ -175,67 +175,114 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="job-tracker-07---window-management"><a class="header" href="#job-tracker-07---window-management">Job Tracker 07 - Window Management</a></h1>
+                        <h1 id="job-tracker-12---errors-again"><a class="header" href="#job-tracker-12---errors-again">Job Tracker 12 - Errors... again</a></h1>
 <h2 id="start"><a class="header" href="#start">Start</a></h2>
+<p>Checklist:</p>
+<ul>
+<li><input disabled="" type="checkbox" checked=""/>
+Lights</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Door</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Drink</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Cameras / Scenes / Screens, etc</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Git branch</li>
+</ul>
+<p>Preamble:</p>
+<ul>
+<li>Building a job tracker
+<ul>
+<li>Using Rust and Dioxus</li>
+</ul>
+</li>
+<li>I will monetizing it (in case you want to help so you're not surprised later)</li>
+<li>Regarding stream: Chatting to a friend:
+<ul>
+<li>streams don't do what I want</li>
+<li>Wanted to show, here's how you work on a real project</li>
+<li>Actually that's not very interesting so been doing things like testing etc in the background</li>
+<li>Job Tracker is coming to an end (or at least I'm nearly out of interesting things to do) so whats next?</li>
+</ul>
+</li>
+</ul>
 <p>Latest changes:</p>
 <ul>
 <li><input disabled="" type="checkbox" checked=""/>
-Using the id in the url for state</li>
-<li><input disabled="" type="checkbox" checked=""/>
-Moved some of the tailwind stuff to input (not sure I like )</li>
-<li><input disabled="" type="checkbox" checked=""/>
-Slight rename of app (and funky icon)</li>
-<li><input disabled="" type="checkbox" checked=""/>
-Details view nav bar</li>
-<li><input disabled="" type="checkbox" checked=""/>
-Fixed logs, BUT,
+Logs open correctly (on mac and windows)
 <ul>
-<li>Getting a lot of errors</li>
-<li>Adds up quickly</li>
+<li><input disabled="" type="checkbox" checked=""/>
+We are likely to do away with the JSON nonesense TBH, haven't quite decided yet</li>
 </ul>
 </li>
 <li><input disabled="" type="checkbox" checked=""/>
-Still getting very confused with when components redrawn
-<ul>
-<li>Home redraws when I don't think it should</li>
-<li>Some components don't redraw to after edit</li>
-</ul>
-</li>
-</ul>
-<h2 id="the-concern"><a class="header" href="#the-concern">The concern</a></h2>
+Reorganised UI crate to be clearer</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Leaned more heavily into the Partials which are now working nicely, much cleaner code, easy to drop in
 <ul>
 <li><input disabled="" type="checkbox" checked=""/>
-wry vs Blitz</li>
+At some point I want to rethink the entirely though, move logic out of compoments, rethink forms</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Moved the application context to its own crate</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Allow timestamps to be read (if you have older data this will allow it to be read again)
+<ul>
+<li><input disabled="" type="checkbox" checked=""/>
+We might be able to expand on how we parse string date times</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Changed keyboard shortcuts so they can be applied to anything</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Some style changes, not quite made it into main yet</li>
+</ul>
+<h2 id="whats-wrong-with-what-we-have-now"><a class="header" href="#whats-wrong-with-what-we-have-now">What's wrong with what we have now?</a></h2>
+<ul>
+<li><input disabled="" type="checkbox" checked=""/>
+Writing to an ever expanding log file</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Log file can crash the app itself <em>facepalm</em></li>
+<li><input disabled="" type="checkbox" checked=""/>
+Logs are off to one side both given more importance than they need and too little</li>
+<li><input disabled="" type="checkbox" checked=""/>
+A lot of errors simply aren't handled right now and just crash the app</li>
+<li><input disabled="" type="checkbox" checked=""/>
+JSON is completely unreadable (because I turn it into json for the log then leave it as a string in the app)</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Some errors we can't do much about right now</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Right now I don't know if errors leak anything (does it matter?)</li>
 </ul>
 <h2 id="work"><a class="header" href="#work">Work</a></h2>
 <ul>
 <li><input disabled="" type="checkbox" checked=""/>
-Adding the config</li>
+Set up a signal to recieve errors</li>
 <li><input disabled="" type="checkbox" checked=""/>
-Set initial window size</li>
+Create a component to listen for errors</li>
 <li><input disabled="" type="checkbox" checked=""/>
-Set an icon</li>
-<li><input disabled="" type="checkbox" checked=""/>
-Set up and react to event listeners
+Create macros to simplify error handling
 <ul>
-<li>When Alt+C is pressed, if the company is selected, the view should set to
-company</li>
-<li>When Alt+R is pressed, if the role is selected, the view should set to role</li>
+<li><input disabled="" type="checkbox"/>
+Warning / Error / Irrecoverable Error?</li>
 </ul>
 </li>
+<li><input disabled="" type="checkbox"/>
+When to clear the log file?</li>
+<li><input disabled="" type="checkbox"/>
+Potentially make our own error type to help us decide what gets displayed when</li>
 </ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../streams/lets-build/job-tracker-06.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../streams/lets-build/job-tracker-11.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../streams/lets-build/job-tracker-10.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -243,13 +290,10 @@ company</li>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../streams/lets-build/job-tracker-06.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../streams/lets-build/job-tracker-11.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../streams/lets-build/job-tracker-10.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
