@@ -12,8 +12,8 @@ fn main() {
 
     println!(
         "The variable at {pointer_to_variable:p}, \
-    points to {pointer_to_data:p} \
-    which contains the data '{hello}'",
+        points to {pointer_to_data:p} \
+        which contains the data '{hello}'",
     );
 
     // ---
