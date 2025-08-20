@@ -19,6 +19,7 @@
 - [Iterators](iriss/014-iterators.md)
 - [Threads](iriss/015-threads.md)
 - [Macros](iriss/016-macros.md)
+- [Unsafe](iriss/017-unsafe.md)
 
 # Channel Labs
 
