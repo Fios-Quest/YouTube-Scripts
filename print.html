@@ -520,15 +520,15 @@ just like last time, then we'll create a new project with:</p>
 <pre><code class="language-shell">cargo new guessing-game
 </code></pre>
 <p>Then we'll open the project go to the file <code>src/main.rs</code>. As before we'll see the same "hello, world" program:</p>
-<pre><pre class="playground"><code class="language-rust">fn main() {
+<pre><pre class="playground"><code class="language-rust edition2024">fn main() {
     println!("Hello, world!");
 }</code></pre></pre>
 <p>Let's quickly change our hello world message to something that welcomes us to the game.</p>
-<pre><pre class="playground"><code class="language-rust">#fn main() {
+<pre><pre class="playground"><code class="language-rust edition2024">#fn main() {
     println!("Welcome to the guessing game!");
 #}</code></pre></pre>
 <p>And add another print line that tells the user what to expect</p>
-<pre><pre class="playground"><code class="language-rust">#fn main() {
+<pre><pre class="playground"><code class="language-rust edition2024">#fn main() {
 <span class="boring">    println!("Welcome to the guessing game!");
 </span>    println!("I have chosen a color red, green or blue, can you guess which?");
 #}</code></pre></pre>
@@ -710,7 +710,7 @@ vice versa.</p>
 <p>However, you can trivially convert between them</p>
 <p>For example, we could turn our <code>actual</code> variable into a String by creating a new String from that data.</p>
 <p>And we can get a reference to a string slice from inside the string.</p>
-<pre><pre class="playground"><code class="language-rust">#fn main() {
+<pre><pre class="playground"><code class="language-rust edition2024">#fn main() {
 let name = "Daniel";                   // This is a &amp;str pointing at a sequence of bytes in the executable
 let name_on_heap = String::from(name); // This requests memory from the operating system then copies "Daniel" into it
 let name_ref = name_on_heap.as_str();  // This is a &amp;str pointing to a sequence of bytes on the heap
@@ -3485,7 +3485,7 @@ underlying collection is mutable).</p>
 <p>🦀👨🏻 The scope function blocks the thread that called it, until all the threads it started have been joined, so after that we're safe to modify the data again, which here would require a mutable reference.</p>
 <p><img src="iriss/015-threads/11-state-mutable-references.png" alt="11-state-mutable-references.png" /></p>
 <p>🦀👨🏻 You can also send mutable references across threads like this, but, bear in mind, only one thread can access the mutable reference, and it must end before we can access our data again.</p>
-<pre><pre class="playground"><code class="language-rust">use std::thread::scope;
+<pre><pre class="playground"><code class="language-rust edition2024">use std::thread::scope;
 
 fn main() {
     let mut data = String::from("This is owned by the main thread");
@@ -3987,6 +3987,365 @@ fn main() {
 <p>If you enjoyed this video, do me a solid and like and subscribe!</p>
 <p>Don't forget I stream on YouTube on Tuesday's at 7pm UK time, if you're interested in seeing me work on real Rust projects.</p>
 <p>And whether there or here, I'll see you next time.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="unsafe-rust---open-1"><a class="header" href="#unsafe-rust---open-1">Unsafe Rust - open 1</a></h1>
+<p>Today we're going to get unsafe, and this shirt is entirely too safe <em>calp 4 x</em></p>
+<h3 id="open-2"><a class="header" href="#open-2">open 2</a></h3>
+<p>Arguably, the main reason you'd want to pick up Rust over any other compiled language is that Rust keeps you safe, but what does that mean?</p>
+<p>When you write a program in a compiled high-level language like Rust, C, C++, Zig, et cetera, it's converted into low-level instructions for processors.</p>
+<p>These instructions are very direct, they move data from one register to another, add, subtract, shift bits and so on</p>
+<h3 id="open-4"><a class="header" href="#open-4">open 4</a></h3>
+<p>There are no restrictions on what those low-level instructions can do, which means you can do things that might result in unexpected or undefined behaviour.</p>
+<p>This is what we consider to be "unsafe".</p>
+<p>For example, in low-level languages that instruct processors directly, there's nothing stopping you reading and writing to the same memory location at the same time from different threads.</p>
+<h3 id="open-5"><a class="header" href="#open-5">open 5</a></h3>
+<p>Using any high-level language allows us to abstract this behavior in ways that are easier for us to understand.</p>
+<p>All compiled languages go further than just making the instructions easier to read and write.</p>
+<p>They also enforce their own rules as to how they're used.</p>
+<h3 id="open-6"><a class="header" href="#open-6">open 6</a></h3>
+<p>Rust with its ownership rules and borrow checker is just one example of how compiled languages make sure that we, the software engineers, don't ask the computer to do anything that <em>could</em> be unsafe.</p>
+<p>To the best of its ability, Rust will check that your code is safe.</p>
+<p>But... if it <em>only</em> let you do things it could <em>prove</em> are safe, you'd be cut off from making a lot of programs.</p>
+<h3 id="open-7"><a class="header" href="#open-7">open 7</a></h3>
+<p>This series is accompanied by a free book, check the description for a link straight to this chapter.</p>
+<p>My name is Daniel, welcome to IRISS.</p>
+<h2 id="intro---intro-1"><a class="header" href="#intro---intro-1">Intro - intro 1</a></h2>
+<p>Sometimes when we use Rust, we need to access heap memory, use peripherals, and talk to other software, or even dip into those specific processor instructions we just mentioned.</p>
+<p>We can't guarantee that any of these actions are safe.</p>
+<h3 id="intro-2"><a class="header" href="#intro-2">intro 2</a></h3>
+<p>But wait! Haven't we <em>been</em> accessing Heap Memory throughout this series?</p>
+<p>Why yes, yes we have.</p>
+<h3 id="intro-3"><a class="header" href="#intro-3">intro 3</a></h3>
+<p>Types like <code>Vec</code> and <code>String</code> use the Heap to store their data.</p>
+<p>They take responsibility for, and abstract away, any unsafe work, meaning that <em>using</em> those types <em>is</em> safe.</p>
+<h3 id="intro-4"><a class="header" href="#intro-4">intro 4</a></h3>
+<p>As a Rust engineer, depending on the type of project you're working on, most of the time you won't personally need to worry about unsafe Rust.</p>
+<p>You can get by with using other people's code and APIs like the standard library.</p>
+<p>The point of this video isn't to prepare you to write lots of unsafe Rust; it's to make you feel comfortable for the odd occasion you might have to touch it.</p>
+<h2 id="recap-on-memory---recap-1"><a class="header" href="#recap-on-memory---recap-1">Recap on Memory - recap 1</a></h2>
+<p>We often talk about memory in programming as if it's a single thing, but our programs subdivide memory into three main types of usages, each of which has different pros and cons.</p>
+<h3 id="recap-2"><a class="header" href="#recap-2">recap 2</a></h3>
+<p>Stack Memory is where all variables live... kind of.</p>
+<p>It's fast because the entire stack is pre-allocated when your program runs, but there are some catches.</p>
+<h3 id="recap-3"><a class="header" href="#recap-3">recap 3</a></h3>
+<p>First, it's actually quite limited.</p>
+<p>When your program starts, it's given an amount of memory that you cannot specify ahead of time, and you cannot change.</p>
+<p>It's <em>usually</em> two Mebibytes, but you might find it's even less on targets such as embedded devices.</p>
+<p>If you use more than this small amount of memory, your program will crash.</p>
+<h3 id="recap-4"><a class="header" href="#recap-4">recap 4</a></h3>
+<p>Second, the data stored on the stack must be of known size at compile time.</p>
+<p>You don't really need to worry about why this is only that data on the stack cannot change in size.</p>
+<h3 id="recap-5"><a class="header" href="#recap-5">recap 5</a></h3>
+<p>But we've stored lots of things in variables that have variable size, right? <code>String</code>s, <code>Vec</code>s, <code>HashMaps</code>, etc.</p>
+<h3 id="recap-6"><a class="header" href="#recap-6">recap 6</a></h3>
+<p>The data for these types is not stored in the variable.</p>
+<p>What typically happens is that data we care about is stored on the Heap, and that data's location, and some other metadata (all of which is of known size) is stored on the stack.</p>
+<h3 id="recap-7"><a class="header" href="#recap-7">recap 7</a></h3>
+<p>Semantically, it's probably fine to say that the variable contains that data; people will always know what you mean.</p>
+<p>However, for this video, we really need to differentiate what is on the stack and what isn't.</p>
+<h3 id="recap-8"><a class="header" href="#recap-8">recap 8</a></h3>
+<p><img src="iriss/017-unsafe/01-memory-a.png" alt="01-memory-a.png" /></p>
+<p>🦀👨🏻 In this code, <code>number_example</code> stores the actual number on the stack, since its of a known size, 32 bits unless otherwise specified.</p>
+<p>🦀👨🏻 <code>string_example</code>, however, contains the location of the string data, not the data itself, which is stored on the heap.</p>
+<p>🦀👨🏻 We'll talk about how it gets to the heap shortly.</p>
+<h3 id="recap-9"><a class="header" href="#recap-9">recap 9</a></h3>
+<p>The Heap is where we can store things of arbitrary size, and we can (usually) store things far larger than the entire stack there.</p>
+<p>Heap memory is allocated on request and freed once you're done using it.</p>
+<p>Technically, we can't resize heap allocations either; but we can request new, larger portions of heap memory, copy our data there, free the old memory, and add more things in the new location until we run out of space again.</p>
+<h3 id="recap-10"><a class="header" href="#recap-10">recap 10</a></h3>
+<p>So it's bigger and more flexible than the stack, but it also has some downsides.</p>
+<p>It's much slower than stack memory because allocating and freeing the memory takes time.</p>
+<p>Allocation and Freeing in Rust is usually handled by the standard library and, other than what we're going to discuss in this chapter, you almost never need to think about that process, but it's not free.</p>
+<h3 id="recap-11"><a class="header" href="#recap-11">recap 11</a></h3>
+<p>Sidebar:</p>
+<p>Once heap memory is allocated, it's <em>almost</em> free to use, with the only overhead essentially being the redirection from the stack to the heap in O(1) time.</p>
+<p>For this reason, some software and languages will actually allocate large amounts of memory called Page Files that can store lots of different things.</p>
+<p>This can be done in Rust too, and again there are pros and cons, but it's far outside the scope of this video.</p>
+<h3 id="recap-12"><a class="header" href="#recap-12">recap 12</a></h3>
+<p>There's a third kind of memory we don't really talk about as much, but it might be the most important.</p>
+<p>Static Memory is where all values and data you write into your program are initially stored, though frequently it's subsequently moved somewhere else.</p>
+<h3 id="recap-13"><a class="header" href="#recap-13">recap 13</a></h3>
+<p><img src="iriss/017-unsafe/01-memory-b.png" alt="01-memory-b.png" /></p>
+<p>🦀👨🏻 For example, in this program, the data for <code>CONST_EXAMPLE</code> remains in static memory.</p>
+<p>🦀👨🏻 But <code>CONST_EXAMPLE</code> itself is a reference to that data, see the ampersand.</p>
+<p>🦀👨🏻 <code>42</code> and <code>"This is string data too"</code> are also initially stored in static data.</p>
+<p>🦀👨🏻 However, <code>42</code> is copied to the stack in <code>number_example</code> whereas <code>"This is string data too"</code> is cloned onto the heap and the location of the data is stored in <code>string_example</code>.</p>
+<p>🦀👨🏻 Differentiating where things are stored is about to become <em>very</em> important, and <em>cough</em> it's easy to make mistakes if we don't differentiate between the stack, the heap and static memory.</p>
+<h2 id="not-really-all-that-unsafe---not-unsafe-01"><a class="header" href="#not-really-all-that-unsafe---not-unsafe-01">Not really all that unsafe - not unsafe 01</a></h2>
+<p>It's important to note that Unsafe Rust doesn't turn <em>off</em> any of Rusts safety measures.</p>
+<p>What it does do is turn <em>on</em> a whole other set of language features on which Rusts usual safety measures cannot work.</p>
+<h3 id="not-unsafe-02"><a class="header" href="#not-unsafe-02">not unsafe 02</a></h3>
+<p>I really can't stress this enough as it might be one of the greatest misconceptions about Rust.</p>
+<p>Unsafe Rust does <em>not</em> turn off <em>any</em> safety measures.</p>
+<p>It turns on tools that Rust cannot guarantee are safe, so you need to make extra certain you are using them safely.</p>
+<h3 id="not-unsafe-03"><a class="header" href="#not-unsafe-03">not unsafe 03</a></h3>
+<p>For example, in safe Rust we use references.</p>
+<p>These are similar to pointers in other languages which point to a location in memory, but references are not pointers.</p>
+<p>The validity of a pointer cannot be checked, but in Rust, a reference abides by rules that guarantee its validity at compile time before the program even runs.</p>
+<p>In unsafe Rust we can access pointers too, but References... must still abide by the rules of the borrow checker.</p>
+<h3 id="not-unsafe-04"><a class="header" href="#not-unsafe-04">not unsafe 04</a></h3>
+<p>Most of these tools exist in other commonly used compiled languages that have been around for decades and are still, rightly, very popular today.</p>
+<p>In many of these languages, these tools are available at any time.</p>
+<h3 id="not-unsafe-05"><a class="header" href="#not-unsafe-05">not unsafe 05</a></h3>
+<p>Having the tools is not a bad thing.</p>
+<h3 id="not-unsafe-06"><a class="header" href="#not-unsafe-06">not unsafe 06</a></h3>
+<p>They're necessary tools that we use to do things that there is no other way to do.</p>
+<p>By making you explicitly opt in to these tools, though, Rust forces you to really think about how you're using them.</p>
+<h2 id="how-to-use-unsafe---how-01"><a class="header" href="#how-to-use-unsafe---how-01">How to use unsafe - how 01</a></h2>
+<p><img src="iriss/017-unsafe/02-unsafe-simple-example.png" alt="02-unsafe-simple-example.png" /></p>
+<p>🦀👨🏻 Any time we use unsafe code we need to wrap it inside an <code>unsafe</code> block.</p>
+<p>🦀👨🏻 This code uses an <code>unsafe</code> block to call a function that is itself marked as <code>unsafe</code>.</p>
+<p>🦀👨🏻 Because the function is marked as <code>unsafe</code> it can <em>only</em> be called within <code>unsafe</code> code.</p>
+<p>🦀👨🏻 However, even within that function, code is treated as safe until you use another <code>unsafe</code> block.</p>
+<p>🦀👨🏻 This helps constrain unsafe code further</p>
+<p>🦀👨🏻 We'll talk about why you might mark functions as <code>unsafe</code> further on.</p>
+<p>🦀👨🏻 But... what's with all the comments?</p>
+<h3 id="how-02"><a class="header" href="#how-02">how 02</a></h3>
+<p>🦀 This is not necessarily a widely used practice, but maybe it should be</p>
+<p>🦀 The Rust Standard Library team, who have to work with <code>unsafe</code> a lot, have standardized around making safety communication almost contractual.</p>
+<p>🦀 Prior to the <code>unsafe</code> block, the first thing we see is a <code>SAFETY:</code> comment.</p>
+<p>🦀 This tells the reader how the author made sure this code was safe... this may seem odd.</p>
+<h3 id="how-03"><a class="header" href="#how-03">how 03</a></h3>
+<p>🦀 If the code is provably safe, why do we need <code>unsafe</code> at all?</p>
+<p>🦀 <code>unsafe</code> turns on language features that can't be proven safe by the compiler, but that's no excuse for writing <code>unsafe</code> code unsafely.</p>
+<h3 id="how-04"><a class="header" href="#how-04">how 04</a></h3>
+<p>🦀 The <code># Safety</code> section of the doc comment on the function <code>this_code_is_unsafe</code> is used to tell consumers of that function how to use the function safely.</p>
+<p>🦀 What you'll often find is that <code>SAFETY:</code> comments should mirror <code># Safety</code> doc comments, to show that the code follows the guidelines laid out.</p>
+<p>🦀 We'll talk more about unsafe functions later.</p>
+<h3 id="how-05"><a class="header" href="#how-05">how 05</a></h3>
+<p>The practice of writing a <code>SAFETY:</code> comment ensures that when we write <code>unsafe</code> code, we think hard about how we know this code isn't going to hurt us later.</p>
+<p>Documenting how we know this code is safe is crucial.</p>
+<p>You can read more about this practice in the official Standard Library Developer's Guide linked in the description</p>
+<h2 id="raw-pointers---raw-01"><a class="header" href="#raw-pointers---raw-01">Raw Pointers - raw 01</a></h2>
+<p>One of the main reasons you might want to dip into unsafe Rust is to communicate with memory directly.</p>
+<p>Rust's abstractions around memory are powerful, usually free (or otherwise cheap) and very flexible, but they don't cover every possible need.</p>
+<p>You may have a use case where you need to talk to memory without going through Rust's abstractions, and Rust lets you do that by turning on its unsafe features to access raw pointers.</p>
+<h3 id="raw-02"><a class="header" href="#raw-02">raw 02</a></h3>
+<p>We usually use References in Rust as if they were pointers, pointing to something that's actually stored elsewhere.</p>
+<p>But while References include features that make them safer to use, a pointer is essentially just a number that is an address to a location in memory.</p>
+<h3 id="raw-03"><a class="header" href="#raw-03">raw 03</a></h3>
+<p>When you allocate heap data, even in Rust, the operating system provides you with a pointer to the location where the memory was allocated.</p>
+<p>If we just used a pointer, it would still contain the numeric address of that location even if we subsequently told the operating system to free that memory.</p>
+<h3 id="raw-04"><a class="header" href="#raw-04">raw 04</a></h3>
+<p>Programmatically, we have no way to know if that location is still ours to use later.</p>
+<p>Using that pointer after the memory is freed would be an error, and is the root of an extremely common bug you might have heard of called "use after free".</p>
+<p>In fact, because we don't know from just the pointer whether the memory was freed or not, we might even try to free the memory again, leading to another bug called "double free".</p>
+<h3 id="raw-05"><a class="header" href="#raw-05">raw 05</a></h3>
+<p>References help us avoid that because we can track their use at compile time, helping us make sure that they are always valid before we even run the code...</p>
+<p>but the operating system doesn't use references.</p>
+<h3 id="raw-06"><a class="header" href="#raw-06">raw 06</a></h3>
+<p>Actually, references can't be used between <em>any</em> two separate pieces of software, because of their compile time nature.</p>
+<p>We can, however, share pointer locations.</p>
+<h3 id="raw-07"><a class="header" href="#raw-07">raw 07</a></h3>
+<p>So, even in Rust, pointers are being used all the time, whether we see them or not.</p>
+<p>Sometimes, we may even need to use pointers directly ourselves.</p>
+<h3 id="raw-08"><a class="header" href="#raw-08">raw 08</a></h3>
+<p><img src="iriss/017-unsafe/05-pointers-a.png" alt="05-pointers-a.png" /></p>
+<p>🦀👨🏻 You can actually get pointers in safe Rust, using "ampersand raw const" or for pointers to mutable data, "ampersand raw mut".</p>
+<p>🦀👨🏻 If we run this program several times, you'll see we get a different number every time</p>
+<p>🦀👨🏻 One cool thing worth pointing out is that Rust even types your pointers, including whether the data there is mutable, making it harder to mess things up later.</p>
+<p>🦀👨🏻 An immutable pointer to an <code>i32</code> has the type <code>*const i32</code></p>
+<h3 id="raw-09"><a class="header" href="#raw-09">raw 09</a></h3>
+<p>Remember, in some circumstances, the variable that you're accessing the data through does not contain the actual data.</p>
+<p>Strings are a good example of this.</p>
+<h3 id="raw-10"><a class="header" href="#raw-10">raw 10</a></h3>
+<p><img src="iriss/017-unsafe/05-pointers-b.png" alt="05-pointers-b.png" /></p>
+<p>🦀👨🏻 The pointer to the variable does not point to the string data, it points to metadata which itself contains a pointer to the string data.</p>
+<p>🦀👨🏻 We can access the pointer to the data via a method on the String itself.</p>
+<p>🦀👨🏻 Again, there's nothing unsafe about doing this; we're just reading a numeric value that is definitely valid at the time we do it.</p>
+<h3 id="raw-11"><a class="header" href="#raw-11">raw 11</a></h3>
+<p>So getting pointers is perfectly safe.</p>
+<p>What we can't do is use those pointers to get the data stored at that location in safe Rust.</p>
+<p>For that we need to dip into unsafe.</p>
+<h3 id="raw-12"><a class="header" href="#raw-12">raw 12</a></h3>
+<p><img src="iriss/017-unsafe/05-pointers-c.png" alt="05-pointers-c.png" /></p>
+<p>🦀👨🏻 Here we dereference the pointer to go back from the location to the data that's stored there.</p>
+<p>🦀👨🏻 This is unsafe because Rust cannot confirm the validity of the pointer when we do it, it's just some number.</p>
+<p>🦀👨🏻 Without us checking manually, <code>pointer</code> could outlive <code>the_answer</code>, after which, what is <code>pointer</code> pointing at?</p>
+<h2 id="unsafe-functions---fn-1"><a class="header" href="#unsafe-functions---fn-1">Unsafe functions - fn 1</a></h2>
+<p>When we write code, we regularly break it up into small reusable chunks known as functions.</p>
+<h3 id="fn-2"><a class="header" href="#fn-2">fn 2</a></h3>
+<p>You are, at this point, I hope, very familiar with this idea.</p>
+<h3 id="fn-3"><a class="header" href="#fn-3">fn 3</a></h3>
+<p>So far we've demonstrated that we can place unsafe code inside a block to encapsulate unsafe behavior.</p>
+<p>This means that you can write unsafe code inside a function, as long as you write the function to make sure that there's no risk, meaning, for someone calling the function, that function <em>is</em> safe.</p>
+<h3 id="fn-4"><a class="header" href="#fn-4">fn 4</a></h3>
+<p><img src="iriss/017-unsafe/06a-unsafe-functions-safe-abstraction.png" alt="06a-unsafe-functions-safe-abstraction.png" /></p>
+<p>🦀👨🏻 A good example of this is "stud mem swap" which swaps the values at two mutable locations:</p>
+<p>🦀👨🏻 Because <code>swap</code> guarantees the types are the same and, through using mutable references, knows nothing else is accessing the memory while it does its thing, conceptually this function is safe, even if the first thing it does internally is run unsafe code.</p>
+<p>🦀👨🏻 This is what we call a safe abstraction around unsafe code.</p>
+<h3 id="fn-5"><a class="header" href="#fn-5">fn 5</a></h3>
+<p>But that's not always possible.</p>
+<p>Sometimes, the very concept a function or method represents is unsafe.</p>
+<h3 id="fn-6"><a class="header" href="#fn-6">fn 6</a></h3>
+<p>Let's say that through arbitrary means, we've got a pointer to some heap data that we know represents a String.</p>
+<p>We know how long the String is and how much memory at that location is ours. We want to take ownership of that memory and turn it into a <code>String</code> type.</p>
+<h3 id="fn-7"><a class="header" href="#fn-7">fn 7</a></h3>
+<p>📕 We can use the <code>from_raw_parts</code> static method to build a <code>String</code> directly from memory, but the entire concept of manually creating a String like this is unsafe.</p>
+<p>📕 Firstly, something else likely manages that Heap memory.</p>
+<p>📕 If we create a <code>String</code> from it, we're going to take joint ownership of the heap data, and when our String goes out of scope, Rust will try to free it.</p>
+<p>📕 How do we prevent a double free when the thing that originally created the data also wants to free it?</p>
+<p>📕 Secondly, <code>from_raw_parts</code> takes a pointer, a length, and a capacity, none of which can be validated at compile time.</p>
+<p>📕 And, String will cause a reallocation if the capacity is filled, causing us another problem to look out for!</p>
+<h3 id="fn-8"><a class="header" href="#fn-8">fn 8</a></h3>
+<p><img src="iriss/017-unsafe/06b-unsafe-functions-string-from-raw.png" alt="06b-unsafe-functions-string-from-raw.png" /></p>
+<p>🦀 Luckily, by being aware of the problems ahead of time, we can still use this function safely.</p>
+<p>🦀 We'll manually make sure our string never exceeds 100 bytes</p>
+<p>🦀 Little side note: The string <em>may</em> be created with more than 100 bytes, but we will own the entire <em>actual</em> capacity and need to free it all when we're done with it.</p>
+<p>🦀 <code>from_raw_parts</code> is an <code>unsafe</code> method so can only be called inside an unsafe block</p>
+<p>🦀 I'm intentionally calling it with a length less than the original string to make a point</p>
+<p>🦀 Before we do anything else, we're going to prevent <code>overlapping_string</code> from being dropped, which would otherwise cause a double free when <code>original_string</code> is dropped later.</p>
+<p>🦀 We could prevent  <code>original_string</code> being dropped instead, but, to me, it makes sense to have this behavior in the inner code block.</p>
+<p>🦀 Counter intuitively, the ManuallyDrop type is actually safe.</p>
+<p>🦀 Although it prevents the memory being freed, and <em>could</em> result in memory leaks, that's not considered unsafe in the same way as other things in this video.</p>
+<p>🦀 Just be careful using it.</p>
+<p>🦀 Here we're going to check that the String is what we expect it to be.</p>
+<p>🦀 Due to giving it a smaller length, we only see the first part of the original string.</p>
+<p>🦀 We can push data onto the end of the string, and it will correctly change the string.</p>
+<p>🦀 But look how we massacred our boy!</p>
+<h3 id="fn-9"><a class="header" href="#fn-9">fn 9</a></h3>
+<p>It's not unusual to create an unsafe function but then wrap that function in safe code.</p>
+<p>Like the example we used earlier: "stud mem swap" is safe, even though it does unsafe things.</p>
+<h3 id="fn-10"><a class="header" href="#fn-10">fn 10</a></h3>
+<p><img src="iriss/017-unsafe/06c-unsafe-functions-safe-abstraction.png" alt="06c-unsafe-functions-safe-abstraction.png" /></p>
+<p>🦀👨🏻 Creating safe abstractions might look something like this</p>
+<p>🦀👨🏻 We have a conceptually unsafe function that does some work.</p>
+<p>🦀👨🏻 Ideally, we'd create a safe abstraction, a function that is safe to call by doing whatever necessary checks.</p>
+<p>🦀👨🏻 The safe abstraction can then be called from safe code.</p>
+<p>📕 stud mem swap does this simply by making sure you pass in mutable references of the same type, that's enough to guarantee safety.</p>
+<h3 id="fn-11"><a class="header" href="#fn-11">fn 11</a></h3>
+<p>When it comes to traits, if any of a trait's methods are unsafe, then the entire trait is considered unsafe, and so is its implementation.</p>
+<p>It's actually kind of rare to <em>have</em> to use this feature.</p>
+<p>If your trait has an unsafe method but a safe abstraction, you might be able to move the unsafe method to an unsafe function.</p>
+<h3 id="fn-12"><a class="header" href="#fn-12">fn 12</a></h3>
+<p><img src="iriss/017-unsafe/07a-unsafe-trait-unsafely.png" alt="07a-unsafe-trait-unsafely.png" />
+<img src="iriss/017-unsafe/07b-unsafe-trait-unsafely.png" alt="07b-unsafe-trait-unsafely.png" />
+<img src="iriss/017-unsafe/08-safe-trait-safe-abstraction.png" alt="08-safe-trait-safe-abstraction.png" /></p>
+<p>For example, this trait has two provided methods, but we still can't implement it safely, even with the default implementations.</p>
+<p>We can implement it with the unsafe keyword though:</p>
+<p>However, if we don't need to ever override the unsafe method, we could just extract it from the trait entirely</p>
+<h3 id="fn-10-1"><a class="header" href="#fn-10-1">fn 10</a></h3>
+<p>You're likely to need unsafe Traits only when the behavior the trait describes is itself is unsafe.</p>
+<p>For example, <code>Send</code> and <code>Sync</code> are automatically applied to all types that are only constructed from types that are also <code>Send</code> and <code>Sync</code>, but both traits are conceptually unsafe.</p>
+<p>If your type contains types that are not <code>Send</code> and/or <code>Sync</code> then the compiler can no longer guarantee safe implementation itself.</p>
+<p>You can still implement <code>Send</code> and <code>Sync</code> for your type manually but its now up to you to check the implementation is safe, so implementing the traits themselves is <code>unsafe</code>.</p>
+<h2 id="unions---unions-01"><a class="header" href="#unions---unions-01">Unions - unions 01</a></h2>
+<p>Unions, in software engineering, are a way of storing different types in the same section of memory.</p>
+<p>They're typically broken into two flavors, tagged and untagged.</p>
+<h3 id="unions-02"><a class="header" href="#unions-02">unions 02</a></h3>
+<p>"Tagged" simply means the type is part of data, so you can only access the data <em>as</em> the type that it is. We use tagged unions in Rust all the time, and they're perfectly safe:</p>
+<h3 id="unions-03"><a class="header" href="#unions-03">unions 03</a></h3>
+<p><img src="iriss/017-unsafe/09-tagged-unions.png" alt="09-tagged-unions.png" /></p>
+<p>🦀👨🏻 Enums are tagged unions</p>
+<p>🦀👨🏻 They only ever take up as much memory as is taken by the largest data type representable inside them, plus a discrimination value which differentiates the variants at runtime</p>
+<p>🦀👨🏻 The discrimination value is usually represented as an <code>isize</code> but Rust compilers <em>may</em> use smaller numeric types</p>
+<h3 id="unions-04"><a class="header" href="#unions-04">unions 04</a></h3>
+<p>But Rust also has "untagged" unions, where the type being used is not part of the data, and you can access the binary value as any listed type.</p>
+<p>Untagged unions are obviously unsafe, but they provide several useful features, either by allowing you to interrogate the data in different ways, or for working with other programming languages that use untagged unions.</p>
+<h3 id="unions-05"><a class="header" href="#unions-05">unions 05</a></h3>
+<blockquote>
+<p>Side Note</p>
+</blockquote>
+<blockquote>
+<p>My first attempt at an example for demonstrating untagged unions was an IPv4 address union that used both a 32bit integer, <em>and</em> a four-byte array</p>
+</blockquote>
+<blockquote>
+<p>However, with that example we have to consider "endianness" which is the order in which bytes are stored in memory.</p>
+</blockquote>
+<blockquote>
+<p>This felt like it went too far off-topic, however, it's still worth pointing out that when creating unions that share multiple bytes of data, you too <em>may</em> need to consider endianness.</p>
+</blockquote>
+<h3 id="unions-06"><a class="header" href="#unions-06">unions 06</a></h3>
+<p><img src="iriss/017-unsafe/10-untagged-unions.png" alt="10-untagged-unions.png" /></p>
+<p>🦀👨🏻 In this example, we can interrogate characters as u32's (characters in Rust are four bytes, although most string types use a variable byte width encoding such as utf-8).</p>
+<p>🦀👨🏻 Creating unions is safe:</p>
+<p>🦀👨🏻 But, reading unions is unsafe.</p>
+<p>🦀👨🏻 Even in this case where both u32 and char are 32 bits wide, not all valid u32 values are valid chars, but all chars are valid u32s</p>
+<p>🦀👨🏻 Writing values is also safe though.</p>
+<p>🦀👨🏻 When we run the program, we can see that both character and number change</p>
+<h2 id="assembly---asm-1"><a class="header" href="#assembly---asm-1">Assembly - asm 1</a></h2>
+<p>This next example of unsafe is so incredibly unsafe the only time you're ever likely to use it is if you need insane speed and know <em>exactly</em> what you're doing with the <em>exact</em> hardware you're targeting.</p>
+<h3 id="asm-2"><a class="header" href="#asm-2">asm 2</a></h3>
+<p>You might have heard of assembly, but crucially, it's not one language.</p>
+<p>Assembly languages are languages that have a near 1:1 relationship with the actual instructions of the CPU you're building for.</p>
+<h3 id="asm-3"><a class="header" href="#asm-3">asm 3</a></h3>
+<p><img src="iriss/017-unsafe/11a-asm-x86_64.png" alt="11a-asm-x86_64.png" /></p>
+<p><img src="iriss/017-unsafe/11b-asm-aarch64.png" alt="11b-asm-aarch64.png" /></p>
+<p><img src="iriss/017-unsafe/11c-asm-main.png" alt="11c-asm-main.png" /></p>
+<p>🦀 In this example you can see a function that takes a number and multiplies it by 6 using assembly.</p>
+<p>🦀 There are two versions of the function:</p>
+<p>🦀 The first works on "x86_64" targets, which cover most Windows and Linux machines and older Macs.</p>
+<p>🦀 The second works on "aarch64" targets, which cover all modern Macs but also some newer Windows and Linux machines.</p>
+<p>🦀 As you can see, apart from <code>mov</code>, the other instructions look very different but do the same things.</p>
+<p>🦀 For obvious reasons, Rust cannot help keep you safe when you're sending instructions straight to hardware, so assembly is only available within unsafe code.</p>
+<h3 id="asm-4"><a class="header" href="#asm-4">asm 4</a></h3>
+<p>Of all Rust's unsafe features, this is the one you're least likely to need to touch, but, as with the others, it's there if you need it.</p>
+<h2 id="extern---extern-1"><a class="header" href="#extern---extern-1">extern - extern 1</a></h2>
+<p>A lot of the time you're going to be working with other peoples code.</p>
+<p>Most often, that code will be written in Rust, downloaded as a crate, and combined with your code into a single binary.</p>
+<h3 id="extern-2"><a class="header" href="#extern-2">extern 2</a></h3>
+<p>Sometimes, though, you'll want to work with code written in other languages, either by consuming a library written in another language, or by building a library that another language can consume.</p>
+<p>This is done with <code>extern</code>.</p>
+<h3 id="extern-3"><a class="header" href="#extern-3">extern 3</a></h3>
+<p>For compiled languages to interoperate, they need to use an Application Binary Interface.</p>
+<p>Rust doesn't (and probably never will) have a stable ABI.</p>
+<p>Instead, we use typically use C's, though other options also exist.</p>
+<h3 id="extern-4"><a class="header" href="#extern-4">extern 4</a></h3>
+<p>Creating a library that can be consumed by other languages is fairly safe.</p>
+<p>You define a function that will be made available extern-ally (thus the name).</p>
+<p>The function itself is safe... exposing it is not.</p>
+<p>To be made available, the name of the function has to be known.</p>
+<h3 id="extern-5"><a class="header" href="#extern-5">extern 5</a></h3>
+<p>Rust usually "mangles" its function names to avoid what's called symbol collisions, where two things have the same name.</p>
+<p>To expose the function, we need to know its name, so we need to prevent the mangling, but that means there's a risk of collision.</p>
+<h3 id="extern-6"><a class="header" href="#extern-6">extern 6</a></h3>
+<p><img src="iriss/017-unsafe/12-extern-export.rs.png" alt="12-extern-export.rs.png" /></p>
+<p>🦀👨🏻 Pre Rust-2024 preventing mangling was done with the <code>#[no_mangle]</code> attribute, but as of Rust 2024, we need to explicitly tell Rust that we understand the dangers.</p>
+<p>🦀👨🏻 There's one more thing to consider, though. Our code will be called by code that we can't control.</p>
+<p>🦀👨🏻 You probably want to make sure you validate data coming from eternal code, especially for anything more complex than a number.</p>
+<h3 id="extern-7"><a class="header" href="#extern-7">extern 7</a></h3>
+<p><img src="iriss/017-unsafe/13-extern-import.png" alt="13-extern-import.png" /></p>
+<p>🦀👨🏻 You can also call functions from other libraries if they use a supported ABI too.</p>
+<p>🦀👨🏻 You do this by linking an extern block to a specific library and then listing the signatures of the functions exposed by that library that you want to use in your code.</p>
+<p>🦀👨🏻 Everything about this is unsafe.</p>
+<p>🦀👨🏻 If there's no dynamic library on the target system that shares a name with the linked library, the program will panic.</p>
+<p>🦀👨🏻 If the function names do not match, the program will panic.</p>
+<p>🦀👨🏻 If the function names match but the signature doesn't, you'll get undefined behavior, or it will panic.</p>
+<p>🦀👨🏻 Nonetheless, the ability to import libraries written in other languages can be a powerful tool in your arsenal.</p>
+<h2 id="mutable-statics---statics-1"><a class="header" href="#mutable-statics---statics-1">Mutable Statics - statics 1</a></h2>
+<p>In older editions of Rust, it was possible to have mutable statics via unsafe Rust.</p>
+<p>This would allow you to have mutable global variables that were safe to use so long as they weren't shared between threads.</p>
+<p>As of Rust 2024, this is no longer the case.</p>
+<h3 id="statics-2"><a class="header" href="#statics-2">statics 2</a></h3>
+<p>If you don't mind sacrificing a tiny bit of speed, the same thing can be achieved through safe abstractions and tools like atomic types or interior mutability.</p>
+<p>If you really need the speed, then you can still fall back on raw pointers.</p>
+<p>At the end of the day, though, mutable globals are a bit of a crutch and should generally be avoided where possible, and I think there's a lesson here.</p>
+<h3 id="statics-3"><a class="header" href="#statics-3">statics 3</a></h3>
+<p>Any time you find yourself reaching for unsafe code, you want to be sure that there's no other acceptable way to do the same thing.</p>
+<p>Unsafe Rust can speed up your code and can let you do things there's no other way of doing, but you should assess the various possibilities and trade-offs of alternatives before commiting to unsafe.</p>
+<p>Even if you have to use unsafe code, are there existing safe abstractions for what you're attempting in the standard library or well-tested crates?</p>
+<p>You shouldn't be afraid of unsafe, but you should understand that it is going to turn on features that you are responsible for making sure are used safely.</p>
+<p>If you don't need them, don't use them.</p>
+<h2 id="summary---summary-1"><a class="header" href="#summary---summary-1">Summary - summary 1</a></h2>
+<p>Outside of specialist use cases, you're unlikely to have to write much, if any, unsafe code yourself.</p>
+<h3 id="summary-2"><a class="header" href="#summary-2">summary 2</a></h3>
+<p>Nonetheless, hopefully after this chapter you see that it's not as scary as it seems.</p>
+<p>You still have all the normal safety checks, but now you have additional features you can't get otherwise</p>
+<p>You now know a bit more about what to look for to keep yourself safe when the compiler can no longer help.</p>
+<h3 id="summary-3"><a class="header" href="#summary-3">summary 3</a></h3>
+<p>If you are going to be writing unsafe Rust, there's a tool called <a href="https://github.com/rust-lang/miri">Miri</a> that will, in your running code, help you detect potentially undefined behavior you might have missed.</p>
+<p>It's not a panacea, it can't catch everything, but it is a final potential safety net you should use to protect yourself.</p>
+<h2 id="next-time---next-1"><a class="header" href="#next-time---next-1">Next Time - next 1</a></h2>
+<p>We're going to lean into pretty much everything we've learned so far to learn async Rust.</p>
+<p>This is going to be a bit of a unique chapter.</p>
+<h3 id="next-2"><a class="header" href="#next-2">next 2</a></h3>
+<p>We'll go deeper than you generally need to go, in our exploration of the space.</p>
+<p>Typically, you'd grab a crate like Tokio or AsyncStd to do all the hard stuff for you.</p>
+<h3 id="next-3"><a class="header" href="#next-3">next 3</a></h3>
+<p>But by learning the core concepts, you should come out the other side with a much better idea of how async works under the hood.</p>
+<p>As with this video, you may never need to write any of the complex stuff, but...</p>
+<p>It should help you feel comfortable with what I think many would agree is the last remaining truly sharp edge of Rust programming.</p>
+<h3 id="next-4"><a class="header" href="#next-4">next 4</a></h3>
+<p>So, if that excites you, then I'll see you next time</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="long-live-fios-quest"><a class="header" href="#long-live-fios-quest">Long Live Fio's Quest</a></h1>
 <p>It had to happen eventually, Rust, simply is dead. Let's take a moment  ... Ok, that's enough, Rust simply is dead, long live Fio's Quest.</p>
 <p>== Fio Jump</p>

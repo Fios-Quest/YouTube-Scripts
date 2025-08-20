@@ -196,15 +196,15 @@ just like last time, then we'll create a new project with:</p>
 <pre><code class="language-shell">cargo new guessing-game
 </code></pre>
 <p>Then we'll open the project go to the file <code>src/main.rs</code>. As before we'll see the same "hello, world" program:</p>
-<pre><pre class="playground"><code class="language-rust">fn main() {
+<pre><pre class="playground"><code class="language-rust edition2024">fn main() {
     println!("Hello, world!");
 }</code></pre></pre>
 <p>Let's quickly change our hello world message to something that welcomes us to the game.</p>
-<pre><pre class="playground"><code class="language-rust">#fn main() {
+<pre><pre class="playground"><code class="language-rust edition2024">#fn main() {
     println!("Welcome to the guessing game!");
 #}</code></pre></pre>
 <p>And add another print line that tells the user what to expect</p>
-<pre><pre class="playground"><code class="language-rust">#fn main() {
+<pre><pre class="playground"><code class="language-rust edition2024">#fn main() {
 <span class="boring">    println!("Welcome to the guessing game!");
 </span>    println!("I have chosen a color red, green or blue, can you guess which?");
 #}</code></pre></pre>
@@ -386,7 +386,7 @@ vice versa.</p>
 <p>However, you can trivially convert between them</p>
 <p>For example, we could turn our <code>actual</code> variable into a String by creating a new String from that data.</p>
 <p>And we can get a reference to a string slice from inside the string.</p>
-<pre><pre class="playground"><code class="language-rust">#fn main() {
+<pre><pre class="playground"><code class="language-rust edition2024">#fn main() {
 let name = "Daniel";                   // This is a &amp;str pointing at a sequence of bytes in the executable
 let name_on_heap = String::from(name); // This requests memory from the operating system then copies "Daniel" into it
 let name_ref = name_on_heap.as_str();  // This is a &amp;str pointing to a sequence of bytes on the heap

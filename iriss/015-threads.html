@@ -291,7 +291,7 @@
 <p>🦀👨🏻 The scope function blocks the thread that called it, until all the threads it started have been joined, so after that we're safe to modify the data again, which here would require a mutable reference.</p>
 <p><img src="015-threads/11-state-mutable-references.png" alt="11-state-mutable-references.png" /></p>
 <p>🦀👨🏻 You can also send mutable references across threads like this, but, bear in mind, only one thread can access the mutable reference, and it must end before we can access our data again.</p>
-<pre><pre class="playground"><code class="language-rust">use std::thread::scope;
+<pre><pre class="playground"><code class="language-rust edition2024">use std::thread::scope;
 
 fn main() {
     let mut data = String::from("This is owned by the main thread");
