@@ -1,7 +1,7 @@
 Unsafe Rust - open 1
 ====================
 
-Today we're going to get unsafe, and this shirt is too safe *calp 4 x*
+Today we're going to get unsafe, and this shirt is entirely too safe *calp 4 x*
 
 ### open 2
 
@@ -9,11 +9,7 @@ Arguably, the main reason you'd want to pick up Rust over any other compiled lan
 
 When you write a program in a compiled high-level language like Rust, C, C++, Zig, et cetera, it's converted into low-level instructions for processors.
 
-These instructions are very direct, they move data from one register to another, add, subtract, or multiply 
-
-### open 3
-
-although, fun fact, not all processors can divide
+These instructions are very direct, they move data from one register to another, add, subtract, shift bits and so on
 
 ### open 4
 
@@ -38,6 +34,12 @@ Rust with its ownership rules and borrow checker is just one example of how comp
 To the best of its ability, Rust will check that your code is safe.
 
 But... if it _only_ let you do things it could _prove_ are safe, you'd be cut off from making a lot of programs.
+
+### open 7
+
+This series is accompanied by a free book, check the description for a link straight to this chapter.
+
+My name is Daniel, welcome to IRISS.
 
 Intro - intro 1
 ---------------
@@ -81,7 +83,7 @@ It's fast because the entire stack is pre-allocated when your program runs, but 
 
 First, it's actually quite limited.
 
-When your program starts, it's given an amount of memory that you cannot determine ahead of time, and you cannot change.
+When your program starts, it's given an amount of memory that you cannot specify ahead of time, and you cannot change.
 
 It's _usually_ two Mebibytes, but you might find it's even less on targets such as embedded devices.
 
@@ -107,7 +109,7 @@ What typically happens is that data we care about is stored on the Heap, and tha
 
 Semantically, it's probably fine to say that the variable contains that data; people will always know what you mean.
 
-However, for this chapter, we really need to differentiate what is on the stack and what isn't.
+However, for this video, we really need to differentiate what is on the stack and what isn't.
 
 ### recap 8
 
@@ -188,13 +190,13 @@ These are similar to pointers in other languages which point to a location in me
 
 The validity of a pointer cannot be checked, but in Rust, a reference abides by rules that guarantee its validity at compile time before the program even runs.
 
-We can access pointers in unsafe Rust, but References... must still abide by the rules of the borrow checker.
+In unsafe Rust we can access pointers too, but References... must still abide by the rules of the borrow checker.
 
 ### not unsafe 04
 
 Most of these tools exist in other commonly used compiled languages that have been around for decades and are still, rightly, very popular today.
 
-In these languages, these tools are available at any time.
+In many of these languages, these tools are available at any time.
 
 ### not unsafe 05
 
@@ -202,7 +204,7 @@ Having the tools is not a bad thing.
 
 ### not unsafe 06
 
-They're necessary tools that we need to do things that there is no other way to do.
+They're necessary tools that we use to do things that there is no other way to do.
 
 By making you explicitly opt in to these tools, though, Rust forces you to really think about how you're using them.
 
@@ -255,7 +257,7 @@ The practice of writing a `SAFETY:` comment ensures that when we write `unsafe` 
 
 Documenting how we know this code is safe is crucial.
 
-You can read more about this practice in the official Standard library developer's Guide linked in the description
+You can read more about this practice in the official Standard Library Developer's Guide linked in the description
 
 Raw Pointers - raw 01
 ---------------------
@@ -282,7 +284,7 @@ If we just used a pointer, it would still contain the numeric address of that lo
 
 Programmatically, we have no way to know if that location is still ours to use later.
 
-Using that pointer after the memory would be an error, and is the root of an extremely common bug you might have heard of called "use after free".
+Using that pointer after the memory is freed would be an error, and is the root of an extremely common bug you might have heard of called "use after free".
 
 In fact, because we don't know from just the pointer whether the memory was freed or not, we might even try to free the memory again, leading to another bug called "double free".
 
@@ -418,12 +420,10 @@ We know how long the String is and how much memory at that location is ours. We 
 🦀 Before we do anything else, we're going to prevent `overlapping_string` from being dropped, which would otherwise cause a double free when `original_string` is dropped later.
 
 🦀 We could prevent  `original_string` being dropped instead, but, to me, it makes sense to have this behavior in the inner code block.
-
-🦀 This also means if the capacity of `original_string` was larger than `capacity` it won't cause unfreed memory.
     
 🦀 Counter intuitively, the ManuallyDrop type is actually safe.
 
-🦀 Although it prevents the memory being freed, and _could_ result in memory leaks, that's not considered unsafe in the same way as other things in this chapter.
+🦀 Although it prevents the memory being freed, and _could_ result in memory leaks, that's not considered unsafe in the same way as other things in this video.
 
 🦀 Just be careful using it.
 
