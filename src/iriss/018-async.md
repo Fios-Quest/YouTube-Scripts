@@ -1,64 +1,87 @@
-# Async Rust
+Async Rust
+==========
 
-Often times, when we write code, we have to wait on certain "things that take time" to happen.
+### open 1
 
-"Things that take time" are usually things like IO, such as reading or writing to a disk, getting data from a database, downloading a file, etc.
+Often, when we write code, we have to wait on certain "things that take time" to happen.
+
+"Things that take time" are usually things like IO, such as reading or writing to a disk, getting data from a database, downloading a file, and so on.
 
 Sometimes "things that take time" could just be computationally expensive, such as processing large amounts of data.
 
----
+### open 2
 
-Our programs are typically complex with multiple parts to them. 
+Usually our programs are complex with multiple parts to them.
 
 For example, applications often have a user interface, whether that's via a terminal, a web page, or a full desktop GUI.
 
-If our application has to wait on something happening, we don't want other aspects (like the UI) to freeze up, unable to do anything while we wait.
+If our application has to do "things that take time", we don't want other aspects (like the UI) to freeze up, unable to do anything while we wait.
 
-Asynchronous programming is a way to structure our code so that we can continue to do work while waiting on other things, and it doesn't depend on any specific way to get the work done.
+Asynchronous programming is an implementation-independent way to structure our code so that we can continue to do work while waiting on other things.
 
-Under the hood, we might use threads, or we may depend on Operating System hooks or even, for embedded programming, hardware interrupts, and exceptions.
+### open 3
 
----
+This series is accompanied by a free book, check the description for a link straight to this chapter.
 
-In this video we're going to explain the modular design of async programming in Rust.
+My name is Daniel, welcome to IRISS.
+
+Intro
+-----
+
+### intro 1
+
+Asynchronous programming doesn't necessarily mean threads.
+
+Some languages that support async programming don't even support multiple threads.
+
+Under the hood, we might use threads, or we may depend on Operating System hooks, or even, for embedded programming, we might directly depend on hardware interrupts and exceptions.
+
+### intro 2
+
+In this video we're going to explore the modular design of async programming in Rust.
 
 Our aim is to get a solid(ish) understanding of the concepts involved, even though, in the real world, you're likely to depend on others to design and build the more complex parts of the system.
 
-## Move and Pin
+Move and Pin
+------------
 
-Before we go further into the video, we once again need to talk about memory, specifically: moving and pinning.
+### pin 1
+
+Before we jump into the main part of the video, as ever, we once again need to talk about memory, specifically: moving and pinning.
 
 All data in our running program exists somewhere in memory, whether it's the stack, the heap, or static memory.
 
 That means that everything has a pointer address in memory.
 
+### pin 2
+
 When we pass a variable to another function, ownership of that variable "moves" to the other function.
 
-When we add a variable to a `Vec` then ownership of that variable "moves" to the heap. Any time data "moves" ownership, it also physically moves in memory.
+When we add a variable to a `Vec` then ownership of that variable "moves" to the heap.
 
-Run this and look closely at the returned addresses.
+Any time data "moves" ownership, it also physically moves in memory.
 
-They're similar, but they are different.
+### pin 3
 
-```rust
-fn main() {
-    let hello = "Hello".to_string();
-    
-    let hello_ptr = &raw const hello;
-    println!("Hello is stored at {hello_ptr:p}");
-    
-    example_move(hello);
-}
+![01-move-and-pin-move.png](018-async/01-move-and-pin-move.png)
 
-fn example_move(hello: String) {
-    let hello_ptr = &raw const hello;
-    println!("Hello is stored at {hello_ptr:p}");
-}
-```
+We can see this in action with some simple code and some knowledge about pointers from our.
 
-Because `example_move()` takes ownership of the `String`, and as we learned in the [unsafe](./unsafe.md) video, the metadata for `String` is stored on the stack, meaning that _that_ portion of the data is copied to the memory for the new function (often called a stack frame).
+We'll create a String type and give it to the variable `greet`.
 
----
+As we know from last time, the data we care about, in this case the word "Hello, world!" will exist on the Heap.
+
+The variable `greet` contains some metadata about where our String is in the Heap, but `greet` is stored on the stack.
+
+We can get the pointer address to `greet` on the stack like this.
+
+Now lets move `greet` to another function, and get the new `greet`s pointer.
+
+When we run the program, we get two similar, but different addresses.
+
+![02-move-and-pin-move-output.png](018-async/02-move-and-pin-move-output.png)
+
+### pin 4
 
 This is usually fine, but _occasionally_ things might need to know where they themselves are in memory. 
 
@@ -66,189 +89,130 @@ This is called self-referencing.
 
 If something references itself, and we move it, where does that reference now point?
 
----
+### pin 5
 
-In the below example we create a self-referential struct and pass it to a function up the stack.
+![03-move-and-pin-self-reference-struct.png](018-async/03-move-and-pin-self-reference-struct.png)
 
-When you run the code, you'll see our last assertion fails.
+Let's create a completely ridiculous struct that contains some data and a pointer to that data.
 
-```rust,should_panic
-// --- Self Referencing Data Type
+When we create the struct, we'll need to set the pointer to `None` because the constructor itself will move the data.
 
-struct ExampleOfSelfReference {
-    value: usize,
-    reference_to_value: Option<*const usize>,
-}
+Instead, we'll set the pointer via a method after it's been moved into place.
 
-impl ExampleOfSelfReference {
-    fn new(value: usize) -> Self {
-        Self {
-            value,
-            reference_to_value: None,
-        }
-    }
-    
-    fn set_reference(&mut self) {
-        self.reference_to_value = Some(&raw const self.value);
-    }
-    
-    fn get_value(&self) -> usize {
-        // SAFETY: This is intentionally NOT safe, don't try this at home!
-        unsafe { *self.reference_to_value.expect("Did not set_reference") }
-    }
-}
+Finally, we'll do the really stupid thing and dereference the pointer into the type of the value.
 
-// --- Usage ---
+Let's not forget that safety comment!
 
-# fn main() {
-let mut example = ExampleOfSelfReference::new(1);
+That's better.
 
-// We need to set the reference now as the constructor moves the data too!
-example.set_reference();
+### pin 6
 
-// Check the value was initialised correctly
-assert_eq!(example.get_value(), 1);
+![04-move-and-pin-self-reference-moved.png](018-async/04-move-and-pin-self-reference-moved.png)
 
-// Update the value and check it was updated
-example.value = 2;
-assert_eq!(example.get_value(), 2);
+Let's write some code to instantiate our example struct... and get that pointer set up.
 
-// This causes a move in the same stack frame
-let mut example = example;
+When we read the value via the pointer, it, perhaps surprisingly, works as expected!
 
-// Update the value again and check it was updated
-example.value = 3;
-assert_eq!(example.get_value(), 3);
-# }
-```
+We can also change the value directly, and the pointer correctly gives us that updated value.
 
-`reference_to_value` is just a number pointing at a location in memory.
+Now let's move ownership, and, yes, this is actually enough to do so. 
+
+We're technically moving it within the same stack frame, but this is a new variable even if it has the same name.
+
+Updating the value works, but reading it now gives us the old value. 
+
+`pointer_to_value` is just a number pointing at a location in memory.
 
 We moved the data, but the pointer is still pointing at the old location.
 
----
+![05-move-and-pin-self-reference-moved-output.png](018-async/05-move-and-pin-self-reference-moved-output.png)
+
+### pin 7
 
 Self-referential data is dangerous... but it can also be useful in certain circumstances.
+
+Not in the example I just gave, but still.
 
 For this reason, some Generic types occasionally need to take it into consideration.
 
 To keep ourselves safe, we can "pin" arbitrary data to memory, preventing it from being moved.
 
-We use the `Pin` type to express this behavior, though the type itself is just a container for a mutable reference, so the Pin itself is safe to move around.
+### pin 8
+
+We use the `Pin` type to express this behavior.
+
+Pin used to confuse me, but I actually don't think it's doing anything remotely clever.
+
+The type itself is just a container for a mutable reference, so the Pin itself is safe to move around
 
 Through the magic of the borrow checker, holding that single mutable reference is enough to lock the data in place.
 
-```rust
-use std::pin::Pin;
+It's more like a guard or guarantee than anything magical.
 
-# struct ExampleOfSelfReference {
-#     value: usize,
-#     reference_to_value: Option<*const usize>,
-# }
-# 
-# impl ExampleOfSelfReference {
-#     fn new(value: usize) -> Self {
-#         Self {
-#             value,
-#             reference_to_value: None,
-#         }
-#     }
-# 
-#     fn set_reference(&mut self) {
-#         self.reference_to_value = Some(&raw const self.value);
-#     }
-# 
-#     fn get_value(&self) -> usize {
-#         // SAFETY: This is intentionally NOT safe, don't try this at home!
-#         unsafe { *self.reference_to_value.expect("Did not set_reference") }
-#     }
-# }
-# 
-# fn main() {
-let mut example = ExampleOfSelfReference::new(1);
-example.set_reference();
-    
-// Pin doesn't take ownership of the data, it takes a mutable reference to it
-let mut pinned_example = Pin::new(&mut example);
+### pin 8
 
-// We can still read the value thanks to Deref
-assert_eq!(pinned_example.get_value(), 1);
+![06-move-and-pin-self-reference-pinned.png](018-async/06-move-and-pin-self-reference-pinned.png)
 
-// But we can no longer mutate it
-// example.value = 2;
-// pinned_example.value = 2;
+We can pin our example from earlier using Pin::new
 
-// Or move the underlying data
-// let example = example;
+(This doesn't always work and is kinda goofy, I'll explain in a minute)
 
-// We can, however, access the original data via a mutable reference
-pinned_example.as_mut().value = 2;
-assert_eq!(pinned_example.get_value(), 2);
-# }
-```
+We now can't modify the original struct or move it because Pin is holding the mutable reference. 
+
+But we _can_ modify the data via the Pin thanks to Deref and DerefMut.
+
+We can also move the Pin and, unlike our earlier example, this works because the Pin is just a reference.
+
+### pin 9
 
 There's a lot to `Pin` so and if you're curious about it, the [std documentation](https://doc.rust-lang.org/std/pin/) has a lot more information.
 
 For this video its enough to know that, in specific circumstances, like in modular asynchronous architecture where we don't necessarily control everything, we need to be certain data won't move unexpectedly, and this is achieved through the `Pin` type.
 
----
+### pin 10
 
 `Pin::new` only works with types that are `Unpin`, which is the marker for types that... don't need to be pinned.
 
-For things that do need to be pinned you can use things like `Box::pin(T)` and the `pin!` macro which have their utility but, crucially, do move the data you're trying to prevent moving, so take care of your references!
+For things that do need to be pinned you can use things like `Box::pin` and the `pin!` macro which have their utility but, crucially, do move the data you're trying to prevent moving, so take care of your references!
 
-## Breaking Down Work
+In our example this is fine so long as we set the pointer after moving it into the Pin.
+
+Breaking Down Work
+------------------
+
+### tasks 1
 
 When we build software, we can compartmentalize different parts of our program into tasks.
 
----
+Imagine we want to download two websites and compare the contents.
 
-Imagine we want to download two websites and compare the contents. We download website A, then download website B, then compare the contents of the two sites. 
-
-If we break that down into tasks, it might look like this.
-
-```mermaid
-flowchart LR
-    A[Get website A]
-    B[Get website B]
-    C[Compare contents]
-
-    A --> B
-    B --> C
-```
+We download website A, then download website B, then compare the contents of the two sites.
 
 However, now that we've broken it down into tasks, we can see the tasks for getting the websites don't depend on each other and could be performed at the same time.
-
-```mermaid
-flowchart LR
-    A[Start other tasks]
-    B[Get website A]
-    C[Get website B]
-    D[Compare contents]
-
-    A --> B
-    A --> C
-    B --> D
-    C --> D
-```
 
 Asynchronous design allows us to reason about our code at the task level.
 
 It doesn't specifically tell us how that work will get done, though.
 
+### tasks 2
+
+Different languages provide asynchronous utilities in different ways.
+
 In C# the default way async tasks are run is using multiple threads in a thread pool.
 
-Node.js is a single threaded runtime, though, so async code uses operating system callbacks to let your program know when a task is complete.
+Node.js is a single-threaded runtime, though, so async code uses operating system callbacks to let your program know when a task is complete.
 
----
+### tasks 3
 
 Rust provides ways to structure asynchronous code out of the box but doesn't have a default way of making sure Asynchronous work is performed.
 
-This allows software engineers to choose the method that will work best for their application.
+Arguably this makes async Rust harder to work with than other languages that support async fully out of the box.
 
----
+However, this allows software engineers to choose the method of task execution that will work best for their application.
 
-In the following sections we'll go over the Rust way of thinking about asynchronous tasks and create our own way of getting the work described by those asynchronous tasks to run.
+### tasks 4
+
+Over the rest of the video we'll go over the Rust way of thinking about asynchronous tasks and create our own way of getting the work described by those tasks to run asynchronously.
 
 ## Tasks, Schedulers, Futures, and Executors
 
