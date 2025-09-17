@@ -153,6 +153,8 @@ It's more like a guard or guarantee than anything magical.
 
 ![06-move-and-pin-self-reference-pinned.png](018-async/06-move-and-pin-self-reference-pinned.png)
 
+[//]: # (Review Pin example compared to changes in book)
+
 We can pin our example from earlier using Pin::new
 
 (This doesn't always work and is kinda goofy, I'll explain in a minute)
@@ -216,17 +218,19 @@ Over the rest of the video we'll go over the Rust way of thinking about asynchro
 
 ## Tasks, Schedulers, Futures, and Executors
 
+### concepts 1
+
 Asynchronous architectures allow us to break our work up so that we can process different bits of that work while waiting on other bits.
 
-Conceptually, we break the work into tasks and then have some sort of scheduler that decides which task gets run when.
+As discussed, conceptually, we break the work into tasks and then have some sort of scheduler that decides which task gets run when.
 
----
+### concepts 2
 
 In Rust, we represent tasks with the `Future` trait, which can be applied to any type.
 
-We manage task scheduling through what are usually called executors (sometimes called runtimes), which themselves use `Waker`s to decide when to run different tasks.
+We manage task scheduling through what are usually called executors (or sometimes runtimes), which themselves use `Waker`s to decide when to run different tasks.
 
----
+### concepts 3
 
 This sounds complicated, but by the end of this video, you'll hopefully have a reasonable idea of how `Future`s, executors, and `Waker`s work together, and if you don't... that's actually ok.
 
@@ -234,63 +238,67 @@ Most of the time you won't need to write any of these things yourself, but havin
 
 Let's get started by building up our understanding step by step.
 
-### Futures
+## Futures
 
-The `Future` trait represents a task that may or may not be complete (something that will be completed in the future, but not necessarily now).
+### futures 1
 
-```rust
-# use std::pin::Pin;
-# use std::task::{Context, Poll};
-#
-# fn main() {}
-# 
-pub trait Future {
-    type Output;
+![07-future-trait.png](018-async/07-future-trait.png)
 
-    // Required method
-    fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output>;
-}
-```
+The `Future` trait represents a task that may or may not be complete.
+
+Something that will be completed in the future, but not necessarily now.
 
 It has an associated type, `Output` and a single method, `.poll()`.
-
----
 
 `Output` represents the type of the data eventually returned by the `Future`.
 
 Usually this type will actually be a `Result<T, E>` because if we're waiting on something happening, there's a chance that it might not.
 
----
-
 The `.poll()` method is a lot more interesting though.
+
+### futures 2 (cont image)
 
 Firstly, you'll notice that `self` is typed, which we haven't seen in this series before.
 
 In `Future`'s, `self` is a Pinned mutable reference to data of the type the `Future` is applied to.
 
-The reason for this is _where_ the Future executes might change, but because you might want to apply a `Future` to a self-referential type, we need to know the data the `Future` represents won't itself move.
+The reason for this is _where_ the `Future` executes might change, but because you might want to apply a `Future` to a self-referential type, we need to know the data the `Future` represents won't itself move.
 
----
+### futures 3 (cont image)
 
 `.poll()` also takes a mutable reference to some sort of `Context` type.
 
 For now, the only thing `Context` contains is a `Waker` which we'll talk about later.
 
-The reason we don't pass the `Waker` directly though is that in the future we might want to add more data to a `Context` (this can be done in `nightly` Rust but this is outside the scope of this series).
+The reason we don't pass the `Waker` directly though is that in the future... of `Future`s... we might want to add more data to a `Context`.
 
 ---
 
-Finally, the return type of `.poll()` method is a `Poll` enum. `.poll()` should be called any time we want to make progress on a task.
+![08-poll-enum.png](018-async/08-poll-enum.png)
+
+Finally, the return type of the `.poll()` method is a `Poll` enum.
+
+The `.poll()` method should be called any time we want to make progress on a task.
 
 The return type tells us whether that call has resulted in an `Output`, represented by `Poll::Ready(Self::Output)`, or if the poll is not currently complete and needs to be called again, represented by `Poll::Pending`.
 
 ---
 
-> Note: Once a Future has returned Ready, you _shouldn't_ call it again... we will be breaking this rule later but, we'll be very cautious when we do 😉.
+> Note: Once a Future has returned Ready, you _shouldn't_ call it again... we will be breaking this rule later but, we'll be very cautious when we do.
  
 ---
 
-Let's create a simple `ExampleFuture` and apply the `Future` trait to it:
+Let's make our first Future then.
+
+We can apply the Future trait to anything, so a unit struct is fine.
+
+For now, our poll method will immediately return Ready with a static lifetime string slice reference.
+
+We'll instantiate our unit struct, and immediately pin it.
+
+Next we're going to create a context with a no-op `Waker`.
+
+Don't worry about this yet, the `Waker` doesn't do anything, and we're not even using the context in this example.
 
 ```rust
 use std::pin::Pin;
