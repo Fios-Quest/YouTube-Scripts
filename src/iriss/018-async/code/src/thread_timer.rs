@@ -26,33 +26,21 @@ impl Future for ThreadTimer {
     type Output = ();
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
-        let fut = self.get_mut();
+        let timer = self.get_mut();
+        *timer.waker.lock().unwrap() = cx.waker().clone();
 
-        // We always need to update the waker whenever we're polled
-        *fut.waker.lock().expect("Thread crashed with mutex lock") = cx.waker().clone();
-
-        // If we haven't started the thread, do so now
-        if fut.join_handle.is_none() {
-            let duration = fut.duration;
-            let waker = fut.waker.clone();
-            let timer_complete = fut.is_complete.clone();
-            fut.join_handle = Some(spawn(move || {
+        if timer.join_handle.is_none() {
+            let duration = timer.duration;
+            let waker = timer.waker.clone();
+            let is_complete = timer.is_complete.clone();
+            timer.join_handle = Some(spawn(move || {
                 sleep(duration);
-                *timer_complete
-                    .lock()
-                    .expect("Thread crashed with mutex lock") = true;
-                waker
-                    .lock()
-                    .expect("Thread crashed with mutex lock")
-                    .wake_by_ref();
+                *is_complete.lock().unwrap() = true;
+                waker.lock().unwrap().wake_by_ref();
             }));
         }
 
-        match *fut
-            .is_complete
-            .lock()
-            .expect("Thread crashed with mutex lock")
-        {
+        match *timer.is_complete.lock().unwrap() {
             true => Poll::Ready(()),
             false => Poll::Pending,
         }

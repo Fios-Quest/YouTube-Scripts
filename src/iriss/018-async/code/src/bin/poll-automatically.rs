@@ -1,11 +1,10 @@
+use async_rust::fake_worker::FakeWorker;
 use async_rust::thread_timer::ThreadTimer;
 use async_rust::thread_waker::ThreadWaker;
-use std::ops::Add;
 use std::pin::{Pin, pin};
 use std::sync::Arc;
 use std::task::{Context, Poll, Waker};
 use std::time::{Duration, SystemTime};
-use async_rust::fake_worker::FakeWorker;
 
 struct Timer {
     time_to_end: SystemTime,
@@ -14,7 +13,7 @@ struct Timer {
 impl Timer {
     fn new(duration: Duration) -> Timer {
         Self {
-            time_to_end: SystemTime::now().add(duration),
+            time_to_end: SystemTime::now() + duration,
         }
     }
 }
@@ -37,9 +36,9 @@ fn loop_executor<F: Future>(future: F) -> F::Output {
 
     let mut loop_counter = 1;
 
-    let result = loop {
+    let output = loop {
         match pinned_future.as_mut().poll(&mut context) {
-            Poll::Ready(r) => break r,
+            Poll::Ready(output) => break output,
             Poll::Pending => loop_counter += 1,
         }
     };
@@ -47,7 +46,7 @@ fn loop_executor<F: Future>(future: F) -> F::Output {
     println!("All done!");
     println!("We called .poll() {loop_counter} times!");
 
-    result
+    output
 }
 
 pub fn block_thread_on<F: Future>(future: F) -> F::Output {
@@ -56,20 +55,18 @@ pub fn block_thread_on<F: Future>(future: F) -> F::Output {
     let waker = Arc::new(ThreadWaker::current_thread()).into();
     let mut context = Context::from_waker(&waker);
 
-    let mut loop_counter = 0;
+    let mut loop_counter = 1;
 
     let output = loop {
         match example.as_mut().poll(&mut context) {
+            Poll::Ready(output) => break output,
             Poll::Pending => {
-                print!(".");
                 loop_counter += 1;
                 std::thread::park();
             }
-            Poll::Ready(output) => break output,
         }
     };
 
-    println!();
     println!("All done!");
     println!("This time the loop was only called {loop_counter} times, yay!");
 

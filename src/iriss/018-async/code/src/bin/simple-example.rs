@@ -12,20 +12,15 @@ impl Future for ExampleFuture {
 }
 
 fn main() {
-    // We'll enstantiate our future and pin it
     let mut example = ExampleFuture;
     let example = Pin::new(&mut example);
 
-    // Don't worry about context yet, it has no effect in this example
     let mut context = Context::from_waker(Waker::noop());
 
-    // Nothing happens until we poll the future
-    let result = example.poll(&mut context);
-    assert_eq!(result, Poll::Ready("The future ran"));
+    let poll_response = example.poll(&mut context);
 
-    // The .poll() method returns a Poll enum we need to resolve
-    match result {
-        Poll::Ready(output) => println!("{output}"),
+    match poll_response {
+        Poll::Ready(output) => assert_eq!(output, "The future ran"),
         Poll::Pending => panic!("This shouldn't happen!"),
     }
 }

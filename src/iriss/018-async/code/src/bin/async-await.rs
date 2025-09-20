@@ -1,51 +1,50 @@
 use async_rust::thread_executor::block_thread_on;
 use async_rust::thread_timer::ThreadTimer;
-use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
-
-async fn calling_this_function_returns_a_future() -> String {
-    String::from("Inside an async function")
-}
+use core::fmt;
+use std::time::{Duration, Instant, SystemTime, SystemTimeError, UNIX_EPOCH};
 
 fn main() {
-    let this_block_is_a_future = async { String::from("Inside an async block") };
-    println!("{}", block_thread_on(this_block_is_a_future));
-    println!(
-        "{}",
-        block_thread_on(calling_this_function_returns_a_future())
-    );
+    // async fn this_function_returns_a_future() -> String {
+    //     String::from("Inside an async function")
+    // }
 
-    // ---
+    // let this_block_is_a_future = async { String::from("Inside an async block") };
 
-    // This async block is Future<Output = &'static str>
-    let future_with_value = async {
-        ThreadTimer::new(Duration::from_secs(1)).await;
-        "This future returns a static string reference"
-    };
+    // let string_from_block = block_thread_on(this_block_is_a_future);
+    // let string_from_fn = block_thread_on(this_function_returns_a_future());
 
-    // This async block is Future<Output = ()>
-    let future_that_uses_the_value_from_the_other_future = async {
-        let value = future_with_value.await;
-        println!("Received: {value}");
-    };
+    // println!("{string_from_block}");
+    // println!("{string_from_fn}");
 
-    // Running the second future so we can see the output
-    block_thread_on(future_that_uses_the_value_from_the_other_future);
-    
-    // ---
-    
-    result_example();
+    // // ---
 
-    // ---
-    
-    let future = async {
-        println!("Starting future"); // Only prints once
-        ThreadTimer::new(Duration::from_secs(2)).await;
-        ThreadTimer::new(Duration::from_secs(1)).await;
-        println!("Ending future"); // Only prints once
-    };
+    // let future_with_value = async {
+    //     ThreadTimer::new(Duration::from_secs(1)).await;
+    //     "This future returns a string".to_string()
+    // };
 
-    block_thread_on(future);
-    
+    // let future_that_uses_that_value = async {
+    //     let value = future_with_value.await;
+    //     println!("Received: {value}");
+    // };
+
+    // block_thread_on(future_that_uses_that_value);
+
+    // // ---
+
+    // result_example();
+
+    // // ---
+
+    // let future = async {
+    //     println!("Starting future"); // Only prints once
+    //     ThreadTimer::new(Duration::from_secs(2)).await;
+    //     ThreadTimer::new(Duration::from_secs(1)).await;
+    //     println!("Ending future"); // Only prints once
+    // };
+
+    // block_thread_on(future);
+
     // ---
 
     let future = async {
@@ -59,24 +58,41 @@ fn main() {
     println!("Time taken {time_taken} seconds");
 }
 
-async fn this_future_could_fail() -> Result<u64, String> {
-    let time = SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .map_err(|_| "Time went backwards... a lot!".to_string())?
-        .as_secs();
-    // Check if the seconds are a multiple of 2 and convert to Result
-    time.is_multiple_of(2)
-        .then_some(time)
-        .ok_or_else(|| "A completely unforeseen thing happened!".to_string())
+#[derive(Debug)]
+enum MyFutureError {
+    TimeError,
+    SecondsError,
 }
 
-async fn use_fallible_future() -> Result<(), String> {
-    let time = this_future_could_fail().await?; // <- gorgeous!
-    println!("{time} secs have passed since the Unix Epoch");
-    Ok(())
+impl fmt::Display for MyFutureError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            MyFutureError::TimeError => write!(f, "Time went backwards"),
+            MyFutureError::SecondsError => write!(f, "Something totally unexpected happened 😜"),
+        }
+    }
+}
+
+impl From<SystemTimeError> for MyFutureError {
+    fn from(_: SystemTimeError) -> Self {
+        MyFutureError::TimeError
+    }
 }
 
 fn result_example() {
+    async fn this_future_could_fail() -> Result<u64, MyFutureError> {
+        let time = SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs();
+        time.is_multiple_of(2)
+            .then_some(time)
+            .ok_or(MyFutureError::SecondsError)
+    }
+
+    async fn use_fallible_future() -> Result<(), MyFutureError> {
+        let time = this_future_could_fail().await?;
+        println!("{time} secs have passed since the Unix Epoch");
+        Ok(())
+    }
+
     match block_thread_on(use_fallible_future()) {
         Ok(()) => {}
         Err(message) => println!("Error: {message}"),

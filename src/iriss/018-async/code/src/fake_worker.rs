@@ -12,7 +12,6 @@ impl Future for FakeWorker {
         match self.work_remaining {
             0 => Poll::Ready("All done!"),
             _ => {
-                // .get_mut() turns `Pin<&mut T>` into `&mut T`, but consumes the pin.
                 self.get_mut().work_remaining -= 1;
                 Poll::Pending
             }
