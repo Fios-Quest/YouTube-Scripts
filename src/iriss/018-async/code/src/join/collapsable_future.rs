@@ -34,7 +34,6 @@ impl std::fmt::Display for InnerFutureSpentError {
     }
 }
 
-
 pub struct CollapsableFuture<F: Future>(RefCell<InnerCollapsableFuture<F>>);
 
 impl<F: Future> CollapsableFuture<F> {
@@ -43,14 +42,14 @@ impl<F: Future> CollapsableFuture<F> {
     }
 
     /// Warning: This will drop the future if the future is not Ready
-    pub fn extract(&self) -> Option<F::Output> {
+    pub fn extract(&self) -> F::Output {
         let old_value = self.0.replace(InnerCollapsableFuture::Spent);
-        old_value.extract()
+        old_value.extract().unwrap()
     }
 }
 
 impl<F: Future> Future for CollapsableFuture<F> {
-    type Output = Result<(), InnerFutureSpentError>;
+    type Output = ();
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         let mut mutable_self = self.0.borrow_mut();
@@ -64,13 +63,13 @@ impl<F: Future> Future for CollapsableFuture<F> {
                     Poll::Ready(output) => {
                         drop(mutable_self);
                         self.0.replace(InnerCollapsableFuture::Ready(output));
-                        Poll::Ready(Ok(()))
+                        Poll::Ready(())
                     }
                     Poll::Pending => Poll::Pending,
                 }
             }
-            InnerCollapsableFuture::Ready(_) => Poll::Ready(Ok(())),
-            InnerCollapsableFuture::Spent => Poll::Ready(Err(InnerFutureSpentError)),
+            InnerCollapsableFuture::Ready(_) => Poll::Ready(()),
+            InnerCollapsableFuture::Spent => panic!("Polled spent CollapsableFuture"),
         }
     }
 }
