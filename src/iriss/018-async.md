@@ -595,13 +595,13 @@ There are other ways to achieve Waking, but for now, this is the approach we'll 
 Async / Await
 -------------
 
-# async 1
+### async 1
 
 The whole point of asynchronous code architectures is that we break our code down into small tasks.
 
 Implementing our own Futures is great for the very edge of our Rust code where we're waiting on some sort of I/O from outside our program, or something like a compute heavy task we control.
 
-# async 2
+### async 2
 
 Most of the time we won't necessarily even be doing that, though, as there are lots of crates for dealing with common I/O tasks, like reading files, accessing databases, or downloading files.
 
@@ -609,7 +609,7 @@ Most of the time, we just need to glue those bits together.
 
 This is where async/await comes in. 
 
-# async 3
+### async 3
 
 ![28-async.png](018-async/28-async.png)
 
@@ -627,7 +627,7 @@ This is where async/await comes in.
 
 🦀 In this case we need to call the `async` function to get the `Future` to pass into our executor.
 
-# async 4
+### async 4
 
 ![29-await.png](018-async/29-await.png)
 
@@ -649,7 +649,7 @@ This is where async/await comes in.
 
 🦀 More importantly, because the value is considered to be instantly available after awaiting it, and because most of the time when waiting on something we have to assume that thing might fail... we arrive at the most sublime pairing of Rust syntax, `.await?`.
 
-# async 5
+### async 5
 
 ![30-await-try.png](018-async/30-await-try.png)
 ![31-await-try-good.png](018-async/31-await-try-good.png)
@@ -673,7 +673,7 @@ This is where async/await comes in.
 
 🦀 A successful run looks like this... and an unsuccessful one looks like this!
 
-# async 6
+### async 6
 
 This doesn't need to be the end of the chain either!
 
@@ -681,7 +681,7 @@ Imagine a Future that returns `Poll<Result<Vec<T>, E>>`, you could `.await?.into
 
 This is another one of those Rust features that make the language really sublime to use!
 
-# async 7
+### async 7
 
 ![33-await-series.png](018-async/33-await-series.png)
 ![34-await-series-output.png](018-async/34-await-series-output.png)
@@ -703,13 +703,13 @@ This is another one of those Rust features that make the language really sublime
 Join
 ----
 
-# join 1
+### join 1
 
 The two timers in the previous examples are stand-ins for some arbitrary work and are completely independent of each other.
 
 We should **not** be waiting for the first timer to complete before working on the second timer, that defeats the benefits of asynchronous programming.
 
-# join 2
+### join 2
 
 What would be more useful is if we do both bits of "work" at the same time.
 
@@ -717,7 +717,7 @@ To do that, we need both Futures to be polled at the same time.
 
 This is often called "joining".
 
-# join 3
+### join 3
 
 ![35-join-struct.png](018-async/35-join-struct.png)
 
@@ -733,7 +733,7 @@ This is often called "joining".
 
 🦀 If you need to wait three futures, make one of those two another Join... or use someone else's better code.
 
-# join 4
+### join 4
 
 ![36-join-future.png](018-async/36-join-future.png)
 
@@ -747,7 +747,7 @@ This is often called "joining".
 
 🦀 Once both polls report Ready, then we extract the actual output from collapsable future and return Ready from the Join.
 
-# join 5
+### join 5
 
 Ideally, you won't be writing inefficient Join's like this one yourself.
 
