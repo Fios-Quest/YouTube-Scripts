@@ -21,6 +21,10 @@
 - [Macros](iriss/016-macros.md)
 - [Unsafe](iriss/017-unsafe.md)
 
+# ARiES
+
+- [NewType](./aries/newtype.md)
+
 # Channel Labs
 
 - [Long Live Fio's Quest](channel-news/001-fios-quest.md)
