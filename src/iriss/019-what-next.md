@@ -9,11 +9,13 @@ We finished Idiomatic Rust in Simple Steps.
 
 So what next?
 
-Well, my name is Daniel... wait this isn't IRISS.
+Well, my name is Daniel... wait this is no longer IRISS.
 
 And what's with this camera angle?
 
 *clap*
+
+New set!
 
 Other Learning Resources
 ------------------------
@@ -32,7 +34,7 @@ If you got all the way through IRISS and didn't look at the official book yet...
 
 ### resources 3
 
-The book goes into far more detail than IRISS, and makes fewer pains to avoid non-idiomatic examples, or crates, so gets to the point more directly.
+The official book goes into far more detail than IRISS, and makes fewer pains to avoid non-idiomatic examples, or crates, so you can argue, gets to the point more directly.
 
 Particularly if you've gone through IRISS already, the official book will be a sinch to get through and give you a much broader view of the language.
 
@@ -48,11 +50,11 @@ It mirrors the official book pretty closely so working through both at the same 
 
 ### resources 5
 
-Similarly, Tour of Rust is another guide with embedded Rust Playground examples so that you can play with the things you've just learned.
+Similarly, Tour of Rust is another guide which embeds Rust Playground examples so that you can play with the things you've just learned.
 
 ### resources 6
 
-If you're more into visual learning, there are some great YouTube channels out there (including [Fio's Quest], obviously).
+If you're more into visual learning, there are some great YouTube channels out there (including this one, obviously).
 
 Here are some of my favourites:
 
@@ -60,15 +62,15 @@ Here are some of my favourites:
 
 No Boilerplate offers what Tris, the creator, describes as "Fast technical videos".
 
-His video's cover everything from high level concepts such as why Rusts design made certain choices and how they help you be a better developer, down to how to use specific language features.
+His video's cover everything from high level concepts such as why Rust's design makes certain choices and how they help you be a better developer, down to how to use specific language features.
 
-Tris' video on "async isn't real and can't hurt you" convinced me to add a reminder you don't _have_ to write async Rust to the async video
+Tris' video on "async isn't real and can't hurt you" convinced me to add a reminder that you don't _have_ to write async Rust to the async video.
 
 ### resources 8
 
-Let's Get Rusty has lower level focus than No Boilerplate.
+Let's Get Rusty has a lower level focus than No Boilerplate.
 
-Bogdan, who runs the channel, goes into more detail on common Idioms and specific crates you might need to learn for specific tasks.
+Bogdan, who runs the channel, goes into more detail on common idioms and specific crates you might need to learn for specific tasks.
 
 ### resources 9
 
@@ -76,24 +78,26 @@ Chris Biscardi makes great guides on all things [Bevy], showcases new Bevy games
   
 Even if game dev isn't your thing, Chris routinely runs through [Advent of Code] problems, solving them with Rust, which is a great place to see smart algorithms written succinctly in idiomatic code. 
 
-Chris is where I learned about [nom], and how to do better parsing, which might have helped land my latest job!
+Chris is where I learned about [nom], and how to do better parsing, discussion of which might have helped land my latest job!
 
 ### resources 10
 
-If you know of any other good guides, drop a comment below!
+If you know of any other good guides or resources, drop a comment below!
 
 Start building
 --------------
 
 ### building 1
 
-But the best way to learn Rust is to start building. Rust is one of the few languages that work in just about any field.
+But the best way to learn Rust is to start building.
 
-What do you want to build?
+Rust is one of the few languages that work in just about any field.
+
+So what do you want to build?
 
 ### building 2
 
-To give you some food for thought, you can build command line apps, cross-platform GUI apps, full stack web apps, embedded microcontroller apps, machine learning tools, networking tools, libraries that can be consumed by other programs and video games. 
+To give you some food for thought, you can build command line apps, cross-platform GUI apps, full stack web apps, embedded microcontroller apps, machine learning tools, networking tools, video games, and even libraries that can be consumed by other programs. 
 
 The list is essentially endless.
 
@@ -103,23 +107,27 @@ Early examples for me were;
 
 ### building 4
 
-a CSV to Json converter using [Serde].
+A CSV to Json converter using SIR DAY... SEER DE... SIRD?
 
 Serde, of no agreed pronunciation, is short for **ser**ialize, **de**serialize.
 
 It's the goto tool for converting string data formatted in a variety of file formats, into data in your application such as structs, and back again.
 
+It's also what lets me store data from my Job Tracking app as JSON files.
+
 ### building 3
 
-A web server for reading specific details from a WordPress database using [Actix Web] and [Diesel].
+Another easier tool I build, this time for work, was a web API for reading specific details from a WordPress database using [Actix Web] and [Diesel].
+
+It was 4 times faster and 5 times more memory efficient than a similar tool we'd build in TypeScript.
 
 Actix Web is an incredibly fast web server framework that's surprisingly easy to work with.
 
-Diesel is a Database ORM that not only lets you read and write to databases, but can also manage things like table structure and migrations for you.
+Diesel is a Database ORM that not only lets you read and write to databases, but can also manage things like table structure and migrations.
 
 ### building 3
 
-A 250,000 cell game of life in [Web Assembly] that ran at 60fps.
+Something more fun was a two hundred and fifty thousand cell game of life in [Web Assembly] that ran at 60fps.
 
 Web Assembly isn't a framework or library like other tools I'm listing here, it's a compile target.
 
@@ -129,7 +137,7 @@ I would even go so far as to argue that, thanks to how Rust works as a language,
 
 ### building 3
 
-A command line flash card database using [Clap] and [Sqlx].
+While learning Japanese, I wrote a command line flash card database using [Clap] and [Sqlx].
 
 Clap is a tool for parsing command line arguments as well as providing a common experience across cli applications.
 
@@ -137,7 +145,9 @@ Sqlx is another framework for working with Databases but doesn't have the ORM fe
 
 ### building 4
 
-My advice is to think of something you're missing in your life, ideally something that's limited in scope and achievable, plan out how you'd structure the solution, and try building it.
+My advice is to think of something you're missing in your life, ideally something that's limited in scope and achievabl.
+
+Plan out how you'd structure the solution, and try building it.
 
 Cargo, Crates, and docs.rs
 --------------------------
@@ -170,13 +180,17 @@ By adding libraries from crates.io to your `[dependencies]` (or `[dev-dependenci
 
 ### tools 5
 
-Documentation for libraries can almost always be found on [docs.rs] (usually linked from the crate's page on crates.io).
+Documentation for libraries can almost always be found on docs.rs (usually linked from the crate's page on crates.io).
+
+docs.rs is built from rustdoc, which we covered in the documentation video.
+
+This means library documentation will always be structured in a familiar way and match the layout of the library, making it easy to use.
 
 Over to you
 -----------
 
 Where you go next is up to you, but I'd honestly love to hear about it. 
 
-Fio's Quest has a Discord, see the description, and a community of wonderful, supportive people.
+Fio's Quest has a Discord server, see the description, and a community of wonderful, supportive people.
 
 Let us know what learning resources you're using, or what apps or tools you're building.
