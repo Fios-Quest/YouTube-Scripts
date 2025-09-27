@@ -4346,6 +4346,470 @@ fn main() {
 <p>It should help you feel comfortable with what I think many would agree is the last remaining truly sharp edge of Rust programming.</p>
 <h3 id="next-4"><a class="header" href="#next-4">next 4</a></h3>
 <p>So, if that excites you, then I'll see you next time</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="async-rust"><a class="header" href="#async-rust">Async Rust</a></h1>
+<h3 id="open-1"><a class="header" href="#open-1">open 1</a></h3>
+<p>Often, when we write code, we have to wait on certain "things that take time" to happen.</p>
+<p>"Things that take time" are usually things like IO, such as reading or writing to a disk, getting data from a database, downloading a file, and so on.</p>
+<p>Sometimes "things that take time" could just be computationally expensive, such as processing large amounts of data.</p>
+<h3 id="open-2-1"><a class="header" href="#open-2-1">open 2</a></h3>
+<p>Usually our programs are complex with multiple parts to them.</p>
+<p>For example, applications often have a user interface, whether that's via a terminal, a web page, or a full desktop GUI.</p>
+<p>If our application has to do "things that take time", we don't want other aspects (like the UI) to freeze up, unable to do anything while we wait.</p>
+<p>Asynchronous programming is an implementation-independent way to structure our code so that we can continue to do work while waiting on other things.</p>
+<h3 id="open-3"><a class="header" href="#open-3">open 3</a></h3>
+<p>This series is accompanied by a free book, check the description for a link straight to this chapter.</p>
+<p>My name is Daniel, welcome to IRISS.</p>
+<h2 id="intro-5"><a class="header" href="#intro-5">Intro</a></h2>
+<h3 id="intro-1"><a class="header" href="#intro-1">intro 1</a></h3>
+<p>Asynchronous programming doesn't necessarily mean threads.</p>
+<p>Some languages that support async programming don't even support multiple threads.</p>
+<p>Under the hood, we might use threads, or we may depend on Operating System hooks, or even, for embedded programming, we might directly depend on hardware interrupts and exceptions.</p>
+<h3 id="intro-2-1"><a class="header" href="#intro-2-1">intro 2</a></h3>
+<p>In this video we're going to explore the modular design of async programming in Rust.</p>
+<p>Our aim is to get a solid(ish) understanding of the concepts involved, even though, in the real world, you're likely to depend on others to design and build the more complex parts of the system.</p>
+<h2 id="move-and-pin"><a class="header" href="#move-and-pin">Move and Pin</a></h2>
+<h3 id="pin-1"><a class="header" href="#pin-1">pin 1</a></h3>
+<p>Before we jump into the main part of the video, as ever, we once again need to talk about memory, specifically: moving and pinning.</p>
+<p>All data in our running program exists somewhere in memory, whether it's the stack, the heap, or static memory.</p>
+<p>That means that everything has a pointer address in memory.</p>
+<h3 id="pin-2"><a class="header" href="#pin-2">pin 2</a></h3>
+<p>When we pass a variable to another function, ownership of that variable "moves" to the other function.</p>
+<p>When we add a variable to a <code>Vec</code> then ownership of that variable "moves" to the heap.</p>
+<p>Any time data "moves" ownership, it also physically moves in memory.</p>
+<h3 id="pin-3"><a class="header" href="#pin-3">pin 3</a></h3>
+<p><img src="iriss/018-async/01-move-and-pin-move.png" alt="01-move-and-pin-move.png" />
+<img src="iriss/018-async/02-move-and-pin-move-output.png" alt="02-move-and-pin-move-output.png" /></p>
+<p>🦀 We can see this in action with some simple code and some knowledge about pointers from our previous video.</p>
+<p>🦀 We'll create a <code>String</code> type and give it to the variable <code>greet</code>.</p>
+<p>🦀 As we know from last time, the data we care about, in this case "Hello, world!" will exist on the Heap.</p>
+<p>🦀 The variable <code>greet</code> contains some metadata about where our <code>String</code> is in the Heap, but <code>greet</code> is stored on the stack.</p>
+<p>🦀 We can get the pointer address to <code>greet</code> on the stack like this.</p>
+<p>🦀 Now lets move <code>greet</code> to another function, and get the new <code>greet</code>s pointer.</p>
+<p>🦀 When we run the program, we get two similar, but different addresses.</p>
+<h3 id="pin-4"><a class="header" href="#pin-4">pin 4</a></h3>
+<p>This is usually fine, but <em>occasionally</em> things might need to know where they themselves are in memory.</p>
+<p>This is called self-referencing.</p>
+<p>If something references itself, and we move it, where does that reference now point?</p>
+<h3 id="pin-5"><a class="header" href="#pin-5">pin 5</a></h3>
+<p><img src="iriss/018-async/03-move-and-pin-self-reference-struct.png" alt="03-move-and-pin-self-reference-struct.png" /></p>
+<p>🦀 Let's create a completely ridiculous struct that contains some data and a pointer to that data.</p>
+<p>🦀 When we create the struct, we'll need to set the pointer to <code>None</code> because the constructor itself will move the data.</p>
+<p>🦀 Instead, we'll set the pointer via a method after it's been moved into place.</p>
+<p>🦀 Finally, we'll do the really stupid thing and dereference the pointer into the value.</p>
+<p>🦀 Let's not forget that safety comment!</p>
+<p>🦀 That's better.</p>
+<h3 id="pin-6"><a class="header" href="#pin-6">pin 6</a></h3>
+<p><img src="iriss/018-async/04-move-and-pin-self-reference-moved.png" alt="04-move-and-pin-self-reference-moved.png" /></p>
+<p><img src="iriss/018-async/05-move-and-pin-self-reference-moved-output.png" alt="05-move-and-pin-self-reference-moved-output.png" /></p>
+<p>🦀 Let's write some code to instantiate our example struct... and get that pointer set up.</p>
+<p>🦀 When we read the value via the pointer, it, perhaps surprisingly, works as expected!</p>
+<p>🦀 We can also change the value directly, and the pointer correctly gives us that updated value.</p>
+<p>🦀 Now let's move ownership, and, yes, this is actually enough to do so.</p>
+<p>🦀 We're technically moving it within the same stack frame, but this is a new variable even if it has the same name.</p>
+<p>🦀 Updating the value works, but reading it now gives us the old value.</p>
+<p>🦀 <code>pointer_to_value</code> is just a number pointing at a location in memory.</p>
+<p>🦀 We moved the data, but the pointer is still pointing at the old location.</p>
+<h3 id="pin-7"><a class="header" href="#pin-7">pin 7</a></h3>
+<p>Self-referential data is dangerous... but it can also be useful in certain circumstances.</p>
+<blockquote>
+<p>Not in the example I just gave, but still.</p>
+</blockquote>
+<p>For this reason, some Generic types occasionally need to take it into consideration.</p>
+<p>To keep ourselves safe, we can "pin" arbitrary data to memory, preventing it from being moved.</p>
+<h3 id="pin-10"><a class="header" href="#pin-10">pin 10</a></h3>
+<p>We use the <code>Pin</code> type to express this behavior.</p>
+<blockquote>
+<p><code>Pin</code> used to confuse me, but I actually don't think it's doing anything remotely clever.</p>
+</blockquote>
+<p>The type itself is just a container for a mutable reference, so the <code>Pin</code> itself is safe to move around</p>
+<p>Through the magic of the borrow checker, holding that single mutable reference is enough to lock the data in place.</p>
+<p>It's more like a guard or guarantee than anything magical.</p>
+<h3 id="pin-11"><a class="header" href="#pin-11">pin 11</a></h3>
+<p><img src="iriss/018-async/06-move-and-pin-self-reference-pinned.png" alt="06-move-and-pin-self-reference-pinned.png" /></p>
+<p>🦀 We can pin our example from earlier using <code>Pin::new</code></p>
+<blockquote>
+<p>🦀 You can't always use this, its kinda goofy, I'll explain in a minute</p>
+</blockquote>
+<p>🦀 We now can't modify the original struct or move it because <code>Pin</code> is holding the mutable reference.</p>
+<p>🦀 But we <em>can</em> modify the data via the <code>Pin</code> thanks to <code>Deref</code> and <code>DerefMut</code>.</p>
+<p>🦀 We can also move the <code>Pin</code> and, unlike our earlier example, this works because the <code>Pin</code> is just a reference.</p>
+<h3 id="pin-12"><a class="header" href="#pin-12">pin 12</a></h3>
+<p>📕 There's a lot to <code>Pin</code> so and if you're curious about it, the standard library documentation has a lot more information.</p>
+<p>📕 For this video its enough to know that, in specific circumstances, like in modular asynchronous architecture where we don't necessarily control everything, we need to be certain data won't move unexpectedly, and this is achieved through the <code>Pin</code> type.</p>
+<h3 id="pin-13"><a class="header" href="#pin-13">pin 13</a></h3>
+<p><code>Pin::new</code> only works with types that are <code>Unpin</code>, which is the automatically implemented marker trait for types that... don't need to be pinned.</p>
+<blockquote>
+<p>Told you it was goofy.</p>
+</blockquote>
+<p>For things that do need to be pinned you can use things like <code>Box::pin</code> and the <code>pin!</code> macro which have their utility but, crucially...</p>
+<p>...do move the data you're trying to prevent moving, so take care of your references!</p>
+<h3 id="pin-14"><a class="header" href="#pin-14">pin 14</a></h3>
+<p>That said, you would have to Box a pin if you want to return it doesn't the stack.</p>
+<p>In our example this is fine so long as we set the pointer after moving it into the Pin.</p>
+<h2 id="breaking-down-work"><a class="header" href="#breaking-down-work">Breaking Down Work</a></h2>
+<h3 id="tasks-1"><a class="header" href="#tasks-1">tasks 1</a></h3>
+<p>🎨 When we build software, we can compartmentalize different parts of our program into tasks.</p>
+<p>🎨 Imagine we want to download two websites and compare the contents.</p>
+<p>🎨 We download website A, then download website B, then compare the contents of the two sites.</p>
+<p>🎨 However, now that we've broken it down into tasks, we can see the tasks for getting the websites don't depend on each other and could be performed at the same time.</p>
+<p>🎨 Asynchronous design allows us to reason about our code at the task level.</p>
+<p>🎨 It doesn't specifically tell us how that work will get done, though.</p>
+<h3 id="tasks-2"><a class="header" href="#tasks-2">tasks 2</a></h3>
+<p>Different languages provide asynchronous utilities in different ways.</p>
+<p>In C# the default way async tasks are run is using multiple threads in a thread pool.</p>
+<p>Node.js is a single-threaded runtime, though, so async code uses operating system callbacks to let your program know when a task is complete.</p>
+<h3 id="tasks-3"><a class="header" href="#tasks-3">tasks 3</a></h3>
+<p>Importantly, in both languages, async code "just works"</p>
+<p>You can start using it out of the box.</p>
+<h3 id="tasks-4"><a class="header" href="#tasks-4">tasks 4</a></h3>
+<p>Rust provides ways to structure asynchronous code but doesn't have a default way of making sure Asynchronous work is actually performed.</p>
+<p>Arguably this makes async Rust harder to work with than other languages that support async fully out of the box.</p>
+<p>However, this allows software engineers to choose the method of task execution that will work best for their application.</p>
+<h3 id="tasks-5"><a class="header" href="#tasks-5">tasks 5</a></h3>
+<p>Over the rest of the video we'll go over the Rust way of thinking about asynchronous tasks and create our own way of getting the work described by those tasks to run asynchronously.</p>
+<h2 id="tasks-schedulers-futures-and-executors"><a class="header" href="#tasks-schedulers-futures-and-executors">Tasks, Schedulers, Futures, and Executors</a></h2>
+<h3 id="concepts-1"><a class="header" href="#concepts-1">concepts 1</a></h3>
+<p>Asynchronous architectures allow us to break our work up so that we can process different bits of that work while waiting on other bits.</p>
+<p>As discussed, conceptually, we break the work into tasks and then have some sort of scheduler that decides which task gets run when.</p>
+<h3 id="concepts-2"><a class="header" href="#concepts-2">concepts 2</a></h3>
+<p>In Rust, we represent tasks with the <code>Future</code> trait, which can be applied to any type.</p>
+<p>We manage task scheduling through what are usually called executors (or sometimes runtimes), which themselves use <code>Waker</code>s to decide when to run different tasks.</p>
+<h3 id="concepts-3"><a class="header" href="#concepts-3">concepts 3</a></h3>
+<p>This sounds complicated, but by the end of this video, you'll hopefully have a reasonable idea of how <code>Future</code>s, executors, and <code>Waker</code>s work together, and if you don't... that's actually ok.</p>
+<h3 id="concepts-4"><a class="header" href="#concepts-4">concepts 4</a></h3>
+<p>Most of the time you won't need to write any of these things yourself, but having even a vague understanding of them will help you write better async code, as well as spot and fix common issues you might run across.</p>
+<p>Let's get started by building up our understanding step by step.</p>
+<h2 id="futures"><a class="header" href="#futures">Futures</a></h2>
+<h3 id="futures-1"><a class="header" href="#futures-1">futures 1</a></h3>
+<p><img src="iriss/018-async/07-future-trait.png" alt="07-future-trait.png" /></p>
+<p>📕 The <code>Future</code> trait represents a task that may or may not be complete.</p>
+<p>📕 Something that will be completed in the future, but not necessarily now.</p>
+<p>📕 It has an associated type, <code>Output</code> and a single method, <code>.poll()</code>.</p>
+<p>📕 <code>Output</code> represents the type of the data eventually returned by the <code>Future</code>.</p>
+<p>📕 Usually this type will actually be a <code>Result&lt;T, E&gt;</code> because if we're waiting on something happening, there's a chance that it might not.</p>
+<p>📕 The <code>.poll()</code> method is a lot more interesting though.</p>
+<h3 id="futures-2-cont-image"><a class="header" href="#futures-2-cont-image">futures 2 (cont image)</a></h3>
+<p>📕 Firstly, you'll notice that <code>self</code> is typed, which we haven't seen in this series before.</p>
+<p>📕 In <code>Future</code>'s, <code>self</code> is a Pinned mutable reference to data of the type the <code>Future</code> is applied to.</p>
+<p>📕 The reason for this is <em>where</em> the <code>Future</code> executes might change, but because you might want to apply a <code>Future</code> to a self-referential type, we need to know the data the <code>Future</code> represents won't itself move.</p>
+<h3 id="futures-3-cont-image"><a class="header" href="#futures-3-cont-image">futures 3 (cont image)</a></h3>
+<p>📕 <code>.poll()</code> also takes a mutable reference to some sort of <code>Context</code> type.</p>
+<p>📕 For now, the only thing <code>Context</code> contains is a <code>Waker</code> which we'll talk about later.</p>
+<p>📕 The reason we don't pass the <code>Waker</code> directly though is that in the future... of <code>Future</code>s... we might want to add more data to a <code>Context</code>.</p>
+<h3 id="futures-4"><a class="header" href="#futures-4">futures 4</a></h3>
+<p><img src="iriss/018-async/08-poll-enum.png" alt="08-poll-enum.png" /></p>
+<p>🦀 Finally, the return type of the <code>.poll()</code> method is a <code>Poll</code> enum.</p>
+<p>🦀 The <code>.poll()</code> method should be called any time we want to make progress on a task.</p>
+<p>🦀 The return type tells us whether that call has resulted in an <code>Output</code>, represented by <code>Poll::Ready(Self::Output)</code>, or if the poll is not currently complete and needs to be called again, represented by <code>Poll::Pending</code>.</p>
+<h3 id="futures-5"><a class="header" href="#futures-5">futures 5</a></h3>
+<blockquote>
+<p>Once a Future has returned Ready, you <em>shouldn't</em> call it again.</p>
+<p>The official documentation explicitly says, calling poll after Ready may result in a panic.</p>
+<p>We will be breaking this rule later, but we'll be very cautious when we do.</p>
+</blockquote>
+<h3 id="futures-6"><a class="header" href="#futures-6">futures 6</a></h3>
+<p><img src="iriss/018-async/09-example-future.png" alt="09-example-future.png" /></p>
+<p>🦀 Let's make our first Future then.</p>
+<p>🦀 We can apply the Future trait to anything, even a unit struct is fine.</p>
+<p>🦀 For now, our poll method will immediately return <code>Poll::Ready</code> with a static lifetime string slice reference.</p>
+<h3 id="futures-7"><a class="header" href="#futures-7">futures 7</a></h3>
+<p><img src="iriss/018-async/10-example-future-poll.png" alt="10-example-future-poll.png" /></p>
+<p>🦀 We'll instantiate our unit struct, and immediately pin it.</p>
+<p>🦀 Next we're going to create a context with a no-op <code>Waker</code>.</p>
+<p>🦀 Don't worry about this yet, the "noop" <code>Waker</code> doesn't do anything, and we're not even using the context in this example.</p>
+<p>🦀 Unlike some languages, in Rust, Futures don't do anything unless you call the <code>.poll()</code> method, so we'll do that and store the response</p>
+<p>🦀 We can then use a match to extract the output from the Poll enum</p>
+<p>🦀 Normally, <code>Future</code>s won't be "ready" immediately, and will need to be polled again.</p>
+<h3 id="futures-8"><a class="header" href="#futures-8">futures 8</a></h3>
+<p><img src="iriss/018-async/11-fake-worker.png" alt="11-fake-worker.png" /></p>
+<p>🦀 Let's create a <code>Future</code> that doesn't complete the first time you poll it, using a simple counter.</p>
+<p>🦀 Each time we call the <code>.poll()</code> method we'll check if we're at zero by dereferencing the pin.</p>
+<p>🦀 If it's zero, then we're ready.</p>
+<p>🦀 If it's not zero, we need to change the work remaining however, you'll notice that <code>self</code> is not mutable.</p>
+<blockquote>
+<p>🦀 This is where things get a little... interesting.</p>
+</blockquote>
+<p>🦀 How you’ll manage mutability in a <code>Future</code> you write yourself might depend on whether the <code>Future</code> needed to be pinned or not.</p>
+<p>🦀 If it did, you'll have to work out some kind of interior mutability mechanism for yourself.</p>
+<p>🦀 If it didn't, then in all likelihood your type automatically implemented <code>Unpin</code>, which means you can safely(ish) take the mutable reference out of the Pin with <code>.get_mut</code>.</p>
+<p>🦀 This consumes the Pin but lets you mutate the data via the mutable reference.</p>
+<p>🦀 So here we can subtract from work remaining and return Poll::Pending</p>
+<h3 id="futures-9"><a class="header" href="#futures-9">futures 9</a></h3>
+<p><img src="iriss/018-async/12-fake-worker-poll.png" alt="12-fake-worker-poll.png" /></p>
+<p>🦀 Once again we'll create our Future and pin it.</p>
+<p>🦀 Then we'll create a context that doesn't do anything.</p>
+<p>🦀 When we call the <code>.poll()</code> method it consumes the <code>Pin</code>, but we can get a copy of the <code>Pin</code> with <code>as_mut()</code>, so long as our Pin is mutable</p>
+<blockquote>
+<p>🦀 Its a bit weird but easy enough to work with.</p>
+</blockquote>
+<p>🦀 Now poll the future until the work is done.</p>
+<h3 id="futures-10"><a class="header" href="#futures-10">futures 10</a></h3>
+<p>So managing futures is just about repeatedly calling <code>.poll()</code> right?</p>
+<p>Well... no, not quite.</p>
+<h2 id="executors"><a class="header" href="#executors">Executors</a></h2>
+<h3 id="executors-1"><a class="header" href="#executors-1">executors 1</a></h3>
+<p><img src="iriss/018-async/13-loop-executor.png" alt="13-loop-executor.png" /></p>
+<p>🦀 Let's create a simple executor that <em>will</em> just poll <code>Future</code>s until they're <code>Ready</code>.</p>
+<p>🦀 This executor takes a single generic <code>Future</code> and loops over the poll method</p>
+<p>🦀 As I mentioned earlier, we can only use <code>Pin::new</code> if the thing we're pinning is <code>Unpin</code>.</p>
+<p>🦀 We could restrict our executor to only accept <code>Future</code>s that are also <code>Unpin</code>, but using the <code>pin!</code> macro will let us keep our generic interface simple and broad.</p>
+<p>🦀 Again, the <code>pin!</code> macro will cause the <code>Future</code> to move, but as long as no self-references have been formed yet, this should be fine.</p>
+<p>🦀 We'll create our noop waker and context.</p>
+<p>🦀 Next, we'll repeatedly call <code>.poll()</code> on the future until we have an output, which we instantly return from the loop with break, and from the executor via the loop.</p>
+<h3 id="executors-2"><a class="header" href="#executors-2">executors 2</a></h3>
+<p><img src="iriss/018-async/14-loop-executor-with-counter.png" alt="14-loop-executor-with-counter.png" /></p>
+<p>🦀 This is all we need but for demonstrative purposes, lets add a bit of code to show how many times we called <code>.poll()</code>.</p>
+<p>🦀 We'll start the counter at one, and add to it each time we get a Poll::Pending to get an accurate number of times we called <code>.poll()</code>.</p>
+<p>🦀 We'll capture output here and return it at the end.</p>
+<h3 id="executors-3"><a class="header" href="#executors-3">executors 3</a></h3>
+<p><img src="iriss/018-async/15-loop-executor-fake-worker.png" alt="15-loop-executor-fake-worker.png" /></p>
+<p><img src="iriss/018-async/15-loop-executor-fake-worker-output.png" alt="15-loop-executor-fake-worker-output.png" /></p>
+<p>🦀 Passing our previous example in, this seems to work quite well.</p>
+<p>🦀 We called poll four times, once for each of the three fake "work"s we needed to do, and once to get that final <code>Poll::Ready</code>.</p>
+<h3 id="executors-4"><a class="header" href="#executors-4">executors 4</a></h3>
+<p><img src="iriss/018-async/16-timer.png" alt="16-timer.png" /></p>
+<p>🦀 But <code>Future</code>s usually wait on things like IO or heavy compute tasks which won't nicely finish after a set number of calls.</p>
+<p>🦀 Let's try mimicking that with a simple timer.</p>
+<p>🦀 We'll store a <code>SystemTime</code> after which our timer is considered to have elapsed, and we'll get that by instantiating the timer with a duration and adding it to the current time.</p>
+<p>🦀 When calling the <code>.poll()</code> method for the future implementation, we'll simply compare the current system time to the time after which we want to end and return Ready or Pending as appropriate.</p>
+<p>🦀 Let's give it to our loop executor and run it.</p>
+<p>🦀 Woof.</p>
+<h3 id="executors-5"><a class="header" href="#executors-5">executors 5</a></h3>
+<p><img src="iriss/018-async/18-timer-output.png" alt="18-timer-output.png" /></p>
+<p>🦀 Fifty <em>million</em> calls to the poll method... in one second.</p>
+<p>🦀 I guess this speaks to the speed of Rust, but, wow are we doing a lot of nothing real quick here.</p>
+<p>🦀 This work is going to take resources like compute time away from other tasks, so we really want to avoid this.</p>
+<p>🦀 Rather than us polling the <code>Future</code> over and over, if only there was a way for the <code>Future</code> to let us know when it was ready to be polled again.</p>
+<h2 id="waking"><a class="header" href="#waking">Waking</a></h2>
+<h3 id="waking-1"><a class="header" href="#waking-1">waking 1</a></h3>
+<p><code>Waker</code> is a struct the <code>Future</code> can use to inform the executor it's ready to have its <code>.poll()</code> method called again.</p>
+<p>Before we get to that, though, we're going to update our program to use threads for both tasks and scheduling.</p>
+<p>It's important to note, however, that threads are not a necessary element of asynchronous Rust.</p>
+<p>There are other ways to achieve Waking, but for now, this is the approach we'll take.</p>
+<h3 id="waking-2"><a class="header" href="#waking-2">waking 2</a></h3>
+<p><img src="iriss/018-async/19-thread-timer.png" alt="19-thread-timer.png" /></p>
+<p>🦀 First, let's update our timer to use Threads.</p>
+<p>🦀 This is a bit more complex, so we'll talk through each bit.</p>
+<p>🦀 This time, we'll capture the <code>Duration</code> and save it for later.</p>
+<p>🦀 Once we start the thread we'll store its join handler in here.</p>
+<p>🦀 We won't actually join the thread in the traditional sense, so to be honest, I'm not sure if this is necessary, I just didn't like the idea of orphaning the thread.</p>
+<p>🦀 Next we're finally going to use the Waker.</p>
+<p>🦀 We need to store it, and access if mutably from both the executor thread and the thread we're creating, so into an Arc Mutex it goes.</p>
+<p>🦀 When we instantiate the ThreadTimer we won't have a Waker yet, so we'll use the noop waker.</p>
+<p>🦀 This saves using an Option and is safe as we won't start the timer until the first poll, at which point we're given a real Waker.</p>
+<p>🦀 Finally, to mitigate a potential race condition we're going to mark the Timer as complete, and again, this needs to be accessible from both threads, so this is also an Arc Mutex.</p>
+<h3 id="waking-3"><a class="header" href="#waking-3">waking 3</a></h3>
+<p><img src="iriss/018-async/20-thread-timer-future.png" alt="20-thread-timer-future.png" /></p>
+<p>🦀 To implement the Future, first we need to access the Future mutably multiple times.</p>
+<p>🦀 We know it's <code>Unpin</code> so we're going to grab the mutable reference to the Timer out of the pin with <code>get_mut</code>.</p>
+<p>🦀 Next, we replace our <code>Waker</code> every time the <code>.poll()</code> method is called.</p>
+<p>🦀 Normally this will actually be the same <code>Waker</code> each time, but it is technically possible to move a <code>Future</code> from one executor to another, which might mean we need to use a different Waker.</p>
+<p>🦀 In the event we're given a different <code>Waker</code> we'll store it every time <code>.poll()</code> is called.</p>
+<p>🦀 <code>poll</code> will be called multiple times, so if we haven't started the thread yet, we should do that now.</p>
+<p>🦀 We'll take a copy of the Duration and clone the Arc's for <code>waker</code> and <code>is_complete</code> so they can be moved into the thread.</p>
+<p>🦀 The thread itself will simply sleep itself for the duration, then set <code>is_complete</code> to true, then call the waker.</p>
+<p>🦀 Once the thread is set up, and on each subsequent call of <code>.poll()</code> we'll check if the Timer is complete and return the appropriate Poll variant.</p>
+<h3 id="waking-4"><a class="header" href="#waking-4">waking 4</a></h3>
+<p>🦀 Some important notes here.</p>
+<p>🦀 First, I've used <code>.unwrap()</code> when getting the Mutex lock primarily to make this code easy to read but also because if either our inner or outer threads panic, the program is unrecoverable for reasons other than locking the mutex.</p>
+<p>🦀 Ideally you should at least use <code>.expect()</code>, or our Future could return a <code>Result</code> but we'll come to that later.</p>
+<p>🦀 Second, thread sleep is not remotely accurate.</p>
+<p>🦀 It's guaranteed to sleep for at least as long as the duration, but might sleep for longer... unless you give it a duration of Zero, in which case it might sleep, or it might not, depending on your system!</p>
+<p>🦀 Thirdly, there's one more thing in this code that I'm hoping if you <em>already</em> use a lot of async in Rust, this has you cold sweats... don't worry, it's safe, but we'll cover it at the end of the video. <em>wink</em></p>
+<h3 id="waking-5"><a class="header" href="#waking-5">waking 5</a></h3>
+<p><img src="iriss/018-async/22-thread-timer-loop-executor-output.png" alt="22-thread-timer-loop-executor-output.png" /></p>
+<p>🦀 Before we move on, lets test our new timer in our old loop executor.</p>
+<p>🦀 Now when we run it... we hit <code>.poll()</code> 140 million times.</p>
+<p>🦀 Technically, I guess we start the timer a bit later (after calling <code>.poll()</code> and constructing a thread), but also our comparisons are a bit cheaper.</p>
+<p>🦀 Still, this is out of hand.</p>
+<p>🦀 Time to fix it once and for all.</p>
+<h3 id="waking-6"><a class="header" href="#waking-6">waking 6</a></h3>
+<p><img src="iriss/018-async/23-thread-waker.png" alt="23-thread-waker.png" /></p>
+<p>🦀 First, we need a <code>Waker</code>.</p>
+<p>🦀 The <code>Waker</code> type itself is a concrete type, but when its created we can give it any type that implements the <code>Wake</code> trait.</p>
+<p>🦀 To stop the executor from polling unnecessarily, our plan is to simply pause the whole thread the executor is on; this is called "parking" the thread.</p>
+<p>🦀 This makes our <code>ThreadWaker</code> fairly straightforward.</p>
+<p>🦀 We can create it with the <code>current_thread()</code> static method in which it takes a note of whatever thread it was created on.</p>
+<p>🦀 We implement the <code>Wake</code> trait for it, and when we call <code>wake</code>, all we do is "unpark" that thread.</p>
+<p>🦀 Parking and Unparking is akin to pausing and unpausing threads.</p>
+<h3 id="waking-7"><a class="header" href="#waking-7">waking 7</a></h3>
+<p><img src="iriss/018-async/24-block-thread-on.png" alt="24-block-thread-on.png" />
+<img src="iriss/018-async/25-block-thread-on-counter.png" alt="25-block-thread-on-counter.png" /></p>
+<p>🦀 So, onto the executor.</p>
+<p>🦀 We've got the same signature as the loop executor, accepting any future and returning its output.</p>
+<p>🦀 We'll also pin the future before anything else, just like the loop executor.</p>
+<p>🦀 Our first real difference then is we now actually care about the <code>Waker</code>.</p>
+<p>🦀 We can create a <code>Waker</code> "from" an <code>Arc</code> of any type that implements the <code>Wake</code> trait.</p>
+<p>🦀 By creating our <code>ThreadWaker</code> on the same thread as the executor, that's the thread that gets saved for later.</p>
+<p>🦀 We'll then make our context from that waker.</p>
+<p>🦀 Again, all we need now is a loop over the future.</p>
+<p>🦀 If it's ready, we'll break from the loop and return that value.</p>
+<p>🦀 If it's not ready, we'll park the thread.</p>
+<p>🦀 When our ThreadTimer calls the <code>Waker</code> it unparks the thread, resuming the loop and causing the future to be called again.</p>
+<p>🦀 It could mean the Future is ready to progress, in which case it will return Pending again, or it could be Ready.</p>
+<p>🦀 Again, this is all that's needed, but to show the improvement we've made, lets add the counter back in</p>
+<h3 id="waking-8"><a class="header" href="#waking-8">waking 8</a></h3>
+<p><img src="iriss/018-async/26-block-thread-on-thread-timer.png" alt="26-block-thread-on-thread-timer.png" />
+<img src="iriss/018-async/27-block-thread-on-thread-timer-output.png" alt="27-block-thread-on-thread-timer-output.png" /></p>
+<p>🦀 When we run our ThreadTimer in our new block_thread_on exectutor, you can see that our code is much more efficient with our poll method only being called twice.</p>
+<p>🦀 Once to start progressing the future, and once more to complete the future after the <code>Waker</code> is called.</p>
+<p>🦀 This means the program spends most of its one(ish) second runtime asleep, leaving resources like the CPU free to use.</p>
+<h2 id="async--await"><a class="header" href="#async--await">Async / Await</a></h2>
+<h3 id="async-1"><a class="header" href="#async-1">async 1</a></h3>
+<p>The whole point of asynchronous code architectures is that we break our code down into small tasks.</p>
+<p>Implementing our own Futures is great for the very edge of our Rust code where we're waiting on some sort of I/O from outside our program, or something like a compute heavy task we control.</p>
+<h3 id="async-2"><a class="header" href="#async-2">async 2</a></h3>
+<p>Most of the time we won't necessarily even be doing that, though, as there are lots of crates for dealing with common I/O tasks, like reading files, accessing databases, or downloading files.</p>
+<p>Most of the time, we just need to glue those bits together.</p>
+<p>This is where async/await comes in.</p>
+<h3 id="async-3"><a class="header" href="#async-3">async 3</a></h3>
+<p><img src="iriss/018-async/28-async.png" alt="28-async.png" /></p>
+<p>🦀 We can make any function or any block of code a <code>Future</code> with the <code>async</code> keyword.</p>
+<p>🦀 When you write async in front of a code block, that code block will be evaluated as a <code>Future</code> with an <code>Output</code> type that matches that of the block.</p>
+<p>🦀 In this example, we simply instantiate and return a <code>String</code>, so the async code block is a <code>Future</code> where the Output type is a String.</p>
+<p>🦀 To use this <code>Future</code> we can pass it straight into our executor.</p>
+<p>🦀 When you write <code>async</code> in front of a function, then the <em>return</em> value of calling that function is a <code>Future</code> with an <code>Output</code> type that matches the return type of the function.</p>
+<p>🦀 This example also returns a <code>String</code> but because the function is async, instead of getting a <code>String</code> when we call the function we get a <code>Future</code> where the <code>Output</code> type is a <code>String</code>.</p>
+<p>🦀 In this case we need to call the <code>async</code> function to get the <code>Future</code> to pass into our executor.</p>
+<h3 id="async-4"><a class="header" href="#async-4">async 4</a></h3>
+<p><img src="iriss/018-async/29-await.png" alt="29-await.png" /></p>
+<p>🦀 But async code blocks and functions do something a little bit special.</p>
+<p>🦀 They can work up to another future and then pause until that future is ready to continue by using the <code>.await</code> postfix on a <code>Future</code>.</p>
+<p>🦀 What's rather brilliant in async code, though, is that when waked? woken... the code resumes from where it got to.</p>
+<p>🦀 Furthermore, <code>.await</code> will automatically unwrap the <code>Poll</code> enum for you, giving you the <code>Poll::Ready</code> value.</p>
+<p>🦀 Because our Timer's don't return any values, let's have this async block called by another.</p>
+<p>🦀 When we run this code, we go into <code>future_that_uses_that_value</code> then into <code>future_with_value</code>, then into the <code>ThreadTimer</code>.</p>
+<p>🦀 The <code>Waker</code> from the executor is passed all the way into that future, and then the executor pauses until its told work can proceed.</p>
+<p>🦀 After we exit out of <code>future_with_value</code> we get the value.</p>
+<p>🦀 More importantly, because the value is considered to be instantly available after awaiting it, and because most of the time when waiting on something we have to assume that thing might fail... we arrive at the most sublime pairing of Rust syntax, <code>.await?</code>.</p>
+<h3 id="async-5"><a class="header" href="#async-5">async 5</a></h3>
+<p><img src="iriss/018-async/30-await-try.png" alt="30-await-try.png" />
+<img src="iriss/018-async/31-await-try-good.png" alt="31-await-try-good.png" />
+<img src="iriss/018-async/32-await-try-bad.png" alt="32-await-try-bad.png" /></p>
+<p>🦀 Functions that can fail should return a <code>Result</code>.</p>
+<p>🦀 <code>Future</code>'s always return the <code>Poll</code> enum but <code>Future::Output</code> will <em>regularly</em> be a Result.</p>
+<p>🦀 Let's create a Future that could fail.</p>
+<p>🦀 This future will Return the time since the Linux Epoch, in seconds...</p>
+<p>🦀 ...but only if that time is divisible by two, otherwise we'll return an error.</p>
+<p>🦀 Then we'll call that function, from another async function, and here is the magic!</p>
+<p>🦀 <code>.await</code> gets the <code>Poll::Ready</code> value, which is a <code>Result</code>, and the question mark operator either unwraps the Ok variant or bubbles the Error variant.</p>
+<p>🦀 We'll handle our error outside our async code.</p>
+<p>🦀 A successful run looks like this... and an unsuccessful one looks like this!</p>
+<h3 id="async-6"><a class="header" href="#async-6">async 6</a></h3>
+<p>This doesn't need to be the end of the chain either!</p>
+<p>Imagine a Future that returns <code>Poll&lt;Result&lt;Vec&lt;T&gt;, E&gt;&gt;</code>, you could <code>.await?.into_iter().map(|t: T| /* do some work */)...</code> etc.</p>
+<p>This is another one of those Rust features that make the language really sublime to use!</p>
+<h3 id="async-7"><a class="header" href="#async-7">async 7</a></h3>
+<p><img src="iriss/018-async/33-await-series.png" alt="33-await-series.png" />
+<img src="iriss/018-async/34-await-series-output.png" alt="34-await-series-output.png" /></p>
+<p>🦀 Anyway, because the <code>.await</code> postfix works on any future, and async code will resume from where it left off, we can <code>.await</code> several futures one after the other</p>
+<p>🦀 <code>.await</code> essentially pauses the execution of the code until the ThreadTimer future is ready, then continues on from that point.</p>
+<p>🦀 So this code is amazing, right? ... Right?</p>
+<p>🦀 No! This code is bad, actually, but the reason may not be immediately obvious.</p>
+<p>🦀 Let's time how long this takes using Instant.</p>
+<p>🦀 The total time taken to run the timers is 3 seconds, which makes sense right?</p>
+<p>🦀 We have a two-second timer and a one-second timer, combined, that's three seconds... but that's the problem...</p>
+<h2 id="join"><a class="header" href="#join">Join</a></h2>
+<h3 id="join-1"><a class="header" href="#join-1">join 1</a></h3>
+<p>The two timers in the previous examples are stand-ins for some arbitrary work and are completely independent of each other.</p>
+<p>We should <strong>not</strong> be waiting for the first timer to complete before working on the second timer, that defeats the benefits of asynchronous programming.</p>
+<h3 id="join-2"><a class="header" href="#join-2">join 2</a></h3>
+<p>What would be more useful is if we do both bits of "work" at the same time.</p>
+<p>To do that, we need both Futures to be polled at the same time.</p>
+<p>This is often called "joining".</p>
+<h3 id="join-3"><a class="header" href="#join-3">join 3</a></h3>
+<p><img src="iriss/018-async/35-join-struct.png" alt="35-join-struct.png" /></p>
+<p>🦀 Here is a rough example of what a Join might look like.</p>
+<p>🦀 I'm not going to go too deep into this code, because most of the time you'll end up using someone else's join code (heck, even the standard library has a proposed future join macro).</p>
+<p>🦀 If you really want to see all the code, it's in the online IRISS book.</p>
+<p>🦀 To gloss over it a little bit, the <code>CollapsableFuture</code> is a wrapper Future that I made that takes any other Future and stores the output after it's Ready so that it doesn't matter how many times you call <code>.poll()</code>... you'll see why in a moment.</p>
+<p>🦀 When we create a new <code>Join</code> we pass in two Futures of any type, then pass those to new <code>CollapsableFuture</code>s.</p>
+<p>🦀 If you need to wait three futures, make one of those two another Join... or use someone else's better code.</p>
+<h3 id="join-4"><a class="header" href="#join-4">join 4</a></h3>
+<p><img src="iriss/018-async/36-join-future.png" alt="36-join-future.png" /></p>
+<p>🦀 Let's implement <code>Future</code> for <code>Join</code>.</p>
+<p>🦀 For a Join with the generic types F1 and F2, our Output will be a tuple of F1::Output and F2::Output.</p>
+<p>🦀 When you poll <code>Join</code>, it polls the inner <code>Future</code>s.</p>
+<p>🦀 It does this every time, which you aren't supposed to do, which is why I made the <code>CollapsableFuture</code> to keep my Join code simple.</p>
+<p>🦀 Once both polls report Ready, then we extract the actual output from collapsable future and return Ready from the Join.</p>
+<h3 id="join-5"><a class="header" href="#join-5">join 5</a></h3>
+<p>Ideally, you won't be writing inefficient Join's like this one yourself.</p>
+<p>Most async crates provide their own version of join, such as Tokio's <code>join!</code> macro, and Smol's <code>.zip()</code> function.</p>
+<p>Even the Rust standard library has <code>std::future::join</code> which they're trying to stabilize.</p>
+<h2 id="over-in-the-real-world"><a class="header" href="#over-in-the-real-world">Over in the Real World</a></h2>
+<h3 id="real-world-1"><a class="header" href="#real-world-1">real world 1</a></h3>
+<p>Rust doesn't come with its own Executors, or much in the way of Future utilities (other than what we've covered here).</p>
+<p>This is because the implementation details can vary significantly depending on what you're doing.</p>
+<p>For example, while here we've used Threads, Threads aren't necessary, aren't always available, and aren't particularly efficient in some situations.</p>
+<h3 id="real-world-2"><a class="header" href="#real-world-2">real world 2</a></h3>
+<p>If you're working on an embedded microcontroller, for example, rather than parking and unparking threads, you might use interrupts and exceptions to wake futures.</p>
+<p>If you're running code inside an operating system, it might be more efficient to wait on callbacks from the OS to know when to wake a given future.</p>
+<h3 id="real-world-3"><a class="header" href="#real-world-3">real world 3</a></h3>
+<p>Rather than writing your own executors, though, you'll find that other people have provided executors for common use cases such as those in the Tokio and Smol crates.</p>
+<p>These crates also come with a lot of utility types, functions, and macros, including substantially more efficient and ergonomic ways to join futures.</p>
+<p>They also usually have code for common futures such as working with the file system or network traffic asynchronously, either via libraries or optional crate features.</p>
+<h3 id="real-world-4"><a class="header" href="#real-world-4">real world 4</a></h3>
+<p>Beyond this there are also executor agnostic libraries that provide futures for more specific needs like reqwest which provides HTTP specific futures, or SQLX, sequel x, squelex...</p>
+<p>which provides connectivity to a variety of different database flavors.</p>
+<h3 id="real-world-5"><a class="header" href="#real-world-5">real world 5</a></h3>
+<p>So, most of the time when you work with async Rust in the real world, you won't need to write executors, and you won't need to implement the Future trait yourself.</p>
+<p>You'll use third party libraries for futures at the outer bounds of your software, join futures with third party utilities, and you'll glue it all together with futures created with <code>async</code> blocks and functions.</p>
+<h3 id="real-world-6"><a class="header" href="#real-world-6">real world 6</a></h3>
+<p><img src="iriss/018-async/37-tokio.png" alt="37-tokio.png" /></p>
+<p>🦀 Returning to our rather silly example from the very beginning of this video, your <code>async</code> code is less likely to look like what we've seen so far and much more likely to look like this:</p>
+<p>🦀 Isn't it beautiful?!</p>
+<p>🦀 Sure it's simplistic, but there's not a <code>Future</code> trait or <code>Pin</code> in sight, and that's genuinely what async Rust programming is like in the real world 99% of the time!</p>
+<p>🦀 So why did I just try to explain all of this?</p>
+<p>🦀 Because my hope is that, when you understand what's happening under the hood, it will help you make the best use of async and avoid...</p>
+<h2 id="common-gotchas"><a class="header" href="#common-gotchas">Common Gotchas</a></h2>
+<h3 id="gotchas-1"><a class="header" href="#gotchas-1">gotchas 1</a></h3>
+<p>Other than forgetting you can and should poll as many futures together as possible, see the earlier section on Joining futures, there are two fairly common gotcha's in async code.</p>
+<p>Luckily, they're much easier to spot when you have a fair understanding of what's going on underneath.</p>
+<h3 id="gotchas-2"><a class="header" href="#gotchas-2">gotchas 2</a></h3>
+<p>The first is blocking.</p>
+<p>We used threads in our examples, but you may not end up using a threaded executor, and even when you do, some executors allow multiple futures to run on a single thread.</p>
+<p>This means using any blocking code could prevent a thread from continuing until it's complete, which could impact the execution of some or all of your other futures.</p>
+<h3 id="gotchas-3"><a class="header" href="#gotchas-3">gotchas 3</a></h3>
+<p>This is an easier mistake to make than you might think.</p>
+<p>For example, reading a file or TCP stream using the standard library will block your thread until the action is completed.</p>
+<h3 id="gotchas-4"><a class="header" href="#gotchas-4">gotchas 4</a></h3>
+<p>Worse still is <code>Mutex</code> which will block a thread until the lock becomes available.</p>
+<p>If there are two futures on the same thread, and one has a MutexGuard when the other requests a lock, the second future will block the thread, preventing the first thread from dropping the MutexGuard.</p>
+<p>This causes a bug called "Deadlock".</p>
+<h3 id="gotchas-5"><a class="header" href="#gotchas-5">gotchas 5</a></h3>
+<blockquote>
+<p>If you cleverly noticed that I used standard library Mutexes earlier, good catch!</p>
+<p>Luckily, the specific way they're being used is safe as the locks are guaranteed to be on different threads.</p>
+</blockquote>
+<h3 id="gotchas-6"><a class="header" href="#gotchas-6">gotchas 6</a></h3>
+<p>Libraries like Tokio and Smol either come with (or provide separately) their own interpretations of typically blocking behaviors that use Futures instead.</p>
+<h3 id="gotchas-7"><a class="header" href="#gotchas-7">gotchas 7</a></h3>
+<p>The second gotcha is with borrowing and ownership.</p>
+<p>As we've seen, there's complexity around Futures that requires Pinning to be a thing.</p>
+<p>This is because a Future might be moved by its executor, and if it is, self-referential data would point at old (or worse, freed) memory.</p>
+<p>But it can get even more complex than that.</p>
+<h3 id="gotchas-8"><a class="header" href="#gotchas-8">gotchas 8</a></h3>
+<p>Rusts ownership model means that the lifetime of a reference must be trackable to make sure it doesn't outlive its owned data.</p>
+<p>This gets a lot more challenging with futures as the compiler needs to track references through deferred work.</p>
+<p>Thinking even more carefully about owned data, references, and the memory and CPU tradeoffs of cloning data can make async code harder to reason about.</p>
+<h3 id="gotchas-9"><a class="header" href="#gotchas-9">gotchas 9</a></h3>
+<p>It's worth remembering that, particularly for smaller projects, you don't <em>have</em> to use async if it's causing your code to be more complicated than it would otherwise be.</p>
+<h2 id="summary-1"><a class="header" href="#summary-1">Summary</a></h2>
+<h3 id="summary-1"><a class="header" href="#summary-1">summary 1</a></h3>
+<p>Hopefully, after this video, you have a bit more of an understanding about what's going on when you use async in Rust.</p>
+<p>There are a variety of crates that help provide utilities for async each in their own way, so before you choose executor crates and <code>Future</code> supporting libraries, it's worth reading crate documentation to understand the options available and the choices made.</p>
+<h3 id="summary-2-1"><a class="header" href="#summary-2-1">summary 2</a></h3>
+<p>This is the end Idiomatic Rust in Simple Steps.</p>
+<p>While there are many more language features available to you, I hope I've left you in a strong place to continue your journey.</p>
+<h3 id="summary-3-1"><a class="header" href="#summary-3-1">summary 3</a></h3>
+<p>I think I want to do a follow-up video for IRISS covering what you should do next on your learning journey, but after that I think we're done with the series.</p>
+<p>I have some ideas for where to take Fio's Quest, including some quick potentially language agnostic videos on software engineering patterns, but what about you?</p>
+<h3 id="gotchas-4-1"><a class="header" href="#gotchas-4-1">gotchas 4</a></h3>
+<p>What would you like to see from the channel next?</p>
+<p>Leave a comment or join our discord.</p>
+<h3 id="gotchas-5-1"><a class="header" href="#gotchas-5-1">gotchas 5</a></h3>
+<p>If you've enjoyed the series, then remember to like and subscribe.</p>
+<p>My name is Daniel, and this has been IRISS. <em>wink</em></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="long-live-fios-quest"><a class="header" href="#long-live-fios-quest">Long Live Fio's Quest</a></h1>
 <p>It had to happen eventually, Rust, simply is dead. Let's take a moment  ... Ok, that's enough, Rust simply is dead, long live Fio's Quest.</p>
 <p>== Fio Jump</p>
