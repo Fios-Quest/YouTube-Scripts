@@ -20,6 +20,7 @@
 - [Threads](iriss/015-threads.md)
 - [Macros](iriss/016-macros.md)
 - [Unsafe](iriss/017-unsafe.md)
+- [Async](./iriss/018-async.md)
 
 # Channel Labs
 
