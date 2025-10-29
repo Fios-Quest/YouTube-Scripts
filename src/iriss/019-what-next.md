@@ -183,23 +183,22 @@ I'm also going to be making some other changes to the channel.
 
 I'll be filming here from now on and trying to do more stuff while filming to cut down on editing.
 
-### next 3
-
 Also, I'd like to do a bit more streaming (we're so close to having the Job Tracker done).
 
-Finally, I need to decide what I'm actually doing with my Patreon which is admitedly a mess right now and generally decide what I'm going to do when this channel get's monetised which (touch wood) will happen in the next few months.
-
-### next 4
+### next 3
 
 I'd still really like to hear from you though.
 
 What am I missing that you'd like to see.
 
-My goal here is to be helpful and I can't do that blind.
+### next 5
+
+My goal here is to be helpful and I want to know how best to do that.
 
 Drop me a comment, or pop by the discord.
 
-### next 5
-
 Other than that, I'll see you next in SPACE.
 
+---
+
+Other than that, I'll see you next in the one place that hasn't been corrupted by capitalism, SPACE.
