@@ -422,15 +422,21 @@ println!("Enum bytes: {enum_bytes:?}");
 Tradeoffs?
 ----------
 
+### tradeoffs 1
+
 There seems to be a lot of extra work going on here.
 
 We need to add more validation, extra error types (and all the extra work they're supposed to involve that we skipped here), not to mention how verbose the match statements were for the enum version of our month newtype.
 
 That's true.
 
+### tradeoffs 2
+
 But this is because we're focusing on the newtype, not the impact that it has across your program.
 
-By moving our validtion code to a single domain type, we're decluttering the rest of our program.
+By moving our validtion code into a single domain type, we're decluttering the rest of our program.
+
+### tradeoffs 3
 
 Let's think about a more complex type, like an email.
 
@@ -461,9 +467,9 @@ This not only could risk the same email needing to be validated multiple times, 
 
 Any time we _don't_ use the validator for a function that accepts an email string because we perhaps initially create it only in a context where the string has already been validated, we risk that function being reused with no validation later.
 
-> It's worth noting,  we're using my "good enough, no false negatives" approach rather than a complex regex or parser,
-> which would be even more computationally expensive! See https://emailregex.com/ for a completely compliant regex
-> validation string but... the only way to really know if an email address is valid is to email it.
+> It's worth noting,  we're using my "good enough, no false negatives" approach rather than a complex regex or parser, which would be even more computationally expensive!
+
+> See https://emailregex.com/ for a completely compliant regex validation string but... the only way to really know if an email address is valid is to email it.
 
 Here's a newtype representing an Email:
 
