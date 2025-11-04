@@ -16,7 +16,7 @@ If I show you this binary value, can you tell me what it is?
 
 We can rule out a few things.
 
-It's 64bits, which means its definitely not a boolean or a character.
+It's 64 bits, which means it's definitely not a boolean or a character.
 
 It's also too long for an IPv4 address, and too short for an IPv6 address.
 
@@ -26,7 +26,7 @@ More likely it's a number, either a 64bit integer or a 64-bit float.
 
 Let's try parsing the data as a few things
 
-Maybe an integer... probably not a float, ah, it's a string, and its an ad for this collection of videos.
+Maybe an integer... probably not a float, ah, it's a string, and it's an ad for this collection of videos.
 
 ### type 4
 
@@ -40,7 +40,7 @@ Without type information, there's nothing stopping us from accidentally passing 
 
 We start having to depend constantly on runtime checks to make sure any data our functions receive is valid before trying to process it.
 
-All modern languages (even ones we may not usually think of being "typed") come with their own built-in types that usually cover at the very least, floats, strings, lists and objects (or dictionaries).
+All modern languages (even ones we may not usually think of being "typed") come with their own built-in types that usually cover, at the very least, floats, strings, lists and objects (or dictionaries).
 
 This helps us reason about the data stored in memory.
 
@@ -71,7 +71,7 @@ Why normal types aren't enough
 
 Let's imagine we wanted to represent years, months and days, we could do so with unsigned integers.
 
-For simplicity I'll use `u64`s for everything, the size is irrelevant to the point:
+For simplicity, I'll use `u64`s for everything, the size is irrelevant to the point:
 
 ```rust
 # fn main() {
@@ -98,7 +98,7 @@ Second, there's nothing stopping us passing any valid number to a function that'
 
 We have to guard against this by validating the number passed every time the function is run.
 
-Ideally we'd go through the steps to impl Error, but I hope you'll forgive me if I skip that for this example.
+Ideally, we'd go through the steps to impl Error, but I hope you'll forgive me if I skip that for this example.
 
 ```rust
 # fn main() {
@@ -135,7 +135,7 @@ println!("{}", get_english_month_name(day));
 # }
 ```
 
-The concepts of Days, Months and Years are meaningfully different in the domain of our application, and have meaninful restrictions on them beyond the fact they are a number.
+The concepts of Days, Months and Years are meaningfully different in the domain of our application and have meaningful restrictions on them beyond the fact they are a number.
 
 We need more context about the data.
 
@@ -148,7 +148,7 @@ Introducing newtype
 
 ### newtype 1
 
-First, lets prevent days being passed into functions that take months.
+First, let’s prevent days being passed into functions that take months.
 
 We can do this by wrapping our `u64`s in tuple structs, one for each of Year, Month and Day.
 
@@ -218,17 +218,17 @@ Now if we try passing in Day, we get a wonderful error message:
 
 Our second issue is that we can still produce invalid values such as `Month(13)`.
 
-We can fix this by restricting the instantiation of our types to a constructor, and validating the input.
+We can fix this by restricting the instantiation of our types to a constructor and validating the input.
 
 ### newtype 5
 
-The question becomes, what should we do when someone attempts to use invalid data, I would argue we should return a Result with a relevant error.
+The question becomes, what we should do when someone attempts to use invalid data; I would argue we should return a Result with a relevant error.
 
 Let's focus on `Month`.
 
 ### newtype 6
 
-First we need to make sure the interior of the struct can only be instatiated or edited by things we control.
+First, we need to make sure the interior of the struct can only be instantiated or edited by things we control.
 
 In our case, this means moving it into a separate module
 
@@ -285,13 +285,13 @@ Since we can no longer instantiate an invalid month, we can fairly confidently r
 
 I'd say there's still one improvement we can make here, at least for months.
 
-Our program is written in English so why use numbers to represent the months in our code at all.
+Our program is written in English, so why use numbers to represent the months in our code at all.
 
 In fact, numbers are causing us a specific problem, even beyond readability.
 
 In the `get_english_month_name` function, by matching on the numeric value we still have to show the compiler we're doing something with a number that's not 1-12, even if we're sure it isn't possible to have that as a value.
 
-We can change the code representation of our Month without changing its underlying numeric representation, by changing it to an enum.
+We can change the code representation of our Month without changing its underlying numeric representation by changing it to an enum.
 
 ```rust
 mod month {
@@ -440,7 +440,7 @@ By moving our validtion code into a single domain type, we're decluttering the r
 
 Let's think about a more complex type, like an email.
 
-Using built in types, we just create a validator and call it done:
+Using built-in types, we just create a validator and call it done:
 
 ```rust
 fn is_valid_email_address<S>(email: S) -> bool
@@ -459,17 +459,17 @@ assert!(!is_valid_email_address("@ab"));
 assert!(!is_valid_email_address("ab@"));
 ```
 
-This code is simple and terse, and doesn't require much testing.
+This code is straightforward, terse and requires little testing.
 
 However, everytime we want to use a string as an email, we will need to run the validator.
 
 This not only could risk the same email needing to be validated multiple times, but adds some significant risk, particularly as our code evolves.
 
-Any time we _don't_ use the validator for a function that accepts an email string because we perhaps initially create it only in a context where the string has already been validated, we risk that function being reused with no validation later.
+Any time we _don't_ use the validator for a function that accepts an email string because we perhaps initially create it only in a context where the string has already been validated, we risk that function being reused with no validation somewhere else.
 
-> It's worth noting,  we're using my "good enough, no false negatives" approach rather than a complex regex or parser, which would be even more computationally expensive!
+> It's worth noting, we're using my "good enough, no false negatives" approach rather than a complex regex or parser, which would be even more computationally expensive!
 
-> See https://emailregex.com/ for a completely compliant regex validation string but... the only way to really know if an email address is valid is to email it.
+> See https://emailregex.com/ for a completely compliant regex validation string, but... the only way to really know if an email address is valid is to email it.
 
 Here's a newtype representing an Email:
 
@@ -528,9 +528,9 @@ fn main() {
 }
 ```
 
-We've added an Error type for potentially invalid addresses, and a constructor... but our validator is identical, and we only add two new tests.
+We've added an Error type for potentially invalid addresses and a constructor... but our validator is identical, and we only add two new tests.
 
-Now, though, we only ever need to validate the email when we create the data type, which will usually be when we're getting that data from an external source, for example from a user or importing it from a database.
+Now, though, we only ever need to validate the email when we create the data type, which will usually be when we're getting that data from an external source, for example, from a user or importing it from a database.
 
 This will also likely be where we deal with any potential validation errors, further simplifying our code.
 
@@ -547,6 +547,6 @@ For a small amount of extra work, newtypes give us:
 
 ### conclusion 2
 
-If you enjoyed this video don't forget to like and subscribe.
+If you enjoyed this video, don't forget to like and subscribe.
 
-Next time we're going to look at another way the type system can be leverage to make more rigourous code with the type-state pattern, hopefully I'll see you then!
+Next time we're going to look at another way the type system can be leveraged to make more rigorous code with the type-state pattern, hopefully I'll see you then!
