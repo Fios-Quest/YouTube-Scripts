@@ -40,6 +40,8 @@ Ah, well, this looks right
 
 So it's probably a short, UTF-8 encoded string advertising our new collection of videos, but, who's to say really?
 
+Without knowing for sure, we're just guessing.
+
 ### type 4
 
 Types turn data into information.
@@ -176,6 +178,8 @@ Let's focus on `Month`.
 
 ### newtype 7
 
+[//]: # (show code 04_month_newtype)
+
 First, we need to make sure the interior of the struct can only be instantiated or edited by things we control.
 
 In this code I've moved the Month newtype into a month module
@@ -188,143 +192,49 @@ Now we can validate the month when it's constructed, returning the error if nece
 
 Since we can no longer instantiate an invalid month, we can fairly confidently remove the result from any functions like `get_english_month_name`.
 
-We still technically have to deal with the `u64`, but theoretically we can'
+We still technically have to deal with every possible `u64`, but theoretically it has to be between 1 and 12, and if it's not, something has gone badly wrong so a panic is now in order.
+
+### newtype 9
 
 I'd say there's still one improvement we can make here, at least for months.
 
 Our program is written in English, so why use numbers to represent the months in our code at all.
 
-In fact, numbers are causing us a specific problem, even beyond readability.
+Dealing with numbers are why we still need to have that panic in our  `get_english_month_name` function.
 
-In the `get_english_month_name` function, by matching on the numeric value we still have to show the compiler we're doing something with a number that's not 1-12, even if we're sure it isn't possible to have that as a value.
+### newtype 10
 
-We can change the code representation of our Month without changing its underlying numeric representation by changing it to an enum.
+[//]: # (show code 05_enum_newtype)
 
-```rust
-mod month {
-#     #[derive(Debug, PartialEq)]
-    #[repr(u64)]
-    pub enum Month {
-        January = 1,
-        February = 2,
-        March = 3,
-        April = 4,
-        May = 5,
-        June = 6,
-        July = 7,
-        August = 8,
-        September = 9,
-        October = 10,
-        November = 11,
-        December = 12,
-    }
+We can change how we model Month in our code without changing its underlying numeric representation by changing it to an enum and specifying the enums discriminant type with the repr attribute.
 
-#     #[derive(Debug)]
-    pub struct InvalidMonthNumber;
-    
-    impl Month {
-        pub fn from_number(month: u64) -> Result<Month, InvalidMonthNumber> {
-            match month  {
-                1 => Ok(Month::January),
-                2 => Ok(Month::February),
-                3 => Ok(Month::March),
-                4 => Ok(Month::April),
-                5 => Ok(Month::May),
-                6 => Ok(Month::June),
-                7 => Ok(Month::July),
-                8 => Ok(Month::August),
-                9 => Ok(Month::September),
-                10 => Ok(Month::October),
-                11 => Ok(Month::November),
-                12 => Ok(Month::December),
-                _ => Err(InvalidMonthNumber),
-            }
-        }
+Depending on your data you obviously may not need to specify this, and again, a `u8` would be more appropriate here, but I still need to make that point later. :)
 
-        pub fn get_english_month_name(&self) -> String {
-            match self  {
-                Month::January => "January".to_string(),
-                Month::February => "February".to_string(),
-                Month::March => "March".to_string(),
-                Month::April => "April".to_string(),
-                Month::May => "May".to_string(),
-                Month::June => "June".to_string(),
-                Month::July => "July".to_string(),
-                Month::August => "August".to_string(),
-                Month::September => "September".to_string(),
-                Month::October => "October".to_string(),
-                Month::November => "November".to_string(),
-                Month::December => "December".to_string(),
-            }
-        }
-    }
-}
+Anyway, by using an enum, we can remove the code branch that was theoretically impossible anyway.
 
-use month::Month;
+### newtype 11
 
-# fn main() {
-let month = Month::from_number(9).expect("Somehow not September?!");
-assert_eq!(month, Month::September);
-println!("{}", month.get_english_month_name());
-# assert_eq!(month.get_english_month_name(), "September".to_string());
-# }
-```
-
-Now we've even removed the code branch that was theoretically impossible anyway.
-
-###
-
-It's worth pointing out that these types only exist at compile time.
+So, that big point I've been working up to... these types only exist at compile time.
 
 In memory, in our running program, these types are all exactly the same:
 
-```rust
-#[repr(u64)]
-pub enum MonthEnum {
-    // ...snip
-#     January = 1,
-#     February = 2,
-#     March = 3,
-#     April = 4,
-#     May = 5,
-#     June = 6,
-#     July = 7,
-#     August = 8,
-#     September = 9,
-#     October = 10,
-#     November = 11,
-#     December = 12,
-}
+### newtype 12
 
-pub struct MonthStruct(u64);
+[//]: # (show code 06_newtype_size)
 
-fn get_memory<'a, T>(input: &'a T) -> &'a [u8] {
-    // ...snip
-#     // Credit: https://bennett.dev/rust/dump-struct-bytes/
-#     unsafe {
-#         std::slice::from_raw_parts(
-#             input as *const _ as *const u8,
-#             std::mem::size_of::<T>()
-#         )
-#     }
-}
+In this program we construct each of the Month types we've discussed.
 
+A `u64`, a tuple struct, and an enum.
 
-let sept_num: u64 = 9;
-let sept_struct = MonthStruct(9);
-let sept_enum = MonthEnum::September;
+We then extract the bytes stored in memory for each type and... they're all the same!
 
-let num_bytes = get_memory(&sept_num);
-let struct_bytes = get_memory(&sept_struct);
-let enum_bytes = get_memory(&sept_enum);
+This is why I stuck with `u64`s for what its worth. 
 
-println!("Num bytes: {num_bytes:?}");
-println!("Struct bytes: {struct_bytes:?}");
-println!("Enum bytes: {enum_bytes:?}");
-#
-# assert_eq!(num_bytes, struct_bytes);
-# assert_eq!(struct_bytes, enum_bytes);
-```
+### newtype 13
+
+Types aren't real.
+
+They provide us, the software engineers, information we need to structure our programs better.
 
 Tradeoffs?
 ----------
@@ -339,32 +249,19 @@ That's true.
 
 ### tradeoffs 2
 
-But this is because we're focusing on the newtype, not the impact that it has across your program.
+But we've been focused on the newtype, not the impact that it has across your program.
 
-By moving our validtion code into a single domain type, we're decluttering the rest of our program.
+By moving our validation code into a single domain type, we're decluttering the rest of our program.
 
 ### tradeoffs 3
+
+[//]: # (show code 07_newtype_size)
 
 Let's think about a more complex type, like an email.
 
 Using built-in types, we just create a validator and call it done:
 
-```rust
-fn is_valid_email_address<S>(email: S) -> bool
-    where S: AsRef<str>
-{
-    let s = email.as_ref();
-    // Must contain an @ that's not the first or last character
-    s.contains('@')
-        && s.chars().next() != Some('@')
-        && s.chars().last() != Some('@')
-}
-
-// Tests
-assert!(is_valid_email_address("a@b"));
-assert!(!is_valid_email_address("@ab"));
-assert!(!is_valid_email_address("ab@"));
-```
+### tradeoffs 4
 
 This code is straightforward, terse and requires little testing.
 
@@ -374,68 +271,27 @@ This not only could risk the same email needing to be validated multiple times, 
 
 Any time we _don't_ use the validator for a function that accepts an email string because we perhaps initially create it only in a context where the string has already been validated, we risk that function being reused with no validation somewhere else.
 
-> It's worth noting, we're using my "good enough, no false negatives" approach rather than a complex regex or parser, which would be even more computationally expensive!
+### tradeoffs 5
 
-> See https://emailregex.com/ for a completely compliant regex validation string, but... the only way to really know if an email address is valid is to email it.
+Worse, it's easy to imagine that our software might end up with multiple validation functions, each following slightly different rules.
 
-Here's a newtype representing an Email:
+In this example we're using my "good enough, no false negatives" approach, but another engineer might write a different validator, perhaps following emailregex.com.
 
-```rust
-mod email_address {
-    use std::{fmt, error::Error};
+Now we have two models of what an email should be inside our software.
 
-    #[derive(Debug)]
-    pub struct InvalidEmailAddressError;
+### tradeoffs 6
 
-    impl fmt::Display for InvalidEmailAddressError {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            write!(f, "Invalid Email Address")
-        }
-    }
+[//]: # (show code 08_email_newtype)
 
-    impl Error for InvalidEmailAddressError {}
+Let's use everything we've learned to create a newtype representing an Email:
 
-    pub struct EmailAddress(String);
+We've added an Error type for potentially invalid addresses and, this time I did those extra steps to implement the Error trait.
 
-    impl EmailAddress {
-        pub fn from_string<S>(email: S) -> Result<EmailAddress, InvalidEmailAddressError>
-            where S: ToString + AsRef<str>
-        {
-            match (Self::is_valid(&email)) {
-                true => Ok(EmailAddress(email.to_string())),
-                false => Err(InvalidEmailAddressError),
-            }
-        }
+Next we've got our a constructor which calls to our validator, but our validator is identical.
 
-        pub fn is_valid<S>(email: S) -> bool
-            where S: AsRef<str>
-        {
-            let s = email.as_ref();
-            // Must contain an @ that's not the first or last character
-            s.contains('@')
-                && s.chars().next() != Some('@')
-                && s.chars().last() != Some('@')
-        }
-    }
-}
+We've added one new test for the constructor, and the one for our validator is the same.
 
-fn main() {
-    use email_address::EmailAddress;
-
-    // Tests
-    let valid_email = EmailAddress::from_string("hello@example.com");
-    let invalid_email = EmailAddress::from_string("Ted");
-
-    assert!(valid_email.is_ok());
-    assert!(invalid_email.is_err());
-
-    assert!(EmailAddress::is_valid("a@b"));
-    assert!(!EmailAddress::is_valid("@ab"));
-    assert!(!EmailAddress::is_valid("ab@"));
-}
-```
-
-We've added an Error type for potentially invalid addresses and a constructor... but our validator is identical, and we only add two new tests.
+### tradeoffs 7
 
 Now, though, we only ever need to validate the email when we create the data type, which will usually be when we're getting that data from an external source, for example, from a user or importing it from a database.
 
@@ -450,7 +306,8 @@ For a small amount of extra work, newtypes give us:
 
 - Centralised validation and error handling
 - Reduced complexity
-- More defensive code
+- More information to understand the domain we're working in
+- And more defensive, safer to use code
 
 ### conclusion 2
 
