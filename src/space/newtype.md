@@ -8,7 +8,7 @@ What is a type?
 
 Why do we use types?
 
-Forget newtypes, why do we use types at all?
+Forget newtypes, for now, why do we use types at all?
 
 If I show you this binary value, can you tell me what it is?
 
@@ -20,13 +20,25 @@ It's 64 bits, which means it's definitely not a boolean or a character.
 
 It's also too long for an IPv4 address, and too short for an IPv6 address.
 
-More likely it's a number, either a 64bit integer or a 64-bit float.
+More likely it's a number, either an integer or a float.
 
 ### type 3
 
-Let's try parsing the data as a few things
+[//]: # (show program 00_what_is_this)
 
-Maybe an integer... probably not a float, ah, it's a string, and it's an ad for this collection of videos.
+Let's try parsing the data as a few things.
+
+Here's the data.
+
+For reference, this is it as bytes.
+
+So it could be a huge integer
+
+It's probably not a float though.
+
+Ah, well, this looks right
+
+So it's probably a short, UTF-8 encoded string advertising our new collection of videos, but, who's to say really?
 
 ### type 4
 
@@ -34,11 +46,11 @@ Types turn data into information.
 
 Without knowing whether we're looking at a number or a sequence of ascii characters, we'd have a really hard time writing code and, more importantly, what we write would be very error-prone.
 
-Without type information, there's nothing stopping us from accidentally passing a boolean to a function that expects a complex user structure.
+[//]: # (Without type information, there's nothing stopping us from accidentally passing a boolean to a function that expects a complex user structure.)
 
 ### type 5
 
-We start having to depend constantly on runtime checks to make sure any data our functions receive is valid before trying to process it.
+[//]: # (We start having to depend constantly on runtime checks to make sure any data our functions receive is valid before trying to process it.)
 
 All modern languages (even ones we may not usually think of being "typed") come with their own built-in types that usually cover, at the very least, floats, strings, lists and objects (or dictionaries).
 
@@ -46,9 +58,9 @@ This helps us reason about the data stored in memory.
 
 ### type 6
 
-> You'll notice I didn't include integers in the bare minimum types, this is because some languages opt to store _all_ numbers as double precision floating points.
+You'll notice I didn't include integers in the bare minimum types, this is because some languages opt to store _all_ numbers as double precision floating points.
 
->  This only really becomes an accuracy issue for integers over 2^53 though, which is over 9 million billion, so I think we can give them a break.
+This only really becomes an accuracy issue for integers over 2 to the power of 53 though, which is over 9 million billion, so I think we can give them a break.
 
 ### type 7
 
@@ -56,88 +68,70 @@ But is it enough to consider `"hello@example.com"` to be a string?
 
 It technically is a string, sure, and we could manipulate it as one, but...
 
+### type 8
+
 in the context of our software, it might be that there is a meaningful difference between `"hello@example.com"` and `"Hello, example.com"`, in the same way as there is a meaningful difference between `"spaceFTW"` and
 
-- <!--6 --> six quintillion
-- <!--292 --> two hundred and ninty two quadrillion
-- <!--731 --> seven hundred and thirty one trillion
-- <!--980 --> nine hundred and eighty billion
-- <!--616 --> six hundred and sixteen million
-- <!--396 --> three hundred and ninty six thousand
-- <!--915 --> nine hundred and fifteen
+- <!-- 6 --> six quintillion
+- <!-- 292 --> two hundred and ninty two quadrillion
+- <!-- 731 --> seven hundred and thirty one trillion
+- <!-- 980 --> nine hundred and eighty billion
+- <!-- 616 --> six hundred and sixteen million
+- <!-- 396 --> three hundred and ninty six thousand
+- <!-- 915 --> nine hundred and fifteen
 
 Why normal types aren't enough
 ------------------------------
 
+[//]: # (show code 01_dates)
+
+### problem 1
+
 Let's imagine we wanted to represent years, months and days, we could do so with unsigned integers.
 
-For simplicity, I'll use `u64`s for everything, the size is irrelevant to the point:
+For simplicity, I've use `u64`s for everything.
 
-```rust
-# fn main() {
-// Todays date as of writing:
-let year: u64 = 2025;
-let month: u64 = 9;
-let day: u64 = 24;
-# }
-```
+### problem 2
+
+Yes, we should probably use u8s for the month and day, but the size is irrelevant to the point, not every language has differently sized integers... or integers at all... and u64s will help me demonstrate a point at the end of the video.
 
 However, we can immediately identify some problems with this.
 
-First, there's nothing stopping us from using valid `u64`s to represent invalid data:
+First, there's nothing stopping us from using valid `u64`s to represent invalid data.
 
-```rust
-# fn main() {
-let year: u64 = 22025;
-let month: u64 = 19;
-let day: u64 = 240;
-# }
-```
+I can make all of these numbers invalid by changing them to zero
+
+### problem 4
 
 Second, there's nothing stopping us passing any valid number to a function that's supposed to take a month.
 
-We have to guard against this by validating the number passed every time the function is run.
+This means we need to validate the data inside every function that uses it.
 
-Ideally, we'd go through the steps to impl Error, but I hope you'll forgive me if I skip that for this example.
+[//]: # (show code 02_get_english_month_name)
 
-```rust
-# fn main() {
-#[derive(PartialEq)]
-struct InvalidMonth;
+### problem 3
 
-fn get_english_month_name(month: u64) -> Result<String, InvalidMonth> {
-    // ...
-#     match month  {
-#         1 => Ok("January".to_string()),
-#         2 => Ok("February".to_string()),
-#         3 => Ok("March".to_string()),
-#         4 => Ok("April".to_string()),
-#         5 => Ok("May".to_string()),
-#         6 => Ok("June".to_string()),
-#         7 => Ok("July".to_string()),
-#         8 => Ok("August".to_string()),
-#         9 => Ok("September".to_string()),
-#         10 => Ok("October".to_string()),
-#         11 => Ok("November".to_string()),
-#         12 => Ok("December".to_string()),
-#         _ => Err(InvalidMonth),
-#     }
-}
+In this example we've got a function that takes a month and returns the name of the month in English.
 
-# let year: u64 = 2025;
-# let month: u64 = 9;
-# let day: u64 = 24;
-# 
-println!("{}", get_english_month_name(month));
-println!("{}", get_english_month_name(day));
-# assert_eq!(get_english_month_name(month), Ok("September".to_string());
-# assert_eq!(get_english_month_name(day), Err("Invalid Month".to_string());
-# }
-```
+However, because you might pass in a `u64` that's not a valid month, that means we need to return a Result.
 
-The concepts of Days, Months and Years are meaningfully different in the domain of our application and have meaningful restrictions on them beyond the fact they are a number.
+### problem 4
 
-We need more context about the data.
+I'm using a unit struct for an error here, ideally, we'd go through the steps to impl Error, but I hope you'll forgive me if I skip that for this example.
+
+Our function checks that the number given to it is between one and twelve.
+
+Unfortunately, it doesn't stop us passing data to the function that isn't _supposed_ to be a month.
+
+[//]: # (run code)
+
+Rust is happy to let us pass in data that's _supposed_ to represent a year or day, and that's a mistake that may be missed even at runtime
+
+### problem 5
+
+What I'd like you to take away from this is that concepts of Days, Months and Years are meaningfully different within the domain of our application here. 
+
+There is contextual information that we're ignoring about the data.
 
 We need to know more about the "type" of data we're dealing with beyond it just being a number!
 
@@ -148,140 +142,53 @@ Introducing newtype
 
 ### newtype 1
 
-First, let’s prevent days being passed into functions that take months.
+To oversimplify a touch, Newtypes, are wrappers around existing types that provide the context for the information stored within.
 
-We can do this by wrapping our `u64`s in tuple structs, one for each of Year, Month and Day.
+First, let’s prevent days being passed into functions that take months.
 
 ### newtype 2
 
-We can then modify our function that expects something that _is_ a month to take the `Month` type.
+[//]: # (show code 03_basic_newtype)
 
-The only change we need to make to the function body is to extract the numeric value of the month like this.
+In this example I've wrapped our `u64`s in tuple structs, one for each of Year, Month and Day.
 
-### newtype 3
+I've also modified our function to explicitly take the `Month` type.
+
+### newtype 4
 
 This is immediately more informative to anyone reading your code.
 
-```rust
-# fn main() {
-#[derive(PartialEq)]
-struct InvalidMonth;
-# #[derive(Copy, Clone)]
-struct Year(u64);
-# #[derive(Copy, Clone)]
-struct Month(u64);
-# #[derive(Copy, Clone)]
-struct Day(u64);
+Even better, if we try to pass a Day into the function now, we get a compile time error (even if the numeric value _could_ be a month)
 
-let year = Year(2025);
-let month = Month(9);
-let day = Day(24);
+[//]: # (run code)
 
-fn get_english_month_name(month: Month) -> Result<String, InvalidMonth> {
-    // ...
-#     match month.0  {
-#         1 => Ok("January".to_string()),
-#         2 => Ok("February".to_string()),
-#         3 => Ok("March".to_string()),
-#         4 => Ok("April".to_string()),
-#         5 => Ok("May".to_string()),
-#         6 => Ok("June".to_string()),
-#         7 => Ok("July".to_string()),
-#         8 => Ok("August".to_string()),
-#         9 => Ok("September".to_string()),
-#         10 => Ok("October".to_string()),
-#         11 => Ok("November".to_string()),
-#         12 => Ok("December".to_string()),
-#         _ => Err(InvalidMonth),
-#     }
-}
-
-println!("{}", get_english_month_name(month));
-# assert_eq!(get_english_month_name(month), "September".to_string());
-
-// println!("{}", get_english_month_name(day));
-# }
-```
-
-Now if we try passing in Day, we get a wonderful error message:
-
-```text
-   |
-38 | println!("{}", get_english_month_name(day));
-   |                ---------------------- ^^^ expected `Month`, found `Day`
-   |                |
-   |                arguments to this function are incorrect
-   |
-```
-
-### newtype 4
+### newtype 5
 
 Our second issue is that we can still produce invalid values such as `Month(13)`.
 
 We can fix this by restricting the instantiation of our types to a constructor and validating the input.
 
-### newtype 5
+### newtype 6
 
 The question becomes, what we should do when someone attempts to use invalid data; I would argue we should return a Result with a relevant error.
 
 Let's focus on `Month`.
 
-### newtype 6
+### newtype 7
 
 First, we need to make sure the interior of the struct can only be instantiated or edited by things we control.
 
-In our case, this means moving it into a separate module
+In this code I've moved the Month newtype into a month module
+
+This lets us protect the internal data, only things inside the module that can change our data must be explicitly marked as public.
+
+### newtype 8
 
 Now we can validate the month when it's constructed, returning the error if necessary.
 
-```rust
-mod month {
-    pub struct Month(u64);
-
-    pub struct InvalidMonthNumber;
-    
-    impl Month {
-        pub fn from_number(month: u64) -> Result<Month, InvalidMonthNumber> {
-            if month < 1 || month > 12 {
-                Err(InvalidMonthNumber)
-            } else {
-                Ok(Month(month))
-            }
-        }
-    }
-
-    fn get_english_month_name(month: Month) -> String {
-        // ...
-    #     match month.0  {
-    #         1 => "January".to_string(),
-    #         2 => "February".to_string(),
-    #         3 => "March".to_string(),
-    #         4 => "April".to_string(),
-    #         5 => "May".to_string(),
-    #         6 => "June".to_string(),
-    #         7 => "July".to_string(),
-    #         8 => "August".to_string(),
-    #         9 => "September".to_string(),
-    #         10 => "October".to_string(),
-    #         11 => "November".to_string(),
-    #         12 => "December".to_string(),
-    #         _ => panic!("Month with an invalid number should not be possible"),
-    #     }
-    }
-    # }
-}
-
-use month::Month;
-
-# fn main() {
-let maybe_month = Month::from_number(0);
-assert!(maybe_month.is_err());
-
-let maybe_month = Month::from_number(9);
-assert!(maybe_month.is_ok());
-```
-
 Since we can no longer instantiate an invalid month, we can fairly confidently remove the result from any functions like `get_english_month_name`.
+
+We still technically have to deal with the `u64`, but theoretically we can'
 
 I'd say there's still one improvement we can make here, at least for months.
 

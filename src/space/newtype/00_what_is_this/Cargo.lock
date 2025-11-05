@@ -24,7 +24,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "newtype"
+name = "what-is-this"
 version = "0.1.0"
 dependencies = [
  "anyhow",
