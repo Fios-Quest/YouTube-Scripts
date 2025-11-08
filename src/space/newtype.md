@@ -24,7 +24,7 @@ More likely it's a number, either an integer or a float.
 
 ### type 3
 
-[//]: # (show program 00_what_is_this)
+> show program 00_what_is_this
 
 Let's try parsing the data as a few things.
 
@@ -48,11 +48,11 @@ Types turn data into information.
 
 Without knowing whether we're looking at a number or a sequence of ascii characters, we'd have a really hard time writing code and, more importantly, what we write would be very error-prone.
 
-[//]: # (Without type information, there's nothing stopping us from accidentally passing a boolean to a function that expects a complex user structure.)
+> Without type information, there's nothing stopping us from accidentally passing a boolean to a function that expects a complex user structure.
 
 ### type 5
 
-[//]: # (We start having to depend constantly on runtime checks to make sure any data our functions receive is valid before trying to process it.)
+> We start having to depend constantly on runtime checks to make sure any data our functions receive is valid before trying to process it.
 
 All modern languages (even ones we may not usually think of being "typed") come with their own built-in types that usually cover, at the very least, floats, strings, lists and objects (or dictionaries).
 
@@ -85,7 +85,7 @@ in the context of our software, it might be that there is a meaningful differenc
 Why normal types aren't enough
 ------------------------------
 
-[//]: # (show code 01_dates)
+> show code 01_dates
 
 ### problem 1
 
@@ -109,7 +109,7 @@ Second, there's nothing stopping us passing any valid number to a function that'
 
 This means we need to validate the data inside every function that uses it.
 
-[//]: # (show code 02_get_english_month_name)
+> show code 02_get_english_month_name
 
 ### problem 3
 
@@ -125,7 +125,7 @@ Our function checks that the number given to it is between one and twelve.
 
 Unfortunately, it doesn't stop us passing data to the function that isn't _supposed_ to be a month.
 
-[//]: # (run code)
+> run code
 
 Rust is happy to let us pass in data that's _supposed_ to represent a year or day, and that's a mistake that may be missed even at runtime
 
@@ -150,7 +150,7 @@ First, let’s prevent days being passed into functions that take months.
 
 ### newtype 2
 
-[//]: # (show code 03_basic_newtype)
+> show code 03_basic_newtype
 
 In this example I've wrapped our `u64`s in tuple structs, one for each of Year, Month and Day.
 
@@ -162,7 +162,7 @@ This is immediately more informative to anyone reading your code.
 
 Even better, if we try to pass a Day into the function now, we get a compile time error (even if the numeric value _could_ be a month)
 
-[//]: # (run code)
+> run code
 
 ### newtype 5
 
@@ -178,7 +178,7 @@ Let's focus on `Month`.
 
 ### newtype 7
 
-[//]: # (show code 04_month_newtype)
+> show code 04_month_newtype
 
 First, we need to make sure the interior of the struct can only be instantiated or edited by things we control.
 
@@ -204,7 +204,7 @@ Dealing with numbers are why we still need to have that panic in our  `get_engli
 
 ### newtype 10
 
-[//]: # (show code 05_enum_newtype)
+> show code 05_enum_newtype
 
 We can change how we model Month in our code without changing its underlying numeric representation by changing it to an enum and specifying the enums discriminant type with the repr attribute.
 
@@ -220,7 +220,7 @@ In memory, in our running program, these types are all exactly the same:
 
 ### newtype 12
 
-[//]: # (show code 06_newtype_size)
+> show code 06_newtype_size
 
 In this program we construct each of the Month types we've discussed.
 
@@ -255,7 +255,7 @@ By moving our validation code into a single domain type, we're decluttering the 
 
 ### tradeoffs 3
 
-[//]: # (show code 07_newtype_size)
+> show code 07_newtype_size
 
 Let's think about a more complex type, like an email.
 
@@ -281,7 +281,7 @@ Now we have two models of what an email should be inside our software.
 
 ### tradeoffs 6
 
-[//]: # (show code 08_email_newtype)
+> show code 08_email_newtype
 
 Let's use everything we've learned to create a newtype representing an Email:
 
