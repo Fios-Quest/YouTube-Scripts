@@ -6,10 +6,10 @@ mod month {
 
     impl Month {
         pub fn from_number(month: u64) -> Result<Month, InvalidMonthNumber> {
-            if month < 1 || month > 12 {
-                Err(InvalidMonthNumber)
-            } else {
+            if (1..=12).contains(&month) {
                 Ok(Month(month))
+            } else {
+                Err(InvalidMonthNumber)
             }
         }
     }
