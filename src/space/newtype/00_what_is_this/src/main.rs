@@ -46,7 +46,7 @@ fn main() -> Result<()> {
     // sleep(Duration::from_secs(3));
     // println!("Big Endian f64: {be_f64}");
     sleep(Duration::from_secs(3));
-    println!("Flaot:   {le_f64}");
+    println!("Float:   {le_f64}");
     println!();
     sleep(Duration::from_secs(3));
     println!("UTF-8:   {utf8}");
