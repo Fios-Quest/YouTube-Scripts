@@ -48,11 +48,11 @@ Types turn data into information.
 
 Without knowing whether we're looking at a number or a sequence of ascii characters, we'd have a really hard time writing code and, more importantly, what we write would be very error-prone.
 
-> Without type information, there's nothing stopping us from accidentally passing a boolean to a function that expects a complex user structure.
+Without type information, there's nothing stopping us from accidentally passing a boolean to a function that expects a complex user structure.
 
 ### type 5
 
-> We start having to depend constantly on runtime checks to make sure any data our functions receive is valid before trying to process it.
+We start having to depend constantly on runtime checks to make sure any data our functions receive is valid before trying to process it.
 
 All modern languages (even ones we may not usually think of being "typed") come with their own built-in types that usually cover, at the very least, floats, strings, lists and objects (or dictionaries).
 
@@ -184,7 +184,11 @@ First, we need to make sure the interior of the struct can only be instantiated 
 
 In this code I've moved the Month newtype into a month module
 
-This lets us protect the internal data, only things inside the module that can change our data must be explicitly marked as public.
+This lets us protect the internal data.
+
+Only things inside the module can change our data, and we can control exposure through things explicitly marked as public.
+
+So the interior of our Unit struct is not public, but our constructor is.
 
 ### newtype 8
 
