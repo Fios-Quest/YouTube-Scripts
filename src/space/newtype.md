@@ -96,14 +96,17 @@ Why normal types aren't enough
 
 ### problem 1
 
-Let's imagine we wanted to represent years, months and days, we could do so with unsigned integers.
+Here's some code that represents years, months and days.
 
 For simplicity, I've use `u64`s for everything.
 
 ### problem 2
 
-Yes, we should probably use u8s for the month and day, but the size is irrelevant to the point, not every language has
-differently sized integers... or integers at all... and u64s will help me demonstrate a point at the end of the video.
+Yes, we should probably use `u8`s for the month and day, but the size is irrelevant to the point, not every language has
+differently sized integers... or as we discussed, integers at all... and `u64`s will help me demonstrate a point at the
+end of the video.
+
+### problem 3
 
 However, we can immediately identify some problems with this.
 
@@ -115,20 +118,21 @@ I can make all of these numbers invalid by changing them to zero
 
 Second, there's nothing stopping us passing any valid number to a function that's supposed to take a month.
 
-This means we need to validate the data inside every function that uses it.
-
 > show code 02_get_english_month_name
 
 ### problem 3
 
 In this example we've got a function that takes a month and returns the name of the month in English.
 
-However, because you might pass in a `u64` that's not a valid month, that means we need to return a Result.
+However, because you might pass in a `u64` that's not a valid month, that means we need to validate the parameter and
+return a Result.
 
 ### problem 4
 
 I'm using a unit struct for an error here, ideally, we'd go through the steps to impl Error, but I hope you'll forgive
 me if I skip that for this example.
+
+### problem 5
 
 Our function checks that the number given to it is between one and twelve.
 
@@ -164,7 +168,7 @@ First, let’s prevent days being passed into functions that take months.
 
 > show code 03_basic_newtype
 
-In this example I've wrapped our `u64`s in tuple structs, one for each of Year, Month and Day.
+Here, I've wrapped our `u64`s in tuple structs, one for each of Year, Month and Day.
 
 I've also modified our function to explicitly take the `Month` type.
 
@@ -172,21 +176,18 @@ I've also modified our function to explicitly take the `Month` type.
 
 This is immediately more informative to anyone reading your code.
 
-Even better, if we try to pass a Day into the function now, we get a compile time error (even if the numeric value
-_could_ be a month)
-
-> run code
+Even better, if we try to pass a Year or Day into the function, we get a compile time error that very clearly tells us
+what's wrong.
 
 ### newtype 5
 
 Our second issue is that we can still produce invalid values such as `Month(13)`.
 
-We can fix this by restricting the instantiation of our types to a constructor and validating the input.
+We can fix this by controlling access to the inner data.
+
+For example, we could restrict the instantiation of our types to a constructor that validates the input.
 
 ### newtype 6
-
-The question becomes, what we should do when someone attempts to use invalid data; I would argue we should return a
-Result with a relevant error.
 
 Let's focus on `Month`.
 
@@ -194,14 +195,13 @@ Let's focus on `Month`.
 
 > show code 04_month_newtype
 
-First, we need to make sure the interior of the struct can only be instantiated or edited by things we control.
+We need to make sure the interior of the struct can only be instantiated or edited by things we control.
 
 In this code I've moved the Month newtype into a month module
 
-This lets us protect the internal data.
+This lets us protect the internal data so only things inside the module can see or change it.
 
-Only things inside the module can change our data, and we can control exposure through things explicitly marked as
-public.
+And we can control exposure through marking things explicitly as public.
 
 So the interior of our Unit struct is not public, but our constructor is.
 
@@ -212,8 +212,8 @@ Now we can validate the month when it's constructed, returning the error if nece
 Since we can no longer instantiate an invalid month, we can fairly confidently remove the result from any functions like
 `get_english_month_name`.
 
-We still technically have to deal with every possible `u64`, but theoretically it has to be between 1 and 12, and if
-it's not, something has gone badly wrong so a panic is now in order.
+We still technically have to deal with every possible `u64` in the match statement, but theoretically it has to be
+between 1 and 12, and if it's not, something has gone badly wrong so I think a panic is now in order.
 
 ### newtype 9
 
@@ -221,7 +221,7 @@ I'd say there's still one improvement we can make here, at least for months.
 
 Our program is written in English, so why use numbers to represent the months in our code at all.
 
-Dealing with numbers are why we still need to have that panic in our  `get_english_month_name` function.
+Plu, dealing with numbers are why we still need to have that panic in our  `get_english_month_name` function.
 
 ### newtype 10
 
@@ -230,10 +230,13 @@ Dealing with numbers are why we still need to have that panic in our  `get_engli
 We can change how we model Month in our code without changing its underlying numeric representation by changing it to
 an enum and specifying the enums discriminant type with the repr attribute.
 
+### newtype 10
+
 Depending on your data you obviously may not need to specify this, and again, a `u8` would be more appropriate here, but
 I still need to make that point later. :)
 
-Anyway, by using an enum, we can remove the code branch that was theoretically impossible anyway.
+Anyway, by using an enum, we can remove the code branch that was theoretically impossible anyway AND I'd say this is a
+lot easier for anyone reading th code to understand.
 
 ### newtype 11
 
@@ -245,11 +248,18 @@ In memory, in our running program, these types are all exactly the same:
 
 > show code 06_newtype_size
 
-In this program we construct each of the Month types we've discussed.
+In this program we construct each of the Month types we've discussed (I've had to give them different names here but
+don't worry they're otherwise identical)
 
-A `u64`, a tuple struct, and an enum.
+We've got our `u64`, our tuple struct, and our enum versions.
 
-We then extract the bytes stored in memory for each type and... they're all the same!
+Each version looks very different but conceptualy represent the same information.
+
+I found this function that can extract the memory of any given value regardless of type.
+
+Passing each version of our month in for September gives us back a byte array.
+
+Exactly the same byte array in fact.
 
 This is why I stuck with `u64`s for what its worth. 
 
@@ -257,7 +267,10 @@ This is why I stuck with `u64`s for what its worth.
 
 Types aren't real.
 
-They provide us, the software engineers, information we need to structure our programs better.
+They provide us, the software engineers, information we need to structure our programs better and we can use the type
+system to prevent us from making mistakes.
+
+But at runtime, it all dissapears
 
 Tradeoffs?
 ----------
@@ -304,20 +317,21 @@ Worse, it's easy to imagine that our software might end up with multiple validat
 different rules.
 
 In this example we're using my "good enough, no false negatives" approach, but another engineer might write a different
-validator, perhaps following emailregex.com.
+validator, perhaps following emailregex.com which catches more bad emails but has a small chance of flagging a false
+negative.
 
-Now we have two models of what an email should be inside our software.
+Then we have two models of what an email should be inside our software, and they no longer agree with each other.
 
 ### tradeoffs 6
 
 > show code 08_email_newtype
 
-Let's use everything we've learned to create a newtype representing an Email:
+Here's what it might look like to make an email newtype.
 
 We've added an Error type for potentially invalid addresses and, this time I did those extra steps to implement the
 Error trait.
 
-Next we've got our a constructor which calls to our validator, but our validator is identical.
+Next we've got our a constructor which calls to our validator, though the validator logic is identical.
 
 We've added one new test for the constructor, and the one for our validator is the same.
 
@@ -326,7 +340,7 @@ We've added one new test for the constructor, and the one for our validator is t
 Now, though, we only ever need to validate the email when we create the data type, which will usually be when we're
 getting that data from an external source, for example, from a user or importing it from a database.
 
-This will also likely be where we deal with any potential validation errors, further simplifying our code.
+This will also mean we only have to look in one place if we need to change our Email logic, or fix any bugs.
 
 Conclusion
 ----------
@@ -345,4 +359,6 @@ For a small amount of extra work, newtypes give us:
 If you enjoyed this video, don't forget to like and subscribe.
 
 Next time we're going to look at another way the type system can be leveraged to make more rigorous code with the
-type-state pattern, hopefully I'll see you then!
+type-state pattern, if that sounds familiar it might be because we covered it in the IRISS series.
+
+hopefully I'll see you then!
