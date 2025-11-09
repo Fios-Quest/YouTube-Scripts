@@ -46,23 +46,29 @@ Without knowing for sure, we're just guessing.
 
 Types turn data into information.
 
-Without knowing whether we're looking at a number or a sequence of ascii characters, we'd have a really hard time writing code and, more importantly, what we write would be very error-prone.
+Without knowing whether we're looking at a number or a sequence of ascii characters, we'd have a really hard time
+writing code and, more importantly, what we write would be very error-prone.
 
-Without type information, there's nothing stopping us from accidentally passing a boolean to a function that expects a complex user structure.
+Without type information, there's nothing stopping us from accidentally passing a boolean to a function that expects a
+complex user structure.
 
 ### type 5
 
-We start having to depend constantly on runtime checks to make sure any data our functions receive is valid before trying to process it.
+We start having to depend constantly on runtime checks to make sure any data our functions receive is valid before
+trying to process it.
 
-All modern languages (even ones we may not usually think of being "typed") come with their own built-in types that usually cover, at the very least, floats, strings, lists and objects (or dictionaries).
+All modern languages (even ones we may not usually think of being "typed") come with their own built-in types that
+usually cover, at the very least, floats, strings, lists and objects (or dictionaries).
 
 This helps us reason about the data stored in memory.
 
 ### type 6
 
-You'll notice I didn't include integers in the bare minimum types, this is because some languages opt to store _all_ numbers as double precision floating points.
+You'll notice I didn't include integers in the bare minimum types, this is because some languages opt to store _all_
+numbers as double precision floating points.
 
-This only really becomes an accuracy issue for integers over 2 to the power of 53 though, which is over 9 million billion, so I think we can give them a break.
+This only really becomes an accuracy issue for integers over 2 to the power of 53 though, which is over 9 million
+billion, so I think we can give them a break.
 
 ### type 7
 
@@ -72,7 +78,8 @@ It technically is a string, sure, and we could manipulate it as one, but...
 
 ### type 8
 
-in the context of our software, it might be that there is a meaningful difference between `"hello@example.com"` and `"Hello, example.com"`, in the same way as there is a meaningful difference between `"spaceFTW"` and
+In the context of our software, it might be that there is a meaningful difference between `"hello@example.com"` and
+`"Hello, example.com"`, in the same way as there is a meaningful difference between `"spaceFTW"` and
 
 - <!-- 6 --> six quintillion
 - <!-- 292 --> two hundred and ninty two quadrillion
@@ -95,7 +102,8 @@ For simplicity, I've use `u64`s for everything.
 
 ### problem 2
 
-Yes, we should probably use u8s for the month and day, but the size is irrelevant to the point, not every language has differently sized integers... or integers at all... and u64s will help me demonstrate a point at the end of the video.
+Yes, we should probably use u8s for the month and day, but the size is irrelevant to the point, not every language has
+differently sized integers... or integers at all... and u64s will help me demonstrate a point at the end of the video.
 
 However, we can immediately identify some problems with this.
 
@@ -119,7 +127,8 @@ However, because you might pass in a `u64` that's not a valid month, that means 
 
 ### problem 4
 
-I'm using a unit struct for an error here, ideally, we'd go through the steps to impl Error, but I hope you'll forgive me if I skip that for this example.
+I'm using a unit struct for an error here, ideally, we'd go through the steps to impl Error, but I hope you'll forgive
+me if I skip that for this example.
 
 Our function checks that the number given to it is between one and twelve.
 
@@ -127,11 +136,13 @@ Unfortunately, it doesn't stop us passing data to the function that isn't _suppo
 
 > run code
 
-Rust is happy to let us pass in data that's _supposed_ to represent a year or day, and that's a mistake that may be missed even at runtime
+Rust is happy to let us pass in data that's _supposed_ to represent a year or day, and that's a mistake that may be
+missed even at runtime
 
 ### problem 5
 
-What I'd like you to take away from this is that concepts of Days, Months and Years are meaningfully different within the domain of our application here. 
+What I'd like you to take away from this is that concepts of Days, Months and Years are meaningfully different within
+the domain of our application here. 
 
 There is contextual information that we're ignoring about the data.
 
@@ -144,7 +155,8 @@ Introducing newtype
 
 ### newtype 1
 
-To oversimplify a touch, Newtypes, are wrappers around existing types that provide the context for the information stored within.
+To oversimplify a touch, Newtypes, are wrappers around existing types that provide the context for the information
+stored within.
 
 First, let’s prevent days being passed into functions that take months.
 
@@ -160,7 +172,8 @@ I've also modified our function to explicitly take the `Month` type.
 
 This is immediately more informative to anyone reading your code.
 
-Even better, if we try to pass a Day into the function now, we get a compile time error (even if the numeric value _could_ be a month)
+Even better, if we try to pass a Day into the function now, we get a compile time error (even if the numeric value
+_could_ be a month)
 
 > run code
 
@@ -172,7 +185,8 @@ We can fix this by restricting the instantiation of our types to a constructor a
 
 ### newtype 6
 
-The question becomes, what we should do when someone attempts to use invalid data; I would argue we should return a Result with a relevant error.
+The question becomes, what we should do when someone attempts to use invalid data; I would argue we should return a
+Result with a relevant error.
 
 Let's focus on `Month`.
 
@@ -186,7 +200,8 @@ In this code I've moved the Month newtype into a month module
 
 This lets us protect the internal data.
 
-Only things inside the module can change our data, and we can control exposure through things explicitly marked as public.
+Only things inside the module can change our data, and we can control exposure through things explicitly marked as
+public.
 
 So the interior of our Unit struct is not public, but our constructor is.
 
@@ -194,9 +209,11 @@ So the interior of our Unit struct is not public, but our constructor is.
 
 Now we can validate the month when it's constructed, returning the error if necessary.
 
-Since we can no longer instantiate an invalid month, we can fairly confidently remove the result from any functions like `get_english_month_name`.
+Since we can no longer instantiate an invalid month, we can fairly confidently remove the result from any functions like
+`get_english_month_name`.
 
-We still technically have to deal with every possible `u64`, but theoretically it has to be between 1 and 12, and if it's not, something has gone badly wrong so a panic is now in order.
+We still technically have to deal with every possible `u64`, but theoretically it has to be between 1 and 12, and if
+it's not, something has gone badly wrong so a panic is now in order.
 
 ### newtype 9
 
@@ -210,9 +227,11 @@ Dealing with numbers are why we still need to have that panic in our  `get_engli
 
 > show code 05_enum_newtype
 
-We can change how we model Month in our code without changing its underlying numeric representation by changing it to an enum and specifying the enums discriminant type with the repr attribute.
+We can change how we model Month in our code without changing its underlying numeric representation by changing it to
+an enum and specifying the enums discriminant type with the repr attribute.
 
-Depending on your data you obviously may not need to specify this, and again, a `u8` would be more appropriate here, but I still need to make that point later. :)
+Depending on your data you obviously may not need to specify this, and again, a `u8` would be more appropriate here, but
+I still need to make that point later. :)
 
 Anyway, by using an enum, we can remove the code branch that was theoretically impossible anyway.
 
@@ -247,7 +266,8 @@ Tradeoffs?
 
 There seems to be a lot of extra work going on here.
 
-We need to add more validation, extra error types (and all the extra work they're supposed to involve that we skipped here), not to mention how verbose the match statements were for the enum version of our month newtype.
+We need to add more validation, extra error types (and all the extra work they're supposed to involve that we skipped
+here), not to mention how verbose the match statements were for the enum version of our month newtype.
 
 That's true.
 
@@ -271,15 +291,20 @@ This code is straightforward, terse and requires little testing.
 
 However, everytime we want to use a string as an email, we will need to run the validator.
 
-This not only could risk the same email needing to be validated multiple times, but adds some significant risk, particularly as our code evolves.
+This not only could risk the same email needing to be validated multiple times, but adds some significant risk,
+particularly as our code evolves.
 
-Any time we _don't_ use the validator for a function that accepts an email string because we perhaps initially create it only in a context where the string has already been validated, we risk that function being reused with no validation somewhere else.
+Any time we _don't_ use the validator for a function that accepts an email string because we perhaps initially create it
+only in a context where the string has already been validated, we risk that function being reused with no validation
+somewhere else.
 
 ### tradeoffs 5
 
-Worse, it's easy to imagine that our software might end up with multiple validation functions, each following slightly different rules.
+Worse, it's easy to imagine that our software might end up with multiple validation functions, each following slightly
+different rules.
 
-In this example we're using my "good enough, no false negatives" approach, but another engineer might write a different validator, perhaps following emailregex.com.
+In this example we're using my "good enough, no false negatives" approach, but another engineer might write a different
+validator, perhaps following emailregex.com.
 
 Now we have two models of what an email should be inside our software.
 
@@ -289,7 +314,8 @@ Now we have two models of what an email should be inside our software.
 
 Let's use everything we've learned to create a newtype representing an Email:
 
-We've added an Error type for potentially invalid addresses and, this time I did those extra steps to implement the Error trait.
+We've added an Error type for potentially invalid addresses and, this time I did those extra steps to implement the
+Error trait.
 
 Next we've got our a constructor which calls to our validator, but our validator is identical.
 
@@ -297,7 +323,8 @@ We've added one new test for the constructor, and the one for our validator is t
 
 ### tradeoffs 7
 
-Now, though, we only ever need to validate the email when we create the data type, which will usually be when we're getting that data from an external source, for example, from a user or importing it from a database.
+Now, though, we only ever need to validate the email when we create the data type, which will usually be when we're
+getting that data from an external source, for example, from a user or importing it from a database.
 
 This will also likely be where we deal with any potential validation errors, further simplifying our code.
 
@@ -317,4 +344,5 @@ For a small amount of extra work, newtypes give us:
 
 If you enjoyed this video, don't forget to like and subscribe.
 
-Next time we're going to look at another way the type system can be leveraged to make more rigorous code with the type-state pattern, hopefully I'll see you then!
+Next time we're going to look at another way the type system can be leveraged to make more rigorous code with the
+type-state pattern, hopefully I'll see you then!
