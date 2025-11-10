@@ -32,8 +32,9 @@ fn main() {
     let month = Month(11);
     assert_eq!(get_english_month_name(month), Ok("November".to_string()));
 
-    // let year = Year(2025);
-    // let day = Day(4);
-    // assert_eq!(get_english_month_name(year), Err(InvalidMonth));
-    // assert_eq!(get_english_month_name(day), Err(InvalidMonth));
+    let year = Year(2025);
+    assert_eq!(get_english_month_name(year), Err(InvalidMonth));
+
+    let day = Day(4);
+    assert_eq!(get_english_month_name(day), Err(InvalidMonth));
 }
