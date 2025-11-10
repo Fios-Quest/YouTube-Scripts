@@ -20,11 +20,11 @@ fn get_english_month_name(month: u64) -> Result<String, InvalidMonth> {
 }
 
 fn main() {
+    let year: u64 = 2025;
     let month: u64 = 11;
-    println!("month {month:>4} -> {:?}", get_english_month_name(month));
+    let day: u64 = 4;
 
-    // let year: u64 = 2025;
-    // let day: u64 = 4;
-    // println!("year  {year:>4} -> {:?}", get_english_month_name(year));
-    // println!("day   {day:>4} -> {:?}", get_english_month_name(day));
+    println!("month {month:>4} -> {:?}", get_english_month_name(month));
+    println!("year  {year:>4} -> {:?}", get_english_month_name(year));
+    println!("day   {day:>4} -> {:?}", get_english_month_name(day));
 }
