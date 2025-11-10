@@ -28,20 +28,22 @@ First we'll create a status enum that can be Open, Approved, Rejected or Merged
 For the purpose of our example the PullRequest type will have status but we'll ignore any other data you might want to
 put on there for now.
 
+### state 3
+
 A PR can be approved if the status is ReadyForReview or Approved.
 
 If the status was not one of those, then we'll need to return an error to say that the status could not be changed.
 
 Similarly, we can implement our reject and merge methods by checking to see if the PR is in a valid status.
 
-### state 3
+### state 4
 
 We've written up our three state change operations but we've had to write a lot of branching logic into each method to
 check that the operation is only being run on a PR in a valid state.
 
 If it wasn't in a valid state we produce errors that now need to be dealt with.
 
-### state 4
+### state 5
 
 > show typestate code
 
@@ -51,11 +53,15 @@ In this case we have a seperate pull request struct for each state the Pull Requ
 
 Now lets implement the `PullRequestOpen` struct.
 
+### state 6
+
 We can implement each state change method but because we already know what state we're in, we don't have to validate
 the current state first, we simply return the new struct that represents the changed state.
 
 Similarly we can implement `PullRequestApproved`s state change methods (Note this version of the pull request can also
 be merged).
+
+### state 7
 
 What's really cool about this is that we don't need to check the state and return a Result because it's simply not
 possible to make an invalid change.
@@ -67,14 +73,20 @@ You can't merge a rejected pull request because `PullRequestRejected` doesn't ha
 Advnaced Typestate
 ------------------
 
+### advanced 1
+
 One downside to this method of doing typestate is that if our Pull Request structs have lots of data associated with
 them (data we've convinently been skipping over for now), you have to repeatedly define that data for every type.
 
 Heaven forbid you want to change something like the author value from a String to an Author type.
 
+### advanced 2
+
 Luckily, we can improve this pattern with generics.
 
 We're going to need a special marker for this called PhantomData, we'll cover that later.
+
+### advanced 3
 
 Next we're going to create a trait for our state, this is just to restrict our Pull Request generic later.
 
@@ -85,6 +97,8 @@ generic.
 
 The generic type S is restricted to PullRequestState.
 
+### advanced 4
+
 Now, importantnly, when we construct a generic type, we need to use the generic parameter somewhere inside the type to
 make it a concrete type, but our state types are all zero width meaning they don't actually exist at runtime.
 
@@ -92,11 +106,15 @@ Rust gets a bit funny about this, which is why we use the PhantomData marker.
 
 Weirdly, the PhantomData type is also zero width... if you know how or why this works, let me know in the comments.
 
+### advanced 5
+
 None the less, it does work, so we can use this to mark the State with zero width data that doesn't exist at Runtime.
 
 I've also implemented a constructor to make instatiation of types a little less weird.
 
 We can now implement our state specific state changes on only the PullRequests that are currently in the right state.
+
+### advanced 6
 
 This is our Open state and this is our Approved state.
 
@@ -121,6 +139,6 @@ It's almost always going to be better to take a small upfront cost over for chea
 
 If you enjoyed this video, don't forget to like and subscribe.
 
-Next time we're going to look at writing fluent APIs. 
+Next time we're going to look at how to write fluent APIs. 
 
 Hopefully I'll see you then!
