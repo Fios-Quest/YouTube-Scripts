@@ -15,29 +15,6 @@ mod month {
         December = 12,
     }
 
-    #[derive(Debug)]
-    pub struct InvalidMonthNumber;
-
-    impl Month {
-        pub fn from_number(month: u64) -> Result<Month, InvalidMonthNumber> {
-            match month {
-                1 => Ok(Month::January),
-                2 => Ok(Month::February),
-                3 => Ok(Month::March),
-                4 => Ok(Month::April),
-                5 => Ok(Month::May),
-                6 => Ok(Month::June),
-                7 => Ok(Month::July),
-                8 => Ok(Month::August),
-                9 => Ok(Month::September),
-                10 => Ok(Month::October),
-                11 => Ok(Month::November),
-                12 => Ok(Month::December),
-                _ => Err(InvalidMonthNumber),
-            }
-        }
-    }
-
     pub fn get_english_month_name(month: Month) -> String {
         match month {
             Month::January => "January".to_string(),
@@ -59,12 +36,19 @@ mod month {
 use month::*;
 
 fn main() {
-    let maybe_month = Month::from_number(0);
-    assert!(maybe_month.is_err());
-
-    let maybe_month = Month::from_number(9);
-    assert!(maybe_month.is_ok());
-
     let month = Month::November;
-    println!("{}", get_english_month_name(month))
+    println!("{}", get_english_month_name(month));
+
+    let _ = Month::January;
+    let _ = Month::February;
+    let _ = Month::March;
+    let _ = Month::April;
+    let _ = Month::May;
+    let _ = Month::June;
+    let _ = Month::July;
+    let _ = Month::August;
+    let _ = Month::September;
+    let _ = Month::October;
+    let _ = Month::November;
+    let _ = Month::December;
 }
