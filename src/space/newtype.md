@@ -120,19 +120,17 @@ Second, there's nothing stopping us passing any valid number to a function that'
 
 > show code 02_get_english_month_name
 
-### problem 3
-
 In this example we've got a function that takes a month and returns the name of the month in English.
 
 However, because you might pass in a `u64` that's not a valid month, that means we need to validate the parameter and
 return a Result.
 
-### problem 4
+### problem 5
 
 I'm using a unit struct for an error here, ideally, we'd go through the steps to impl Error, but I hope you'll forgive
 me if I skip that for this example.
 
-### problem 5
+### problem 6
 
 Our function checks that the number given to it is between one and twelve.
 
@@ -143,7 +141,7 @@ Unfortunately, it doesn't stop us passing data to the function that isn't _suppo
 Rust is happy to let us pass in data that's _supposed_ to represent a year or day, and that's a mistake that may be
 missed even at runtime
 
-### problem 5
+### problem 7
 
 What I'd like you to take away from this is that concepts of Days, Months and Years are meaningfully different within
 the domain of our application here. 
@@ -191,13 +189,13 @@ For example, we could restrict the instantiation of our types to a constructor t
 
 Let's focus on `Month`.
 
-### newtype 7
-
 > show code 04_month_newtype
 
 We need to make sure the interior of the struct can only be instantiated or edited by things we control.
 
 In this code I've moved the Month newtype into a month module
+
+### newtype 7
 
 This lets us protect the internal data so only things inside the module can see or change it.
 
@@ -230,7 +228,7 @@ Plu, dealing with numbers are why we still need to have that panic in our  `get_
 We can change how we model Month in our code without changing its underlying numeric representation by changing it to
 an enum and specifying the enums discriminant type with the repr attribute.
 
-### newtype 10
+### newtype 11
 
 Depending on your data you obviously may not need to specify this, and again, a `u8` would be more appropriate here, but
 I still need to make that point later. :)
@@ -238,13 +236,13 @@ I still need to make that point later. :)
 Anyway, by using an enum, we can remove the code branch that was theoretically impossible anyway AND I'd say this is a
 lot easier for anyone reading th code to understand.
 
-### newtype 11
+### newtype 12
 
 So, that big point I've been working up to... these types only exist at compile time.
 
 In memory, in our running program, these types are all exactly the same:
 
-### newtype 12
+### newtype 13
 
 > show code 06_newtype_size
 
@@ -263,7 +261,7 @@ Exactly the same byte array in fact.
 
 This is why I stuck with `u64`s for what its worth. 
 
-### newtype 13
+### newtype 14
 
 Types aren't real.
 
@@ -317,8 +315,9 @@ Worse, it's easy to imagine that our software might end up with multiple validat
 different rules.
 
 In this example we're using my "good enough, no false negatives" approach, but another engineer might write a different
-validator, perhaps following emailregex.com which catches more bad emails but has a small chance of flagging a false
-negative.
+validator
+
+Perhaps they come up with a regex which catches more bad emails but has a small chance of flagging a false negative.
 
 Then we have two models of what an email should be inside our software, and they no longer agree with each other.
 
@@ -331,7 +330,11 @@ Here's what it might look like to make an email newtype.
 We've added an Error type for potentially invalid addresses and, this time I did those extra steps to implement the
 Error trait.
 
+### tradeoffs 6b
+
 Next we've got our a constructor which calls to our validator, though the validator logic is identical.
+
+### tradeoffs 6c
 
 We've added one new test for the constructor, and the one for our validator is the same.
 
