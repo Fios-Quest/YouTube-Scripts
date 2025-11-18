@@ -164,7 +164,7 @@ Over to you
 
 Where you go next is up to you, but I'd honestly love to hear about it. 
 
-Fio's Quest has a Discord server, see the description, on which you'll find a community of wonderful, supportive people.
+Fio's Quest has a Discord server, on which you'll find a community of wonderful, supportive people.
 
 Let us know what learning resources you're using, or what apps or tools you're building.
 
@@ -197,8 +197,8 @@ My goal here is to be helpful and I want to know how best to do that.
 
 Drop me a comment, or pop by the discord.
 
-Other than that, I'll see you next in SPACE.
+Other than that, I'll see you in SPACE.
 
 ---
 
-Other than that, I'll see you next in the one place that hasn't been corrupted by capitalism, SPACE.
+Other than that, I'll see you in the one place that hasn't been corrupted by capitalism, SPACE.
