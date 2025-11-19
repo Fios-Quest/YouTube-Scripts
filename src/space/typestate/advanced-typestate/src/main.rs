@@ -1,5 +1,3 @@
-use std::marker::PhantomData;
-
 trait PullRequestState {}
 
 struct Open;
@@ -13,14 +11,14 @@ impl PullRequestState for Rejected {}
 impl PullRequestState for Merged {}
 
 struct PullRequest<S: PullRequestState> {
-    phantom_state: PhantomData<S>,
+    state: S,
     // ...other PR details ...
 }
 
-impl <S: PullRequestState> PullRequest<S> {
-    fn new() -> Self {
+impl PullRequest<Open> {
+    fn open() -> Self {
         Self {
-            phantom_state: PhantomData,
+            state: Open,
         }
     }
 }
@@ -28,15 +26,15 @@ impl <S: PullRequestState> PullRequest<S> {
 impl PullRequest<Open> {
     fn approve(self) -> PullRequest<Approved> {
         PullRequest::<Approved> {
-            phantom_state: PhantomData,
-            // ... move self into PullRequestApproved ...
+            state: Approved,
+            // ... move self into PullRequest<Approved> ...
         }
     }
 
     fn reject(self) -> PullRequest<Rejected> {
         PullRequest::<Rejected> {
-            phantom_state: PhantomData,
-            // ... move self into PullRequestApproved ...
+            state: Rejected,
+            // ... move self into PullRequest<Approved> ...
         }
     }
 }
@@ -48,21 +46,21 @@ impl PullRequest<Approved> {
 
     fn reject(self) -> PullRequest<Rejected> {
         PullRequest::<Rejected> {
-            phantom_state: PhantomData,
-            // ... move self into PullRequestApproved ...
+            state: Rejected,
+            // ... move self into PullRequest<Rejected> ...
         }
     }
 
     fn merge(self) -> PullRequest<Merged> {
         PullRequest::<Merged> {
-            phantom_state: PhantomData,
-            // ... move self into PullRequestApproved ...
+            state: Merged,
+            // ... move self into PullRequest<Merged> ...
         }
     }
 }
 
 fn main() {
-    let open_pr = PullRequest::<Open>::new();
+    let open_pr = PullRequest::open();
 
     // You can not merge an open PR, the next line won't compile
     // let merged_pr = open_pr.merge();
@@ -75,6 +73,42 @@ fn main() {
     let merged_pr = still_approved.merge();
 
     // The `.approve()` method doesn't exist for rejected PRs, commented line won't compile
-    let rejected_pr = PullRequest::<Rejected>::new();
+    let open_pr = PullRequest::open();
+    let rejected_pr = open_pr.reject();
     // rejected_pr.approve();
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_can_approve_open() {
+        let open_pr = PullRequest::open();
+        let _approved_pr = open_pr.approve();
+    }
+
+    #[test]
+    fn test_can_approve_approved() {
+        let open_pr = PullRequest::open();
+        let _approved_pr = open_pr.approve().approve();
+    }
+
+    #[test]
+    fn test_can_reject_open() {
+        let open_pr = PullRequest::open();
+        let _rejected_pr = open_pr.reject();
+    }
+
+    #[test]
+    fn test_can_reject_approved() {
+        let open_pr = PullRequest::open();
+        let _rejected_pr = open_pr.approve().reject();
+    }
+
+    #[test]
+    fn test_can_merge_approved() {
+        let open_pr = PullRequest::open();
+        let _merged_pr = open_pr.approve().merge();
+    }
 }
