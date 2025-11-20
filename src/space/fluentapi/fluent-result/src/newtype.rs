@@ -1,3 +1,4 @@
+use std::str::FromStr;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -13,12 +14,28 @@ impl Username {
     }
 }
 
+impl FromStr for Username {
+    type Err = FakeError;
+    
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Self::new(s)
+    }
+}
+
 #[derive(Debug)]
 pub struct Email(String);
 
 impl Email {
     pub fn new<S: ToString>(email: S) -> Result<Self, FakeError> {
         Ok(Self(email.to_string()))
+    }
+}
+
+impl FromStr for Email {
+    type Err = FakeError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Self::new(s)
     }
 }
 

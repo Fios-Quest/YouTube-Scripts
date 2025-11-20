@@ -35,7 +35,7 @@ fn main() -> anyhow::Result<()> {
     let mut yuki = User::new(Username::new("Yuki")?);
 
     let yuki = yuki.set_email(Email::new("yuki@example.com")?);
-    let yuki = yuki..set_date_of_birth(DateOfBirth::new("2009-05-01")?);
+    let yuki = yuki.set_date_of_birth(DateOfBirth::new("2009-05-01")?);
 
     dbg!(yuki);
 
