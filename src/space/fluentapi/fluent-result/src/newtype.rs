@@ -52,6 +52,14 @@ impl DateOfBirth {
     }
 }
 
+impl FromStr for DateOfBirth {
+    type Err = FakeError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Self::new(s)
+    }
+}
+
 #[derive(Debug, Error)]
 #[error("User is too young")]
 pub struct TooYoung;

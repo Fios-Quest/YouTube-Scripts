@@ -1,5 +1,6 @@
-mod newtype;
+use std::str::FromStr;
 
+mod newtype;
 use newtype::*;
 
 #[derive(Debug)]
@@ -35,9 +36,9 @@ impl User {
 // --- Usage ---
 
 fn main() -> anyhow::Result<()> {
-    let yuki = User::new(Username::new("Yuki")?)
-        .set_date_of_birth(DateOfBirth::new("2009-05-01")?)?
-        .set_email(Email::new("yuki@example.com")?);
+    let yuki = User::new(Username::from_str("Yuki")?)
+        .set_date_of_birth(DateOfBirth::from_str("2009-05-01")?)?
+        .set_email(Email::from_str("yuki@example.com")?);
 
     dbg!(yuki);
 

@@ -16,7 +16,7 @@ impl Username {
 
 impl FromStr for Username {
     type Err = FakeError;
-    
+
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Self::new(s)
     }
