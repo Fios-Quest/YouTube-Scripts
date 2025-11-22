@@ -19,13 +19,13 @@ impl User {
         }
     }
 
-    fn set_email(mut self, email: Email) -> Self {
+    fn with_email(mut self, email: Email) -> Self {
         self.email = Some(email);
         self
     }
 
-    fn set_date_of_birth(mut self, date_of_birth: DateOfBirth) -> Result<Self, TooYoung> {
-        if date_of_birth.years_old() > 21 {
+    fn with_date_of_birth(mut self, date_of_birth: DateOfBirth) -> Result<Self, TooYoung> {
+        if date_of_birth.years_old() < 21 {
             return Err(TooYoung);
         }
         self.date_of_birth = Some(date_of_birth);
@@ -37,8 +37,8 @@ impl User {
 
 fn main() -> anyhow::Result<()> {
     let yuki = User::new(Username::from_str("Yuki")?)
-        .set_date_of_birth(DateOfBirth::from_str("2009-05-01")?)?
-        .set_email(Email::from_str("yuki@example.com")?);
+        .with_date_of_birth(DateOfBirth::from_str("2009-05-01")?)?
+        .with_email(Email::from_str("yuki@example.com")?);
 
     dbg!(yuki);
 
