@@ -19,12 +19,12 @@ impl User {
         }
     }
 
-    fn with_email(&mut self, email: Email) -> &mut Self {
+    fn with_email(mut self, email: Email) -> Self {
         self.email = Some(email);
         self
     }
 
-    fn with_date_of_birth(&mut self, date_of_birth: DateOfBirth) -> &mut Self {
+    fn with_date_of_birth(mut self, date_of_birth: DateOfBirth) -> Self {
         self.date_of_birth = Some(date_of_birth);
         self
     }
@@ -33,7 +33,7 @@ impl User {
 // --- Usage ---
 
 fn main() -> anyhow::Result<()> {
-    let mut yuki = User::new(Username::from_str("Yuki")?);
+    let yuki = User::new(Username::from_str("Yuki")?);
 
     let yuki = yuki.with_email(Email::from_str("yuki@example.com")?);
     let yuki = yuki.with_date_of_birth(DateOfBirth::from_str("2009-05-01")?);

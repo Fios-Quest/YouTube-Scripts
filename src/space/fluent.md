@@ -25,15 +25,14 @@ This immediately adds some complexity.
 Depending on the nature of the data we might want to manage access through getters and setters, particularly if we need
 to do any validation, or manipulation, etc.
 
-In our `User` example, it might be good to not have to specify the `Option` when setting email and date of birth.
-
 > slide 3
 
-Let's add some Setters to get around manually setting the Option.
+In our `User` example, it might be good to not have to specify the `Option` when setting email and date of birth, which
+can be done inside a setter.
 
 > slide 4
 
-This is a bit cleaner, and we now have a good place to put validation.
+This is a bit cleaner, and we now have a good place to put validation if we need it too.
 
 ### intro 4
 
@@ -47,7 +46,7 @@ In this version our setters are basically identical, but now we're returning a r
 
 > slide 6
 
-This allows us to chain the setter methods, making the code clearer and easier to read.
+This allows us to chain the setter methods, making the code cleaner and easier to read.
 
 
 Rust Quirks
@@ -79,8 +78,8 @@ That's why we stored `yuki` first, then modified it, effectively two steps.
 
 > slide 7
 
-Let's change using references to taking ownership and returning a new version of the object _with_ the data we wanted to
-add.
+Instead of taking references lets try taking ownership and returning a new version of the object _with_ the data we
+want to add.
 
 ### quirks 3
 
@@ -103,7 +102,7 @@ encapsulating the mutability inside the methods where we need it.
 However, there's a downside to this too. If we _did_ want to modify a single value, we'd have to make sure we take
 ownership back from the method.
 
-However, a benefit of using the with prefix means you _could_ use both setters and... uh "withers" together.
+That said, because we're using the with prefix, you _could_ use both setters and... uh "withers".
 
 ### quirks 5
 
@@ -141,6 +140,10 @@ method chaining reduces code clutter.
 Rust requires slightly more thought than some other languages but not having to think about Copy On Write is nice too. 
 
 ### conclusion 2
+
+If you enjoyed this video, don't forget to like and subscribe.
+
+If you really liked the video, you can become a member of the channel or join the Patreon, see the description for more.
 
 Next time we're going to combine the TypeState pattern and Fluent API pattern into the Builder Pattern.
 
