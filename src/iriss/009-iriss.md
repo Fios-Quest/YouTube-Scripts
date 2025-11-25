@@ -183,7 +183,7 @@ Next we'll need to update our implementations.
 
 Implementations that involve Generic parts, need to list those after the `impl` to save confusing implementations on generic types and implementations on concrete variants of generic types
 
-This just means you can implement the concrete version of Mischevous<Cat> and that's not a generic implementation, but `impl<A> Michievous<A>` is. 
+This just means you can implement the concrete version of `Mischievous<Cat>` and that's not a generic implementation, but `impl<A> Michievous<A>` is. 
 
 Once we've specified the generic parameters of the impl block, we don't need to respecify them for each function so long as the type is being used consistently.
 

@@ -1,7 +1,7 @@
 What next
 =========
 
-### intron 1
+### intro 1
 
 We did it!
 
@@ -16,6 +16,8 @@ And what's with this camera angle?
 *clap*
 
 New set!
+
+Editor Daniel is going to hate magic masking that.
 
 Other Learning Resources
 ------------------------
@@ -50,7 +52,7 @@ It mirrors the official book pretty closely so working through both at the same 
 
 ### resources 5
 
-Similarly, Tour of Rust is another guide which embeds Rust Playground examples so that you can play with the things you've just learned.
+Similarly, Tour of Rust is another guide which embeds Rust Playground examples so that you can play with the things you've just learned about.
 
 ### resources 6
 
@@ -64,7 +66,7 @@ No Boilerplate offers what Tris, the creator, describes as "Fast technical video
 
 His video's cover everything from high level concepts such as why Rust's design makes certain choices and how they help you be a better developer, down to how to use specific language features.
 
-Tris' video on "async isn't real and can't hurt you" convinced me to add a reminder that you don't _have_ to write async Rust to the async video.
+Tris' video on "async isn't real and can't hurt you" is why I added a reminder that you don't _have_ to write async Rust to out async video.
 
 ### resources 8
 
@@ -89,7 +91,7 @@ Start building
 
 ### building 1
 
-But the best way to learn Rust is to start building.
+The best way to learn Rust is to start building.
 
 Rust is one of the few languages that work in just about any field.
 
@@ -97,7 +99,7 @@ So what do you want to build?
 
 ### building 2
 
-To give you some food for thought, you can build command line apps, cross-platform GUI apps, full stack web apps, embedded microcontroller apps, machine learning tools, networking tools, video games, and even libraries that can be consumed by other programs. 
+To give you some food for thought, you can build command line apps, cross-platform GUI apps, full stack web apps, embedded microcontroller apps, machine learning tools, networking tools, video games, and even libraries that can be consumed by other programs and programming languages. 
 
 The list is essentially endless.
 
@@ -117,7 +119,7 @@ It's also what lets me store data from my Job Tracking app as JSON files.
 
 ### building 3
 
-Another easier tool I build, this time for work, was a web API for reading specific details from a WordPress database using [Actix Web] and [Diesel].
+Another easier tool I built, this time for work, was a web API for reading specific details from a WordPress database using [Actix Web] and [Diesel].
 
 It was 4 times faster and 5 times more memory efficient than a similar tool we'd build in TypeScript.
 
@@ -135,62 +137,68 @@ You can compile Rust into Web Assembly.
 
 I would even go so far as to argue that, thanks to how Rust works as a language, and especially the supporting tooling, Rust should be everyone's first choice when writing high compute performance code for frontend web.
 
+### building 3b
+
+But, to clarify, I don't want to yuck anyones yum, there's no single right choice for your programming language of choice and there are many factors to consider including personal preference.
+
+WebAssembly 3 now comes with features that make it easier to transpile from other languages.
+
+Rust still offers a good performance to effort ratio in my opinion but, you do you.
+
 ### building 3
 
-While learning Japanese, I wrote a command line flash card database using [Clap] and [Sqlx].
+While learning Japanese, I wrote a command line flash card database using [Clap] and [Sqlx] (SQLX also of no concrete pronounciation).
 
 Clap is a tool for parsing command line arguments as well as providing a common experience across cli applications.
 
-Sqlx is another framework for working with Databases but doesn't have the ORM features built into Diesel.
+Sqlx is another framework for working with Databases, it supports async out of the box, but doesn't have the ORM or migration features built into Diesel.
 
 ### building 4
 
-My advice is to think of something you're missing in your life, ideally something that's limited in scope and achievabl.
+My advice is to think of something you're missing in your life, ideally something that's limited in scope and achievable.
 
 Plan out how you'd structure the solution, and try building it.
-
-Cargo, Crates, and docs.rs
---------------------------
-
-### tools 1
-
-Very little of what we build is actually built from scratch.
-
-My goal with Idiomatic Rust in Simple Steps was to teach Rust without getting distracted with third party libraries which, even the official book gets a little distracted with sometimes.
-
-### tools 2
-
-But now we're past that and ready to get really stuck in to everything the ecosystem has to offer.
-
-### tools 3
-
-Like most modern languages, Rust has a default library collection called [crates.io].
-
-(In Rust parlance, we call external libraries "crates".)
-
-Here you'll find a wealth of libraries for just about every use you can imagine. 
-
-Whether you're building for tiny embedded microcontrollers or data center scale, distributed, GPU-powered, AI tools. 
-
-### tools 4
-
-When you create a project in Cargo, it will create a `Cargo.toml` manifest file.
-
-By adding libraries from crates.io to your `[dependencies]` (or `[dev-dependencies]`) section in your manifest file, Cargo will automatically download them for you, and you'll be able to access them in your software.
-
-### tools 5
-
-Documentation for libraries can almost always be found on docs.rs (usually linked from the crate's page on crates.io).
-
-docs.rs is built from rustdoc, which we covered in the documentation video.
-
-This means library documentation will always be structured in a familiar way and match the layout of the library, making it easy to use.
 
 Over to you
 -----------
 
 Where you go next is up to you, but I'd honestly love to hear about it. 
 
-Fio's Quest has a Discord server, see the description, and a community of wonderful, supportive people.
+Fio's Quest has a Discord server, on which you'll find a community of wonderful, supportive people.
 
 Let us know what learning resources you're using, or what apps or tools you're building.
+
+What's next for Fio's Quest
+---------------------------
+
+### next 1
+
+I've started working on a new collection of videos, Software Patterns and Coding Excellence, SPACE.
+
+SPACE will be less sequential than IRISS and the videos _should_ be shorter so I'm hoping to get my turnaround time down.
+
+### next 2
+
+I'm also going to be making some other changes to the channel.
+
+I'll be filming here from now on and trying to do more stuff while filming to cut down on editing.
+
+Also, I'd like to do a bit more streaming (we're so close to having the Job Tracker done).
+
+### next 3
+
+I'd still really like to hear from you though.
+
+What am I missing that you'd like to see.
+
+### next 5
+
+My goal here is to be helpful and I want to know how best to do that.
+
+Drop me a comment, or pop by the discord.
+
+Other than that, I'll see you in SPACE.
+
+---
+
+Other than that, I'll see you in the one place that hasn't been corrupted by capitalism, SPACE.

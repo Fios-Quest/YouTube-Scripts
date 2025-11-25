@@ -20,7 +20,16 @@
 - [Threads](iriss/015-threads.md)
 - [Macros](iriss/016-macros.md)
 - [Unsafe](iriss/017-unsafe.md)
-- [Async](./iriss/018-async.md)
+- [Async](iriss/018-async.md)
+- [What's next](iriss/019-what-next.md)
+
+# SPACE
+
+- [NewType](space/newtype.md)
+- [TypeState](space/typestate.md)
+- [Fluent Interface](space/fluent.md)
+- [Builder](space/builder.md)
+- [Monad](space/monad.md)
 
 # Channel Labs
 
