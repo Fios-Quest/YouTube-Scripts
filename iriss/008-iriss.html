@@ -12,21 +12,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../favicon.svg">
-        <link rel="shortcut icon" href="../favicon.png">
-        <link rel="stylesheet" href="../css/variables.css">
-        <link rel="stylesheet" href="../css/general.css">
-        <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../fonts/fonts.css">
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -36,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex.js";
+            window.path_to_searchindex_js = "../searchindex-ec9cbdc1.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc.js"></script>
+        <script src="../toc-6fd8910a.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -53,7 +52,7 @@
             </div>
         </div>
     </div>
-    <div id="body-container">
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
@@ -82,12 +81,12 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             let sidebar = null;
-            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -102,39 +101,39 @@
             }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -142,48 +141,48 @@
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
                         <div class="search-wrapper">
-                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
                             <div class="spinner-wrapper">
-                                <i class="fa fa-spinner fa-spin"></i>
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
                             </div>
                         </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="clippy-and-fmt"><a class="header" href="#clippy-and-fmt">Clippy and Fmt</a></h1>
-<p>The Rust ecosystem has a wealth of tools that support us when writing Rust but there are two important tools I want to talk about before we get back to the "real programming": Rust format and Clippy.</p>
+<p>The Rust ecosystem has a wealth of tools that support us when writing Rust but there are two important tools I want to talk about before we get back to the “real programming”: Rust format and Clippy.</p>
 <p>As ever, this series is accompanied by a free book, check the description for a link straight to this chapter.</p>
 <p>My name is Daniel, welcome to IRISS.</p>
-<hr />
-<p>Rust Format, helps us keep our code styles consistent, so that its easy to share your code or read and learn from someone else's.</p>
+<hr>
+<p>Rust Format, helps us keep our code styles consistent, so that its easy to share your code or read and learn from someone else’s.</p>
 <p>Clippy helps spot common mistakes and antipatterns, and can even make suggestions on things like performance, scalability or readability improvements.</p>
 <p>But, this is a lot of tools, how can we use them to not only improve our code, but learn to be better developers.</p>
-<p>Let's go through them one by one.</p>
+<p>Let’s go through them one by one.</p>
 <h2 id="rustfmt"><a class="header" href="#rustfmt">rustfmt</a></h2>
 <p><code>rustfmt</code> is a formatting tool for Rust.</p>
 <p>Programming language formatting tools allow you to configure how you want your code to look. For example:</p>
@@ -213,76 +212,76 @@
 <p>And so on</p>
 </li>
 </ul>
-<p>Maintaining a consistent style improves the legibility of code, making it faster for engineers to read and understand what's happening.</p>
-<p>This is true, even if you only write code for yourself, using familiar patterns reduces the cognitive load to parse what you're looking at.</p>
-<p>When working together as a group, it's important to come to an agreement as to how you will style your code together, but luckily a Formatter will reduce the burden of having to maintain the style once you've picked what to use.</p>
-<p>Now, different languages have different "styles" that they follow.</p>
+<p>Maintaining a consistent style improves the legibility of code, making it faster for engineers to read and understand what’s happening.</p>
+<p>This is true, even if you only write code for yourself, using familiar patterns reduces the cognitive load to parse what you’re looking at.</p>
+<p>When working together as a group, it’s important to come to an agreement as to how you will style your code together, but luckily a Formatter will reduce the burden of having to maintain the style once you’ve picked what to use.</p>
+<p>Now, different languages have different “styles” that they follow.</p>
 <p>Some older languages may have multiple well established styles to choose from.</p>
-<p>Luckily there's an official Rust Style Guide which gives us all a compelling reason to write code the same way.</p>
-<p>Not only that, but, "Rust Format" comes with the tool suite, and will automatically maintain the style for you!</p>
+<p>Luckily there’s an official Rust Style Guide which gives us all a compelling reason to write code the same way.</p>
+<p>Not only that, but, “Rust Format” comes with the tool suite, and will automatically maintain the style for you!</p>
 <p>You can call Rust Format manually using <code>cargo fmt</code> and it will automatically reformat your entire project, however its definitely best if you can set your IDE to automatically run it any time you save a file.</p>
-<p>In VSCode we do it like this...</p>
+<p>In VSCode we do it like this…</p>
 <p>This will save us any big, unexpected changes.</p>
 <p>If you just want it to simply tell you if anything is incorrectly formatted without changing your files, you can use <code>cargo fmt --check</code>.</p>
-<p>We'll come back to why this is so useful later!</p>
-<p>Finally, it might be that you and your team find some aspect of the official Rust Style Guide particularly egregious, and that's fine (been there, believe me)!</p>
+<p>We’ll come back to why this is so useful later!</p>
+<p>Finally, it might be that you and your team find some aspect of the official Rust Style Guide particularly egregious, and that’s fine (been there, believe me)!</p>
 <p>Rust Format allows you to configure how it will format your code through Rust Format toml.</p>
-<p>You can find a complete guide to what you can control on the Rust Format github page, which I've linked in the description.</p>
+<p>You can find a complete guide to what you can control on the Rust Format github page, which I’ve linked in the description.</p>
 <h2 id="clippy"><a class="header" href="#clippy">clippy</a></h2>
 <p>Clippy is a name that might bring a lot of anxiety to for millennials and boomers or anyone working with Microsoft Office around the turn of the century, and yes, this Clippy is named after that one.</p>
-<p>Clippy, in this case, is Rust's linter, a tool that can not only make sure your code is correct (I mean, <code>rustc</code> technically already does <em>that</em> for you) but even offer suggestions on how to improve your code, and explain why an alternative might be better!</p>
+<p>Clippy, in this case, is Rust’s linter, a tool that can not only make sure your code is correct (I mean, <code>rustc</code> technically already does <em>that</em> for you) but even offer suggestions on how to improve your code, and explain why an alternative might be better!</p>
 <p>To run Clippy with the default configuration, simply type <code>cargo clippy</code></p>
 <p>This is an incredibly powerful tool, not just for making sure your code is the best it can be, but as an aid for learning how to get the best out of Rust.</p>
 <p>Perhaps antithetical to that, though still incredibly useful, Clippy can go right ahead and fix many of the common issues it might find, simply by passing the <code>--fix</code> flag.</p>
-<p>Obviously I recommend making sure you understand the changes it's suggesting before allowing it to proceed.</p>
-<p>And, Clippy won't just check your <em>code</em> either, it can also spot common mistakes in your documentation (we love documentation here if you couldn't tell 😅).</p>
+<p>Obviously I recommend making sure you understand the changes it’s suggesting before allowing it to proceed.</p>
+<p>And, Clippy won’t just check your <em>code</em> either, it can also spot common mistakes in your documentation (we love documentation here if you couldn’t tell 😅).</p>
 <p>For example, if in your doc comments you use underscores or double colons outside of backticks (which would be used to express code), Clippy will assume this is a mistake and let you know.</p>
-<p>There's a lot of flexibility in how you can configure Clippy.</p>
+<p>There’s a lot of flexibility in how you can configure Clippy.</p>
 <p>Lints are broken up into groups for easy control, so we typically might decide at the group level, what to include, and whether it should be considered a warning or completely denied.</p>
-<p>For example, I tend to include a group of lints called <code>pedantic</code>  with a warning (these are usually allowed by clippy which means you don't get told if there is a potential issue).</p>
-<p>I don't particularly recommend <em>starting</em> with this, but if you want to do this you can either:</p>
+<p>For example, I tend to include a group of lints called <code>pedantic</code>  with a warning (these are usually allowed by clippy which means you don’t get told if there is a potential issue).</p>
+<p>I don’t particularly recommend <em>starting</em> with this, but if you want to do this you can either:</p>
 <ul>
 <li>add the line warn clippy pedantic to your project entry point
-or...</li>
+or…</li>
 <li>run: <code>cargo clippy -- -W clippy::pedantic</code></li>
 </ul>
 <p>The benefit of the first option is that you can set a nice default for the project without you or anyone else needing to remember what options to pass to Clippy</p>
 <p>The latter is useful if you want to override that or any other behaviour.</p>
-<p>For a full list of lints, check Clippy's website, I've linked it in the description.</p>
+<p>For a full list of lints, check Clippy’s website, I’ve linked it in the description.</p>
 <h2 id="cargo-check"><a class="header" href="#cargo-check">Cargo Check</a></h2>
-<p>There's one last tool I want to mention, and it will initially seem quite underwhelming by comparison to the others, but stick with me.</p>
-<p><code>cargo check</code> is a tool which... checks your code and all its dependencies for errors.</p>
+<p>There’s one last tool I want to mention, and it will initially seem quite underwhelming by comparison to the others, but stick with me.</p>
+<p><code>cargo check</code> is a tool which… checks your code and all its dependencies for errors.</p>
 <p>Groundbreaking, right?</p>
-<p>I mean, we'd find out that our code has errors when we try to build it with <code>cargo build</code>, so what's the point of <code>cargo check</code>?</p>
+<p>I mean, we’d find out that our code has errors when we try to build it with <code>cargo build</code>, so what’s the point of <code>cargo check</code>?</p>
 <p>Well, <code>cargo check</code> essentially does the same job as <code>cargo build</code> but skips the final step of code generation.</p>
-<p>This means it's faster, and importantly, cheaper to perform, so it can be used as a fast-fail.</p>
-<p>The work it does isn't wasted either.</p>
+<p>This means it’s faster, and importantly, cheaper to perform, so it can be used as a fast-fail.</p>
+<p>The work it does isn’t wasted either.</p>
 <p>Because it does in fact perform some of the compilation steps, the output of this is cached on your machine so that other tools (such as <code>cargo build</code> and Clippy) can use that to skip earlier steps in their own processes.</p>
 <p>This might not seem very useful on your machine, but it comes in very handy with Continuous Integration.</p>
 <h2 id="continuous-integration"><a class="header" href="#continuous-integration">Continuous Integration</a></h2>
-<p>Continuous Integration (or CI) is a technique that we use to maintain high quality, robust, and "correct" code in our code base.</p>
+<p>Continuous Integration (or CI) is a technique that we use to maintain high quality, robust, and “correct” code in our code base.</p>
 <p>CI is usually used to help control what goes into your Software Configuration Management system (or SCM), where you might be storing your code.</p>
-<p>SCM systems like Git, Mercurial, Subversion, et cetera, are out of scope for this series, however, if you haven't already, you should learn to use one of these as quickly as possible.</p>
-<p>I can't tell you which to use though as it depends on what kind of application you're building.</p>
-<p>Git is very common, and it's what I use for most things, including managing these scripts, but it's better for things that are being <em>primarily</em> built from text based resources, like websites, or desktop applications.</p>
-<p>If you're making games or something that uses a lot of images or other non-text based assets though you might want to use Subversion, Plastic or Perforce.</p>
+<p>SCM systems like Git, Mercurial, Subversion, et cetera, are out of scope for this series, however, if you haven’t already, you should learn to use one of these as quickly as possible.</p>
+<p>I can’t tell you which to use though as it depends on what kind of application you’re building.</p>
+<p>Git is very common, and it’s what I use for most things, including managing these scripts, but it’s better for things that are being <em>primarily</em> built from text based resources, like websites, or desktop applications.</p>
+<p>If you’re making games or something that uses a lot of images or other non-text based assets though you might want to use Subversion, Plastic or Perforce.</p>
 <p>Whatever you choose, you can use Continuous Integration to make sure that every time you make changes, those changes make your project better, and minimise the risk of them making things worse.</p>
 <p>How you achieve this will vary depending on not only what SCM you use, but potentially who hosts it.</p>
 <p>GitLab and GitHub are both Git services, but GitLab CI is very different from GitHub Actions.</p>
 <p>The main idea however is to run a set of instructions before allowing changes to be integrated (or merged) into the main project.</p>
 <p>For example, a typical Git workflow might have a <code>main</code> branch.</p>
-<p>When you come to do some work, you'd create a new branch based on what's currently in <code>main</code> and name it something relevant to the work you're going to do (for example, when I wrote this chapter of the book, I was on a branch called <code>clippy-and-fmt</code>).</p>
-<p>When you're happy with your code, you would merge your branch with <code>main</code> and <code>main</code> would get all of your changes.</p>
-<p>This is where CI helps, it makes sure that whatever you're doing on your branch is up to the level of quality that is expected of code in <code>main</code>.</p>
-<p>We can use the tools we've talked about in this and previous chapters to create a CI workflow.</p>
+<p>When you come to do some work, you’d create a new branch based on what’s currently in <code>main</code> and name it something relevant to the work you’re going to do (for example, when I wrote this chapter of the book, I was on a branch called <code>clippy-and-fmt</code>).</p>
+<p>When you’re happy with your code, you would merge your branch with <code>main</code> and <code>main</code> would get all of your changes.</p>
+<p>This is where CI helps, it makes sure that whatever you’re doing on your branch is up to the level of quality that is expected of code in <code>main</code>.</p>
+<p>We can use the tools we’ve talked about in this and previous chapters to create a CI workflow.</p>
 <p>Roughly what we want to do is:</p>
 <ol>
-<li>run <code>cargo check</code>, if this fails, there's not a lot of point in continuing, so we get our results faster</li>
+<li>run <code>cargo check</code>, if this fails, there’s not a lot of point in continuing, so we get our results faster</li>
 <li>run <code>cargo fmt --check</code> which will make sure code abides by our style guide without changing anything</li>
 <li>run <code>cargo clippy -- -D warnings</code> which errors out if there are any warnings from clippy
 <blockquote>
-<p>Remember, although warnings don't necessarily mean something is actually wrong, you should try to make sure you
-to fix them all anyway as the more irrelevant warnings you're outputting, the more likely it is that you'll miss
+<p>Remember, although warnings don’t necessarily mean something is actually wrong, you should try to make sure you
+to fix them all anyway as the more irrelevant warnings you’re outputting, the more likely it is that you’ll miss
 something that is relevant!</p>
 </blockquote>
 </li>
@@ -295,29 +294,29 @@ immediately deploy your latest code automatically</p>
 </li>
 </ol>
 <p>Running all of this one after the other can be very time-consuming, but some of it can be run in parallel.</p>
-<p><code>cargo check</code> and <code>cargo fmt</code> do not depend on anything else, and can act as fast fails, letting you know that it's not worth continuing the process.</p>
+<p><code>cargo check</code> and <code>cargo fmt</code> do not depend on anything else, and can act as fast fails, letting you know that it’s not worth continuing the process.</p>
 <p><code>cargo test</code> and <code>cargo clippy</code> are only going to work if <code>cargo check</code> also works, so as soon as <code>cargo check</code> is complete, we can start working on them</p>
 <p>Finally, once <code>cargo test</code> and <code>cargo clippy</code> have succeeded, we can move to the final check, <code>cargo build</code>.</p>
 <p>At this point, everything that could be caught should have been caught so there should be no surprises which means we might as well wait for <code>cargo fmt</code> to complete too.</p>
 <p>Depending on your CI suite though, it might be that each of these tasks runs in isolation, for example, it might run each step in a docker container.</p>
 <p>But, <code>cargo check</code> is going to do a lot of hard work some of the other steps can use.</p>
-<p>This is where its worth learning your CI suite's caching process, so that you can cache the output of the <code>cargo check</code> step.</p>
+<p>This is where its worth learning your CI suite’s caching process, so that you can cache the output of the <code>cargo check</code> step.</p>
 <h2 id="next-time"><a class="header" href="#next-time">Next Time</a></h2>
-<p>I know I keep saying you don't pay software engineers to code, you pay us to solve problems, but we usually solve those problems with code, so it's about time we got back to it!</p>
-<p>Next time we're going to look at Traits with everyone's favorite guest star!</p>
-<p>If that sounds good, don't forget to like and subscribe.</p>
-<p>And I'll see you next time. 👋🏻</p>
+<p>I know I keep saying you don’t pay software engineers to code, you pay us to solve problems, but we usually solve those problems with code, so it’s about time we got back to it!</p>
+<p>Next time we’re going to look at Traits with everyone’s favorite guest star!</p>
+<p>If that sounds good, don’t forget to like and subscribe.</p>
+<p>And I’ll see you next time. 👋🏻</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="../iriss/007-iriss.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="../iriss/009-iriss.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -327,16 +326,21 @@ immediately deploy your latest code automatically</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="../iriss/007-iriss.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="../iriss/009-iriss.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -345,13 +349,13 @@ immediately deploy your latest code automatically</p>
         </script>
 
 
-        <script src="../elasticlunr.min.js"></script>
-        <script src="../mark.min.js"></script>
-        <script src="../searcher.js"></script>
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
 
-        <script src="../clipboard.min.js"></script>
-        <script src="../highlight.js"></script>
-        <script src="../book.js"></script>
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
 

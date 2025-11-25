@@ -12,21 +12,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../favicon.svg">
-        <link rel="shortcut icon" href="../favicon.png">
-        <link rel="stylesheet" href="../css/variables.css">
-        <link rel="stylesheet" href="../css/general.css">
-        <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../fonts/fonts.css">
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -36,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex.js";
+            window.path_to_searchindex_js = "../searchindex-ec9cbdc1.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc.js"></script>
+        <script src="../toc-6fd8910a.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -53,7 +52,7 @@
             </div>
         </div>
     </div>
-    <div id="body-container">
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
@@ -82,12 +81,12 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             let sidebar = null;
-            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -102,39 +101,39 @@
             }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -142,43 +141,43 @@
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
                         <div class="search-wrapper">
-                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
                             <div class="spinner-wrapper">
-                                <i class="fa fa-spinner fa-spin"></i>
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
                             </div>
                         </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="control-flow"><a class="header" href="#control-flow">Control Flow</a></h1>
-<p>Ok, I know I said learning Rust wasn't hard, then threw two videos of how memory works and how data is represented,
-but you've got that down now.</p>
-<p>Today, we're on to actually writing some code, there's even some homework to look forward to!</p>
+<p>Ok, I know I said learning Rust wasn’t hard, then threw two videos of how memory works and how data is represented,
+but you’ve got that down now.</p>
+<p>Today, we’re on to actually writing some code, there’s even some homework to look forward to!</p>
 <p>Programs are typically executed one line at a time, this is called flow, but we can alter what the next line is with
 control flow.</p>
 <p>This series has a free accompanying book, in which you can find all the details for this tutorial, check the
@@ -192,36 +191,36 @@ patterns, and how blocks are also expressions.</p>
 <p>Last time we talked about compound types.</p>
 <p>Tuples, Structs, and Enums allow the construction of more complex data from less complex data.</p>
 <p>However, if we want to break the data back into its component parts we can do that!</p>
-<p>Patterns can be used to "destructure" compound data types like tuples fairly trivially: [[]]</p>
-<hr />
+<p>Patterns can be used to “destructure” compound data types like tuples fairly trivially: [[]]</p>
+<hr>
 <p>Destructuring with patterns also works for Tuple Structs, however, you need to specify the name of the struct like
-you're doing a weird backwards struct instantiation. [[]]</p>
+you’re doing a weird backwards struct instantiation. [[]]</p>
 <p>The same thing also works for Structs with Named Fields: [[]]</p>
 <p>Here we extract the structs named fields straight into variables of the same name as its easy and the
 names were appropriate.</p>
 <p>However, it might be better in the context of your program to name them something else.</p>
 <p>We can rename the variables using colons, like naming x to width and y to height: [[]]</p>
-<p>Unfortunately, you can't extract data from Enums this way as the value of an Enum is one of a set of, not only values,
-but potentially subtypes or shapes or however you'd like to describe them.</p>
+<p>Unfortunately, you can’t extract data from Enums this way as the value of an Enum is one of a set of, not only values,
+but potentially subtypes or shapes or however you’d like to describe them.</p>
 <p>Take for example the humble Option: [[]]</p>
-<p>How can we extract a char from Option char if 5we don't know whether the variable is Some or None...</p>
-<p>well, actually, we'll come to that soon.</p>
+<p>How can we extract a char from Option char if 5we don’t know whether the variable is Some or None…</p>
+<p>well, actually, we’ll come to that soon.</p>
 <h2 id="blocks-are-expressions"><a class="header" href="#blocks-are-expressions">Blocks are Expressions</a></h2>
-<p>One of my favourite features in Rust is that code blocks (that's any code between curly brackets) can be used as
+<p>One of my favourite features in Rust is that code blocks (that’s any code between curly brackets) can be used as
 expressions</p>
 <p>An expression in Rust is anything that could have a value.</p>
-<p>So, for example, a + b is an expression where we're adding a to b which results in a value.</p>
+<p>So, for example, a + b is an expression where we’re adding a to b which results in a value.</p>
 <p>You will also use expressions like a equals equals b to compare whether the values of a and b are the same, this
 results in a value of true or false.</p>
-<hr />
-<p>Usually you might use an expression as part of an assignment or an evaluation, for example "let c = a + b" or
-"if a equals equals b", however, Rust also allows you to use a block (code between curly brackets) as an expression
+<hr>
+<p>Usually you might use an expression as part of an assignment or an evaluation, for example “let c = a + b” or
+“if a equals equals b”, however, Rust also allows you to use a block (code between curly brackets) as an expression
 <em>and</em> the final value of that block can itself be an expression.</p>
 <p>In this admittedly contrived example, we create the variables a and b and add them together.</p>
-<hr />
+<hr>
 <p>Some cool things to note:</p>
 <ul>
-<li>a and b only exist within the code block, they're not accessible after</li>
+<li>a and b only exist within the code block, they’re not accessible after</li>
 <li>the lines with let have semicolons</li>
 <li>the line with the expression a + b does not</li>
 <li>c will be equal to the evaluation of the code block, which itself is equal to the result of a + b</li>
@@ -230,11 +229,11 @@ results in a value of true or false.</p>
 <p>Why is this so cool? Because branches, loops and even functions all use code blocks!</p>
 <h2 id="if"><a class="header" href="#if">If</a></h2>
 <p>The most basic form of branching is the if statement.</p>
-<p>In its most simple form it's an IF followed by an expression followed by a code block.</p>
+<p>In its most simple form it’s an IF followed by an expression followed by a code block.</p>
 <p>Two differences to most other languages, the expression being evaluated by the if is not in brackets and code to be
 executed must always be in a code block, even if its only one line.</p>
 <p>The expression must evaluate to a boolean, either <code>true</code> or <code>false</code>.</p>
-<p>If the expression evaluates to <code>true</code>, then the code in the block will be run, otherwise it won't be:</p>
+<p>If the expression evaluates to <code>true</code>, then the code in the block will be run, otherwise it won’t be:</p>
 <p>For example, we could create an expression that evaluates to a boolean by comparing if two numbers are the same, using
 double equals: [[]]</p>
 <p>If you want to run some code if the expression is <code>true</code>, but some different code if its <code>false</code>, then you can extend
@@ -247,14 +246,14 @@ effectively return their own values [[]]</p>
 <ol>
 <li>To make the code block an expression, the last line must have no semicolon</li>
 <li>When we use let to set a value to the result of an expression, the expression must be terminated by a semicolon</li>
-<li>All branches must evaluate to the same <em>Type</em>, even if they don't evaluate to the same <em>value</em></li>
-<li>Doing big blocks of <code>if</code>/<code>else if</code>/<code>else</code> is a mess, there's a better way which we'll talk about in a moment!</li>
+<li>All branches must evaluate to the same <em>Type</em>, even if they don’t evaluate to the same <em>value</em></li>
+<li>Doing big blocks of <code>if</code>/<code>else if</code>/<code>else</code> is a mess, there’s a better way which we’ll talk about in a moment!</li>
 </ol>
 <h3 id="pattern-matching-inside-if-and-else"><a class="header" href="#pattern-matching-inside-if-and-else">Pattern Matching inside <code>if</code> and <code>else</code></a></h3>
-<p>There is another way you can branch with <code>if</code> that doesn't require a boolean expression, pattern matching.</p>
+<p>There is another way you can branch with <code>if</code> that doesn’t require a boolean expression, pattern matching.</p>
 <p>Pattern matching is similar to our destructuring earlier, but now we can use it as a conditional!</p>
 <p>There are two ways to do this <code>if let ...</code> and <code>let ... else</code>.</p>
-<p>Let's go back to that Option from earlier: [[]]</p>
+<p>Let’s go back to that Option from earlier: [[]]</p>
 <p>In the line <code>if let Some(c) = maybe_yuki</code> we are pattern matching on the Option, if it matches the pattern of
 <code>Some(&lt;variable&gt;)</code>, then we extract the contents of the <code>Some</code> into the <code>&lt;variable&gt;</code>.</p>
 <p>Within the block (and only within the block), the variable C has the value from inside the Some variant of the Option.</p>
@@ -262,31 +261,31 @@ effectively return their own values [[]]</p>
 <p>Again, this example is contrived, there are better ways to do this.</p>
 <p>You can also do the opposite, branch if the pattern does not match, using <code>let ... else</code>.</p>
 <p>The important thing to note here is that execution can not continue after the code block, you must exit the current
-flow, whether that's returning from a function or breaking from a loop [[]]</p>
+flow, whether that’s returning from a function or breaking from a loop [[]]</p>
 <h2 id="match"><a class="header" href="#match">Match</a></h2>
 <p>This pattern matching stuff is really handy, right?!</p>
 <p>Well the creators of Rust thought so too, so much in fact, they added a whole control flow mechanism around it!</p>
 <p><code>match</code> is a bit like <code>if</code> in that it can branch, and act as an expression.</p>
 <p>However, <code>match</code> can do a lot more than <code>if</code>, it will match against multiple possibilities, allows match guards for fine
 grain control of pattern matching, and its exhaustive, meaning that a match <em>must</em> deal with every possibility.</p>
-<p>Let's look at our Vector example again: [[]]</p>
-<hr />
+<p>Let’s look at our Vector example again: [[]]</p>
+<hr>
 <p>First of all, you can see that this pattern is <em>much</em> cleaner than having a lot of <code>if let</code>s.</p>
 <p>We could also use match as an expression: [[]]</p>
 <p>What happens if we add another variant to the enum though? Well, that <code>match</code> statement will see that not every case is
 handled, and cause an error. [[]]</p>
-<hr />
+<hr>
 <p>We can deal with this by either adding the missing case, or using underscore, which is a special variable that
 immediately discards whatever is put into it and will match anything. [[]]</p>
 <p>Patterns on match arms are tested from top to bottom, and you can also match on more specific patterns, like values:
 [[]]</p>
-<p>There's one more trick up match's sleeve which is match guards. Say we want to do something similar to the above, but
+<p>There’s one more trick up match’s sleeve which is match guards. Say we want to do something similar to the above, but
 instead of matching on exactly zero, we want to match on values less than 10.</p>
 <p>We could make an arm for every variant, or we could use a match guard which is like a mini if statement: [[]]</p>
 <h2 id="loop"><a class="header" href="#loop">Loop</a></h2>
 <p>The most basic loop is, well, <code>loop</code>.</p>
-<p>When you enter a loop, the code inside it will run until it's explicitly told to stop. [[]]</p>
-<hr />
+<p>When you enter a loop, the code inside it will run until it’s explicitly told to stop. [[]]</p>
+<hr>
 <p>This might seem a little bit unhelpful, surely you never want to get trapped inside a loop forever, but actually, we
 often want to keep a program or process running inside a loop.</p>
 <p>You can manually exit the loop using the <code>break</code> keyword.</p>
@@ -294,16 +293,16 @@ often want to keep a program or process running inside a loop.</p>
 loops too!</p>
 <p>That means we can have a loop that does some work, and once the work is done, break with the value we want to take from
 the loop.</p>
-<hr />
+<hr>
 <p>In this example, we run a loop until we find some cool number (note the use of if let), then break with that value.</p>
 <p>The Type of found is a <code>u64</code> and by breaking with that value, the Type of the whole loop becomes <code>u64</code> too! [[]]</p>
-<hr />
+<hr>
 <p>Another useful keyword when looping is <code>continue</code>.</p>
 <p>Imagine you have a series of things that need to be processed, but you can skip over <em>some</em> of those things.</p>
-<p>Here, we'll continuously get images, and run a time-consuming <code>process_image</code> function, unless the image is an SVG,
+<p>Here, we’ll continuously get images, and run a time-consuming <code>process_image</code> function, unless the image is an SVG,
 in which can it will skip it. [[]]</p>
-<hr />
-<p>There's one more neat trick up Rust's sleeve.</p>
+<hr>
+<p>There’s one more neat trick up Rust’s sleeve.</p>
 <p>As with most languages, Rust of course supports nested loops, but to aid with things like <code>break</code> and <code>continue</code> it
 also supports labels.</p>
 <p>Labels start with a single quote and mark the loop they are for with a colon.</p>
@@ -313,44 +312,44 @@ also supports labels.</p>
 <p><code>loop</code> is great for programs that actually do want to try to keep running forever (or perhaps have many exit conditions)</p>
 <p>We often only want to loop over something <code>while</code> something is true though.</p>
 <p>The <code>while</code> loop takes an expression that evaluates to true or false.</p>
-<p>The expression is checked at the start of each iteration through the loop, if it's true, the loop will execute. [[]]</p>
-<hr />
+<p>The expression is checked at the start of each iteration through the loop, if it’s true, the loop will execute. [[]]</p>
+<hr>
 <p>This is actually not a great way to loop over numbers, imagine if we forgot to add to counter!</p>
-<p>Here's a different example where we call a function until we're happy with the result. [[]]</p>
-<p>What's really cool though is that you can do all the tricks we've learned above, including pattern matching with
+<p>Here’s a different example where we call a function until we’re happy with the result. [[]]</p>
+<p>What’s really cool though is that you can do all the tricks we’ve learned above, including pattern matching with
 <code>while let</code>. [[]]</p>
-<p><code>while let</code> is extremely useful, and we'll see it more in the future, particularly when we get to async await.</p>
+<p><code>while let</code> is extremely useful, and we’ll see it more in the future, particularly when we get to async await.</p>
 <h2 id="for-in"><a class="header" href="#for-in">For In</a></h2>
 <p>A very common reason for looping in software is because we want to loop over every item in a collection and perform the
 same set of instructions for each.</p>
-<p>This is where we'd use <code>for ... in ...</code>.</p>
-<p>For In allows you to step through an <code>Iterator</code>, or anything that implements <code>IntoIterator</code>, both of which we'll talk
+<p>This is where we’d use <code>for ... in ...</code>.</p>
+<p>For In allows you to step through an <code>Iterator</code>, or anything that implements <code>IntoIterator</code>, both of which we’ll talk
 more about in a later video.</p>
 <p>Simply put though, this lets us step over each item in a collection, stream or series of data</p>
-<p>Here's an example where we step over every item in an array [[]]</p>
+<p>Here’s an example where we step over every item in an array [[]]</p>
 <h3 id="range"><a class="header" href="#range">Range</a></h3>
 <p>Another neat Rust type that works really well here is the Range.</p>
-<p>We haven't specifically covered Range yet but if you've been paying attention to the code samples throughout the last
+<p>We haven’t specifically covered Range yet but if you’ve been paying attention to the code samples throughout the last
 few videos, you might have spotted a few!</p>
-<p>Range's allow you to specify a "closed" or "half open" range of numbers... well...</p>
-<p>Actually, Range's allow you to specify a range of anything so long as it implements the traits <code>PartialEq</code> and
+<p>Range’s allow you to specify a “closed” or “half open” range of numbers… well…</p>
+<p>Actually, Range’s allow you to specify a range of anything so long as it implements the traits <code>PartialEq</code> and
 <code>PartialOrd</code>.</p>
-<p>I've personally never seen this done for anything except numbers and characters, but its worth pointing
-out. We'll talk more about PartialEq and PartialOrd in a later video.</p>
+<p>I’ve personally never seen this done for anything except numbers and characters, but its worth pointing
+out. We’ll talk more about PartialEq and PartialOrd in a later video.</p>
 <p>We write Ranges in the form start dot dot end, where <code>start</code> is inclusive and <code>end</code> is <code>exclusive</code>.</p>
-<hr />
+<hr>
 <p>This means that 2 dot dot 5 includes 2 but not 5.</p>
 <p>If you want to create a range that includes the final number, prefix that number with <code>=</code>, eg 2 dot dot equals 5: [[]]</p>
-<p>As mentioned, Range's can be "half open" which means you can get away with specifying only the start or the end.</p>
-<hr />
+<p>As mentioned, Range’s can be “half open” which means you can get away with specifying only the start or the end.</p>
+<hr>
 <p>This is where the Type of the start and end really start to matter though. [[]]</p>
 <p>A big warning here though: half open Ranges are dangerous when it comes to <code>for ... in ... </code> loops.</p>
-<p>Ranges with no start can't be used at all, and Ranges with no end will continue to try to produce numbers beyond the
+<p>Ranges with no start can’t be used at all, and Ranges with no end will continue to try to produce numbers beyond the
 upper limits of the type being used at which point your program will crash.</p>
-<hr />
-<p>They're great though, if we just want to do something 10 times. [[]]</p>
+<hr>
+<p>They’re great though, if we just want to do something 10 times. [[]]</p>
 <h2 id="homework"><a class="header" href="#homework">Homework</a></h2>
-<p>The best way to learn anything is to practice it. For this section, I'd like you create a program call Fizz Buzz.</p>
+<p>The best way to learn anything is to practice it. For this section, I’d like you create a program call Fizz Buzz.</p>
 <p>In Fizz Buzz we want to run through a series of numbers (say 1 to 100 inclusive). For each number:</p>
 <ul>
 <li>if the number is divisible by 3, print the word Fizz</li>
@@ -358,30 +357,30 @@ upper limits of the type being used at which point your program will crash.</p>
 <li>if the number is divisible by both 3 and 5, print FizzBuzz</li>
 <li>otherwise, just print the number</li>
 </ul>
-<p>You can do this a few ways, but you'll need to loop over each number and then choose what to do with it with those
+<p>You can do this a few ways, but you’ll need to loop over each number and then choose what to do with it with those
 numbers.</p>
 <p>As a starting point, you could use a range to generate the numbers, then use a <code>for ... in ...</code> loop to get
 each number one at a time, then some <code>if</code>/<code>else</code> statements to get the output.</p>
 <p>Can you work out any other ways to do it?</p>
 <h2 id="next-time"><a class="header" href="#next-time">Next Time</a></h2>
-<p>Next time we're going to look at functions.</p>
-<p>We're also going to deal with what many people consider the hardest bit of Rust to deal with, Ownership, move semantics
+<p>Next time we’re going to look at functions.</p>
+<p>We’re also going to deal with what many people consider the hardest bit of Rust to deal with, Ownership, move semantics
 and lifetimes.</p>
-<p>Don't panic, I think... hope... I've got a great way to explain this one to you.</p>
-<p>If that sounds interesting, don't forget to like and subscribe</p>
-<p>And don't forget to do your homework, if you have any questions, drop me a comment!</p>
-<p>And I'll see you next time.</p>
+<p>Don’t panic, I think… hope… I’ve got a great way to explain this one to you.</p>
+<p>If that sounds interesting, don’t forget to like and subscribe</p>
+<p>And don’t forget to do your homework, if you have any questions, drop me a comment!</p>
+<p>And I’ll see you next time.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="../iriss/003-iriss.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="../iriss/005-iriss.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -391,16 +390,21 @@ and lifetimes.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="../iriss/003-iriss.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="../iriss/005-iriss.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -409,13 +413,13 @@ and lifetimes.</p>
         </script>
 
 
-        <script src="../elasticlunr.min.js"></script>
-        <script src="../mark.min.js"></script>
-        <script src="../searcher.js"></script>
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
 
-        <script src="../clipboard.min.js"></script>
-        <script src="../highlight.js"></script>
-        <script src="../book.js"></script>
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
 

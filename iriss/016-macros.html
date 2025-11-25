@@ -12,21 +12,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../favicon.svg">
-        <link rel="shortcut icon" href="../favicon.png">
-        <link rel="stylesheet" href="../css/variables.css">
-        <link rel="stylesheet" href="../css/general.css">
-        <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../fonts/fonts.css">
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -36,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex.js";
+            window.path_to_searchindex_js = "../searchindex-ec9cbdc1.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc.js"></script>
+        <script src="../toc-6fd8910a.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -53,7 +52,7 @@
             </div>
         </div>
     </div>
-    <div id="body-container">
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
@@ -82,12 +81,12 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             let sidebar = null;
-            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -102,39 +101,39 @@
             }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -142,133 +141,133 @@
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
                         <div class="search-wrapper">
-                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
                             <div class="spinner-wrapper">
-                                <i class="fa fa-spinner fa-spin"></i>
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
                             </div>
                         </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="macros"><a class="header" href="#macros">Macros</a></h1>
-<p>Macro's let us do meta-programming in Rust.</p>
+<p>Macro’s let us do meta-programming in Rust.</p>
 <p>Metaprogramming allows us to treat our code as data; manipulate it, expand it, and generate new code.</p>
-<p>Macro's let us do a <em>lot</em> of things, but I've broken this video into three parts</p>
+<p>Macro’s let us do a <em>lot</em> of things, but I’ve broken this video into three parts</p>
 <ol>
 <li>
-<p>We'll go over the basics of how you can use <code>macro_rules!</code> to make your own macros</p>
+<p>We’ll go over the basics of how you can use <code>macro_rules!</code> to make your own macros</p>
 </li>
 <li>
-<p>I'll show a somewhat real life use case I've been working with lately</p>
+<p>I’ll show a somewhat real life use case I’ve been working with lately</p>
 </li>
 <li>
-<p>And we'll implement another programming language within Rust to demonstrate how you can create domain-specific languages (DSLs)</p>
+<p>And we’ll implement another programming language within Rust to demonstrate how you can create domain-specific languages (DSLs)</p>
 </li>
 </ol>
 <p>This series is accompanied by a free book, check the description for a link straight to this chapter.</p>
 <p>My name is Daniel, welcome to IRISS.</p>
-<hr />
-<p>There are two types of macro in Rust, <code>macro_rules!</code>, also known as declarative macros, or macros by example... and <code>proc macro</code>s.</p>
-<p>We won't be dealing with <code>proc macro</code>s in this series, but they allow you to create custom Derive macros and custom attributes.</p>
-<p>They also let you make the same function style macros we'll be making with <code>macro_rules!</code> but can unlock even more power!</p>
-<p>If you'd like me to do a video on this after the IRISS series, let me know in the comments.</p>
-<p>Today though, we're just covering <code>macro_rules!</code></p>
+<hr>
+<p>There are two types of macro in Rust, <code>macro_rules!</code>, also known as declarative macros, or macros by example… and <code>proc macro</code>s.</p>
+<p>We won’t be dealing with <code>proc macro</code>s in this series, but they allow you to create custom Derive macros and custom attributes.</p>
+<p>They also let you make the same function style macros we’ll be making with <code>macro_rules!</code> but can unlock even more power!</p>
+<p>If you’d like me to do a video on this after the IRISS series, let me know in the comments.</p>
+<p>Today though, we’re just covering <code>macro_rules!</code></p>
 <h2 id="anatomy-of-macro_rules"><a class="header" href="#anatomy-of-macro_rules">Anatomy of <code>macro_rules!</code></a></h2>
 <p><code>macro_rules!</code> is, itself, a macro, providing its own domain specific language that allows you to create more macros.</p>
 <p>This gets very powerful and, honestly, very weird.</p>
-<p>Let's take it slow.</p>
-<p><img src="016-macros/00-macro-rules-structure.png" alt="00-macro-rules-structure.png" /></p>
+<p>Let’s take it slow.</p>
+<p><img src="016-macros/00-macro-rules-structure.png" alt="00-macro-rules-structure.png"></p>
 <p>🦀👨🏻 The general layout of <code>macro_rules!</code> looks like this:</p>
-<p>🦀👨🏻 We write <code>macro_rules!</code>, with an exclamation mark, followed by the name the macro we're creating.</p>
+<p>🦀👨🏻 We write <code>macro_rules!</code>, with an exclamation mark, followed by the name the macro we’re creating.</p>
 <p>🦀👨🏻 We then have a block containing a list of rules.</p>
-<p>🦀👨🏻 The rule contains a pattern to match on, which itself potentially contains metavariables which we'll discuss later.</p>
+<p>🦀👨🏻 The rule contains a pattern to match on, which itself potentially contains metavariables which we’ll discuss later.</p>
 <p>🦀👨🏻 Each rule also has a block that describes how code will be generated when the macro is invoked with a matching pattern.</p>
 <p>Rather than it generating code with a simple copy/paste, macros work on the Abstract Syntax Tree or AST.</p>
 <p>This is an intermediate step of the compilation process where your code has already been turned into datastructures that represents what your program does.</p>
 <p>This makes it much safer and more fully featured that copy-paste style macros you might have worked with in the past.</p>
 <h2 id="hello-macro"><a class="header" href="#hello-macro">Hello, macro!</a></h2>
-<p>We'll start by making a hello world macro that produces a <code>String</code>.</p>
-<p><img src="016-macros/01-hello.png" alt="01-hello.png" /></p>
-<p>🦀👨🏻 As we said a moment ago, immediately after <code>macro_rules!</code> we provide the name of the macro we're creating, in this case <code>hello</code>.</p>
-<p>🦀👨🏻 Our first draft won't match anything between the brackets, so we leave those empty.</p>
+<p>We’ll start by making a hello world macro that produces a <code>String</code>.</p>
+<p><img src="016-macros/01-hello.png" alt="01-hello.png"></p>
+<p>🦀👨🏻 As we said a moment ago, immediately after <code>macro_rules!</code> we provide the name of the macro we’re creating, in this case <code>hello</code>.</p>
+<p>🦀👨🏻 Our first draft won’t match anything between the brackets, so we leave those empty.</p>
 <p>🦀👨🏻 We then have an arrow, followed by some curly brackets surrounding what our macro will generate.</p>
-<p>🦀👨🏻 Here's a little test for it to show how it might be used.</p>
+<p>🦀👨🏻 Here’s a little test for it to show how it might be used.</p>
 <p>🦀👨🏻 Our <code>hello</code> macro simply creates a string containing <code>"Hello, world"</code> at the site where the macro is called (in this case inside an <code>assert_eq!</code> macro).</p>
-<p>🦀👨🏻 This type of macro <em>could</em> be useful if you have a block of code you need to repeat but don't want to put in a function.</p>
-<p>🦀👨🏻 But let's be honest, that's not going to come up very often.</p>
-<p>🦀👨🏻 Let's upgrade our macro to match a pattern.</p>
-<p><img src="016-macros/02-hello-tokens.png" alt="02-hello-tokens.png" /></p>
+<p>🦀👨🏻 This type of macro <em>could</em> be useful if you have a block of code you need to repeat but don’t want to put in a function.</p>
+<p>🦀👨🏻 But let’s be honest, that’s not going to come up very often.</p>
+<p>🦀👨🏻 Let’s upgrade our macro to match a pattern.</p>
+<p><img src="016-macros/02-hello-tokens.png" alt="02-hello-tokens.png"></p>
 <p>🦀👨🏻 What madness is this?!</p>
 <p>🦀👨🏻 What kind of parameters are we passing to this macro?</p>
-<p>🦀👨🏻 The key to understanding the power of macros is that they <em>don't</em> take parameters.</p>
+<p>🦀👨🏻 The key to understanding the power of macros is that they <em>don’t</em> take parameters.</p>
 <p>🦀👨🏻 The thing in the brackets at the start of each rule is a pattern, and that pattern can be <em>almost</em> anything.</p>
-<p>🦀👨🏻 The content of the macro's invocation is broken up into something called a token tree, which we'll talk about in the next section.</p>
+<p>🦀👨🏻 The content of the macro’s invocation is broken up into something called a token tree, which we’ll talk about in the next section.</p>
 <p>🦀👨🏻 Here, <code>this must be present</code> is parsed as four token trees: <code>this</code>, <code>must</code>, <code>be</code> and <code>present</code>.</p>
-<p>🦀👨🏻 Different tokens won't match our pattern, so this won't compile.</p>
+<p>🦀👨🏻 Different tokens won’t match our pattern, so this won’t compile.</p>
 <p>🦀👨🏻 We can invoke different rules based on the matched pattern.</p>
-<p><img src="016-macros/03-hello-token-rules.png" alt="03-hello-token-rules.png" /></p>
+<p><img src="016-macros/03-hello-token-rules.png" alt="03-hello-token-rules.png"></p>
 <p>🦀👨🏻 So we could match several people by making a rule for each of them.</p>
-<p>🦀👨🏻 We obviously can't write out <em>every</em> possible thing that we might want match on though.</p>
-<p>🦀👨🏻 What if we want to be able to say "hello" to lots of different people?</p>
+<p>🦀👨🏻 We obviously can’t write out <em>every</em> possible thing that we might want match on though.</p>
+<p>🦀👨🏻 What if we want to be able to say “hello” to lots of different people?</p>
 <p>🦀👨🏻 Instead, we can capture tokens into metavariables.</p>
-<p><img src="016-macros/04-hello-metavariables-a.png" alt="04-hello-metavariables.png" /></p>
+<p><img src="016-macros/04-hello-metavariables-a.png" alt="04-hello-metavariables.png"></p>
 <p>🦀👨🏻 Things got a little bit weird here, right?</p>
-<p>🦀👨🏻 Let's step through our changes.</p>
-<p>🦀👨🏻 First, we added a metavariable, and you'll immediately notice this looks nothing like a normal function parameter in Rust.</p>
-<p>🦀👨🏻 In <code>macro_rules!</code>, we can parameterise tokens into "metavariables" which are preceded by a dollar symbol, followed by a colon, and what's called a fragment-specifier.</p>
+<p>🦀👨🏻 Let’s step through our changes.</p>
+<p>🦀👨🏻 First, we added a metavariable, and you’ll immediately notice this looks nothing like a normal function parameter in Rust.</p>
+<p>🦀👨🏻 In <code>macro_rules!</code>, we can parameterise tokens into “metavariables” which are preceded by a dollar symbol, followed by a colon, and what’s called a fragment-specifier.</p>
 <p>🦀👨🏻 Fragment-specifiers are a bit like types but are specific to how Rust classifies tokens trees.</p>
-<p>🦀👨🏻 We can't specify <code>str</code> here, but we can specify that we expect a <code>literal</code>, which is any raw value, such as a string slice, a number, a boolean, etc.</p>
-<p>🦀👨🏻 You might still wonder what happens if our macro gets a literal that's not a <code>str</code> and the answer is it won't compile.</p>
+<p>🦀👨🏻 We can’t specify <code>str</code> here, but we can specify that we expect a <code>literal</code>, which is any raw value, such as a string slice, a number, a boolean, etc.</p>
+<p>🦀👨🏻 You might still wonder what happens if our macro gets a literal that’s not a <code>str</code> and the answer is it won’t compile.</p>
 <p>🦀👨🏻 The person who passed in the non-<code>str</code> <em>will</em> get an error relating to the <code>.push_str</code> method on <code>String</code> though admittedly errors on macros like this can be a little harder to work with.</p>
 <p>🦀👨🏻 That said, over the 10 years since Rust came out, contributors to the language have done a lot of work to clarify errors across the board.</p>
-<p>🦀👨🏻 Anyway, there are a number of different fragment-specifiers, some of which overlap with each other, we'll go over more of them in the next section.</p>
-<p>🦀👨🏻 The second change we've made here is that inside of the code block... we've added <em>another</em> block.</p>
+<p>🦀👨🏻 Anyway, there are a number of different fragment-specifiers, some of which overlap with each other, we’ll go over more of them in the next section.</p>
+<p>🦀👨🏻 The second change we’ve made here is that inside of the code block… we’ve added <em>another</em> block.</p>
 <p>🦀👨🏻 The reason for this is that when we invoke the macro, Rust generates code at the point that you place the macro.</p>
-<p>🦀👨🏻 If we didn't have the extra brackets, when we use the macro in our <code>assert_eq!</code>, our code would look to Rust as if it were this:</p>
-<p><img src="016-macros/04-hello-metavariables-b.png" alt="04-hello-metavariables-b.png" /></p>
-<p>🦀👨🏻 This doesn't work because <code>assert_eq!</code>, which is also a macro, expects to match expressions, represented by the fragment-specifier <code>:expr</code>.</p>
-<p>🦀👨🏻 Oh... I'm going to have to work out how to vocalise a few unique things this episode, wish me luck!</p>
+<p>🦀👨🏻 If we didn’t have the extra brackets, when we use the macro in our <code>assert_eq!</code>, our code would look to Rust as if it were this:</p>
+<p><img src="016-macros/04-hello-metavariables-b.png" alt="04-hello-metavariables-b.png"></p>
+<p>🦀👨🏻 This doesn’t work because <code>assert_eq!</code>, which is also a macro, expects to match expressions, represented by the fragment-specifier <code>:expr</code>.</p>
+<p>🦀👨🏻 Oh… I’m going to have to work out how to vocalise a few unique things this episode, wish me luck!</p>
 <p>In Rust, an expression is a segment of code that produces a value.</p>
-<p>So <code>String::from("Hello, ")</code> is an expression, but <code>let mut output = String::from("Hello, ");</code> is not, that's a <code>:stmt</code>, a statement.</p>
+<p>So <code>String::from("Hello, ")</code> is an expression, but <code>let mut output = String::from("Hello, ");</code> is not, that’s a <code>:stmt</code>, a statement.</p>
 <p>Blocks of code, even multiple statements, surrounded by curly brackets are expressions though, they have a value, even if the value is the unit type.</p>
 <p>When we wrap our macro in curly brackets then, and have some value as the final line, our code block becomes a single expression the value and type of which matches that final value.</p>
-<p><img src="016-macros/04-hello-metavariables-c.png" alt="04-hello-metavariables-c.png" /></p>
+<p><img src="016-macros/04-hello-metavariables-c.png" alt="04-hello-metavariables-c.png"></p>
 <p>🦀👨🏻 This means that when we add those extra curly brackets to our macro, the generated code now looks like this, which is valid!</p>
 <p>🦀👨🏻 Expressions in Rust are particularly useful as they have a type and a value, just like variables, allowing you to use them inside other expressions.</p>
-<p>🦀👨🏻 Let's go deeper and add another rule.</p>
-<p>🦀👨🏻 Let's bring back our original behaviour for an empty <code>hello!</code> macro:</p>
-<p><img src="016-macros/05-hello-metavariables-rules-a.png" alt="05-hello-metavariables-rules.png" /></p>
-<p>🦀👨🏻 This is fine, but we're repeating ourselves a little bit.</p>
+<p>🦀👨🏻 Let’s go deeper and add another rule.</p>
+<p>🦀👨🏻 Let’s bring back our original behaviour for an empty <code>hello!</code> macro:</p>
+<p><img src="016-macros/05-hello-metavariables-rules-a.png" alt="05-hello-metavariables-rules.png"></p>
+<p>🦀👨🏻 This is fine, but we’re repeating ourselves a little bit.</p>
 <p>🦀👨🏻 We should avoid having two copies of the <code>"Hello, "</code> string slice.</p>
-<p><img src="016-macros/05-hello-metavariables-rules-b.png" alt="05-hello-metavariables-rules-b.png" /></p>
+<p><img src="016-macros/05-hello-metavariables-rules-b.png" alt="05-hello-metavariables-rules-b.png"></p>
 <p>🦀👨🏻 To maintain consistency, we can call our macro recursively!</p>
-<p>We're nearly there now, but I think our hello macro is missing one critical feature; what if we want to greet lots of people at the same time?</p>
-<p>We can "repeat" patterns inside macros by surrounding them with parenthesis preceded by a dollar and followed by either a <code>?</code>, a <code>+</code>, or a <code>*</code>.</p>
+<p>We’re nearly there now, but I think our hello macro is missing one critical feature; what if we want to greet lots of people at the same time?</p>
+<p>We can “repeat” patterns inside macros by surrounding them with parenthesis preceded by a dollar and followed by either a <code>?</code>, a <code>+</code>, or a <code>*</code>.</p>
 <p>Similar to regex rules:</p>
 <ul>
 <li><code>?</code> means the content is repeated zero or one times</li>
@@ -277,149 +276,149 @@
 </ul>
 <p>You can add a separator to the repeat pattern by placing it before the repeat character.</p>
 <p>This token can be almost anything except the repeat tokens or delimiter tokens.</p>
-<p>The most common separators you're likely to use are commas or semicolons, but you could use something like tilde's... ya know... if you're twisted.</p>
-<hr />
+<p>The most common separators you’re likely to use are commas or semicolons, but you could use something like tilde’s… ya know… if you’re twisted.</p>
+<hr>
 <p>Repeats are used in rule matchers to match patterns, including metavariables, multiple times</p>
-<p>They're also used in code generation to repeat code for each repeated metavariable.</p>
+<p>They’re also used in code generation to repeat code for each repeated metavariable.</p>
 <p>We already have zero and one metavariable dealt with, so we want a rule in our macro that takes two or more inputs</p>
-<p><img src="016-macros/05-hello-metavariables-rules-c.png" alt="05-hello-metavariables-rules-c.png" /></p>
-<p>🦀👨🏻 For want of space, I'm going to condense the formatting from now on, so keep an eye out for those double curly brackets</p>
-<p>🦀👨🏻 Our new rule looks a bit like the previous one, but now there's a comma after <code>$name:literal</code> and then a repeat pattern.</p>
+<p><img src="016-macros/05-hello-metavariables-rules-c.png" alt="05-hello-metavariables-rules-c.png"></p>
+<p>🦀👨🏻 For want of space, I’m going to condense the formatting from now on, so keep an eye out for those double curly brackets</p>
+<p>🦀👨🏻 Our new rule looks a bit like the previous one, but now there’s a comma after <code>$name:literal</code> and then a repeat pattern.</p>
 <p>🦀👨🏻 The repeat pattern contains a metavariable, <code>$rest:literal</code>, which will be used to store all metavariables passed to the macro after the first.</p>
 <p>🦀👨🏻 It uses a <code>+</code> to show that there must be at least one additional metavariable, but there may be many.</p>
 <p>🦀👨🏻 In the body of the macro, we initialise our output in much the same way as we do in the version with no inputs, by calling the hello macro with the first metavariable.</p>
 <p>🦀👨🏻 We then have another repeat pattern that contains code with the <code>$rest</code> metavariable.</p>
 <p>🦀👨🏻 Because we have a repeated metavariable inside a repeated block, this block will be repeated for every <code>literal</code> that <code>$rest</code> matched to.</p>
 <p>🦀👨🏻 If we were to unwrap the code generated for the final test, it would look something like this:</p>
-<p><img src="016-macros/05-hello-metavariables-rules-d.png" alt="05-hello-metavariables-rules-d.png" /></p>
-<p>Hopefully, you're starting to see why writing a quick macro can really cut down on repeated boilerplate code, and we're really only making a quick toy macro to demonstrate the power they provide!</p>
+<p><img src="016-macros/05-hello-metavariables-rules-d.png" alt="05-hello-metavariables-rules-d.png"></p>
+<p>Hopefully, you’re starting to see why writing a quick macro can really cut down on repeated boilerplate code, and we’re really only making a quick toy macro to demonstrate the power they provide!</p>
 <p>You might be wondering if we can use repeats to reduce the number of match arms we have.</p>
-<p>We unfortunately can't do things like treat the first or last element of a repeat differently using macro repeats <em>undecided look</em>,</p>
+<p>We unfortunately can’t do things like treat the first or last element of a repeat differently using macro repeats <em>undecided look</em>,</p>
 <p>but we can merge the second and third arms using a <code>*</code>.</p>
-<p><img src="016-macros/06-hello-better-loops.png" alt="06-hello-better-loops.png" /></p>
-<p>🦀👨🏻 You'll notice that the <code>,</code> after <code>$name:literal</code> has moved inside the repeat pattern, and the <code>,</code> being used as a separator for the repeat has been dropped.</p>
-<p>🦀👨🏻 This is because if we were to try to match <code>($name:literal, $($rest:literal),*)</code> then we'd <em>have</em> to use the comma after the first literal so <code>hello!("Yuki")</code> would <em>have</em> to be <code>hello!("Yuki", )</code> to work.</p>
-<p>🦀👨🏻 Instead, we've moved the comma token to the beginning of the repeat pattern which can contain things that aren't metavariables too.</p>
-<p>Ok, so I wasn't exactly lying about not being able to treat the first and last elements differently with macro repeats... we can't do it with <em>just</em> macro repeats</p>
+<p><img src="016-macros/06-hello-better-loops.png" alt="06-hello-better-loops.png"></p>
+<p>🦀👨🏻 You’ll notice that the <code>,</code> after <code>$name:literal</code> has moved inside the repeat pattern, and the <code>,</code> being used as a separator for the repeat has been dropped.</p>
+<p>🦀👨🏻 This is because if we were to try to match <code>($name:literal, $($rest:literal),*)</code> then we’d <em>have</em> to use the comma after the first literal so <code>hello!("Yuki")</code> would <em>have</em> to be <code>hello!("Yuki", )</code> to work.</p>
+<p>🦀👨🏻 Instead, we’ve moved the comma token to the beginning of the repeat pattern which can contain things that aren’t metavariables too.</p>
+<p>Ok, so I wasn’t exactly lying about not being able to treat the first and last elements differently with macro repeats… we can’t do it with <em>just</em> macro repeats</p>
 <p>BUT, we can work around that with very low-cost language features like slices.</p>
-<p><img src="016-macros/07-hello-with-simple-rust.png" alt="07-hello-with-simple-rust.png" /></p>
+<p><img src="016-macros/07-hello-with-simple-rust.png" alt="07-hello-with-simple-rust.png"></p>
 <p>🦀👨🏻 We can split the names out directly into an array.</p>
-<p>🦀👨🏻 This will be part of the binary, created at compile time, so doesn't require any heap allocations</p>
-<p>🦀👨🏻 Next let's get an iterator over the array.</p>
+<p>🦀👨🏻 This will be part of the binary, created at compile time, so doesn’t require any heap allocations</p>
+<p>🦀👨🏻 Next let’s get an iterator over the array.</p>
 <p>🦀👨🏻 By precisely specifying the type of the iterator here we can avoid Rust not knowing what type to infer if the iterator is empty.</p>
-<p>🦀👨🏻 We'll initialise our string as before.</p>
-<p>🦀👨🏻 If no metavariables were passed, then the array will be empty, so we'll use our default value, otherwise we take the first item</p>
-<p>🦀👨🏻 Then we'll loop until no more items are in the iterator</p>
+<p>🦀👨🏻 We’ll initialise our string as before.</p>
+<p>🦀👨🏻 If no metavariables were passed, then the array will be empty, so we’ll use our default value, otherwise we take the first item</p>
+<p>🦀👨🏻 Then we’ll loop until no more items are in the iterator</p>
 <p>🦀👨🏻 By looking ahead to see if there are more items, we can now use grammatically correct separators between names</p>
-<p>🦀👨🏻 And we'll add an exclamation mark for funsies!</p>
+<p>🦀👨🏻 And we’ll add an exclamation mark for funsies!</p>
 <p>🦀👨🏻 Finally, we do need to update our tests for the improved grammar</p>
-<p>--- Missing Image ---</p>
+<p>— Missing Image —</p>
 <p>Being able to quickly compose macros like this can save us a lot of time when repeating the same code over and over.</p>
 <h2 id="tokens-metavariables-and-fragment-specifiers"><a class="header" href="#tokens-metavariables-and-fragment-specifiers">Tokens, Metavariables, and Fragment-Specifiers</a></h2>
 <p>Rust (like most languages) turns your human written code into tokens that it can process.</p>
 <p>Groups of tokens <em>can</em> form a token tree.</p>
 <p>If tokens are protons and neutrons, then token trees are atoms, and are the smallest thing that we can process in <code>macro_rules!</code>.</p>
-<p>An important differentiation with Token Trees to a simple list of tokens are that delimiters (that's parentheses, square brackets and curly brackets) are matched up for us.</p>
+<p>An important differentiation with Token Trees to a simple list of tokens are that delimiters (that’s parentheses, square brackets and curly brackets) are matched up for us.</p>
 <p>For example, if we break the statement <code>let hello = String::from("Hello");</code> into tokens, its looks like this.</p>
-<p><img src="016-macros/Tokens.svg" alt="Tokens.svg" /></p>
-<p>But if we break it into token trees, then the parenthesis is a single token tree containing the token tree "Hello".</p>
-<p><img src="016-macros/TokenTree.svg" alt="TokenTreeLight.svg" /></p>
+<p><img src="016-macros/Tokens.svg" alt="Tokens.svg"></p>
+<p>But if we break it into token trees, then the parenthesis is a single token tree containing the token tree “Hello”.</p>
+<p><img src="016-macros/TokenTree.svg" alt="TokenTreeLight.svg"></p>
 <p>In the previous <code>hello!</code> example, we captured tokens that were literals into metavariables with fragment-specifiers, but we can categorise tokens and token trees as more than just literals in <code>macro_rules!</code>.</p>
-<p>Here's a quick rundown of some of the most common fragment-specifiers:</p>
-<hr />
+<p>Here’s a quick rundown of some of the most common fragment-specifiers:</p>
+<hr>
 <p><code>tt</code> matches a token tree, which is any single token (other than delimiters) or valid collection of delimited tokens.</p>
 <p>Remember when we wrote <code>this must be present</code> in our silly example, each word is a token tree.</p>
 <p>Token trees can be delimited by parentheses, square brackets or curly brackets so while <code>this must be present</code> is four token trees, we can make it a single token tree containing four token trees by surrounding it in brackets.</p>
-<hr />
+<hr>
 <p><code>literal</code> is the specifier we already used to match against a literal value.</p>
 <p>This matches integers, floats, booleans, characters and a whole set of string types including; string literals, raw string literals, byte string literals, C string literals, and so on.</p>
-<hr />
-<p><code>expr</code> it short for "expression".</p>
+<hr>
+<p><code>expr</code> it short for “expression”.</p>
 <p>An expression is any token tree that has a value.</p>
 <p>For example, <code>String::from("Hello")</code> is an expression, but <code>let hello = String::from("Hello");</code> is not.</p>
-<hr />
+<hr>
 <p><code>block</code> is specifically a block expression.</p>
 <p>Like the code we were generating in our <code>hello!</code> example, blocks can have multiple statements surrounded with curly brackets <code>{...}</code> to make it a block expression.</p>
 <p>Of course, all block expressions are also expressions so you may not end up using this fragment specifier too often</p>
-<hr />
-<p><code>stmt</code> is short for "statement".</p>
+<hr>
+<p><code>stmt</code> is short for “statement”.</p>
 <p>This is a line of code or an item.</p>
 <p>For example <code>let hello = String::from("Hello");</code> is a statement but so are items like modules, structs and functions.</p>
-<hr />
-<p><code>ident</code> is short for "identifier".</p>
-<p>These are things like variable names, type names, or any word that's not specifically a keyword.</p>
-<p>That said, you can make a raw identifier using <code>r#</code>, so while <code>true</code> is not an identifier because it's a keyword, <code>r#true</code> is an identifier.</p>
-<p>You're most likely to see raw identifiers in macros, particularly ones that are for domain specific languages.</p>
-<p>For example, DSLs that are used to create HTML might want to let you use the "type" keyword, as it's an HTML attribute, so you might see <code>r#type</code> to make it a raw identifier.</p>
-<p>In our earlier <code>this must be present</code> example, each of those tokens is also an identifier, identifiers don't need to exist in code.</p>
-<hr />
+<hr>
+<p><code>ident</code> is short for “identifier”.</p>
+<p>These are things like variable names, type names, or any word that’s not specifically a keyword.</p>
+<p>That said, you can make a raw identifier using <code>r#</code>, so while <code>true</code> is not an identifier because it’s a keyword, <code>r#true</code> is an identifier.</p>
+<p>You’re most likely to see raw identifiers in macros, particularly ones that are for domain specific languages.</p>
+<p>For example, DSLs that are used to create HTML might want to let you use the “type” keyword, as it’s an HTML attribute, so you might see <code>r#type</code> to make it a raw identifier.</p>
+<p>In our earlier <code>this must be present</code> example, each of those tokens is also an identifier, identifiers don’t need to exist in code.</p>
+<hr>
 <p><code>path</code> is a type path.</p>
 <p>This could be an identifier on its own, or a sequence of identifiers seperated by double colon tokens.</p>
-<p>Like with identifiers, they don't need to exist within the code, they just need to fit the pattern.</p>
-<hr />
-<p><code>ty</code> is short for "type".</p>
+<p>Like with identifiers, they don’t need to exist within the code, they just need to fit the pattern.</p>
+<hr>
+<p><code>ty</code> is short for “type”.</p>
 <p>This could be a type or a type description.</p>
-<p>For example <code>(dyn Clone + Send)</code> is what's called a parenthesised type, though traits like Clone and Send are also types on their own, as are structs like String.</p>
-<hr />
+<p>For example <code>(dyn Clone + Send)</code> is what’s called a parenthesised type, though traits like Clone and Send are also types on their own, as are structs like String.</p>
+<hr>
 <p><code>item</code> is anything that could belong to a crate, such as functions, modules, static items, use statements, etc.</p>
-<hr />
-<p><code>vis</code> short for "visibility" describes the visibility of something else for example <code>pub</code>, <code>pub(crate)</code>, or <code>pub(super)</code>.</p>
-<hr />
+<hr>
+<p><code>vis</code> short for “visibility” describes the visibility of something else for example <code>pub</code>, <code>pub(crate)</code>, or <code>pub(super)</code>.</p>
+<hr>
 <p><code>lifetime</code> matches lifetimes such as <code>'a</code> or <code>'static</code></p>
-<hr />
+<hr>
 <p><code>meta</code>, this is a weird one, it matches attributes.</p>
 <p>It could be useful if you want to construct a type and pass in attributes to apply to it.</p>
-<hr />
-<p>There's a lot here, and I've ignored the backwards compatible fragment specifiers (some specifiers have changed behaviour over the years).</p>
+<hr>
+<p>There’s a lot here, and I’ve ignored the backwards compatible fragment specifiers (some specifiers have changed behaviour over the years).</p>
 <p>If you want to see the full list of fragment-specifiers, or more complete descriptions of each of them, check out the official documentation, link in the description</p>
 <h2 id="usefully-dry"><a class="header" href="#usefully-dry">Usefully DRY</a></h2>
-<p>The example we ran through earlier to build up our understanding of how macro's work was very abstract and not very useful, so I wanted to go over how I've started using Macro's.</p>
-<p>I'm going to show you how I'm using macros in my own code, but for the purposes of IRISS I've modified the examples to avoid using crates.</p>
-<p>Crates are how we share reusable Rust code between each other but, if you haven't noticed, I've avoided using any in this series to focus purely on the core language.</p>
-<p>If you're comfortable with crates and async Rust already, and you're curious what the differences are in my real code, there's a link to the app I've been building on stream in the description of this video.</p>
-<hr />
-<p>In the Job Tracker app I've been building with the help of folks on my streams, I've leaned heavily into composing my types using Traits to form common behaviour.</p>
+<p>The example we ran through earlier to build up our understanding of how macro’s work was very abstract and not very useful, so I wanted to go over how I’ve started using Macro’s.</p>
+<p>I’m going to show you how I’m using macros in my own code, but for the purposes of IRISS I’ve modified the examples to avoid using crates.</p>
+<p>Crates are how we share reusable Rust code between each other but, if you haven’t noticed, I’ve avoided using any in this series to focus purely on the core language.</p>
+<p>If you’re comfortable with crates and async Rust already, and you’re curious what the differences are in my real code, there’s a link to the app I’ve been building on stream in the description of this video.</p>
+<hr>
+<p>In the Job Tracker app I’ve been building with the help of folks on my streams, I’ve leaned heavily into composing my types using Traits to form common behaviour.</p>
 <p>For example, at time of writing, I allow the user to create things like <code>Flags</code>, <code>Roles</code> and <code>Values</code> that belong to <code>Company</code>s, so those types implement the trait <code>HasCompany</code>.</p>
-<p><img src="016-macros/08-usefully-dry-no-macros-a.png" alt="08-usefully-dry-no-macros-a.png" /></p>
-<p>🦀👨🏻 Here's an example of how that might look for <code>Role</code>.</p>
+<p><img src="016-macros/08-usefully-dry-no-macros-a.png" alt="08-usefully-dry-no-macros-a.png"></p>
+<p>🦀👨🏻 Here’s an example of how that might look for <code>Role</code>.</p>
 <p>🦀👨🏻 Role is pretty simple, it has an id of its own, an id that links it to a company, and a name.</p>
 <p>🦀👨🏻The <code>HasCompany</code> trait has a single method, <code>get_company_id</code>.</p>
 <p>🦀👨🏻 When we implement it for role, it just returns that <code>company_id</code> which is <code>Copy</code> so the code is nice and simple.</p>
-<p>🦀👨🏻 I'm also a huge advocate for unit testing and even for code like this we ought to provide a simple test.</p>
-<p><img src="016-macros/08-usefully-dry-no-macros-b.png.png" alt="08-usefully-dry-no-macros-b.png.png" /></p>
+<p>🦀👨🏻 I’m also a huge advocate for unit testing and even for code like this we ought to provide a simple test.</p>
+<p><img src="016-macros/08-usefully-dry-no-macros-b.png.png" alt="08-usefully-dry-no-macros-b.png.png"></p>
 <p>🦀👨🏻 This is pretty nice code, even if I do say so myself.</p>
-<p>🦀👨🏻 It's clean, easy to understand, easy to use.</p>
+<p>🦀👨🏻 It’s clean, easy to understand, easy to use.</p>
 <p>🦀👨🏻 But, is it DRY?</p>
-<p>DRY in this context, stands for "Don't Repeat Yourself"</p>
-<p>Every time we add a new storable item we'll have to implement the trait and write tests for its implementation.</p>
-<p>This isn't the only Trait that is applied to "storable" types, and we have multiple "storage" types that also have lots of shared traits that all need implementing and testing.</p>
-<hr />
-<p>🦀👨🏻 Let's look at how macros can help us generate boilerplate code.</p>
-<p><img src="016-macros/09-usefully-dry-impl-company.png" alt="09-usefully-dry-impl-company.png" /></p>
-<p>🦀👨🏻 First, we'll create a macro that will implement <code>HasCompany</code> for any type that has a <code>company_id</code> field.</p>
-<p>🦀👨🏻 Obviously if you try to implement this trait on something without this field, the macro will generate code that won't compile, but if you <em>need</em> to do that, you can still write your own implementation.</p>
+<p>DRY in this context, stands for “Don’t Repeat Yourself”</p>
+<p>Every time we add a new storable item we’ll have to implement the trait and write tests for its implementation.</p>
+<p>This isn’t the only Trait that is applied to “storable” types, and we have multiple “storage” types that also have lots of shared traits that all need implementing and testing.</p>
+<hr>
+<p>🦀👨🏻 Let’s look at how macros can help us generate boilerplate code.</p>
+<p><img src="016-macros/09-usefully-dry-impl-company.png" alt="09-usefully-dry-impl-company.png"></p>
+<p>🦀👨🏻 First, we’ll create a macro that will implement <code>HasCompany</code> for any type that has a <code>company_id</code> field.</p>
+<p>🦀👨🏻 Obviously if you try to implement this trait on something without this field, the macro will generate code that won’t compile, but if you <em>need</em> to do that, you can still write your own implementation.</p>
 <p>🦀👨🏻 Role does have this field though so we can now implement the trait with one short line</p>
 <p>Replacing the test is a little harder though.</p>
-<p>We can't easily write a generic test that will work for <code>Role</code> and <code>Flag</code> and <code>Values</code> as these types are instantiated in different ways.</p>
+<p>We can’t easily write a generic test that will work for <code>Role</code> and <code>Flag</code> and <code>Values</code> as these types are instantiated in different ways.</p>
 <p>What we need to do is have a consistent way to create test instances of the thing being tested.</p>
 <p>🦀👨🏻 To do this, I created a TestHelper that can be applied to almost any type, its only job is to return an instantiated value of that type.</p>
 <p>🦀👨🏻 This trait exists in a central location</p>
 <p>🦀👨🏻 Each test macro sits alongside the trait it creates tests for</p>
 <p>🦀👨🏻 We can make this test by taking two metavariables separated by a comma token.</p>
-<p>🦀👨🏻 Test name is an ident which we'll use to name the test function</p>
+<p>🦀👨🏻 Test name is an ident which we’ll use to name the test function</p>
 <p>🦀👨🏻 Storable is what I call any object in this project that can be stored, and in this case is the test subject.</p>
-<p>🦀👨🏻 The test here is super rudimentary, we're just going to make sure that when we request the id, we get something back.</p>
-<p><img src="016-macros/10-usefully-dry-test-a.png" alt="10-usefully-dry-test-a.png" /></p>
+<p>🦀👨🏻 The test here is super rudimentary, we’re just going to make sure that when we request the id, we get something back.</p>
+<p><img src="016-macros/10-usefully-dry-test-a.png" alt="10-usefully-dry-test-a.png"></p>
 <p>🦀👨🏻 By implementing the trait for each type that I want to test, I can add tests trivially like this:</p>
-<p><img src="016-macros/10-usefully-dry-test-b.png" alt="10-usefully-dry-test-b.png" /></p>
+<p><img src="016-macros/10-usefully-dry-test-b.png" alt="10-usefully-dry-test-b.png"></p>
 <p>🦀👨🏻 This might initially seem like just as much work as before, as we add more traits and more types that implement those traits, the amount of extra work drops dramatically.</p>
-<p>🦀👨🏻 Furthermore, there are more complex examples in Fio's Job Tracker like the ones that manage the storing and recalling of these storable objects.</p>
+<p>🦀👨🏻 Furthermore, there are more complex examples in Fio’s Job Tracker like the ones that manage the storing and recalling of these storable objects.</p>
 <h2 id="domain-specific-languages"><a class="header" href="#domain-specific-languages">Domain Specific Languages</a></h2>
 <p>Ever wanted to write your own language?</p>
-<p>We're going to get a little bit silly shortly...</p>
+<p>We’re going to get a little bit silly shortly…</p>
 <p>But Domain Specific Languages (DSLs) can be incredibly useful for conceptualising code in ways meaningful to your domain.</p>
 <p>For example, JSX is a DSL for writing React in Javascript.</p>
-<p>If you're a web developer, ultimately creating HTML, which of these is more readable:</p>
+<p>If you’re a web developer, ultimately creating HTML, which of these is more readable:</p>
 <p>🦀👨🏻 This, which is valid Javascript</p>
 <pre><code class="language-javascript">const heading = React.createElement(
     'h1',
@@ -434,16 +433,16 @@
     &lt;/h1&gt;
 );
 </code></pre>
-<p>🦀👨🏻 I think it's undeniably easier to understand the one that <em>looks</em> like HTML.</p>
+<p>🦀👨🏻 I think it’s undeniably easier to understand the one that <em>looks</em> like HTML.</p>
 <p>🦀👨🏻 The React DSL will be converted back to JavaScript to be run in a JavaScript runtime.</p>
-<p>So, I promised silly, lets write our own DSL... a Brain Fudge transpiler.</p>
-<p>--- pause ---</p>
+<p>So, I promised silly, lets write our own DSL… a Brain Fudge transpiler.</p>
+<p>— pause —</p>
 <p>A transpiler takes one language and turns it into another, like how Reacts DSL is transpiled into JavaScript</p>
 <p>The programming language Brain Fudge was created by Urban Müller in 1993.</p>
-<p>The language is what's known as an "esoteric" language which is, loosely speaking, a fully functional language that you would never actually want to use.</p>
-<p>Often they're considered jokes, and Brain Fudge certainly is that, but it actually lets us write real programs with just eight instructions.</p>
+<p>The language is what’s known as an “esoteric” language which is, loosely speaking, a fully functional language that you would never actually want to use.</p>
+<p>Often they’re considered jokes, and Brain Fudge certainly is that, but it actually lets us write real programs with just eight instructions.</p>
 <p>This makes it ideal for demonstrating how to make a full language inside Rust.</p>
-<hr />
+<hr>
 <p>Brain Fudge operates on a theoretically infinite sequence of memory initialised to <code>0</code>.</p>
 <p>You start with a pointer, pointing to the first cell in memory and then process instructions that allow you to:</p>
 <ul>
@@ -452,163 +451,163 @@
 <li>perform loops</li>
 <li>and either output or input data at the current pointer location.</li>
 </ul>
-<hr />
+<hr>
 <p>We do all this with the following eight instructions:</p>
 <p>greater than, increments the pointer position, moving it to the next position in memory</p>
 <p>less than, decrements the pointer position, moving it to the previous position in memory</p>
 <p>add, increments the value at the current position in memory</p>
 <p>minus, decrements the value at the current position in memory</p>
 <p>period, outputs the value at the current position in memory</p>
-<p>comma, takes one word of input and stores it in memory (we won't use this in this section though)</p>
+<p>comma, takes one word of input and stores it in memory (we won’t use this in this section though)</p>
 <p>square brackets loop the contained code</p>
 <p>Each time the loop begins the value at the current position is checked, if the value is 0, it skips the loop.</p>
-<hr />
-<p><img src="016-macros/11-brain-fudge-minimal-b.png" alt="11-brain-fudge-minimal-b.png" /></p>
-<p>🦀👨🏻 That sounds easy enough, right...</p>
-<p>🦀👨🏻 well, here's Hello World in Brain Fudge.</p>
-<p>🦀👨🏻 Don't panic! We're not here to learn Brain Fudge ourselves.</p>
-<p>🦀👨🏻 We'll just trust that this is the Hello World program, we'll implement the instructions and see what happens when we run it.</p>
-<p><img src="016-macros/11-brain-fudge-minimal-a.png" alt="11-brain-fudge-minimal-a.png" />
-🦀👨🏻 We're going to use two macros.</p>
-<p>🦀👨🏻 First let's create a macro that initialises the program.</p>
-<p>🦀👨🏻 The input to our transpiler is a repeat pattern of token tree, which we'll store in the metavariable token.</p>
-<p>🦀👨🏻 As it happens the individual characters that make up Brain Fudge are all tokens in Rust so this <em>should</em> work well... (<strong>foreshadowing</strong>).</p>
-<p>🦀👨🏻 <code>memory</code> is going to be our programs' memory.</p>
-<p>🦀👨🏻 We're using a Vec with a single initialised value of <code>0</code> under the assumption that even the smallest program requires one word of memory.</p>
-<p>🦀👨🏻 Brain Fudge doesn't specify a word size, so we're going to use 8bits, and we'll expand the Vec as necessary.</p>
+<hr>
+<p><img src="016-macros/11-brain-fudge-minimal-b.png" alt="11-brain-fudge-minimal-b.png"></p>
+<p>🦀👨🏻 That sounds easy enough, right…</p>
+<p>🦀👨🏻 well, here’s Hello World in Brain Fudge.</p>
+<p>🦀👨🏻 Don’t panic! We’re not here to learn Brain Fudge ourselves.</p>
+<p>🦀👨🏻 We’ll just trust that this is the Hello World program, we’ll implement the instructions and see what happens when we run it.</p>
+<p><img src="016-macros/11-brain-fudge-minimal-a.png" alt="11-brain-fudge-minimal-a.png">
+🦀👨🏻 We’re going to use two macros.</p>
+<p>🦀👨🏻 First let’s create a macro that initialises the program.</p>
+<p>🦀👨🏻 The input to our transpiler is a repeat pattern of token tree, which we’ll store in the metavariable token.</p>
+<p>🦀👨🏻 As it happens the individual characters that make up Brain Fudge are all tokens in Rust so this <em>should</em> work well… (<strong>foreshadowing</strong>).</p>
+<p>🦀👨🏻 <code>memory</code> is going to be our programs’ memory.</p>
+<p>🦀👨🏻 We’re using a Vec with a single initialised value of <code>0</code> under the assumption that even the smallest program requires one word of memory.</p>
+<p>🦀👨🏻 Brain Fudge doesn’t specify a word size, so we’re going to use 8bits, and we’ll expand the Vec as necessary.</p>
 <p>🦀👨🏻 You can use larger words if you like but different programs might function differently depending on what word size is used and how overflows are handled (more on that later).</p>
-<p>🦀👨🏻 This is not the most efficient way to do this (we'll be doing a lot of heap reallocations) but are we taking this seriously?</p>
+<p>🦀👨🏻 This is not the most efficient way to do this (we’ll be doing a lot of heap reallocations) but are we taking this seriously?</p>
 <p>🦀👨🏻 No, not at all.</p>
-<p>🦀👨🏻 <code>pointer</code> points to the current position in memory, or, as we'll be using it, its the index into our vector</p>
-<p>🦀👨🏻 <code>output</code> is where we'll store output data from the program.</p>
-<p>🦀👨🏻 At the end of the macro we take the output Vec of <code>u8</code>s we've stored in output and collect it into a string by naively considering each byte to be an ascii character.</p>
+<p>🦀👨🏻 <code>pointer</code> points to the current position in memory, or, as we’ll be using it, its the index into our vector</p>
+<p>🦀👨🏻 <code>output</code> is where we’ll store output data from the program.</p>
+<p>🦀👨🏻 At the end of the macro we take the output Vec of <code>u8</code>s we’ve stored in output and collect it into a string by naively considering each byte to be an ascii character.</p>
 <p>🦀👨🏻 Again, depending on how you want to work with your programs, you may want to process the output data differently but this is fine for us.</p>
-<hr />
+<hr>
 <p>🦀👨🏻 So now we need to handle the token stream, but before we do that, lets write some tests.</p>
-<p>🦀👨🏻 We'll keep it simple for now, while this is the official Hello World</p>
-<p><img src="016-macros/11-brain-fudge-minimal-b.png" alt="11-brain-fudge-minimal-b.png" /></p>
-<p>🦀👨🏻 and... actually that's kinda hard to read, lets add some white space</p>
-<p><img src="016-macros/11-brain-fudge-minimal-b2.png" alt="11-brain-fudge-minimal-b2.png" /></p>
-<p>🦀👨🏻 yeah... no that didn't help</p>
+<p>🦀👨🏻 We’ll keep it simple for now, while this is the official Hello World</p>
+<p><img src="016-macros/11-brain-fudge-minimal-b.png" alt="11-brain-fudge-minimal-b.png"></p>
+<p>🦀👨🏻 and… actually that’s kinda hard to read, lets add some white space</p>
+<p><img src="016-macros/11-brain-fudge-minimal-b2.png" alt="11-brain-fudge-minimal-b2.png"></p>
+<p>🦀👨🏻 yeah… no that didn’t help</p>
 <p>🦀👨🏻 Anyway, while this is hello world, so is this</p>
-<p><img src="016-macros/11-brain-fudge-minimal-d.png" alt="11-brain-fudge-minimal-c.png" /></p>
-<p>🦀👨🏻 In the official hello world, loops are used to increment values, but in <em>this</em> version, we're just adding to the current memory location</p>
+<p><img src="016-macros/11-brain-fudge-minimal-d.png" alt="11-brain-fudge-minimal-c.png"></p>
+<p>🦀👨🏻 In the official hello world, loops are used to increment values, but in <em>this</em> version, we’re just adding to the current memory location</p>
 <p>🦀👨🏻 exporting it</p>
 <p>🦀👨🏻 and moving to the next memory location.</p>
-<p>🦀👨🏻 Let's turn this into a test</p>
+<p>🦀👨🏻 Let’s turn this into a test</p>
 <p>🦀👨🏻 I made this version of Hello World because it only uses three characters out of the eight used in brain fudge, so to make this test pass, we only need to implement three operations</p>
 <p>🦀👨🏻 So now we have a test, lets work out how to handle greater than, add, and period.</p>
-<hr />
-<p><img src="016-macros/11-brain-fudge-minimal-c.png" alt="11-brain-fudge-minimal-d.png" /></p>
-<p>🦀👨🏻 We'll create a new helper macro that can handle each of these tokens, by having a rule that matches each specific token.</p>
+<hr>
+<p><img src="016-macros/11-brain-fudge-minimal-c.png" alt="11-brain-fudge-minimal-d.png"></p>
+<p>🦀👨🏻 We’ll create a new helper macro that can handle each of these tokens, by having a rule that matches each specific token.</p>
 <p>🦀👨🏻 These rules will be called recursively so we will also need a special rule to handle when there are no tokens left so we have an endpoint to the recursion.</p>
-<p>🦀👨🏻 To make it work, each rule will need to access the memory, the pointer, and the output buffer, so we'll add an expectation of those to the match pattern.</p>
+<p>🦀👨🏻 To make it work, each rule will need to access the memory, the pointer, and the output buffer, so we’ll add an expectation of those to the match pattern.</p>
 <p>🦀👨🏻 Additionally, because each rule only handles one instruction, we need to pass the rest of the instructions to the macro again recursively.</p>
-<p>🦀👨🏻 Unlike our earlier examples, we're going to use a semicolon as a separator in our pattern matching.</p>
+<p>🦀👨🏻 Unlike our earlier examples, we’re going to use a semicolon as a separator in our pattern matching.</p>
 <p>🦀👨🏻 The reason for this is that Brain Fudge uses commas as part of its syntax.</p>
 <p>🦀👨🏻 We would still be able to correctly parse Brain Fudge code as, even were the first token in a program a comma, it still comes after the last comma we match against, but it will help with readability for anyone using the macro.</p>
 <p>🦀👨🏻 So here we go.</p>
 <p>🦀👨🏻 First lets handle plus token.</p>
 <p>🦀👨🏻 All we need to do is add one to the value in memory at the pointer.</p>
-<p>🦀👨🏻 Brain Fudge is non-specific about what to do in the event of an overflows, so I'm going to choose to allow it to wrap around</p>
+<p>🦀👨🏻 Brain Fudge is non-specific about what to do in the event of an overflows, so I’m going to choose to allow it to wrap around</p>
 <p>🦀👨🏻 Next lets implement the rule for the greater than token</p>
-<p>🦀👨🏻 In this case we're increment the value of the pointer but this time I don't want to wrap.</p>
-<p>🦀👨🏻 We're using saturating_add for the specific reason we want to be consistent and I don't want to wrap a usize on subtract, you'll see why later!</p>
+<p>🦀👨🏻 In this case we’re increment the value of the pointer but this time I don’t want to wrap.</p>
+<p>🦀👨🏻 We’re using saturating_add for the specific reason we want to be consistent and I don’t want to wrap a usize on subtract, you’ll see why later!</p>
 <p>🦀👨🏻 We also need to make sure that any time we go out of bounds of the memory Vec, that we resize the Vec appropriately and zero memory</p>
-<p>🦀👨🏻 We can do this with a quick loop, pushing 0's onto the end</p>
+<p>🦀👨🏻 We can do this with a quick loop, pushing 0’s onto the end</p>
 <p>🦀👨🏻 Next we want to match the dot operator.</p>
 <p>🦀👨🏻 It takes the value at the current pointer and writes it to our output buffer</p>
-<p>🦀👨🏻 Finally, we have a match arm for when there are no more tokens left that doesn't do anything.</p>
+<p>🦀👨🏻 Finally, we have a match arm for when there are no more tokens left that doesn’t do anything.</p>
 <p>🦀👨🏻 Now we can update our <code>brain_fudge!</code> macro to call the helper, passing in the program state.</p>
-<p><img src="016-macros/11-brain-fudge-minimal-e.png" alt="11-brain-fudge-minimal-e.png" /></p>
-<p>🦀👨🏻 So we now have a program that has our brain fudge macro, a brain fudge helper macro that passes 3 of the 8 tokens, and a test...</p>
+<p><img src="016-macros/11-brain-fudge-minimal-e.png" alt="11-brain-fudge-minimal-e.png"></p>
+<p>🦀👨🏻 So we now have a program that has our brain fudge macro, a brain fudge helper macro that passes 3 of the 8 tokens, and a test…</p>
 <p>🦀👨🏻 when build the program</p>
 <p>🦀👨🏻 we get this error</p>
-<p><img src="016-macros/11-brain-fudge-minimal-f.png" alt="11-brain-fudge-minimal-f.png" /></p>
+<p><img src="016-macros/11-brain-fudge-minimal-f.png" alt="11-brain-fudge-minimal-f.png"></p>
 <p>🦀👨🏻 Rust keeps track of how many times we recurse, that is, call a function or macro from the same function or macro.</p>
 <p>🦀👨🏻 By default, the maximum amount of times we can do this is 128.</p>
 <p>🦀👨🏻 Our macro, when parsing our silly Hello World example, recurses 1120 times!</p>
-<p>🦀👨🏻 So, we <em>could</em> avoid recursing by looping through the tokens instead, and that will work for this current instruction set... but it won't work for loops.</p>
-<p><img src="016-macros/11-brain-fudge-minimal-z.png" alt="11-brain-fudge-minimal-z.png" /></p>
-<p>🦀👨🏻 We probably could come up with a way of mixing loops and recursion but to keep things simple, we're going to play a dangerous game and manually tell Rust it's fine for it to recurse 2048 times.</p>
+<p>🦀👨🏻 So, we <em>could</em> avoid recursing by looping through the tokens instead, and that will work for this current instruction set… but it won’t work for loops.</p>
+<p><img src="016-macros/11-brain-fudge-minimal-z.png" alt="11-brain-fudge-minimal-z.png"></p>
+<p>🦀👨🏻 We probably could come up with a way of mixing loops and recursion but to keep things simple, we’re going to play a dangerous game and manually tell Rust it’s fine for it to recurse 2048 times.</p>
 <p>🦀👨🏻 The <code>recursion_limit</code> attribute applies at the crate level so be careful with this one!</p>
 <p>🦀👨🏻 And now our code runs!</p>
-<p>We've made a great start, we've got almost half the language done already, and I think, hope(?), you'll agree this wasn't all that painful.</p>
-<hr />
+<p>We’ve made a great start, we’ve got almost half the language done already, and I think, hope(?), you’ll agree this wasn’t all that painful.</p>
+<hr>
 <p>🦀👨🏻 Lets implement some of the other operations.</p>
-<p>🦀👨🏻 Dealing with less than and minus is easy enough, they're the opposite of what we already have.</p>
-<p><img src="016-macros/12-brain-fudge-mostly-implemented-a.png" alt="12-brain-fudge-mostly-implemented-a.png" /></p>
+<p>🦀👨🏻 Dealing with less than and minus is easy enough, they’re the opposite of what we already have.</p>
+<p><img src="016-macros/12-brain-fudge-mostly-implemented-a.png" alt="12-brain-fudge-mostly-implemented-a.png"></p>
 <p>🦀👨🏻 Minus similar to Add, does a wrapping subtract of the value at the pointer</p>
-<p><img src="016-macros/12-brain-fudge-mostly-implemented-b.png" alt="12-brain-fudge-mostly-implemented-b.png" /></p>
+<p><img src="016-macros/12-brain-fudge-mostly-implemented-b.png" alt="12-brain-fudge-mostly-implemented-b.png"></p>
 <p>🦀👨🏻 Less than does a saturating subtract of our pointer.</p>
-<p>🦀👨🏻 This is where that saturating behaviour matters; were we to wrap it, 0 - 1 becomes a number so large I can't even say it.</p>
+<p>🦀👨🏻 This is where that saturating behaviour matters; were we to wrap it, 0 - 1 becomes a number so large I can’t even say it.</p>
 <p>🦀👨🏻 More complex is the loop.</p>
-<p>🦀👨🏻 Luckily, we aren't dealing with individual tokens, we're dealing with token trees!</p>
+<p>🦀👨🏻 Luckily, we aren’t dealing with individual tokens, we’re dealing with token trees!</p>
 <p>🦀👨🏻 In Rust, these bracket pairs specifically are all considered tokens that wrap other tokens.</p>
-<p>🦀👨🏻 They're treated as a single token tree that contain more token trees.</p>
+<p>🦀👨🏻 They’re treated as a single token tree that contain more token trees.</p>
 <p>🦀👨🏻 So Rust will correctly handle them in pairs, even when nested.</p>
-<p><img src="016-macros/12-brain-fudge-mostly-implemented-c.png" alt="12-brain-fudge-mostly-implemented-c.png" /></p>
+<p><img src="016-macros/12-brain-fudge-mostly-implemented-c.png" alt="12-brain-fudge-mostly-implemented-c.png"></p>
 <p>🦀👨🏻 This means to make our loop rule work, we can match against any token tree that starts with an open square bracket, contains more tokens which may include more square bracket pairs, and matches its ending close square bracket.</p>
 <p>🦀👨🏻 This is followed by yet more tokens!</p>
 <p>🦀👨🏻 How cool is it that we got this for free!?</p>
 <p>🦀👨🏻 The loop is really easy to implement too!</p>
-<p>🦀👨🏻 We check the value at the current pointer position, if it's not zero we run the code in the loop and check again.</p>
+<p>🦀👨🏻 We check the value at the current pointer position, if it’s not zero we run the code in the loop and check again.</p>
 <p>🦀👨🏻 If it is zero then we continue recursing with the rest of the code just like every other rule.</p>
-<p><img src="016-macros/12-brain-fudge-mostly-implemented-d.png" alt="12-brain-fudge-mostly-implemented-d.png" /></p>
-<p>🦀👨🏻 To make sure our new code works we'll update our test with the "real" Hello World.</p>
-<p><img src="016-macros/12-brain-fudge-mostly-implemented-e.png" alt="12-brain-fudge-mostly-implemented-e.png" /></p>
-<p>🦀👨🏻 And when we build... it doesn't work again</p>
-<p>🦀👨🏻 It actually gives us a number of errors, all different, all valid, but I'm only showing the first because it tells us what we need to know</p>
+<p><img src="016-macros/12-brain-fudge-mostly-implemented-d.png" alt="12-brain-fudge-mostly-implemented-d.png"></p>
+<p>🦀👨🏻 To make sure our new code works we’ll update our test with the “real” Hello World.</p>
+<p><img src="016-macros/12-brain-fudge-mostly-implemented-e.png" alt="12-brain-fudge-mostly-implemented-e.png"></p>
+<p>🦀👨🏻 And when we build… it doesn’t work again</p>
+<p>🦀👨🏻 It actually gives us a number of errors, all different, all valid, but I’m only showing the first because it tells us what we need to know</p>
 <p>🦀👨🏻 Why is it pointing at two greater than signs?</p>
 <p>🦀👨🏻 We have a match on greater than already, right?</p>
-<p>Well here's the problem with using tokens for our DSL.</p>
+<p>Well here’s the problem with using tokens for our DSL.</p>
 <p>Rust considers two greater than symbols to be a single token.</p>
-<p>Specifically it's a "right shift" operator.</p>
+<p>Specifically it’s a “right shift” operator.</p>
 <p>Tokens in Rust can be multiple characters.</p>
-<p><img src="016-macros/12-brain-fudge-mostly-implemented-f.png" alt="12-brain-fudge-mostly-implemented-f.png" /></p>
+<p><img src="016-macros/12-brain-fudge-mostly-implemented-f.png" alt="12-brain-fudge-mostly-implemented-f.png"></p>
 <p>🦀👨🏻 Here are our problem tokens and what they mean in each language:</p>
-<p>🦀👨🏻 "dot, dot" in Rust is a range literal, but in Brain Fudge it just means output the current value twice.</p>
-<p>🦀👨🏻 "greater than, greater than" in Rust is a right shift operator, but in Brain Fudge it means increment the pointer twice</p>
-<p>🦀👨🏻 "less than, less than" in Rust is a left shift operator, but in Brain Fudge it means decrement the pointer twice</p>
-<p>🦀👨🏻 "dash, greater than" in Rust is used when writing function return types, in Brain Fudge it means decrement the value at the pointer then increment the pointer</p>
-<p>🦀👨🏻 "less than, dash" in Rust isn't used currently, but is reserved, in Brain Fudge it means decrement the pointer then decrement the value</p>
-<hr />
-<p>Soooo... unfortunately we need to take care of these special cases.</p>
-<p>Fortunately, while "greater than, greater than" is a right shift token, "greater than, space, greater than" <em>is</em> two greater than tokens.</p>
+<p>🦀👨🏻 “dot, dot” in Rust is a range literal, but in Brain Fudge it just means output the current value twice.</p>
+<p>🦀👨🏻 “greater than, greater than” in Rust is a right shift operator, but in Brain Fudge it means increment the pointer twice</p>
+<p>🦀👨🏻 “less than, less than” in Rust is a left shift operator, but in Brain Fudge it means decrement the pointer twice</p>
+<p>🦀👨🏻 “dash, greater than” in Rust is used when writing function return types, in Brain Fudge it means decrement the value at the pointer then increment the pointer</p>
+<p>🦀👨🏻 “less than, dash” in Rust isn’t used currently, but is reserved, in Brain Fudge it means decrement the pointer then decrement the value</p>
+<hr>
+<p>Soooo… unfortunately we need to take care of these special cases.</p>
+<p>Fortunately, while “greater than, greater than” is a right shift token, “greater than, space, greater than” <em>is</em> two greater than tokens.</p>
 <p>Tokens can be seperated by whitespace which is ignored by the token tree fragment-specifier</p>
-<p><img src="016-macros/12-brain-fudge-mostly-implemented-g.png" alt="12-brain-fudge-mostly-implemented-g.png" /></p>
+<p><img src="016-macros/12-brain-fudge-mostly-implemented-g.png" alt="12-brain-fudge-mostly-implemented-g.png"></p>
 <p>All we need to do is split the token and pass it back into the macro</p>
 <p>Now when we run our code it works!</p>
 <p>And we just created a transpiler for another language inside Rust!</p>
-<p>That's kind of wild, right?!</p>
+<p>That’s kind of wild, right?!</p>
 <h2 id="challenge"><a class="header" href="#challenge">Challenge</a></h2>
-<p>I stopped setting homework, but I thought I'd set a little challenge for anyone who wants to do it.</p>
+<p>I stopped setting homework, but I thought I’d set a little challenge for anyone who wants to do it.</p>
 <p>We only implemented seven of the eight Brain Fudge operations.</p>
 <p>Can you edit our <code>brain_fudge!</code> macro to work with programs that take input via the comma token?</p>
-<p><img src="016-macros/13-brain-fudge-challenge.png" alt="13-brain-fudge-challenge.png" /></p>
+<p><img src="016-macros/13-brain-fudge-challenge.png" alt="13-brain-fudge-challenge.png"></p>
 <p>🦀👨🏻 To do this I recommend making the following change to the main <code>brain_fudge!</code> macro:</p>
 <p>🦀👨🏻 This will allow callers to control inputs and outputs as they please.</p>
 <p>🦀👨🏻 There is a test in the IRISS book that you can copy for a ROT13 program</p>
-<p>🦀👨🏻 That's a program that takes each alphabetical letter and shifts it 13 characters.</p>
-<p>🦀👨🏻 There's no prize for doing this except your own personal growth.</p>
-<p>🦀👨🏻 If you get stuck or just want to see the answer, it's over in the book, see the description.</p>
+<p>🦀👨🏻 That’s a program that takes each alphabetical letter and shifts it 13 characters.</p>
+<p>🦀👨🏻 There’s no prize for doing this except your own personal growth.</p>
+<p>🦀👨🏻 If you get stuck or just want to see the answer, it’s over in the book, see the description.</p>
 <h2 id="next-time"><a class="header" href="#next-time">Next Time</a></h2>
-<p>As ever thank-you so much to my Patreons, as well as the growing community at large, I'm not sure if we'd have made it so far without your support!</p>
-<p>Next time, in the penultimate video in the IRISS series, we're going to look at "unsafe" Rust, and specifically, how we keep ourselves... well... safe, while using it.</p>
+<p>As ever thank-you so much to my Patreons, as well as the growing community at large, I’m not sure if we’d have made it so far without your support!</p>
+<p>Next time, in the penultimate video in the IRISS series, we’re going to look at “unsafe” Rust, and specifically, how we keep ourselves… well… safe, while using it.</p>
 <p>If you enjoyed this video, do me a solid and like and subscribe!</p>
-<p>Don't forget I stream on YouTube on Tuesday's at 7pm UK time, if you're interested in seeing me work on real Rust projects.</p>
-<p>And whether there or here, I'll see you next time.</p>
+<p>Don’t forget I stream on YouTube on Tuesday’s at 7pm UK time, if you’re interested in seeing me work on real Rust projects.</p>
+<p>And whether there or here, I’ll see you next time.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="../iriss/015-threads.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="../iriss/017-unsafe.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -618,16 +617,21 @@
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="../iriss/015-threads.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="../iriss/017-unsafe.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -636,13 +640,13 @@
         </script>
 
 
-        <script src="../elasticlunr.min.js"></script>
-        <script src="../mark.min.js"></script>
-        <script src="../searcher.js"></script>
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
 
-        <script src="../clipboard.min.js"></script>
-        <script src="../highlight.js"></script>
-        <script src="../book.js"></script>
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
 

@@ -12,21 +12,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../favicon.svg">
-        <link rel="shortcut icon" href="../favicon.png">
-        <link rel="stylesheet" href="../css/variables.css">
-        <link rel="stylesheet" href="../css/general.css">
-        <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../fonts/fonts.css">
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -36,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex.js";
+            window.path_to_searchindex_js = "../searchindex-ec9cbdc1.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc.js"></script>
+        <script src="../toc-6fd8910a.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -53,7 +52,7 @@
             </div>
         </div>
     </div>
-    <div id="body-container">
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
@@ -82,12 +81,12 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             let sidebar = null;
-            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -102,39 +101,39 @@
             }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -142,183 +141,183 @@
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
                         <div class="search-wrapper">
-                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
                             <div class="spinner-wrapper">
-                                <i class="fa fa-spinner fa-spin"></i>
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
                             </div>
                         </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="common-traits"><a class="header" href="#common-traits">Common Traits</a></h1>
 <p>The Rust standard library <em>itself</em> provides a huge number of traits.</p>
-<p>We're going to discuss some of what I think are the most important to be aware of.</p>
-<p>Whether that's because:</p>
+<p>We’re going to discuss some of what I think are the most important to be aware of.</p>
+<p>Whether that’s because:</p>
 <ul>
-<li>you'll want to implement them yourself</li>
-<li>you'll want to consume types that implement them</li>
+<li>you’ll want to implement them yourself</li>
+<li>you’ll want to consume types that implement them</li>
 <li>or they have interesting knock on effects you should be aware of</li>
 </ul>
 <p>As ever, this series is accompanied by a free book, check the description for a link straight to this chapter.</p>
 <p>My name is Daniel, welcome to iris.</p>
-<hr />
-<p>As it happens, there are a <em>lot</em> of really great Traits in the Rust standard library, so many that I'm splitting this video into three.</p>
-<p>This time we'll discuss: Markers, Derivables and Error Handling traits</p>
-<p>Next time we'll discuss: Converters, Referencing and Dereferencing traits and one other trait that didn't quite fit into any other category.</p>
-<p>Then we're going to have a break to talk about collections, before coming back to talk about the Iterator traits.</p>
-<p>Before we dive in to today's traits, I want to quickly cover something we brushed over in the last video.</p>
+<hr>
+<p>As it happens, there are a <em>lot</em> of really great Traits in the Rust standard library, so many that I’m splitting this video into three.</p>
+<p>This time we’ll discuss: Markers, Derivables and Error Handling traits</p>
+<p>Next time we’ll discuss: Converters, Referencing and Dereferencing traits and one other trait that didn’t quite fit into any other category.</p>
+<p>Then we’re going to have a break to talk about collections, before coming back to talk about the Iterator traits.</p>
+<p>Before we dive in to today’s traits, I want to quickly cover something we brushed over in the last video.</p>
 <h2 id="required-and-provided-methods"><a class="header" href="#required-and-provided-methods">Required and Provided Methods</a></h2>
 <p>Traits can not only define the header for methods you need to write yourself, but they can also define methods with default behaviour that you can optionally override.</p>
 <p>We call the methods you need to write <em>Required</em> and the ones with default behaviour <em>Provided</em>.</p>
 <p>🦀 For example, in the last video we defined the trait <code>Animal</code> like this</p>
-<p>🦀 In this case, <code>get name</code> doesn't have a body, so anyone implementing <code>Animal</code> for their type must write it out themselves.</p>
+<p>🦀 In this case, <code>get name</code> doesn’t have a body, so anyone implementing <code>Animal</code> for their type must write it out themselves.</p>
 <p>🦀 This is a <em>Required</em> method.</p>
 <p>🦀 If, instead, we were to write some default functionality, this becomes a <em>Provided</em> method which implementors of the Animal trait can choose whether they want to override or to use as is</p>
-<p>🦀 It's up to you to decide when it makes sense to provide default behaviour.</p>
-<p>🦀 In the case of <code>Animal get_name</code>, this default behaviour isn't really "providing" anything meaningful, I think keeping it a Required method, with no default behaviour, is the right way to go.</p>
+<p>🦀 It’s up to you to decide when it makes sense to provide default behaviour.</p>
+<p>🦀 In the case of <code>Animal get_name</code>, this default behaviour isn’t really “providing” anything meaningful, I think keeping it a Required method, with no default behaviour, is the right way to go.</p>
 <h2 id="markers"><a class="header" href="#markers">Markers</a></h2>
 <p>Markers are special traits that describe intrinsic properties of types, that is, they relate to what you might call the core essence of the type.</p>
-<p>That might not make much sense right now but don't worry, it will.</p>
+<p>That might not make much sense right now but don’t worry, it will.</p>
 <h3 id="sized"><a class="header" href="#sized">Sized</a></h3>
-<p>We're starting with a weird one here... well... all markers are a little weird but this one doubly so.</p>
-<p>You never need to implement <code>Sized</code> yourself, in fact, you can't, but you may choose to manually opt out of it, and it does have a use.</p>
-<p>Anything that is of known size at compile time is consider to be <code>Sized</code> and you don't need to specify this yourself, it just is.</p>
+<p>We’re starting with a weird one here… well… all markers are a little weird but this one doubly so.</p>
+<p>You never need to implement <code>Sized</code> yourself, in fact, you can’t, but you may choose to manually opt out of it, and it does have a use.</p>
+<p>Anything that is of known size at compile time is consider to be <code>Sized</code> and you don’t need to specify this yourself, it just is.</p>
 <p>For example, a <code>u8</code> has a size of 8 bits*, therefore it is sized.</p>
-<p>"cough" <em>and point</em></p>
-<p>In fact all primitives are sized, except for string slices, which you can't use outside their reference form anyway, and references are also sized.</p>
+<p>“cough” <em>and point</em></p>
+<p>In fact all primitives are sized, except for string slices, which you can’t use outside their reference form anyway, and references are also sized.</p>
 <p>Any compound type you create from only <code>Sized</code> types is also automatically <code>Sized</code>.</p>
-<p>So, if you don't need to implement <code>Sized</code> yourself, why am I talking about it?</p>
+<p>So, if you don’t need to implement <code>Sized</code> yourself, why am I talking about it?</p>
 <p>One place you will see <code>Sized</code> a lot is that due to a quirk in Rusts design, generic types are always assumed to be <code>Sized</code>.</p>
-<p>For this reason you will regularly see the trait bound "question mark Sized" which means that the concrete type (the one used to fill in the generic) may or may not be "Sized`.</p>
+<p>For this reason you will regularly see the trait bound “question mark Sized” which means that the concrete type (the one used to fill in the generic) may or may not be “Sized`.</p>
 <p>While trait bounds usually restrict what types can be used in the concrete implementation, this has a widening effect.</p>
 <p>🦀 For example, in the last video, I mentioned that I was printing a simplified version of the <code>To String</code> implementation for all types that implement <code>Display</code>.</p>
-<p>🦀 This was because I left out the "question mark Sized" trait bound, so the <code>To String</code> generic implementation actually looks more like this:</p>
+<p>🦀 This was because I left out the “question mark Sized” trait bound, so the <code>To String</code> generic implementation actually looks more like this:</p>
 <p>🦀 The plus means the type <code>T</code> must abide both trait bounds so <code>T</code> must implement <code>Display</code> but also does not need to be <code>Sized</code>.</p>
 <p>You can (for complex but sensible reasons) opt out of Sized by implementing <code>!Sized</code> for your type.</p>
-<p>This is a way beyond today's tutorial, but thought I'd mention it, cos its weird and fun.</p>
+<p>This is a way beyond today’s tutorial, but thought I’d mention it, cos its weird and fun.</p>
 <h3 id="copy"><a class="header" href="#copy">Copy</a></h3>
-<p>The <code>Copy</code> marker trait means that the data the type contains can be copied, however, "copy" has a very specific meaning in Rust.</p>
+<p>The <code>Copy</code> marker trait means that the data the type contains can be copied, however, “copy” has a very specific meaning in Rust.</p>
 <p>It means that all the data can be copied <em>exactly</em> as is.</p>
 <p>This only works, however, for types that exist purely on the Stack.</p>
-<p>Let's take <code>String</code> as an example of something that can't be copied in this way.</p>
+<p>Let’s take <code>String</code> as an example of something that can’t be copied in this way.</p>
 <p><code>String</code> is a smart pointer that points to memory on the heap.</p>
 <p>The value of the <code>String</code>, the raw string slice, can of course be duplicated, but the <code>String</code> type itself is actually just a pointer to a location in memory.</p>
-<p>If we were to copy that location data, we'd have two pointers pointing to the same location.</p>
-<p>As soon as one of them is cleaned up, the data on the heap would also be cleaned up, and we'd be left with a <code>String</code> pointing at memory we no longer own.</p>
-<p>We'll talk more about how we can duplicate things like Strings and other smart pointers later in the video.</p>
+<p>If we were to copy that location data, we’d have two pointers pointing to the same location.</p>
+<p>As soon as one of them is cleaned up, the data on the heap would also be cleaned up, and we’d be left with a <code>String</code> pointing at memory we no longer own.</p>
+<p>We’ll talk more about how we can duplicate things like Strings and other smart pointers later in the video.</p>
 <p>Types that can exist on the Stack though can be <code>Copy</code>.</p>
 <p>All primitives (again, excluding string slices, but including immutable reference) are <code>Copy</code>, and compound types built from those types can choose to implement <code>Copy</code>.</p>
-<p>You can implement <code>Copy</code> directly, though you must also implement a trait called <code>Clone</code> which we'll discuss later, but since both traits are derivable, its very rare you'd ever do it manually.</p>
-<p>I'll show you that shortly.</p>
+<p>You can implement <code>Copy</code> directly, though you must also implement a trait called <code>Clone</code> which we’ll discuss later, but since both traits are derivable, its very rare you’d ever do it manually.</p>
+<p>I’ll show you that shortly.</p>
 <p>Now, one awesome thing <code>Copy</code> does is it changes how the language itself works.</p>
-<p>To re-iterate, <code>Copy</code> can only apply to things on the Stack, so the memory for a copied value doesn't need to be requested from the operating system like it would with the heap</p>
+<p>To re-iterate, <code>Copy</code> can only apply to things on the Stack, so the memory for a copied value doesn’t need to be requested from the operating system like it would with the heap</p>
 <p>Stack memory is pre-allocated, and the actual copying part is very cheap.</p>
-<p>Because of this, Rust will use what are called "Copy Semantics" instead of the default "Move Semantics".</p>
+<p>Because of this, Rust will use what are called “Copy Semantics” instead of the default “Move Semantics”.</p>
 <p>Unlike normal, when you reassign a variable, or pass it to a function, if the data in a variable has the <code>Copy</code> trait, the value is copied instead of moved.</p>
 <p>This means you can still use the original variable after.</p>
-<p>🦀 So ordinarily we can't do something like this, you'll get a compile time error.</p>
+<p>🦀 So ordinarily we can’t do something like this, you’ll get a compile time error.</p>
 <p>🦀 However, for types that do implement <code>Copy</code> that code does work thanks to Copy Semantics.</p>
 <h3 id="send--sync"><a class="header" href="#send--sync">Send / Sync</a></h3>
-<p>We haven't talked about concurrent programming yet, however, you might have heard that Rust is extremely safe and efficient compared to many other languages.</p>
+<p>We haven’t talked about concurrent programming yet, however, you might have heard that Rust is extremely safe and efficient compared to many other languages.</p>
 <p>Much of that safety comes from the marker traits, <code>Send</code> and <code>Sync</code>.</p>
 <p>We will cover these in more detail in the future but for now.</p>
-<p><code>Send</code> is used when data can be safely "sent" between threads.</p>
-<p>When something is "sent" from one thread to another, it moves ownership, like when you pass a variable to another function.</p>
+<p><code>Send</code> is used when data can be safely “sent” between threads.</p>
+<p>When something is “sent” from one thread to another, it moves ownership, like when you pass a variable to another function.</p>
 <p><code>Sync</code> is used when a <em>reference</em> to data can be safely sent from one thread to another.</p>
 <p>You have to be more careful here because this allows two threads to read and potentially write to the same location in memory.</p>
 <p>So <code>T</code> is <code>Send</code> if <code>T</code> can be SENT safely from one thread to another
 And <code>T</code> is <code>Sync</code> if a reference to <code>T</code> can be safely used across multiple threads SYNCHRONOUSLY</p>
-<p>We'll talk a lot more about threaded programming later in the series so don't worry if this doesn't make sense yet.</p>
+<p>We’ll talk a lot more about threaded programming later in the series so don’t worry if this doesn’t make sense yet.</p>
 <p><code>Send</code> and <code>Sync</code>, like <code>Sized</code>, are automatically derived if all parts of your type are also <code>Send</code> and/or <code>Sync</code></p>
-<p>Of course, you might still want to implement <code>Send</code> and <code>Sync</code> for types that contain non-Send/Sync types, and you can do this, but this requires us delving into "unsafe" Rust which isn't as scary as it sounds but is beyond the scope of this video.</p>
-<p>For now, if you need to use non-send or sync types there are built in types to help, and we'll cover them when we get into concurrency properly.</p>
+<p>Of course, you might still want to implement <code>Send</code> and <code>Sync</code> for types that contain non-Send/Sync types, and you can do this, but this requires us delving into “unsafe” Rust which isn’t as scary as it sounds but is beyond the scope of this video.</p>
+<p>For now, if you need to use non-send or sync types there are built in types to help, and we’ll cover them when we get into concurrency properly.</p>
 <h2 id="derivables"><a class="header" href="#derivables">Derivables</a></h2>
 <p>Apart from <code>Sized</code>, <code>Send</code> and <code>Sync</code>, most traits <em>need</em> to be manually opted in to, however, for some traits, the behaviour is so simplistic that the behaviour of the trait can be derived.</p>
-<p>For <em>most</em> derivable Rust traits there is a requirement that each child of your type also implements the trait you're attempting to implement yourself.</p>
+<p>For <em>most</em> derivable Rust traits there is a requirement that each child of your type also implements the trait you’re attempting to implement yourself.</p>
 <p>To derive a trait we use the derive attribute.</p>
 <p>🦀 Attributes can be defined either inside or outside the item they are for, however, like Documentation, unless the attribute is being applied to a whole file (for example, as a module), we exclusively use external attributes that come before the item they apply to.</p>
 <p>🦀 And like Documentation, we use an exclamation mark to differentiate the two</p>
-<p>🦀 The derive attribute itself, looks a bit like a function, and it takes a list of what <em>looks</em> like traits but are actually what we call "Derive Macros"</p>
+<p>🦀 The derive attribute itself, looks a bit like a function, and it takes a list of what <em>looks</em> like traits but are actually what we call “Derive Macros”</p>
 <p>Not every trait has a Derive Macro meaning not all traits are derivable.</p>
-<p>You can write your own Derive Macros too, though this is a very advanced form of meta programming we probably won't cover in this series.</p>
+<p>You can write your own Derive Macros too, though this is a very advanced form of meta programming we probably won’t cover in this series.</p>
 <p><em>trauma</em></p>
 <p>Many people do write their own though, so that they can provide custom derive macros for traits provided in their own libraries, and we will talk about that when we start talking about the wider Rust ecosystem.</p>
 <h3 id="debug"><a class="header" href="#debug">Debug</a></h3>
 <p><code>Debug</code> is an extremely useful utility Trait that creates a default way to write out types to places like standard out and standard error.</p>
-<p>🦀 Let's derive <code>Debug</code> for a <code>Cat</code> type like this.</p>
+<p>🦀 Let’s derive <code>Debug</code> for a <code>Cat</code> type like this.</p>
 <p>🦀 When printing a <code>Debug</code> value, we use colon question inside curly brackets for a positional marker</p>
 <p>🦀 Or you can put it after the name of a variable, like this.</p>
-<p>Ironically perhaps, you should try to avoid using <code>Debug</code> for debugging, that's what a debugger is for, head back to our getting started video if you need a reminder.</p>
+<p>Ironically perhaps, you should try to avoid using <code>Debug</code> for debugging, that’s what a debugger is for, head back to our getting started video if you need a reminder.</p>
 <p>Importantly <code>Debug</code> is required for assertion macros like <code>assert EQ</code>, mainly used in testing.</p>
-<p>🦀 If you <code>assert EQ</code> two values, and they're not equivalent, the test suite will want to print the values to the screen, and it wants to use Debug to do it.</p>
-<p>We'll show this more when we talk about the equivalence traits in the next section.</p>
+<p>🦀 If you <code>assert EQ</code> two values, and they’re not equivalent, the test suite will want to print the values to the screen, and it wants to use Debug to do it.</p>
+<p>We’ll show this more when we talk about the equivalence traits in the next section.</p>
 <p>The <code>Debug</code> trait is also useful for reporting during a running program, though be careful not to leak private information this way, this might be where you want to implement <code>Debug</code> manually.</p>
-<p>We won't go into it deeply here but <code>Debug</code> works very similarly to <code>Display</code> taking a formater as a parameter.</p>
-<p>📕 You might be worried about making sure your implementation of the <code>Debug</code> trait behaves similarly to the official or derived implementations, well that's where the formatter gets <em>really</em> cool.</p>
+<p>We won’t go into it deeply here but <code>Debug</code> works very similarly to <code>Display</code> taking a formater as a parameter.</p>
+<p>📕 You might be worried about making sure your implementation of the <code>Debug</code> trait behaves similarly to the official or derived implementations, well that’s where the formatter gets <em>really</em> cool.</p>
 <p>📕 It provides a ton of different tools that help you build a well-structured output.</p>
 <p>📕 You can read more on this in the official <code>Debug</code> documentation.</p>
 <h3 id="partialeq--eq"><a class="header" href="#partialeq--eq">PartialEq / Eq</a></h3>
-<p><code>EQ</code> and <code>Partial EQ</code> are Rust's equivalency traits, that's right, equivalence, not equality.</p>
-<p>What's the difference, what does equivalence mean and why are there two traits?</p>
+<p><code>EQ</code> and <code>Partial EQ</code> are Rust’s equivalency traits, that’s right, equivalence, not equality.</p>
+<p>What’s the difference, what does equivalence mean and why are there two traits?</p>
 <p>Allow me to answer those questions with another two questions:</p>
 <p>Is zero equivalent to negative zero?</p>
 <p>Inside a floating point number the binary representation is different but Mathematically, zero is neither positive nor negative, so they are equivalent right?</p>
-<p>Sticking with the binary representations inside of floating points, it's possible to represent something that's Not a Number, or NaN.</p>
+<p>Sticking with the binary representations inside of floating points, it’s possible to represent something that’s Not a Number, or NaN.</p>
 <p>Should two NaNs, even if they have the same binary representation, be considered as the same value when you can get there in different ways?</p>
 <p>Probably not.</p>
-<p>For the most part in Rust, we're only concerned with Partial Equivalence, this is what allows us to compare values with the equals-equals operator.</p>
-<p>🦀 Given what we've just discussed, consider this code, what do you think the output <em>should</em> be?</p>
-<p>🦀 Let's run it and see!</p>
+<p>For the most part in Rust, we’re only concerned with Partial Equivalence, this is what allows us to compare values with the equals-equals operator.</p>
+<p>🦀 Given what we’ve just discussed, consider this code, what do you think the output <em>should</em> be?</p>
+<p>🦀 Let’s run it and see!</p>
 <p>🦀 That seems correct, right?</p>
 <p>You can derive <code>Partial EQ</code> so long as all the parts of your type also implement <code>Partial EQ</code>, or you can implement it yourself.</p>
-<p>Implementing it yourself can be really handy if you have a structure where some fields <em>can</em> be different but the overall value still be considered the same "thing".</p>
+<p>Implementing it yourself can be really handy if you have a structure where some fields <em>can</em> be different but the overall value still be considered the same “thing”.</p>
 <p>The official Rust guide uses books with ISBNs as an example, but just to be different, lets consider how you might also want this kind of behaviour for aliased user information.</p>
 <p>📕 <code>Partial EQ</code> has two methods, <code>EQ</code> which is Required and <code>NE</code> which is Provided.</p>
 <p>📕 Remember from earlier, we need to implement the required method, but can choose if we want to override the provided one.</p>
-<p>📕 The default behaviour for <code>NE</code> is <code>not EQ</code> and I'm fine with that, but it's there if you need it.</p>
-<p>🦀 In this case, I'm going to say two Users are the same so long as their ID is the same.</p>
-<p>🦀 Let's write a little test for this, if we derive <code>Debug</code>, and have implemented <code>Partial EQ</code> we can use the "assert EQ" macro to do that for us.</p>
+<p>📕 The default behaviour for <code>NE</code> is <code>not EQ</code> and I’m fine with that, but it’s there if you need it.</p>
+<p>🦀 In this case, I’m going to say two Users are the same so long as their ID is the same.</p>
+<p>🦀 Let’s write a little test for this, if we derive <code>Debug</code>, and have implemented <code>Partial EQ</code> we can use the “assert EQ” macro to do that for us.</p>
 <p><code>Partial EQ</code> has even more utility though!</p>
-<p>📕 It's a generic trait where the generic parameter represents the type for the RHS or "right hand side".</p>
+<p>📕 It’s a generic trait where the generic parameter represents the type for the RHS or “right hand side”.</p>
 <p>This generic parameter defaults to being the same type, but we can write code that allows us to compare the equivalence of different types too!</p>
-<p>🦀 Taking that User aliases example again, what if we had a "root" user type, and an aliased User type.</p>
+<p>🦀 Taking that User aliases example again, what if we had a “root” user type, and an aliased User type.</p>
 <p>🦀 Now we can check if the User is equivalent to its Alias.</p>
-<p>🦀 Bear in mind though that "right hand side" means this equivalence check only works one way around, you'll need to write the implementation for UserAlias too if you want to go the other way around.</p>
-<p>So that's <code>Partial EQ</code>, but what is <code>EQ</code>?</p>
-<p><code>EQ</code> doesn't actually provide any additional behaviour, it's an empty trait that can only be applied to types that are also <code>Partial EQ</code>.</p>
-<p>It's purpose <em>isn't</em> to provide functionality but to indicate to you, the software engineer, and anyone looking at your code, that types have exact equivalence.</p>
+<p>🦀 Bear in mind though that “right hand side” means this equivalence check only works one way around, you’ll need to write the implementation for UserAlias too if you want to go the other way around.</p>
+<p>So that’s <code>Partial EQ</code>, but what is <code>EQ</code>?</p>
+<p><code>EQ</code> doesn’t actually provide any additional behaviour, it’s an empty trait that can only be applied to types that are also <code>Partial EQ</code>.</p>
+<p>It’s purpose <em>isn’t</em> to provide functionality but to indicate to you, the software engineer, and anyone looking at your code, that types have exact equivalence.</p>
 <p>Remember those points I made about floating points earlier, different binary representations being equivalent, and the same binary representation not being considered equivalent?</p>
 <p>This is not exact equivalence, which is why <code>f32</code> and <code>f64</code> do not implement <code>EQ</code>.</p>
-<p>There's no way for the compiler to guarantee the correct implementation of <code>EQ</code> so it's something you need to be mindful of.</p>
-<p>Unlike <code>Partial EQ</code>, <code>EQ</code> is not a generic that can be used with other types (since we're talking about exact equivalence, this wouldn't make sense).</p>
+<p>There’s no way for the compiler to guarantee the correct implementation of <code>EQ</code> so it’s something you need to be mindful of.</p>
+<p>Unlike <code>Partial EQ</code>, <code>EQ</code> is not a generic that can be used with other types (since we’re talking about exact equivalence, this wouldn’t make sense).</p>
 <p>🦀 Earlier we chose to make that <code>User</code> type partially equivalent if the id matched.</p>
 <p>🦀 If we instead checked the entire object, it could be considered to be exactly equivalent:</p>
-<p>🦀 Of course, in this case, it'd be far easier <em>and safer</em> to use the derived version, which protects us making mistakes in complex code, or forgetting to check changes we make in our type later</p>
+<p>🦀 Of course, in this case, it’d be far easier <em>and safer</em> to use the derived version, which protects us making mistakes in complex code, or forgetting to check changes we make in our type later</p>
 <h3 id="partialord--ord"><a class="header" href="#partialord--ord">PartialOrd / Ord</a></h3>
 <p>As you can imagine, <code>Partial Ord</code> and <code>Ord</code> have a similar relationship to each other as <code>Partial EQ</code> and <code>EQ</code>, and indeed:</p>
 <ul>
@@ -329,18 +328,18 @@ And <code>T</code> is <code>Sync</code> if a reference to <code>T</code> can be 
 <p>🦀 The required methods of each trait use the <code>Ordering</code> enum which looks roughly like this:</p>
 <p><code>Partial EQ</code> is what gives us our usual <code>greater than</code>, <code>less than</code>, <code>greater or equal to</code> and <code>less than or equal to</code> behaviour, through the use of the methods <code>GT</code>, <code>LT</code>, <code>GE</code> and <code>LE</code> respectively,</p>
 <p>📕 Unless these methods are implemented, their default behaviour relies on <code>partial comp</code>, which returns an <code>Option</code> of <code>Ordering</code>.</p>
-<p>🦀 Again, using floating point numbers, it's easy to see why we use an <code>Option</code> on our comparisons.</p>
+<p>🦀 Again, using floating point numbers, it’s easy to see why we use an <code>Option</code> on our comparisons.</p>
 <p>🦀 When comparing <code>NaN</code>, is it greater than, less than, or equal to <code>NaN</code>?</p>
-<p>🦀 We can't determine an answer here, so we use the <code>None</code> variant to represent that.</p>
-<p>One important thing to bear in mind when deriving <code>Partial Ord</code> is that although, yes, you can do it if all parts of your type implement <code>Partial Ord</code>, there's a catch!</p>
+<p>🦀 We can’t determine an answer here, so we use the <code>None</code> variant to represent that.</p>
+<p>One important thing to bear in mind when deriving <code>Partial Ord</code> is that although, yes, you can do it if all parts of your type implement <code>Partial Ord</code>, there’s a catch!</p>
 <p>When derived on structs, it will first check the ordering of the first field, and only move on to the next field if the first fields are equal.</p>
 <p>🦀 To understand why that might not give us the behaviour we expect, lets imagine a rectangle with width and height.</p>
 <p>🦀 By deriving the behaviour for <code>Partial Ord</code>, Rust will first compare the width, and only if those are equal compare the height.</p>
-<p>🦀 This means that if the width is larger in one rectangle, then according to the derived behaviour, it's the larger rectangle, even if the height of the other rectangle is significantly larger.</p>
-<p>🦀 For this reason, it's quite likely that you'd want to implement <code>Partial Ord</code> yourself, depending on how you think types should be compared.</p>
+<p>🦀 This means that if the width is larger in one rectangle, then according to the derived behaviour, it’s the larger rectangle, even if the height of the other rectangle is significantly larger.</p>
+<p>🦀 For this reason, it’s quite likely that you’d want to implement <code>Partial Ord</code> yourself, depending on how you think types should be compared.</p>
 <p>🦀 Instead of using the derived behaviour, lets create an area method for our rectangles, and use that to compare them to each other.</p>
 <p>🦀 I think, in this case, this makes more sense.</p>
-<p>Finally <code>Ord</code> isn't quite the same as <code>EQ</code> because it <em>does</em> have methods:</p>
+<p>Finally <code>Ord</code> isn’t quite the same as <code>EQ</code> because it <em>does</em> have methods:</p>
 <ul>
 <li><code>comp</code> which is like <code>partial comp</code>, is also required, but returns <code>Ordering</code> without the <code>Option</code></li>
 <li><code>max</code> which returns the greater of the two values</li>
@@ -354,15 +353,15 @@ And <code>T</code> is <code>Sync</code> if a reference to <code>T</code> can be 
 <p>🦀 Lets fix this by overriding its behaviour</p>
 <p>Importantly, when implementing both <code>Partial Ord</code> <em>and</em> <code>Ord</code>, the result of <code>partial comp</code> <em>must</em> match <code>comp</code>, though the compiler has no way of confirming this for you.</p>
 <p>The easiest way to handle this is you need to manually implement <code>partial comp</code> by simply calling <code>comp</code> and wrap the result in an <code>Option</code>.</p>
-<p>🦀 Let's update our Rectangle</p>
+<p>🦀 Let’s update our Rectangle</p>
 <p>Unlike <code>Partial EQ</code>, neither <code>Partial Ord</code> nor <code>Ord</code> are generic, they can only be implemented where both the left and right hand side are the same type.</p>
 <h3 id="clone-and-copy"><a class="header" href="#clone-and-copy">Clone (and Copy)</a></h3>
 <p><code>Clone</code> is a bit like <code>Copy</code> in that it allows you to duplicate values, however, where <code>Copy</code> is implicitly very cheap, <code>Clone</code> can get away with doing a bit more work.</p>
 <p>With <code>Copy</code>, we can make a copy of any data that is purely on the stack, however, this restricts us to <code>Sized</code> data.</p>
 <p>This means, for example, <code>String</code> which is a smart pointer to data on the heap, can not implement <code>Copy</code>.</p>
-<p>In order to duplicate a <code>String</code> we'd need to request new memory on the Heap to place the data into, then copy the data to the new location, and create a new smart pointer on the stack to point to it.</p>
-<p>Requesting heap memory is considered expensive as you have to wait for the operating system to provide you a location you can use, so it's really handy to differentiate <code>Clone</code> from <code>Copy</code>.</p>
-<p>Luckily, you don't have to do all of this memory allocation stuff yourself.</p>
+<p>In order to duplicate a <code>String</code> we’d need to request new memory on the Heap to place the data into, then copy the data to the new location, and create a new smart pointer on the stack to point to it.</p>
+<p>Requesting heap memory is considered expensive as you have to wait for the operating system to provide you a location you can use, so it’s really handy to differentiate <code>Clone</code> from <code>Copy</code>.</p>
+<p>Luckily, you don’t have to do all of this memory allocation stuff yourself.</p>
 <p>🦀 For any type that is built from other types that already implement <code>Clone</code> you can derive <code>Clone</code>.</p>
 <p>If you need to implement <code>Clone</code> yourself (rare and only required in very specific and advanced circumstances), then you can.</p>
 <p>🦀 In order to derive <code>Copy</code>, not only must your type be made from only other types that implement <code>Copy</code>, but your type must also implement <code>Clone</code>.</p>
@@ -378,12 +377,12 @@ And <code>T</code> is <code>Sync</code> if a reference to <code>T</code> can be 
 <p>Hashing is the process of taking a (usually) arbitrary amount of information and distilling it into a fixed size of data.</p>
 <p>This is a one way process ✳️ (asterisk), but giving the same input will always give you the same output, and <em>that</em> is pretty useful!</p>
 <p>There are lots of different ways to hash that are suitable for lots of different purposes.</p>
-<p>In Rust there is a trait that describes a type that is <code>Hash</code> which means that it can be "hashed", and another trait called <code>Hasher</code> which does the hashing.</p>
-<p>These traits aren't for general hashing, though, in Rust they have a very specific use, can you guess what it is?</p>
+<p>In Rust there is a trait that describes a type that is <code>Hash</code> which means that it can be “hashed”, and another trait called <code>Hasher</code> which does the hashing.</p>
+<p>These traits aren’t for general hashing, though, in Rust they have a very specific use, can you guess what it is?</p>
 <p>The <code>Hash</code> trait only works with the <code>Hasher</code> trait and always results in a <code>u64</code>, this is rubbish for cryptography and security but great for generating numbers for lookup tables.</p>
-<p>You <em>generally</em> don't need to worry too much about either trait, but <code>Hash</code> is useful if you want your type to work as a key in a <code>Hash Map</code> or similar data structure.</p>
+<p>You <em>generally</em> don’t need to worry too much about either trait, but <code>Hash</code> is useful if you want your type to work as a key in a <code>Hash Map</code> or similar data structure.</p>
 <p>🦀 So long as your type is constructed only of other types that implement <code>Hash</code>, then you can derive it, though if you need more control than that, then you can of course implement the trait methods yourself.</p>
-<p>This might be useful if you want to skip over some of the types that make up your compound type that can't be hashed <em>BUT</em> if your type also implements <code>EQ</code>, if <code>A is equivalent to B</code>, then <code>the hash of A must be equivalent the hash of B</code>.</p>
+<p>This might be useful if you want to skip over some of the types that make up your compound type that can’t be hashed <em>BUT</em> if your type also implements <code>EQ</code>, if <code>A is equivalent to B</code>, then <code>the hash of A must be equivalent the hash of B</code>.</p>
 <h2 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h2>
 <p>Wait! Before we jump straight into the <code>Error</code> trait, lets recap on <code>Display</code>.</p>
 <h3 id="display"><a class="header" href="#display">Display</a></h3>
@@ -394,55 +393,55 @@ And <code>T</code> is <code>Sync</code> if a reference to <code>T</code> can be 
 <h3 id="error"><a class="header" href="#error">Error</a></h3>
 <p>The <code>Error</code> trait is applied to types that are <em>specifically</em> used to represent something that went wrong during the execution of code.</p>
 <p>Although <code>Result</code>s do not <em>require</em> the <code>Error</code> trait be implemented for types in their Error variant, it is definitely worth doing as error types with the <code>Error</code> trait provide a lot of utility.</p>
-<p>The trait itself has several "provided" methods but no "required" methods.</p>
-<p>You're unlikely to want to alter the provided behaviour of the <code>Error</code> trait which means the only thing you need to do is make sure that your error type <em>also</em> implements <code>Debug</code> and <code>Display</code>.</p>
+<p>The trait itself has several “provided” methods but no “required” methods.</p>
+<p>You’re unlikely to want to alter the provided behaviour of the <code>Error</code> trait which means the only thing you need to do is make sure that your error type <em>also</em> implements <code>Debug</code> and <code>Display</code>.</p>
 <p>As we know, <code>Debug</code> is usually derivable, so that just leaves <code>Display</code> (see why I wanted to bring it up again?).</p>
-<p>Let's create a custom Error for a fridge to demonstrate how we <em>might</em> do this.</p>
-<p>🦀 We'll use an enum to represent the error states which are either,</p>
+<p>Let’s create a custom Error for a fridge to demonstrate how we <em>might</em> do this.</p>
+<p>🦀 We’ll use an enum to represent the error states which are either,</p>
 <ul>
 <li>too warm, with its current temperature</li>
 <li>too cold, with its current temperature</li>
 <li>or an alert that the power has failed</li>
 </ul>
-<p>🦀 We'll derive Debug, and we'll implement Display which will just produce a nice human-readable message.</p>
+<p>🦀 We’ll derive Debug, and we’ll implement Display which will just produce a nice human-readable message.</p>
 <p>🦀 Finally, we can implement Error which will provide all the methods we need.</p>
-<p>While we've avoided talking about the wider ecosystem so far, it's worth mentioned there are some <em>extremely</em> powerful Error libraries that might change the way you work with errors.</p>
+<p>While we’ve avoided talking about the wider ecosystem so far, it’s worth mentioned there are some <em>extremely</em> powerful Error libraries that might change the way you work with errors.</p>
 <p>We will cover these in the Ecosystem part of this series.</p>
 <h2 id="next-time"><a class="header" href="#next-time">Next time</a></h2>
-<p>Next time we're going to continue learning the most common traits, but I particularly want you to keep Errors in mind as we're going to learn a very cool trick with them.</p>
-<p>If this has been useful to you, don't forget to like and subscribe and I hope to see you... hey... what are you doing here, we'll see about this.</p>
+<p>Next time we’re going to continue learning the most common traits, but I particularly want you to keep Errors in mind as we’re going to learn a very cool trick with them.</p>
+<p>If this has been useful to you, don’t forget to like and subscribe and I hope to see you… hey… what are you doing here, we’ll see about this.</p>
 <h2 id="bonus"><a class="header" href="#bonus">Bonus</a></h2>
 <p><em>Big grin</em></p>
 <p>Ok so I wanted to sneak in a little bonus trait that I discovered while deep diving during a re-write of this script.</p>
-<p>I got away without knowing about this Trait for seven years so, so I don't think you need to know about it, but this trait is used in every single Rust program that you write even the pre-built Hello World template that cargo provides in a new binary project.</p>
+<p>I got away without knowing about this Trait for seven years so, so I don’t think you need to know about it, but this trait is used in every single Rust program that you write even the pre-built Hello World template that cargo provides in a new binary project.</p>
 <p>This thing had been hiding from me in plain sight this whole time, and it blew my mind when I found it.</p>
-<p>If you've worked with other programming languages, you might be aware of "exit codes" or "exit status'"</p>
+<p>If you’ve worked with other programming languages, you might be aware of “exit codes” or “exit status’”</p>
 <p>These are effectively a return value from the program itself, usually returned from the main function when it ends, to let the operating system know if the program succeeded or not</p>
 <p>Different operating systems use different exit codes so you need to be careful here but <em>usually</em> exiting with a 0 means everything was ok, and anything else indicates the program in some way failed.</p>
-<p>In Rust, we don't return numbers from main.</p>
-<p>Usually we don't return anything... right?</p>
-<p>Well, actually, we do, we always do... kind of.</p>
+<p>In Rust, we don’t return numbers from main.</p>
+<p>Usually we don’t return anything… right?</p>
+<p>Well, actually, we do, we always do… kind of.</p>
 <p>📕 There is a trait called <code>Termination</code>, and <code>main</code> must return something that implements it.</p>
-<p>📕 <code>Termination</code> will provide an <code>Exit Code</code> via a "Required" report method, and this is how we get our programs success or failure status.</p>
-<p>You may have noticed though that we almost never return something from <code>main</code>, <em>but</em>, in Rust, when we don't specify a return type, the return type is the Unit Type.</p>
-<p>📕 And of course there's a built-in implementation of <code>Termination</code> for the Unit Type which will produce the success exit code, whatever that might be for your target operating system.</p>
+<p>📕 <code>Termination</code> will provide an <code>Exit Code</code> via a “Required” report method, and this is how we get our programs success or failure status.</p>
+<p>You may have noticed though that we almost never return something from <code>main</code>, <em>but</em>, in Rust, when we don’t specify a return type, the return type is the Unit Type.</p>
+<p>📕 And of course there’s a built-in implementation of <code>Termination</code> for the Unit Type which will produce the success exit code, whatever that might be for your target operating system.</p>
 <p>This means that, normally, so long as your code runs to completion, and you exit your program by reaching the end of the main function, your program will be considered successful.</p>
 <p>You might have seen code examples (particularly hidden in documentation) where main returns a <code>Result</code>, usually where the Ok variant is a unit type.</p>
-<p>📕 And this is because there's also a <code>Termination</code> implementation for <code>Result</code>s where the Ok variant already implements <code>Termination</code> and the Error variant implements <code>Debug</code> which, as we just discussed, Errors types usually will!</p>
+<p>📕 And this is because there’s also a <code>Termination</code> implementation for <code>Result</code>s where the Ok variant already implements <code>Termination</code> and the Error variant implements <code>Debug</code> which, as we just discussed, Errors types usually will!</p>
 <p>I have used both your usual no-return style main function, <em>and</em> main functions that return a Result, and had thought that Rust was doing some magic here for exit codes, but never thought to look it up.</p>
-<p>I didn't need to know this, arguably you don't either, but isn't it awesome when your curiosity leads you down a little path, and you find something cool like this!</p>
-<p>Ok, that's it for real this time, thanks for listening to me ramble about this useless bit of knowledge, and I will see you next time.</p>
+<p>I didn’t need to know this, arguably you don’t either, but isn’t it awesome when your curiosity leads you down a little path, and you find something cool like this!</p>
+<p>Ok, that’s it for real this time, thanks for listening to me ramble about this useless bit of knowledge, and I will see you next time.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="../iriss/010-iriss.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="../iriss/012-common-traits-part-2.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -452,16 +451,21 @@ And <code>T</code> is <code>Sync</code> if a reference to <code>T</code> can be 
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="../iriss/010-iriss.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="../iriss/012-common-traits-part-2.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -470,13 +474,13 @@ And <code>T</code> is <code>Sync</code> if a reference to <code>T</code> can be 
         </script>
 
 
-        <script src="../elasticlunr.min.js"></script>
-        <script src="../mark.min.js"></script>
-        <script src="../searcher.js"></script>
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
 
-        <script src="../clipboard.min.js"></script>
-        <script src="../highlight.js"></script>
-        <script src="../book.js"></script>
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
 

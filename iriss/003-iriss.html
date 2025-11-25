@@ -12,21 +12,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../favicon.svg">
-        <link rel="shortcut icon" href="../favicon.png">
-        <link rel="stylesheet" href="../css/variables.css">
-        <link rel="stylesheet" href="../css/general.css">
-        <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../fonts/fonts.css">
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -36,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex.js";
+            window.path_to_searchindex_js = "../searchindex-ec9cbdc1.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc.js"></script>
+        <script src="../toc-6fd8910a.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -53,7 +52,7 @@
             </div>
         </div>
     </div>
-    <div id="body-container">
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
@@ -82,12 +81,12 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             let sidebar = null;
-            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -102,39 +101,39 @@
             }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -142,45 +141,45 @@
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
                         <div class="search-wrapper">
-                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
                             <div class="spinner-wrapper">
-                                <i class="fa fa-spinner fa-spin"></i>
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
                             </div>
                         </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="data-types"><a class="header" href="#data-types">Data Types</a></h1>
 <h2 id="preamble"><a class="header" href="#preamble">Preamble</a></h2>
 <p>We lightly covered types in the last video, but only really to show the importance of where things live in memory.</p>
-<p>Rust's types system is perhaps one of its most rigorous and powerful features, understanding it is key to
+<p>Rust’s types system is perhaps one of its most rigorous and powerful features, understanding it is key to
 understanding why the language is the way it is.</p>
-<p>Today we'll cover the basic Types (also known as Primitive Types) that exist within Rust,
+<p>Today we’ll cover the basic Types (also known as Primitive Types) that exist within Rust,
 and what structures we can use to create our own, more complex types (also known as Compound types).</p>
 <p>This series has a free accompanying book, in which you can find all the details for this tutorial, check the
 description below.</p>
@@ -189,29 +188,29 @@ description below.</p>
 <p>In programming a Type describes what kind of data or values can be used in a particular circumstance</p>
 <p>In Rust, we use Types to describe variables, parameters, properties or anywhere else you can have a value, so that the
 compiler knows what the data at that point will look like inside the running program, and how it will behave.</p>
-<p>This can include where in memory the data lives, how it's represented in memory, and what functionality can be assigned
-to the data (though we'll cover that last part in a few videos time).</p>
+<p>This can include where in memory the data lives, how it’s represented in memory, and what functionality can be assigned
+to the data (though we’ll cover that last part in a few videos time).</p>
 <h2 id="primitive-types"><a class="header" href="#primitive-types">Primitive Types</a></h2>
 <p>Primitive types are effectively the building blocks of all other types.</p>
 <p>I think this is an early point in learning Rust that scares off a lot of potential new Rust engineers. You see, Rust has
 a <em>lot</em> of primitive types.</p>
-<p>I'm going to show this to you now, but I don't want you to worry about it.</p>
-<p>You, whoever you are my dear rustacean, have already achieved things more complicated than learning this, don't panic</p>
-<p>So, are you ready to see something terrifying that long before the end of the video you're going to have a complete
+<p>I’m going to show this to you now, but I don’t want you to worry about it.</p>
+<p>You, whoever you are my dear rustacean, have already achieved things more complicated than learning this, don’t panic</p>
+<p>So, are you ready to see something terrifying that long before the end of the video you’re going to have a complete
 handle on?</p>
 <p>Here we go (((Show chart)))</p>
 <p>This is how many primitive types there are in Rust! And yes, as scary as it is, you will completely understand this in
 just a few minutes!</p>
-<p>First and most importantly, forget this chart for now, there's really only five categories that we actually care about
+<p>First and most importantly, forget this chart for now, there’s really only five categories that we actually care about
 (((Show chart)))</p>
 <p>integers, floating points, characters, booleans and string slices</p>
-<p>We'll go over each of these individually, explain how they work, their variations and what you might use them for.</p>
+<p>We’ll go over each of these individually, explain how they work, their variations and what you might use them for.</p>
 <p>Before we do, in order to understand those variations, lets very quickly cover binary.</p>
 <h3 id="binary-primer"><a class="header" href="#binary-primer">Binary Primer</a></h3>
-<p>Don't panic! No one is expecting you to learn to count in binary. Counting in binary is fun, but pretty useless.</p>
-<p>All I want to do is show you how things are represented in memory because it's going to make all those Rust types make a
+<p>Don’t panic! No one is expecting you to learn to count in binary. Counting in binary is fun, but pretty useless.</p>
+<p>All I want to do is show you how things are represented in memory because it’s going to make all those Rust types make a
 lot of sense!</p>
-<p>Humans (mostly) count in base 10. That's numbers going from 0 to 9. You can imagine numbers as a series of columns,
+<p>Humans (mostly) count in base 10. That’s numbers going from 0 to 9. You can imagine numbers as a series of columns,
 where each column represents how many 1s, 10s, 100s, etc. there are in the number.</p>
 <p>For example, the number one hundred and twenty-three contains one lot of 100, two lots of 10, and three lots of 1</p>
 <p>When we add numbers to the columns, if the column goes over 9, then we add to the next column along.</p>
@@ -238,18 +237,18 @@ starting at 0:</p>
 <li>etcetera</li>
 </ul>
 <p>So if we want to represent the number 13 in base 2, we can see it contains one 8, one 4, and one 1 (8 + 4 + 1 = 13).</p>
-<p>If we mark those columns as one's and the others as zeros we get one one zero one</p>
-<p>Sometimes when we want to write something in binary and be explicit that that is the system we're using we might write:
+<p>If we mark those columns as one’s and the others as zeros we get one one zero one</p>
+<p>Sometimes when we want to write something in binary and be explicit that that is the system we’re using we might write:
 oh B one one oh one.</p>
-<p>The oh B at the start makes it clear that a number like ob B one one oh one represents "thirteen" and not "one thousand
-one hundred and one".</p>
-<p>Each 1 or 0 is a <em><strong>b</strong></em>inary dig<em><strong>it</strong></em>, which is where we get the term "bit".</p>
-<p>Eight bits is a byte, and can represent the numbers from zero to two hundred and fifty-five, again, I'm not expecting
+<p>The oh B at the start makes it clear that a number like ob B one one oh one represents “thirteen” and not “one thousand
+one hundred and one”.</p>
+<p>Each 1 or 0 is a <em><strong>b</strong></em>inary dig<em><strong>it</strong></em>, which is where we get the term “bit”.</p>
+<p>Eight bits is a byte, and can represent the numbers from zero to two hundred and fifty-five, again, I’m not expecting
 anyone to be able to <em>read</em> this.</p>
 <p>The reason why a byte is eight bits has a lot of history, but it basically comes down to character encoding: with 7
 bits, you can represent 127 characters which covers english lowercase, uppercase, numbers 0-9, various whitespace and
 punctuation, and still have 1 bit left over for simple error checking.</p>
-<p>As a quick aside, as a software engineer, you're very likely to also see numbers written in hexadecimal (base 16).</p>
+<p>As a quick aside, as a software engineer, you’re very likely to also see numbers written in hexadecimal (base 16).</p>
 <p>This is because hexadecimal, is really nice when working with bytes. One byte (8 bits) perfectly maps to two
 hexadecimal digits.</p>
 <p>Hexadecimal digits go from 0 to 15, but are represented as zero to F (ie: zero, one, two, three, four, five, six, seven,
@@ -259,7 +258,7 @@ than oh B one one one one - one one one one.</p>
 <p>Both the oh B and oh X notation work in Rust if you want to write numbers as binary or hexadecimal respectively. You can
 also use underscores to space numbers for legibility.</p>
 <h3 id="integers"><a class="header" href="#integers">Integers</a></h3>
-<p>Now that you've had that primer on binary, I bet those twelve different integer types are starting to make a lot more
+<p>Now that you’ve had that primer on binary, I bet those twelve different integer types are starting to make a lot more
 sense!</p>
 <p>The most basic number type in Rust is the <code>u8</code>.</p>
 <p>This is an <em>unsigned</em> integer (represented by the <code>u</code>) that is 8 bits in length.</p>
@@ -267,19 +266,19 @@ sense!</p>
 <p>You might have already guessed, but this is one byte, and can hold the numbers 0 to two hundred and fifty-five.</p>
 <p>A byte like this can be used for all sorts of things, though one common example is as part of a color.</p>
 <p>We often represent colors as 8 bits of red, 8 bits of green, 8 bits of blue and sometimes 8 bits of transparency.</p>
-<p><code>i8</code> is an integer that can represent both positive and negative numbers (i.e. it's signed).</p>
+<p><code>i8</code> is an integer that can represent both positive and negative numbers (i.e. it’s signed).</p>
 <p>It also only uses 8 bits of data but instead of going from 0 to two hundred and fifty-five, it goes from negative
 one hundred and twenty-eight to positive one hundred and twenty-seven.</p>
-<p>You never need to know this, <em>but</em>, if you're interested in the mathematics of how it does this, it uses a method called
-two's complement.</p>
-<p>Two's complement, however, is complicated, and we don't think like computers.</p>
+<p>You never need to know this, <em>but</em>, if you’re interested in the mathematics of how it does this, it uses a method called
+two’s complement.</p>
+<p>Two’s complement, however, is complicated, and we don’t think like computers.</p>
 <p>The easiest way to visualise it is the left most column is the negative version of itself, and all other numbers are the
 same.</p>
 <p>So, the number negative one hundred and twenty-five can be represented as one zero zero zero - zero zero one one.
 ((Show table))</p>
 <p>ie, the number contains one lot of negative one hundred and twenty-eight, one positive two and one positive one.</p>
 <p>Negative one hundred and twenty-eight, plus two, plus one gives us negative one hundred and twenty-five.</p>
-<p>So that's <code>u8</code> and <code>i8</code>, and now you've probably guessed that for all the other integer types;</p>
+<p>So that’s <code>u8</code> and <code>i8</code>, and now you’ve probably guessed that for all the other integer types;</p>
 <ul>
 <li><code>u</code> means it can only be positive</li>
 <li><code>i</code> means it can be positive or negative</li>
@@ -287,16 +286,16 @@ same.</p>
 </ul>
 <p>Now we can build up a little table to show the minimum and maximum of these types:
 ((Show table))</p>
-<hr />
+<hr>
 <p>Wow, those numbers get big fast!</p>
-<p>There's still two types missing though; <code>usize</code> and <code>isize</code>.</p>
+<p>There’s still two types missing though; <code>usize</code> and <code>isize</code>.</p>
 <p>In this case, the <code>size</code> is also acting as the number of bits, however, unlike the other integer types, the size of
 <code>size</code> is variable.</p>
 <p>Rust is a compiled language, meaning that the code you write in Rust is transformed into instructions that a CPU can
 understand.</p>
-<p>CPUs are all different, but they typically follow some given "architecture".</p>
-<p>For example, if you're watching this on a Windows or Linux desktop, the architecture of your CPU is <em>probably</em> <code>x86_64</code>.</p>
-<p>If you're watching this on a Mac or a mobile phone, then the architecture is <em>probably</em> <code>arm64</code>.</p>
+<p>CPUs are all different, but they typically follow some given “architecture”.</p>
+<p>For example, if you’re watching this on a Windows or Linux desktop, the architecture of your CPU is <em>probably</em> <code>x86_64</code>.</p>
+<p>If you’re watching this on a Mac or a mobile phone, then the architecture is <em>probably</em> <code>arm64</code>.</p>
 <p>When you compile Rust it will compile into an instruction set for the architecture your machine uses, though you can
 also tell it what instruction set to compile for, if you want to build it on one architecture but run it on another.</p>
 <p><code>x86_64</code> and <code>arm64</code> are both 64bit architectures, so when you build for these machines, the <code>size</code> in <code>usize</code> and
@@ -306,8 +305,8 @@ which is 16bit so the <code>size</code> in <code>usize</code> and <code>isize</c
 <h4 id="which-integer-is-right-for-you"><a class="header" href="#which-integer-is-right-for-you">Which integer is right for you?</a></h4>
 <p>You might think the obvious thing to do would be to use the largest possible integer types.</p>
 <p>For example, you can fit pretty much every whole number you could possibly need into <code>i128</code>, so why use anything else?</p>
-<p>There's two things to think about, first, what is the intended use of the number and, second, what is the architecture
-of the machine you're running on?</p>
+<p>There’s two things to think about, first, what is the intended use of the number and, second, what is the architecture
+of the machine you’re running on?</p>
 <p>In software engineering, a number is never just a number, it represents something.</p>
 <p>As we mentioned earlier, colors are often (but not always), represented as 0 to 255 for each of red, green and blue.</p>
 <p>This means that a <code>u8</code> is the best way to store these.</p>
@@ -316,16 +315,16 @@ can be represented as a <code>u32</code>.</p>
 <p><code>u8</code> is also a good size for representing a stream of unicode characters, which is where we get <code>UTF-8</code>, the default
 encoding for Rust strings.</p>
 <p>For larger, more arbitrary, numbers though, you still may not want to use the largest integer types.</p>
-<p>While you can use integers that are wider than the architecture that you're running your program on, like using a
+<p>While you can use integers that are wider than the architecture that you’re running your program on, like using a
 <code>i128</code> on a 64 bit machine, mathematics with those numbers will be slower.</p>
 <p>The CPU can only process so many bits at once, so when it has numbers larger than that, it has to do multiple rounds of
 processing to achieve the same results as it might have done if those numbers were stored in smaller integers.</p>
-<p>You might then think that the best thing to do is use a <code>usize</code> or <code>isize</code> if you don't really care about how big a
-number can get, and that's fine, and I often do this, but now you have to bear in mind that the behaviour of your
+<p>You might then think that the best thing to do is use a <code>usize</code> or <code>isize</code> if you don’t really care about how big a
+number can get, and that’s fine, and I often do this, but now you have to bear in mind that the behaviour of your
 program may no longer be consistent on different machines!</p>
-<p>A <code>usize</code> on a Mac is going to be cap out at over eighteen quintillion, but on a Cortex M zero it's a mere thirty-two
+<p>A <code>usize</code> on a Mac is going to be cap out at over eighteen quintillion, but on a Cortex M zero it’s a mere thirty-two
 thousand!</p>
-<p>By default, when you write an integer and store it in a variable, Rust will play it safe and use an <code>i32</code> as it doesn't
+<p>By default, when you write an integer and store it in a variable, Rust will play it safe and use an <code>i32</code> as it doesn’t
 know what you might want to do with the number.</p>
 <p>An <code>i32</code> will fit inside most CPU architectures without needing extra work and allows negative numbers.</p>
 <p>However, it is more idiomatic to be intentional about the types you use.</p>
@@ -337,12 +336,12 @@ know what you might want to do with the number.</p>
 <li>am I more concerned with speed than consistency, in which case <code>usize</code> or <code>isize</code></li>
 <li>otherwise 32 or 64bit integers are probably fine, especially if I know what my code will run on</li>
 </ul>
-<hr />
+<hr>
 <p>You can specify what type a number is either by annotating the variable you are putting it inside</p>
-<p>Or, if that's not possible because you are, for example, passing the number straight to a function that could take many
+<p>Or, if that’s not possible because you are, for example, passing the number straight to a function that could take many
 number types, you can write the type at the end of a number</p>
-<hr />
-<p>A brief note on Type Conversion: You can convert between integer types in several ways, which we'll talk about more
+<hr>
+<p>A brief note on Type Conversion: You can convert between integer types in several ways, which we’ll talk about more
 later, but I wanted to quickly go over some code from the last video.</p>
 <p>In the bonus section of the last video, we got the number of milliseconds that had passed since midnight on the 1st
 of January 1970, and then immediately used <code>as usize</code>:
@@ -359,7 +358,7 @@ is greater than what would fit into a <code>usize</code> which would be just ove
 off the front of the data, leaving the least significant bits.
 ((Show program))</p>
 <h3 id="floating-points"><a class="header" href="#floating-points">Floating Points</a></h3>
-<p>We've covered twelve different ways of storing whole numbers in Rust, but there are only two ways of storing numbers
+<p>We’ve covered twelve different ways of storing whole numbers in Rust, but there are only two ways of storing numbers
 with decimal points: <code>f32</code> and <code>f64</code>.</p>
 <p>Floating point numbers are things like:</p>
 <ul>
@@ -367,9 +366,9 @@ with decimal points: <code>f32</code> and <code>f64</code>.</p>
 <li>one point two three</li>
 <li>one hundred and twenty-three point nothing</li>
 </ul>
-<p>They're called floating point because the decimal point can move around.</p>
+<p>They’re called floating point because the decimal point can move around.</p>
 <p>Your immediate thought here might be that you should use <code>f32</code> on 32bit systems, and <code>f64</code> on 64bit systems, but
-actually this isn't the way to think about these numbers, and I literally only discovered this while writing this
+actually this isn’t the way to think about these numbers, and I literally only discovered this while writing this
 chapter of the book!</p>
 <p>To explain, floating points are not perfectly accurate. The bits of a floating point number are broken into parts:</p>
 <ul>
@@ -385,34 +384,34 @@ small numbers but not every number in between</p>
 <p>Somehow they have a coupon for five hundred and twenty dollars and two cents.</p>
 <p>The remainder that they need to pay is 2 cents, right?
 ((Show code))</p>
-<hr />
-<p>If we expressed this in code using floating point numbers we don't get a perfect two cents!</p>
-<p>Instead, if the currency you're representing uses "hundredths" for its minor currency like USD or GBP, then you can
+<hr>
+<p>If we expressed this in code using floating point numbers we don’t get a perfect two cents!</p>
+<p>Instead, if the currency you’re representing uses “hundredths” for its minor currency like USD or GBP, then you can
 (and maybe should) represent the total number of that, eg of cents for dollars or pennies for pounds, using integers
 instead.</p>
 <p>So when should you use floats?</p>
-<p>Floating point numbers are great for more abstract mathematics where perfect precisions isn't strictly necessary, for
+<p>Floating point numbers are great for more abstract mathematics where perfect precisions isn’t strictly necessary, for
 example, vectors, matrices and quaternions which are often used in applications like video games and scientific models.</p>
 <p>As to which you should use, you might think that it comes down to architecture again, for example, a program targeting
-a 32bit architecture should use an <code>f32</code> and a 64bit architecture should prefer an <code>f64</code>... but if that's the case,
+a 32bit architecture should use an <code>f32</code> and a 64bit architecture should prefer an <code>f64</code>… but if that’s the case,
 where is the <code>fsize</code>?</p>
 <p>Actually, 32bit architectures are usually designed to support 64bit floating point numbers just fine, the difference
-between <code>f32</code> and <code>f64</code> is that regardless of architecture, <code>f32</code> is about 30% faster, and <code>f64</code> is more "fine grain".</p>
+between <code>f32</code> and <code>f64</code> is that regardless of architecture, <code>f32</code> is about 30% faster, and <code>f64</code> is more “fine grain”.</p>
 <p>To decide which to use you just need to decide between speed and accuracy</p>
 <h3 id="characters"><a class="header" href="#characters">Characters</a></h3>
 <p>In Rust, we have a special type that represents a single character called <code>char</code></p>
-<p>I say char, some people say car, unlike stud though I'm not changing my ways on this one, I'm on old man dying on a
+<p>I say char, some people say car, unlike stud though I’m not changing my ways on this one, I’m on old man dying on a
 weird hill, deal with it</p>
-<p>Char is always 4 bytes (32bits) in size and can be any valid "unicode scalar value" (which is to say, any character in
-unicode that's not a control character).</p>
+<p>Char is always 4 bytes (32bits) in size and can be any valid “unicode scalar value” (which is to say, any character in
+unicode that’s not a control character).</p>
 <p>In Rust a character is always written between single quotes, whereas string literals are always written between double
 quotes.
 ((Show Code))</p>
-<p>You can use any valid unicode character whether that's the upper or lowercase english letters A-Z, numbers 0-9, white
-space characters, word characters from languages like Chinese and Japanese, emoji, or anything else that's a "unicode
-scalar value".</p>
+<p>You can use any valid unicode character whether that’s the upper or lowercase english letters A-Z, numbers 0-9, white
+space characters, word characters from languages like Chinese and Japanese, emoji, or anything else that’s a “unicode
+scalar value”.</p>
 <p>We usually use characters in relation to finding things inside strings.</p>
-<p>You can also turn strings into a collection of characters and vice versa, however it's important to note that a
+<p>You can also turn strings into a collection of characters and vice versa, however it’s important to note that a
 character inside a string may not take up 4 bytes (for example, english letters and numbers only take 1 byte) because
 of how strings are encoded, however, once turned into a character, they will take up four bytes.</p>
 <h3 id="boolean"><a class="header" href="#boolean">Boolean</a></h3>
@@ -420,26 +419,26 @@ of how strings are encoded, however, once turned into a character, they will tak
 <p>We often get boolean values through the use of comparisons between values. For example is a equal to b, or is c greater
 than d, etcetera.</p>
 <p>Boolean values are usually reserved for <code>if</code> statements, and this is a good thing to look out for as finding it else
-where <em>might</em> be a sign that the code isn't written in the best way.</p>
+where <em>might</em> be a sign that the code isn’t written in the best way.</p>
 <p>For example, functions almost never need a boolean parameter, this is usually a sign that you should have written two
 functions.</p>
 <h3 id="string-slices"><a class="header" href="#string-slices">String slices</a></h3>
 <p>Our old friend the string slice!</p>
-<p>The type for a string slice is <code>str</code>, but you'll never see anything with the <code>str</code> type, you will usually see this
+<p>The type for a string slice is <code>str</code>, but you’ll never see anything with the <code>str</code> type, you will usually see this
 as a reference to a string slice ampersand str, which makes it unique amongst the primitive types.</p>
 <p><code>str</code> <em>should</em> always be a UTF-8 string, which means that the length of a string in bytes may not necessarily be the
 same as its length in characters.</p>
-<p>For example and don't worry about the code yet ((Show Code))</p>
-<p>The character that represents my cat's name has a length of 3 bytes when encoded as a str, but the str is only one
+<p>For example and don’t worry about the code yet ((Show Code))</p>
+<p>The character that represents my cat’s name has a length of 3 bytes when encoded as a str, but the str is only one
 character long.</p>
 <p>Its also worth remembering that when you turn a string into characters, each of those characters will take up 4 bytes
 of memory, even though inside the string they might have only taken up one byte ((Show code))</p>
-<p>(again, don't worry about the code here its just to show the size):</p>
-<p>The size of a string slice depends on what's in it, which is why you won't see it on the stack (string slices live in
+<p>(again, don’t worry about the code here its just to show the size):</p>
+<p>The size of a string slice depends on what’s in it, which is why you won’t see it on the stack (string slices live in
 either the compiled output as string literals, or on the Heap inside a String).</p>
 <p>A string slice reference is made up of two pieces of data, a pointer to where the string slice starts, and a length,
 both of which are of known size but depend on the system architecture.</p>
-<p>Fun fact about that reference though: you might wonder if it's just a pointer and a length, does that mean you can
+<p>Fun fact about that reference though: you might wonder if it’s just a pointer and a length, does that mean you can
 have a reference to a string slice that exists inside a string slice, and the answer is: yes! ((Show code))</p>
 <p>Just be careful when taking a slice inside a slice to make sure that the sub slice is a valid UTF-8 string.</p>
 <h2 id="compound-types"><a class="header" href="#compound-types">Compound Types</a></h2>
@@ -448,7 +447,7 @@ have a reference to a string slice that exists inside a string slice, and the an
 as a reference to another collection (also called an array slice).</p>
 <p>When sized, arrays are annotated with the type open square bracket T semicolon N close square bracket where <code>T</code> is the
 type of every item in the array and <code>N</code> is its size. ((Show code))</p>
-<p>For example here's an array of exactly 5 chars. It will exist on the stack</p>
+<p>For example here’s an array of exactly 5 chars. It will exist on the stack</p>
 <p>((Show code))
 When referenced as an array slice, you do not need to specify the size because, just like with references to string
 slices, the reference not only contains a pointer to the underlying data, but also contains the size. We write this in
@@ -466,10 +465,10 @@ Tuples are written between brackets, and are only considered the same type if th
 <p>((Show code))
 Another difference from arrays is how you access a single item in the tuple, which you do with a dot, followed by
 the number element you want. Again, this starts from 0.</p>
-<p>There is a zero length tuple that is Rust's way to represent nothing, we call it the Unit Type.</p>
-<p>It's zero bytes, does not exist on the stack at runtime, and unlike other languages with types like <code>null</code> or <code>void</code>,
+<p>There is a zero length tuple that is Rust’s way to represent nothing, we call it the Unit Type.</p>
+<p>It’s zero bytes, does not exist on the stack at runtime, and unlike other languages with types like <code>null</code> or <code>void</code>,
 can not be used interchangeably with other types.</p>
-<p>You might use this type in conjunction with generics which we'll come to in a bit.</p>
+<p>You might use this type in conjunction with generics which we’ll come to in a bit.</p>
 <h3 id="structs"><a class="header" href="#structs">Structs</a></h3>
 <p>Structs are similar to tuples in that they are a type made up of other types.</p>
 <p>Unlike tuples they are named though, and they must be defined outside of functions.</p>
@@ -481,14 +480,14 @@ can not be used interchangeably with other types.</p>
 </ul>
 <p>As we just covered tuples, lets quickly talk about tuple structs.</p>
 <p>((Show code))
-They look a bit like they're simply "named" tuples, and indeed they can be accessed the same way:</p>
+They look a bit like they’re simply “named” tuples, and indeed they can be accessed the same way:</p>
 <p>Similar to tuples, this kind of struct can be accessed with a <code>.</code> and a numbered value, <em>however</em> unlike tuples,
-structs have a concept of "visibility".</p>
+structs have a concept of “visibility”.</p>
 <p>Unless explicitly marked as public the fields of a struct are only accessible in the module in which it is defined, or
 its descendents.</p>
 <p>((Show code))
-We'll talk more about modules later, however, to make the fields of a struct public, you can simply mark them as <code>pub</code>.</p>
-<p>You don't have to make every field public though, if you'd like some parts of the struct to be public and others to be
+We’ll talk more about modules later, however, to make the fields of a struct public, you can simply mark them as <code>pub</code>.</p>
+<p>You don’t have to make every field public though, if you’d like some parts of the struct to be public and others to be
 private.</p>
 <p>((Show code))
 Named fields work pretty much the same as tuple structs except instead of having a numbered field, its named.</p>
@@ -496,9 +495,9 @@ Named fields work pretty much the same as tuple structs except instead of having
 <p>Similar to tuple structs, fields must be explicitly marked as public to be accessible outside the module they were
 defined in.</p>
 <p>((Show code))
-Unit structs are an interesting case that you probably won't find much use for until we get into more advanced Rust and
+Unit structs are an interesting case that you probably won’t find much use for until we get into more advanced Rust and
 some of the cooler patterns and idioms that we use.</p>
-<p>Like the Unit Type, a Unit Struct has no value and no size. They're most commonly used as a marker, but you can also add
+<p>Like the Unit Type, a Unit Struct has no value and no size. They’re most commonly used as a marker, but you can also add
 functionality to them via traits.</p>
 <h3 id="enums"><a class="header" href="#enums">Enums</a></h3>
 <p>((Show code))
@@ -506,15 +505,15 @@ Enums are for when you want to represent one of a finite number of possible valu
 <p>For example say we want to represent the colors of a traffic light which can only be red, amber or green.</p>
 <p>Many programing languages have this concept of enums, but what makes Rust enums especially awesome is that the variants
 can additionally contain values.</p>
-<p>We've already talked about two such enums <code>Option</code> and <code>Result</code> which are two of the most important and widely used
-types in the entire ecosystem, and we'll talk more about them when we talk about Generic Types shortly.</p>
+<p>We’ve already talked about two such enums <code>Option</code> and <code>Result</code> which are two of the most important and widely used
+types in the entire ecosystem, and we’ll talk more about them when we talk about Generic Types shortly.</p>
 <p>((Show code))
 As an example though, enums variants can be structured in either a tuple stype or a struct style:</p>
 <p>In terms of memory usage, on the stack an enum will take up as much space as its largest variant, regardless of which
 variant it actually is.</p>
 <h2 id="generic-types"><a class="header" href="#generic-types">Generic Types</a></h2>
 <p>Generics in Rust allow the creation of entirely new types at compile time by combining types together.</p>
-<p>We've talked a bit about Option and how Rust uses it to represent Some value or None.</p>
+<p>We’ve talked a bit about Option and how Rust uses it to represent Some value or None.</p>
 <p>((Show code))
 Option is an enum with two variants, it is literally just this:</p>
 <p>Note that after the name of the enum we have <code>T</code> in triangle brackets.</p>
@@ -524,29 +523,29 @@ that type.</p>
 For example, say we want to create a type that represents either a single character, or nothing.</p>
 <p>We can use the generic Option type to build Option char.</p>
 <p>When we specify the value as some character, Rust can infer that type.</p>
-<p>If it's None though, we'd have to specifically tell the compiler what the type is either through a type annotation or
+<p>If it’s None though, we’d have to specifically tell the compiler what the type is either through a type annotation or
 other means.</p>
 <p>Normally when accessing the variants of an enum, you must use the name followed by the variant eg Option colon colon
 Some R, however Option and Result are so ubiquitous that their variants are globally accessible in any Rust code.</p>
-<p>Result is another generic we've covered before. which usually represents either the success or failure of a function.</p>
+<p>Result is another generic we’ve covered before. which usually represents either the success or failure of a function.</p>
 <p>((Show code))
 It has two types that can be decided later <code>T</code>, which should represent what type of data you expected to get back, and
 <code>E</code>, which will be the type of the Error.</p>
 <p>((Show code))
-We'll talk more about functions in a later video, but in order to explain Result in context, the following example shows
-the fully described Result type as the return type of the function, which is how we'd typically use this enum...</p>
-<p>Though, you wouldn't typically use a String as an Error type, and we'll talk more about that when we get to Error
+We’ll talk more about functions in a later video, but in order to explain Result in context, the following example shows
+the fully described Result type as the return type of the function, which is how we’d typically use this enum…</p>
+<p>Though, you wouldn’t typically use a String as an Error type, and we’ll talk more about that when we get to Error
 handling later.</p>
-<p>When we start talking about adding functionality to types, we'll also talk about how you can restrict what types are
+<p>When we start talking about adding functionality to types, we’ll also talk about how you can restrict what types are
 allowed to be used in generics through the use of trait bounds.</p>
 <h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
 <p>That is (almost) everything you need to know about types!</p>
-<p>The main thing we're still missing is ownership and traits, but we'll come to those when we talk about functions.</p>
+<p>The main thing we’re still missing is ownership and traits, but we’ll come to those when we talk about functions.</p>
 <p>The main things to remember are:</p>
 <ul>
-<li>We have our primitive types that represent binary data. There's a lot of choice here, but that's a good thing!</li>
+<li>We have our primitive types that represent binary data. There’s a lot of choice here, but that’s a good thing!</li>
 <li>We can represent more complex types with compound types</li>
-<li>We can do the type equivalent "fill in the blank" using generics</li>
+<li>We can do the type equivalent “fill in the blank” using generics</li>
 <li>We talked a bit about two of the most common generics
 <ul>
 <li>Option (representing something or nothing)</li>
@@ -554,22 +553,22 @@ allowed to be used in generics through the use of trait bounds.</p>
 </ul>
 </li>
 </ul>
-<p>In the next video we're going to talk about controlling the flow of our program with branches and loops as well as
+<p>In the next video we’re going to talk about controlling the flow of our program with branches and loops as well as
 pattern matching and expressions, two of my favourite features of this language!</p>
-<p>If that interests you, don't forget to like and subscribe</p>
+<p>If that interests you, don’t forget to like and subscribe</p>
 <p>Between now and then, why not try experimenting with your own types!</p>
-<p>And I'll see you next time</p>
+<p>And I’ll see you next time</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="../iriss/002-iriss.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="../iriss/004-iriss.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -579,16 +578,21 @@ pattern matching and expressions, two of my favourite features of this language!
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="../iriss/002-iriss.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="../iriss/004-iriss.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -597,13 +601,13 @@ pattern matching and expressions, two of my favourite features of this language!
         </script>
 
 
-        <script src="../elasticlunr.min.js"></script>
-        <script src="../mark.min.js"></script>
-        <script src="../searcher.js"></script>
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
 
-        <script src="../clipboard.min.js"></script>
-        <script src="../highlight.js"></script>
-        <script src="../book.js"></script>
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
 

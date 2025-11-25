@@ -12,21 +12,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../favicon.svg">
-        <link rel="shortcut icon" href="../favicon.png">
-        <link rel="stylesheet" href="../css/variables.css">
-        <link rel="stylesheet" href="../css/general.css">
-        <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../fonts/fonts.css">
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -36,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex.js";
+            window.path_to_searchindex_js = "../searchindex-ec9cbdc1.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc.js"></script>
+        <script src="../toc-6fd8910a.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -53,7 +52,7 @@
             </div>
         </div>
     </div>
-    <div id="body-container">
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
@@ -82,12 +81,12 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             let sidebar = null;
-            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -102,39 +101,39 @@
             }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -142,122 +141,122 @@
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
                         <div class="search-wrapper">
-                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
                             <div class="spinner-wrapper">
-                                <i class="fa fa-spinner fa-spin"></i>
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
                             </div>
                         </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="introduction-to-traits"><a class="header" href="#introduction-to-traits">Introduction to Traits</a></h1>
 <p>Last time I showed you how to add functionality to types by building a state machine for my cat Yuki.</p>
 <p>We identified a couple of issues with the state machine though:</p>
-<p>First, we couldn't access anything on the Cat type from inside our Generic States.</p>
-<p>Second, the behaviours didn't seem generally applicable.</p>
+<p>First, we couldn’t access anything on the Cat type from inside our Generic States.</p>
+<p>Second, the behaviours didn’t seem generally applicable.</p>
 <p>Would <code>Hangry&lt;Human&gt;</code> make loud noises and bite someone like a <code>Hangry&lt;Cat&gt;</code>?</p>
-<p>Usually not... usually.</p>
-<p>Today we're going to solve these problems using Rust's incredible Trait system</p>
+<p>Usually not… usually.</p>
+<p>Today we’re going to solve these problems using Rust’s incredible Trait system</p>
 <p>As a note, we are going to be building on the code we developed last time so if you missed that, either follow the link appearing above me now,</p>
 <p>or see the relevant chapter in the free book that accompanies this series, check the description for a link straight to that chapter.</p>
-<p>Let's begin, my name is Daniel, welcome to IRISS.</p>
-<hr />
+<p>Let’s begin, my name is Daniel, welcome to IRISS.</p>
+<hr>
 <p>Traits describe common behaviour between types that implement a given trait.</p>
 <p>For example, have you noticed that lots of types have a method called <code>to_string()</code>, including numbers, string slices (<code>&amp;str</code>) and even strings?</p>
 <p>This is because there is a trait called <code>ToString</code> that describes the function header for a method called <code>to_string()</code> and all of these types implement that trait. ⚠️</p>
 <p>This is what <code>ToString</code> looks like in the Rust standard library, if we remove the comments and annotations you can see how simple it is</p>
 <p>Any type can implement this trait to provide the <code>to_string()</code> method.</p>
-<hr />
-<p>We've previously shown how generics allow you to create a kind of template for a function or type where the specific types used within can be decided later.</p>
-<p>When we used this with our emotional states, this wasn't actually very handy, as we couldn't make any assumptions about what was inside the state, it could be anything!</p>
+<hr>
+<p>We’ve previously shown how generics allow you to create a kind of template for a function or type where the specific types used within can be decided later.</p>
+<p>When we used this with our emotional states, this wasn’t actually very handy, as we couldn’t make any assumptions about what was inside the state, it could be anything!</p>
 <p>However, we can use what are called Trait Bounds to limit what types are allowed to slot into our generics.</p>
-<p>For example here's a function called <code>say_hello</code> where we're using the generic <code>S</code> for the parameter.</p>
+<p>For example here’s a function called <code>say_hello</code> where we’re using the generic <code>S</code> for the parameter.</p>
 <p>If we limit what types <code>S</code> can be to only those that implement <code>ToString</code>, then we can now use any methods that that trait provides because we know only types that implement that trait can end up in this function.</p>
-<p>For example, we could pass in all those types I mentioned before because they all implement <code>ToString</code>, however, <code>Vec</code> does not implement <code>ToString</code>, so this won't compile.</p>
-<hr />
+<p>For example, we could pass in all those types I mentioned before because they all implement <code>ToString</code>, however, <code>Vec</code> does not implement <code>ToString</code>, so this won’t compile.</p>
+<hr>
 <p>We can also implement <code>ToString</code> on our own types. ⚠️Huh, whats that.</p>
 <p>Imagine we have a <strong>ehm</strong> poorly designed Person type with a first and last name.</p>
-<p>Because this <code>Person</code> type doesn't yet implement <code>ToString</code>, it can't be passed to our function.</p>
-<p>To implement <code>ToString</code> for our <code>Person</code>,  ⚠️ huh, there it is again. I wonder what it means. ... anyway</p>
-<p>To implement <code>ToString</code> for our <code>Person</code> it's very similar to our Implementation code from the last video but instead of Implementing <code>Person</code> we implement <code>ToString for Person</code>.</p>
+<p>Because this <code>Person</code> type doesn’t yet implement <code>ToString</code>, it can’t be passed to our function.</p>
+<p>To implement <code>ToString</code> for our <code>Person</code>,  ⚠️ huh, there it is again. I wonder what it means. … anyway</p>
+<p>To implement <code>ToString</code> for our <code>Person</code> it’s very similar to our Implementation code from the last video but instead of Implementing <code>Person</code> we implement <code>ToString for Person</code>.</p>
 <p>We can use the format macro here to simply return the first and last name with a space between as a new String.</p>
 <p>And now we can use <code>Person</code> inside of <code>say_hello</code>.</p>
-<hr />
-<p>As an aside, it's worth noting that in order to use methods associated with a trait, the trait must be in scope.</p>
-<p>We don't have to do this in this case because <code>ToString</code> is part of the Rust prelude, a collection of types and traits that are always available in Rust.</p>
-<p>Often when people create libraries they'll make their own prelude module that contains the most commonly used types and traits so that you can import the entire prelude module rather than having to import everything separately.</p>
-<p>We'll talk more about this in the future when we start talking about Rust's wider ecosystem.</p>
-<p><code>ToString</code> is one of many traits that are built into the Rust standard library, and we'll talk more about some of the other traits available to you the next video.</p>
-<p>For now though, we're going to build our own!</p>
+<hr>
+<p>As an aside, it’s worth noting that in order to use methods associated with a trait, the trait must be in scope.</p>
+<p>We don’t have to do this in this case because <code>ToString</code> is part of the Rust prelude, a collection of types and traits that are always available in Rust.</p>
+<p>Often when people create libraries they’ll make their own prelude module that contains the most commonly used types and traits so that you can import the entire prelude module rather than having to import everything separately.</p>
+<p>We’ll talk more about this in the future when we start talking about Rust’s wider ecosystem.</p>
+<p><code>ToString</code> is one of many traits that are built into the Rust standard library, and we’ll talk more about some of the other traits available to you the next video.</p>
+<p>For now though, we’re going to build our own!</p>
 <h2 id="animals"><a class="header" href="#animals"><code>Animal</code>s</a></h2>
-<p>The first problem we were having was that we can't access anything related to Cat inside our emotional states.</p>
+<p>The first problem we were having was that we can’t access anything related to Cat inside our emotional states.</p>
 <p>This is because our emotional states are generics that can take <em>any</em> type inside of them.</p>
 <p>What we need to do is limit what can go inside our emotional states in a way that enables us to understand the functionality of the inner types.</p>
-<p>To do this, we'll make an <code>Animal</code> trait to represent the common behaviours of any animal.</p>
-<p>We'll also do a little reorganising while we're at it.</p>
+<p>To do this, we’ll make an <code>Animal</code> trait to represent the common behaviours of any animal.</p>
+<p>We’ll also do a little reorganising while we’re at it.</p>
 <p>First lets create an animal module.</p>
-<hr />
-<p>In <code>main.rs</code> we'll add <code>mod animal</code> and then create a <code>mod.rs</code> file in an <code>animal</code> directory.</p>
-<p>Let's move <code>cat.rs</code> to the <code>animal</code> directory too, so that it's a submodule of <code>animal</code>.</p>
+<hr>
+<p>In <code>main.rs</code> we’ll add <code>mod animal</code> and then create a <code>mod.rs</code> file in an <code>animal</code> directory.</p>
+<p>Let’s move <code>cat.rs</code> to the <code>animal</code> directory too, so that it’s a submodule of <code>animal</code>.</p>
 <p>Finally, we need to remember to add <code>pub mod cat</code> to <code>animal/mod.rs</code> and to update our use statement in <code>main.rs</code> to <code>animal::cat::Cat</code>.</p>
-<p>We're now ready to make our trait, which we'll put in <code>animal</code>s <code>mod.rs</code></p>
-<p>With trait methods, we don't <em>have</em> to define any behaviour (though we can, and we may talk about that another time), we only need to tell Rust how the method will be used.</p>
+<p>We’re now ready to make our trait, which we’ll put in <code>animal</code>s <code>mod.rs</code></p>
+<p>With trait methods, we don’t <em>have</em> to define any behaviour (though we can, and we may talk about that another time), we only need to tell Rust how the method will be used.</p>
 <p>In this case we define a method called <code>get_name</code> which will take a reference to the data this is implemented for, and will return a string slice.</p>
-<p>We also don't need to specify that the method is public as Traits are Rust's equivalent of Interfaces, everything listed is assumed to be public.</p>
+<p>We also don’t need to specify that the method is public as Traits are Rust’s equivalent of Interfaces, everything listed is assumed to be public.</p>
 <p>Now we need to implement this for <code>Cat</code>.</p>
-<hr />
-<p>In <code>cat.rs</code> we'll add the implementation.</p>
-<p>Huh... but now we have <em>two</em> methods for Cat called <code>get_name()</code>, one in <code>impl Cat</code>, and one in <code>impl Animal for Cat</code>.</p>
-<p>That's actually ok, but, because they're both doing the same thing, this is indicative of a code smell.</p>
-<p>What happens if we want to add more functionality to the getter? We'd have to remember to update both.</p>
-<p>It'd be better to call the underlying <code>Cat::get_name</code> from <code>Animal::get_name</code>, but <code>self.get_name()</code> is the function we're in... how do we call the other one?</p>
-<p>Have you noticed that when calling methods with the dot syntax like <code>yuki.get_name()</code>, even though the methods first argument is <code>&amp;self</code>, we don't actually pass anything in here, the self argument is skipped.</p>
+<hr>
+<p>In <code>cat.rs</code> we’ll add the implementation.</p>
+<p>Huh… but now we have <em>two</em> methods for Cat called <code>get_name()</code>, one in <code>impl Cat</code>, and one in <code>impl Animal for Cat</code>.</p>
+<p>That’s actually ok, but, because they’re both doing the same thing, this is indicative of a code smell.</p>
+<p>What happens if we want to add more functionality to the getter? We’d have to remember to update both.</p>
+<p>It’d be better to call the underlying <code>Cat::get_name</code> from <code>Animal::get_name</code>, but <code>self.get_name()</code> is the function we’re in… how do we call the other one?</p>
+<p>Have you noticed that when calling methods with the dot syntax like <code>yuki.get_name()</code>, even though the methods first argument is <code>&amp;self</code>, we don’t actually pass anything in here, the self argument is skipped.</p>
 <p>This is because when we call a method with the dot syntax, we call it on a specific instance, so Rust, like many similar languages, can infer the value of <code>self</code> to be the instance the method was called on.</p>
 <p>But, we can also call the method directly and manually pass in the value of <code>self</code>.</p>
 <p>For example, in the method <code>Animal::get_name</code> we could call the <code>Cat</code> method of the same name, manually passing in <code>self</code>.</p>
 <p>This lets Rust know that it should call the <code>Cat</code> implementation of <code>get_name</code>.</p>
 <p>Now the behaviour of <code>Animal::get_name</code> for <code>Cat</code> will always be the same as <code>Cat::get_name</code> even if we change the Cat version of the method in the future.</p>
-<hr />
+<hr>
 <p>For each state (<code>Mischievous</code>, <code>Hangry</code>, <code>Eepy</code>), we can add a Trait Bound so that the generic <code>A</code> must be a type that has implemented the <code>Animal</code> trait.</p>
-<p>Now that we know that whatever is in each state's <code>animal</code> field must implement the <code>Animal</code> trait, we can treat it as such in any implementation code for those states.</p>
-<p>There's a bit of a trick here though, when we add the trait bound to the implementation block, it actually goes on the implementation's generic listing, as the other generics are references back to this one.</p>
-<p>We're saying that for this implementation, <code>A</code> must have this trait bound, and this is the same <code>A</code> that will be used for the structs generic.</p>
-<p>Let's update all the other states.</p>
-<hr />
-<p>So that's our first problem solved! We can now access the <code>Cat</code>'s data through the <code>Animal</code> trait.</p>
+<p>Now that we know that whatever is in each state’s <code>animal</code> field must implement the <code>Animal</code> trait, we can treat it as such in any implementation code for those states.</p>
+<p>There’s a bit of a trick here though, when we add the trait bound to the implementation block, it actually goes on the implementation’s generic listing, as the other generics are references back to this one.</p>
+<p>We’re saying that for this implementation, <code>A</code> must have this trait bound, and this is the same <code>A</code> that will be used for the structs generic.</p>
+<p>Let’s update all the other states.</p>
+<hr>
+<p>So that’s our first problem solved! We can now access the <code>Cat</code>’s data through the <code>Animal</code> trait.</p>
 <h2 id="making-more-flexible-animals"><a class="header" href="#making-more-flexible-animals">Making more flexible <code>Animal</code>s</a></h2>
-<p>Now that we can read details from the underlying <code>Cat</code> object, lets start to think about how we can expand this functionality out to other types of animals... starting with the most dangerous of animal.</p>
-<p>We can start by adding <code>pub mod human;</code> to <code>animal/mod.rs</code>. Now we can add our Human type in here, we'll keep it pretty simple for now.</p>
-<p>Finally, we'll <code>implement Animal for Human</code></p>
-<p>Once we update our main function, we can run the program to make sure everything's working.</p>
+<p>Now that we can read details from the underlying <code>Cat</code> object, lets start to think about how we can expand this functionality out to other types of animals… starting with the most dangerous of animal.</p>
+<p>We can start by adding <code>pub mod human;</code> to <code>animal/mod.rs</code>. Now we can add our Human type in here, we’ll keep it pretty simple for now.</p>
+<p>Finally, we’ll <code>implement Animal for Human</code></p>
+<p>Once we update our main function, we can run the program to make sure everything’s working.</p>
 <p>Notice that we barely had to change anything to add humans to our code, how cool is that!</p>
-<p>But there's still an issue... my mischievous state doesn't tend to have me breaking into wardrobes by pulling on exposed clothing... I have opposable thumbs.</p>
-<p>In fact, when I'm in a mischievous mood, I probably don't even behave the same as other humans, you and I probably don't behave the same.</p>
+<p>But there’s still an issue… my mischievous state doesn’t tend to have me breaking into wardrobes by pulling on exposed clothing… I have opposable thumbs.</p>
+<p>In fact, when I’m in a mischievous mood, I probably don’t even behave the same as other humans, you and I probably don’t behave the same.</p>
 <h2 id="optional-homework"><a class="header" href="#optional-homework">Optional Homework</a></h2>
 <p>Can you change the code so that each states behaviours are defined when the structs are instantiated?</p>
 <p>To do this you will need to:</p>
@@ -266,39 +265,39 @@
 <li>add new methods to the <code>Animal</code> trait to get the behaviours</li>
 <li>and then implement those methods for each struct</li>
 </ul>
-<p>If you get stuck, I've implemented the code in this videos chapter of the IRISS book, just scroll to the blank code block at the bottom and hit the eye icon to reveal it.</p>
-<p>Do note though that a limitation of the book means all the code is in one place, you should split your modules into files so that it's easier to manage and work with.</p>
-<p>And just to show that I did actually check the homework isn't too hard this time, here it is running <em>wink</em></p>
+<p>If you get stuck, I’ve implemented the code in this videos chapter of the IRISS book, just scroll to the blank code block at the bottom and hit the eye icon to reveal it.</p>
+<p>Do note though that a limitation of the book means all the code is in one place, you should split your modules into files so that it’s easier to manage and work with.</p>
+<p>And just to show that I did actually check the homework isn’t too hard this time, here it is running <em>wink</em></p>
 <h2 id="next-time"><a class="header" href="#next-time">Next Time</a></h2>
-<p>Next time we'll continue to explore Traits by looking at some of the more commonly used ones available in the Rust standard library.</p>
-<p>This will also allow us to cover some Trait features we haven't seen so far, including associated types!</p>
-<p>If that sounds interesting to you, don't forget to like and subscribe.</p>
-<p>And if I don't see you there, I'll see you next time. 👋🏻</p>
-<hr />
+<p>Next time we’ll continue to explore Traits by looking at some of the more commonly used ones available in the Rust standard library.</p>
+<p>This will also allow us to cover some Trait features we haven’t seen so far, including associated types!</p>
+<p>If that sounds interesting to you, don’t forget to like and subscribe.</p>
+<p>And if I don’t see you there, I’ll see you next time. 👋🏻</p>
+<hr>
 <p>Wait! I lied.</p>
-<p>Remember when I told you that all of these built in types implement <code>ToString</code>... they... they don't.</p>
-<p>Well, not directly anyway, and you shouldn't either.</p>
-<p>There is another, more flexible Trait called <code>Display</code> that allows you to write string data to an arbitrary formatter which can then output that data to somewhere else, whether that's a newly allocated location in heap memory, an I/O stream or something else.</p>
+<p>Remember when I told you that all of these built in types implement <code>ToString</code>… they… they don’t.</p>
+<p>Well, not directly anyway, and you shouldn’t either.</p>
+<p>There is another, more flexible Trait called <code>Display</code> that allows you to write string data to an arbitrary formatter which can then output that data to somewhere else, whether that’s a newly allocated location in heap memory, an I/O stream or something else.</p>
 <p>Numbers, string slices and even Strings implement <code>Display</code> but <em>not</em> <code>ToString</code>.</p>
-<p>But we used <code>ToString</code> as our trait bound, how did our function accept those other types if they don't implement <code>ToString</code>?</p>
+<p>But we used <code>ToString</code> as our trait bound, how did our function accept those other types if they don’t implement <code>ToString</code>?</p>
 <p>Well, when you implement a trait, you can implement it for a generic, and then use a trait bound to make sure that generic already implements another trait.</p>
 <p>In Rusts standard library, there is a generic implementation for <code>ToString</code> for type <code>T</code> where <code>T</code> already implements Display.</p>
-<p>We'll cover this technique more in later videos, but for now your takeaway should be, don't implement <code>ToString</code>, implement <code>Display</code>.</p>
+<p>We’ll cover this technique more in later videos, but for now your takeaway should be, don’t implement <code>ToString</code>, implement <code>Display</code>.</p>
 <p>While it looks more intimidating, you can generally pass the formatter to the <code>write!</code> macro and the rest of the macro works the same as the format macro but returns a Result instead of a String.</p>
-<p>Here's how we can change our <code>ToString</code> implementation for <code>Person</code> to use <code>Display</code> instead.</p>
+<p>Here’s how we can change our <code>ToString</code> implementation for <code>Person</code> to use <code>Display</code> instead.</p>
 <p>Anything that has Display automatically has ToString, so we can still use our Person in our <code>say_hello</code> function</p>
-<p>Ok, now I'll see you next time.</p>
+<p>Ok, now I’ll see you next time.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="../iriss/009-iriss.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="../iriss/011-common-traits-part-1.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -308,16 +307,21 @@
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="../iriss/009-iriss.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="../iriss/011-common-traits-part-1.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -326,13 +330,13 @@
         </script>
 
 
-        <script src="../elasticlunr.min.js"></script>
-        <script src="../mark.min.js"></script>
-        <script src="../searcher.js"></script>
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
 
-        <script src="../clipboard.min.js"></script>
-        <script src="../highlight.js"></script>
-        <script src="../book.js"></script>
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
 
