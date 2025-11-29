@@ -1,0 +1,9 @@
+[workspace]
+members = ["newtypes", "no-builder"]
+
+[package]
+name = "builder"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
