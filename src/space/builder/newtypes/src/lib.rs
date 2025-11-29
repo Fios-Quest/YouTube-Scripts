@@ -52,7 +52,7 @@ pub struct DateOfBirth(String);
 
 impl DateOfBirth {
     pub fn get_age(&self) -> u8 {
-        16
+        self.0.split('-').next().expect("invalid date").parse::<i32>().expect("invalid date").saturating_sub(2025).abs() as u8
     }
 }
 

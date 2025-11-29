@@ -13,6 +13,14 @@ name = "builder"
 version = "0.1.0"
 
 [[package]]
+name = "builder-lite"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "newtypes",
+]
+
+[[package]]
 name = "newtypes"
 version = "0.1.0"
 
