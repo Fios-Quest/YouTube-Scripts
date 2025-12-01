@@ -1,5 +1,5 @@
 [workspace]
-members = [ "builder-lite","newtypes", "no-builder"]
+members = [ "builder-lite","newtypes", "no-builder", "typestate-builder"]
 
 [package]
 name = "builder"

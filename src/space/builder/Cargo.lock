@@ -31,3 +31,11 @@ dependencies = [
  "anyhow",
  "newtypes",
 ]
+
+[[package]]
+name = "typestate-builder"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "newtypes",
+]
