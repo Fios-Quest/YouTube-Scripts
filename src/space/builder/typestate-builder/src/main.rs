@@ -11,19 +11,15 @@ struct User {
 }
 
 #[derive(Debug)]
-enum UserBuilderError {
-    NotOldEnough,
-}
+struct UserNotOldEnough;
 
-impl fmt::Display for UserBuilderError {
+impl fmt::Display for UserNotOldEnough {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            Self::NotOldEnough => write!(f, "User is not old enough"),
-        }
+        write!(f, "User is not old enough")
     }
 }
 
-impl Error for UserBuilderError {}
+impl Error for UserNotOldEnough {}
 
 struct Unset;
 
@@ -76,9 +72,9 @@ impl<U: UsernameMarker, E: EmailAddressMarker, D: DateOfBirthMarker> UserBuilder
     fn with_date_of_birth(
         self,
         date_of_birth: DateOfBirth,
-    ) -> Result<UserBuilder<U, E, DateOfBirth>, UserBuilderError> {
+    ) -> Result<UserBuilder<U, E, DateOfBirth>, UserNotOldEnough> {
         if date_of_birth.get_age() < 21 {
-            return Err(UserBuilderError::NotOldEnough);
+            return Err(UserNotOldEnough);
         }
         Ok(UserBuilder {
             username: self.username,
@@ -100,18 +96,19 @@ impl UserBuilder<Username, EmailAddress, DateOfBirth> {
 
 fn main() -> anyhow::Result<()> {
     // We can successfully build a User if we have all the required information
-    let user_result = UserBuilder::new()
+    let user = UserBuilder::new()
         .with_username(Username::from_str("Yuki")?)
         .with_email(EmailAddress::from_str("yuki@example.com")?)
         .with_date_of_birth(DateOfBirth::from_str("2000-01-01")?)?
         .build();
 
-    dbg!(user_result);
+    dbg!(user);
 
     // But if we don't give all the required information we get an error
-    // let user_result = UserBuilder::new()
+    // let user = UserBuilder::new()
     //     .with_username(Username::from_str("Fio")?)
     //     .build();
+    // dbg!(user);
 
     Ok(())
 }

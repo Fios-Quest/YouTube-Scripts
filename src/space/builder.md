@@ -1,160 +1,48 @@
 Builder
 =======
 
+Intro
+-----
+
 The builder pattern allows us to construct complex types in steps.
 
-For example, in our previous video we had a 'User' struct that had a username, an email and a date of birth.
+For example, in our previous video, you don't have to have watched it, we had a 'User' struct that had a username, an
+email and a date of birth.
 
 In that video, we allowed the date of birth to be set later, but a user also had to be older than 21 (which I mentioned
 was silly to do after the user was created).
 
-```rust
-use std::str::FromStr;
+### Intro 2
 
-#[derive(Debug)]
-struct Username(String);
+If we were to make all of these fields required, creating the struct gets a bit unwieldy.
 
-impl FromStr for Username {
-    type Err = ();
+Do we instantiate it manually or write a constructor?
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Ok(Self(s.to_string()))
-    }
-}
-
-#[derive(Debug)]
-struct EmailAddress(String);
-
-impl FromStr for EmailAddress {
-    type Err = ();
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Ok(Self(s.to_string()))
-    }
-}
-
-#[derive(Debug)]
-struct DateOfBirth(String);
-
-impl FromStr for DateOfBirth {
-    type Err = ();
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Ok(Self(s.to_string()))
-    }
-}
-
-
-#[derive(Debug)]
-struct User {
-    username: Username,
-    email: Option<EmailAddress>,
-    date_of_birth: Option<DateOfBirth>,
-}
-```
-
-If we were to make all of these fields required, creating the struct gets a bit unweildy. Do we construct it manually or
-write a constructor?
-
-If we manually construct it, we can't validate the fields.
+If we manually instantiate it, we can't validate the fields.
 
 If we write a single constructor, the parameter names are slightly obfuscated, but worse than that, we have to cram all
 our validation into a single function.
 
-```rust
-use std::str::FromStr;
+### Intro 3
 
-#[derive(Debug)]
-struct Username(String);
+This isn't so bad in our example User struct...
 
-impl FromStr for Username {
-    type Err = ();
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Ok(Self(s.to_string()))
-    }
-}
-
-#[derive(Debug)]
-struct EmailAddress(String);
-
-impl FromStr for EmailAddress {
-    type Err = ();
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Ok(Self(s.to_string()))
-    }
-}
-
-#[derive(Debug)]
-struct DateOfBirth(String);
-
-impl DateOfBirth {
-    fn get_age(&self) -> u8 {
-        16
-    }
-}
-
-impl FromStr for DateOfBirth {
-    type Err = ();
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Ok(Self(s.to_string()))
-    }
-}
-
-#[derive(Debug)]
-struct User {
-    username: Username,
-    email: EmailAddress,
-    date_of_birth: DateOfBirth,
-}
-
-impl User {
-    fn new(username: Username, email: EmailAddress, date_of_birth: DateOfBirth) -> Result<Self, ()> {
-        if date_of_birth.get_age() < 21 {
-            return Err(())
-        }
-
-        Ok(User {
-            username,
-            email,
-            date_of_birth,
-        })
-    }
-}
-
-fn main() -> Result<(), ()> {
-    let user = User {
-        username: Username::from_str("Yuki")?,
-        email: EmailAddress::from_str("yuki@example.com")?,
-        date_of_birth: DateOfBirth::from_str("2009-05-01")?,
-    };
-
-    let user = User::new(
-        Username::from_str("Yuki")?,
-        EmailAddress::from_str("yuki@example.com")?,
-        DateOfBirth::from_str("2009-05-01")?,
-    );
-    Ok(())
-}
-```
-
-This isn't so bad in our example User struct, but what if you're working with a more complicated stucture with numerous
-fields many of which require validation?
+but what if you're working with a more complicated structure with numerous fields many of which require validation?
 
 This is where the Builder Pattern comes in.
 
+### Intro 4
+
 Instead of constructing the object directly, we use another type to manage the construction.
 
-This Builder type collects data about the struct we want to create, then has a finaliser that creates the struct from
+This Builder type collects data about the struct we want to create, then has a finalizer that creates the struct from
 the data we've given it.
 
 There are arguably two versions of this pattern: a simpler version that will work in just about any language that I'm
 going to refer to as "Builder Lite", and a more complex version that only works in languages with strict generic typing,
-the "[Typestate](./typestate.md) Builder".
+the "Typestate Builder".
 
-Each has their own pros and cons, and we'll go over those too.
+Each has their own pros and cons, so lets go over them.
 
 Builder Lite
 ------------
@@ -164,349 +52,142 @@ The traditional builder pattern uses a type that mirrors the type you want to bu
 We use methods to update each field, and then have a finalizer that takes the data we've stored in the builder and
 attempts to convert it into the target type.
 
-For our `User` example that might look like this.
+Let's build one for our `User` example.
 
+Before we start on the Builder we need to set up an Error type as there are a lot of ways this could go wrong.
 
-```rust
-use std::fmt;
-use std::str::FromStr;
-use std::error::Error;
+The UserBuilder itself looks just like the User, except the fields are all optional.
 
-#[derive(Debug)]
-struct ImpossibleError;
+Each of our "withers" will set the relevant value and return a new version of the UserBuilder with the new value.
 
-impl fmt::Display for ImpossibleError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "This error should be impossible!")
-    }
-}
+### lite 2
 
-impl Error for ImpossibleError {}
+Am I trying to make "withers" a thing? Yes.
 
-#[derive(Debug)]
-struct Username(String);
+Will I succeed? No, not a chance.
 
-impl FromStr for Username {
-    type Err = ImpossibleError;
+### lite 3
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Ok(Self(s.to_string()))
-    }
-}
+Our first potential error is when setting the date of birth, where we test if the user is at least 21.
 
-#[derive(Debug)]
-struct EmailAddress(String);
+This doesn't matter to our Fluent Interface in Rust so long as you're using the Builder in a context where you can 
+bubble the Error.
 
-impl FromStr for EmailAddress {
-    type Err = ImpossibleError;
+Our finalizer method is called "build" and simply checks to see if all the Optional parameters have been set.
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Ok(Self(s.to_string()))
-    }
-}
+If we missed any values we'll return an appropriate error or if everything is ok, we'll return the built User type.
 
-#[derive(Debug)]
-struct DateOfBirth(String);
+Here's an example of where the User will be successfully built.
 
-impl DateOfBirth {
-    fn get_age(&self) -> u8 {
-        16
-    }
-}
+### lite 4
 
-impl FromStr for DateOfBirth {
-    type Err = ImpossibleError;
+Here's an example where we'll get an error.
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Ok(Self(s.to_string()))
-    }
-}
+The biggest pro of this pattern is its really easy to understand at a glance and pretty easy to maintain.
 
-#[derive(Debug)]
-struct User {
-    username: Username,
-    email: EmailAddress,
-    date_of_birth: DateOfBirth,
-}
-
-#[derive(Debug)]
-enum UserBuilderError {
-    NoUsername,
-    NoEmailAddress,
-    NoDateOfBirth,
-    NotOldEnough,
-}
-
-impl fmt::Display for UserBuilderError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "This error should be impossible!")
-    }
-}
-
-impl Error for UserBuilderError {}
-
-#[derive(Default)]
-struct UserBuilder {
-    username: Option<Username>,
-    email: Option<EmailAddress>,
-    date_of_birth: Option<DateOfBirth>,
-}
-
-impl UserBuilder {
-    fn new() -> Self {
-        Self::default()
-    }
-
-    fn with_username(mut self, username: Username) -> Self {
-        self.username = Some(username);
-        self
-    }
-
-    fn with_email(mut self, email: EmailAddress) -> Self {
-        self.email = Some(email);
-        self
-    }
-
-    fn with_date_of_birth(mut self, date_of_birth: DateOfBirth) -> Result<Self, UserBuilderError> {
-        if date_of_birth.get_age() < 21 {
-            return Err(UserBuilderError::NotOldEnough);
-        }
-        self.date_of_birth = Some(date_of_birth);
-        Ok(self)
-    }
-
-    fn build(self) -> Result<User, UserBuilderError> {
-        let username = self.username.ok_or(UserBuilderError::NoUsername)?;
-        let email = self.email.ok_or(UserBuilderError::NoEmailAddress?);
-        let date_of_birth = self.date_of_birth;
-
-        Ok (User {
-            username,
-            email,
-            date_of_birth,            
-        })
-    }
-}
-
-fn main() -> Result<(), Box<dyn Error>> {
-    // We can successfully build a User if we have all the required information
-    let user_result = UserBuilder::new()
-        .with_username(Username::from_str("Yuki")?)
-        .with_email(EmailAddress::from_str("yuki@example.com")?)
-        .with_date_of_birth(DateOfBirth::from_str("2009-05-01")?)?
-        .build();
-    assert!(user_result.is_err());
-
-    // But if we don't give all the required information we get an error
-    let user_result = UserBuilder::new()
-        .with_username(Username::from_str("Fio")?)
-        .build();
-    assert!(user_result.is_err());
-
-    Ok(())
-}
-```
+The biggest con though is that we should know, at compile time, that that second builder was never going to succeed.
 
 Typestate Builder
 -----------------
 
-In the previous example we need to deal with calling `.build()` on a builder that may not have all the required
-information. To manage this potential problem we return a result. What if I told you, we can write this code in such
-a way as to be sure that the `.build()` method can only be used once we can guarantee we have everything we need, thus
-negating the Result requirement.
+### typestate 1
 
-This is an advanced application of the [Typestate](./typestate.md) pattern. Instead of migrating between concrete
-types representing individual states, we can use generics as markers on top of which we can implement different methods
+Let's use the TypeState pattern to make that problem go away.
 
-The only slight trick is that generic types must be "used" _in_ our type. For example, the following won't compile 
-because we didn't use "T" in the struct itself, even though our instantiation uses a Unit Struct:
+If you're not already familiar with this pattern we have a video on it, but the TL;DW is that we can bake the state of
+something into its Type, and then decide what your allowed to do with data based on its Type.
 
-```rust,compile_fail
-struct BadExample<T> {
-    data: String,
-}
+Let's make a TypeState Builder for our User.
 
-struct Marker;
+First we can edit our Error down to a single event now, the others won't be possible when we're done.
 
-# fn main() {
-let example = BadExample::<Marker> { data: "This won't work".to_string() };
-# }
-```
+Next, we're going to use generic for each of the properties in our builder.
 
-This is where `PhantomData` comes in. It's a zero-sized marker that "uses" the types in generics, allowing you to use
-generics as nothing more than a compile time marker.
+### typestate 2
 
-```rust
-use std::marker::PhantomData;
+These generics can either be the type they're supposed to be, or something that represents the fact we haven't set them
+yet.
 
-struct GoodExample<T> {
-    data: String,
-    marker_for_t: PhantomData<T>,
-}
+To achieve this, I've created an "Unset" unit struct, and a trait to restrict each generic (this may not be necessary,
+but it is tidy).
 
-struct Marker;
+We'll implement each trait for Unset, and for the type we _actually_ want to use there.
 
-# fn main() {
-let example = GoodExample::<Marker> {
-    data: "This will work!".to_string(),
-    marker_for_t: PhantomData,
-};
-# }
-```
+Now we can create our Builder and the properties are all generics restricted by the relevant traits
 
-Let's build our builder again using this method.
+### typestate 3
 
-```rust
-use std::error::Error;
-use std::collections::HashSet;
-use std::marker::PhantomData;
+So U can be Username or Unset, E can be EmailAddress or Unset and D can be DateOfBirth or Unset
 
-# // shush shush shush this code is supposed to look good, not be good
-# struct Username(String);
-# impl<S: ToString> From<S> for Username {
-#     fn from(s: S) -> Self  {
-#         Self(s.to_string())
-#     }
-# }
-# #[derive(Eq, PartialEq, Hash)]
-# struct EmailAddress(String);
-# impl<S: ToString> From<S> for EmailAddress {
-#     fn from(s: S) -> Self  {
-#         Self(s.to_string())
-#     }
-# }
-# struct DateOfBirth(String);
-# impl From<String> for DateOfBirth {
-#     fn from(s: String) -> Self  {
-#         Self(s)
-#     }
-# }
-# 
-# struct User {
-#     // Required valus
-#     username: Username,
-#     email: EmailAddress,
-#     // Optional values
-#     secondary_emails: HashSet<EmailAddress>,
-#     date_of_birth: Option<DateOfBirth>,
-# }
-#
-# enum UserBuilderError {
-#     NoUsername,
-#     NoPrimaryEmail,
-# }
-# 
+We're going to implement UserBuilder three times, each with different generic variants.
 
-// We'll use these unit structs as markers for when values are set
-// Deriving Default means we can simplify our constructor
-#[derive(Default)]
-struct Set;
-#[derive(Default)]
-struct Unset;
+The first one we'll implement is when all of our generics are Unset, this allows us to have a constructor for the
+Builder that returns a version where everything starts off Unset.
 
-#[derive(Default)]
-struct UserBuilder<U, PE> {
-    username: Option<Username>,
-    email: Option<EmailAddress>,
-    secondary_emails: HashSet<EmailAddress>,
-    date_of_birth: Option<DateOfBirth>,
-    // We need to record the markers somewhere but this won't impact runtime
-    username_set: PhantomData<U>,
-    email_set: PhantomData<PE>,
-}
+Next we want to implement the UserBuilder for all generics where we don't know what the generic type is.
 
-// The constructor only exists for UserBuilder<Unset, Unset> so that's how our
-// builder starts
-impl UserBuilder<Unset, Unset> {
-    fn new() -> UserBuilder<Unset, Unset> {
-        Self::default()
-    }
-}
+### typestate 4
 
-impl<U, PE> UserBuilder<U, PE> {
-    // When we set the username we have to completely migrate the type and
-    // create a new struct for the generics to work.
-    fn with_username(mut self, username: Username) -> UserBuilder<Set, PE> {
-        UserBuilder {
-            username: Some(username),
-            email: self.email,
-            secondary_emails: self.secondary_emails,
-            date_of_birth: self.date_of_birth,
-            username_set: PhantomData,
-            email_set: PhantomData,
-        }
-    }
+Each method here consumes the Builder and returns a new Builder with the data we wanted set. 
 
-    // Same goes for primary email
-    fn with_email(mut self, email: EmailAddress) -> UserBuilder<U, Set> {
-        UserBuilder {
-            username: self.username,
-            email: Some(email),
-            secondary_emails: self.secondary_emails,
-            date_of_birth: self.date_of_birth,
-            username_set: PhantomData,
-            email_set: PhantomData,
-        }
-    }
+This updates the type, setting the generic we care about to that particular type but keeping the others as whatever type
+they were when the method was called.
 
-    // The other setters return the same type including generics, whatever they were before
-    fn add_secondary_emaail(mut self, email: EmailAddress) -> UserBuilder<U, PE> {
-        self.secondary_emails.insert(email);
-        self
-    }
+For example, the "with_username" method will return a UserBuilder with the first generic parameter set to Username, but
+the other two will just be whatever they were when that method was called.
 
-    fn with_date_of_birth(mut self, date_of_birth: DateOfBirth) -> UserBuilder<U, PE> {
-        self.date_of_birth = Some(date_of_birth);
-        self
-    }
-}
+### typestate 4
 
-// By only implementing `.build()` on UserBuilder<Set, Set>, the method will only
-// be available once both `.with_username()` and `.with_email()` are called.
-impl UserBuilder<Set, Set> {
-    fn build(self) -> User {
-        let username = self.username
-            .expect("It should not be possible to call build with username unset");
-        let email = self.email
-            .expect("It should not be possible to call build with primary email unset");
-        let secondary_emails = self.secondary_emails;
-        let date_of_birth = self.date_of_birth;
+Same for the "with_email" method.
 
-        User {
-            username,
-            email,
-            secondary_emails,
-            date_of_birth,
-        }
-    }
-}
+The "with_date_of_birth" method is a touch different because it returns a Result, but the Ok variant will still inherit
+whatever concrete types U and E were set to when the method was called.
 
-fn main () {
-    // We can only build a User if we have all the required information
-    let user = UserBuilder::new()
-        .with_username(Username::from("Fio"))
-        .with_email(EmailAddress::from("fio@example.com"))
-        .build();
+Finally, we'll implement UserBuilder where all of our generics are now the types we want them to be.
 
-    // This won't compile because .build() only exists on UserBuilder<Set, Set>
-    // let user_result = UserBuilder::new()
-    //     .with_username(Username::from("Fio"))
-    //     .build();
-}
-```
+### typestate 5
 
-Using the typestate builder we prevent `.build()` being called unless all required data has been set. Rather than
-runtime validation, we get compile time validation!
+Here's where we put our finaliser method.
 
-Pro's and Con's
----------------
+Because this method is only implemented for the concrete version of UserBuilder where all of our generics match the
+types in our User struct, we can just copy them straight over.
 
-I don't think there's one "right" builder to use.
+When we come to use this pattern, we need to provide all the necessary data or the user can not be built.
 
-Having compile time validation that you've used the builder correctly is nice, but it adds a lot of complexity through
-the type system, and you can arguably be sure you've used the builder correctly through tests. But using the lite
-builder adds more complexity to your tests and error handling code.
+### typestate 6
 
-Its also worth noting that the typestate builder won't work if you can't guarantee each method is called at runtime. 
-Methods that set a required parameter change the type of the builder, meaning you can't put a call in a branch (such as
-an if) because you can't reconcile the types later.
+The build method simply doesn't exist unless we've done that, so this code won't compile, specifically telling us
+that build does not exist for UserBuilder<Username, Unset, Unset>.
+
+This is objectively... awesome.
+
+There are two big pros to this pattern, the obvious one is that we can not muck up building our user type, but its also
+worth pointing out that we've removed all but one branch in our code, which will provide a significant runtime benefit.
+
+The downside though is this code is just more complex to look at, particularly for newer engineers where all those 
+triangle brackets might be intimidating.
+
+Conclusion
+----------
+
+### conclusion 1
+
+Should you just use the more complex but safer and faster TypeState Builder?
+
+That probably depends on your team and your project requirements, but my advice is to trust yourself and your team.
+
+It might require talking through a couple of times, especially if you're building something particularly complex with 
+your Builder, but getting out of our comfort zones helps us develop our skills.
+
+### conclusion 2
+
+If you enjoyed this video, don't forget to like and subscribe.
+
+If you really liked the video, you can become a member of the channel or join the Patreon, see the description for more.
+
+Next time we're we're getting wild.
+
+I'm going to explain the Monad pattern BUT without using any of the scary words that are genuinely helpful if you're 
+super into category theory but terrifying if you just want to understand what is actually a super useful pattern. 
+
+If you want to join me upsetting a load of Haskell engineers, I hope I'll see you then.

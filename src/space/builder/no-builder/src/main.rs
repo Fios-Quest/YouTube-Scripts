@@ -1,6 +1,6 @@
+use newtypes::*;
 use std::error::Error;
 use std::fmt;
-use newtypes::*;
 use std::str::FromStr;
 
 #[derive(Debug)]
