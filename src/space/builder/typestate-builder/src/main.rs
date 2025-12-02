@@ -59,7 +59,7 @@ impl UserBuilder<Unset, Unset, Unset> {
 impl<U: UsernameMarker, E: EmailAddressMarker, D: DateOfBirthMarker> UserBuilder<U, E, D> {
     fn with_username(self, username: Username) -> UserBuilder<Username, E, D> {
         UserBuilder {
-            username: username,
+            username,
             email: self.email,
             date_of_birth: self.date_of_birth,
         }
@@ -68,19 +68,22 @@ impl<U: UsernameMarker, E: EmailAddressMarker, D: DateOfBirthMarker> UserBuilder
     fn with_email(self, email: EmailAddress) -> UserBuilder<U, EmailAddress, D> {
         UserBuilder {
             username: self.username,
-            email: email,
+            email,
             date_of_birth: self.date_of_birth,
         }
     }
 
-    fn with_date_of_birth(self, date_of_birth: DateOfBirth) -> Result<UserBuilder<U, E, DateOfBirth>, UserBuilderError> {
+    fn with_date_of_birth(
+        self,
+        date_of_birth: DateOfBirth,
+    ) -> Result<UserBuilder<U, E, DateOfBirth>, UserBuilderError> {
         if date_of_birth.get_age() < 21 {
             return Err(UserBuilderError::NotOldEnough);
         }
         Ok(UserBuilder {
             username: self.username,
             email: self.email,
-            date_of_birth: date_of_birth,
+            date_of_birth,
         })
     }
 }

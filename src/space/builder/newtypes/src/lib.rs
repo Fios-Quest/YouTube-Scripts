@@ -1,6 +1,6 @@
+use std::error::Error;
 use std::fmt;
 use std::str::FromStr;
-use std::error::Error;
 
 #[derive(Debug)]
 pub struct ImpossibleError;
@@ -52,7 +52,14 @@ pub struct DateOfBirth(String);
 
 impl DateOfBirth {
     pub fn get_age(&self) -> u8 {
-        self.0.split('-').next().expect("invalid date").parse::<i32>().expect("invalid date").saturating_sub(2025).abs() as u8
+        self.0
+            .split('-')
+            .next()
+            .expect("invalid date")
+            .parse::<i32>()
+            .expect("invalid date")
+            .saturating_sub(2025)
+            .unsigned_abs() as u8
     }
 }
 
