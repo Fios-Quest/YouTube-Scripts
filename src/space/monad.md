@@ -78,16 +78,16 @@ This means we can't just pass a variable that might be null into these functions
 
 ```typescript
 function get_even_time(): number | null {
-  const time = Date.now() / 1000;
-  return time % 2 === 0 ? time : null;
+    const time = Date.now() / 1000;
+    return time % 2 === 0 ? time : null;
 }
 
 function square(input: number): number {
-  return input * input;
+    return input * input;
 }
 
 function to_string(input: number): string {
-  return `${input}`;
+    return `${input}`;
 }
 
 const maybe_time = get_even_time();
@@ -95,30 +95,30 @@ const maybe_time = get_even_time();
 // const squared_time = square(maybe_time);
 
 let maybe_squared_time = null;
-if (maybe_time !== null) {
-  maybe_squared_time = square(maybe_time);
+if (maybe_division !== null) {
+    maybe_division_squared = square(maybe_division);
 }
 let maybe_squared_string = null;
-if (maybe_squared_time !== null) {
-  maybe_squared_string = to_string(maybe_squared_time);
+if (maybe_division_squared !== null) {
+    maybe_squared_string = to_string(maybe_division_squared);
 }
 
 console.log(maybe_squared_string)
 
 function if_not_null<T, U>(input: T | null, f: (_: T) => U): U | null {
-  if (input !== null) {
-    return f(input);
-  }
-  return null;
+    if (input !== null) {
+        return f(input);
+    }
+    return null;
 }
 
-const maybe_squared_time_f = if_not_null(maybe_time, square);
-const maybe_squared_time_string_f = if_not_null(maybe_squared_time_f, to_string);
+const maybe_squared_time_f = if_not_null(maybe_division, square);
+const maybe_squared_time_string_f = if_not_null(maybe_division_squared_f, to_string);
 
-console.log(maybe_squared_time_string_f);
+console.log(maybe_squared_string_f);
 
-console.log(maybe_squared_time == maybe_squared_time_f);
-console.log(maybe_squared_string == maybe_squared_time_string_f);
+console.log(maybe_division_squared == maybe_division_squared_f);
+console.log(maybe_squared_string == maybe_squared_string_f);
 ```
 
 We need to check if the value is null and only pass it in if it's not (this is a process called "narrowing").
