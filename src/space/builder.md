@@ -70,7 +70,7 @@ Will I succeed? No, not a chance.
 
 Our first potential error is when setting the date of birth, where we test if the user is at least 21.
 
-This doesn't matter to our Fluent Interface in Rust so long as you're using the Builder in a context where you can 
+This doesn't matter to our Fluent Interface in Rust so long as you're using the Builder in a context where you can
 bubble the Error.
 
 Our finalizer method is called "build" and simply checks to see if all the Optional parameters have been set.
@@ -95,21 +95,22 @@ Typestate Builder
 Let's use the TypeState pattern to make that problem go away.
 
 If you're not already familiar with this pattern we have a video on it, but the TL;DW is that we can bake the state of
-something into its Type, and then decide what your allowed to do with data based on its Type.
+something into its Type, and then decide what you're allowed to do with data based on its Type.
 
 Let's make a TypeState Builder for our User.
 
 First we can edit our Error down to a single event now, the others won't be possible when we're done.
 
-Next, we're going to use generic for each of the properties in our builder.
+Next, we're going to use a generic type for each of the properties in our builder.
 
 ### typestate 2
 
 These generics can either be the type they're supposed to be, or something that represents the fact we haven't set them
 yet.
 
-To achieve this, I've created an "Unset" unit struct, and a trait to restrict each generic (this may not be necessary,
-but it is tidy).
+To achieve this, I've created an "Unset" unit struct, and a trait to restrict each generic
+
+(this may not be necessary, but it is tidy).
 
 We'll implement each trait for Unset, and for the type we _actually_ want to use there.
 
@@ -128,7 +129,7 @@ Next we want to implement the UserBuilder for all generics where we don't know w
 
 ### typestate 4
 
-Each method here consumes the Builder and returns a new Builder with the data we wanted set. 
+Each method here consumes the Builder and returns a new Builder with the data we wanted set.
 
 This updates the type, setting the generic we care about to that particular type but keeping the others as whatever type
 they were when the method was called.
@@ -164,7 +165,7 @@ This is objectively... awesome.
 There are two big pros to this pattern, the obvious one is that we can not muck up building our user type, but its also
 worth pointing out that we've removed all but one branch in our code, which will provide a significant runtime benefit.
 
-The downside though is this code is just more complex to look at, particularly for newer engineers where all those 
+The downside though is this code is just more complex to look at, particularly for newer engineers where all those
 triangle brackets might be intimidating.
 
 Conclusion
@@ -176,7 +177,7 @@ Should you just use the more complex but safer and faster TypeState Builder?
 
 That probably depends on your team and your project requirements, but my advice is to trust yourself and your team.
 
-It might require talking through a couple of times, especially if you're building something particularly complex with 
+It might require talking through a couple of times, especially if you're building something particularly complex with
 your Builder, but getting out of our comfort zones helps us develop our skills.
 
 ### conclusion 2
@@ -185,9 +186,11 @@ If you enjoyed this video, don't forget to like and subscribe.
 
 If you really liked the video, you can become a member of the channel or join the Patreon, see the description for more.
 
-Next time we're we're getting wild.
+Next time we're getting wild.
 
-I'm going to explain the Monad pattern BUT without using any of the scary words that are genuinely helpful if you're 
-super into category theory but terrifying if you just want to understand what is actually a super useful pattern. 
+I'm going to explain the Monad pattern BUT without using any of the scary words that are genuinely helpful if you're
+super into category theory...
 
-If you want to join me upsetting a load of Haskell engineers, I hope I'll see you then.
+but terrifying if you just want to understand what is actually a super useful pattern.
+
+If you want to join me potentially upsetting all the Haskell engineers, I hope I'll see you then.
