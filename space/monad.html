@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-20f4c2a6.js";
+            window.path_to_searchindex_js = "../searchindex-7eb56a1a.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-6fd8910a.js"></script>
@@ -178,98 +178,35 @@
 <h3 id="intro-1"><a class="header" href="#intro-1">intro 1</a></h3>
 <p>A quick intro, I’m going to explain Monads, but don’t panic.</p>
 <p>After this sentence we won’t use the words monads, monodic, monoid, functor, endofunctor or even category.</p>
+<h3 id="intro-2"><a class="header" href="#intro-2">intro 2</a></h3>
 <p>That’s not because these words aren’t important, or learning about them isn’t interesting and enriching…</p>
 <p>… it’s because you don’t need to know these words to understand M… this pattern!</p>
 <p>I think the terminology can be off-putting which is a deep shame because this pattern is <em>mwah</em> chefs kiss.</p>
-<h3 id="intro-2"><a class="header" href="#intro-2">intro 2</a></h3>
+<h3 id="intro-3"><a class="header" href="#intro-3">intro 3</a></h3>
 <p>When programming, we regularly take a value and perform some operation to get a new value.</p>
 <p>In fact its pretty much all we do, right?</p>
+<h3 id="intro-4"><a class="header" href="#intro-4">intro 4</a></h3>
 <p>Let’s say we have the value <code>5</code> which is an integer.</p>
 <p>We could square the value which gives us <code>25</code> which is still an integer…</p>
 <p>or we could turn the value into a string which is still <code>"5"</code> but is now a different type.</p>
-<pre class="playground"><code class="language-rust edition2024"><span class="boring">fn main () {
-</span>let twenty_five = 5 * 5;
-let five = 5.to_string();
-
-assert_eq!(twenty_five, 25);
-assert_eq!(five, "5");
-}</code></pre>
+<h3 id="intro-5"><a class="header" href="#intro-5">intro 5</a></h3>
 <p>If we turn these operations into function like this…</p>
 <p>we can think about these functions as taking something of type T and returning something of type U (even if T and U are
 the same type).</p>
-<pre class="playground"><code class="language-rust edition2024">// Don't worry that there are already built in ways to do this, 
-// its for explanation only
-fn square(input: i32) -&gt; i32 {
-    input * input
-}
-
-fn to_string(input: i32) -&gt; String {
-    format!("{input}")
-}
-<span class="boring">
-</span><span class="boring">fn main() {
-</span><span class="boring">    assert_eq!(square(5), 25);
-</span><span class="boring">    assert_eq!(to_string(5), "5".to_string());
-</span><span class="boring">}</span></code></pre>
-<p>This only works for things that have one type though.</p>
+<h3 id="intro-6"><a class="header" href="#intro-6">intro 6</a></h3>
 <p>I’m going to briefly swap to using TypeScript to explain this next bit because Rust simply won’t let me write code this
 way, but let’s say we have a function that returns either a number or nothing represented by “null”.</p>
-<pre><code class="language-typescript">function get_even_time(): number | null {
-  const time = Date.now() / 1000;
-  return time % 2 === 0 ? time : null;
-}
-</code></pre>
 <p>The function isn’t important, it just represents that some functions, by their nature, may need to return different
 types depending on what happened when they were called.</p>
+<h3 id="intro-7"><a class="header" href="#intro-7">intro 7</a></h3>
 <p>But our functions (reproduced in typescript here) only take numbers.</p>
 <p>This means we can’t just pass a variable that might be null into these functions.</p>
-<pre><code class="language-typescript">function get_even_time(): number | null {
-  const time = Date.now() / 1000;
-  return time % 2 === 0 ? time : null;
-}
-
-function square(input: number): number {
-  return input * input;
-}
-
-function to_string(input: number): string {
-  return `${input}`;
-}
-
-const maybe_time = get_even_time();
-// This won't work!
-// const squared_time = square(maybe_time);
-
-let maybe_squared_time = null;
-if (maybe_time !== null) {
-  maybe_squared_time = square(maybe_time);
-}
-let maybe_squared_string = null;
-if (maybe_squared_time !== null) {
-  maybe_squared_string = to_string(maybe_squared_time);
-}
-
-console.log(maybe_squared_string)
-
-function if_not_null&lt;T, U&gt;(input: T | null, f: (_: T) =&gt; U): U | null {
-  if (input !== null) {
-    return f(input);
-  }
-  return null;
-}
-
-const maybe_squared_time_f = if_not_null(maybe_time, square);
-const maybe_squared_time_string_f = if_not_null(maybe_squared_time_f, to_string);
-
-console.log(maybe_squared_time_string_f);
-
-console.log(maybe_squared_time == maybe_squared_time_f);
-console.log(maybe_squared_string == maybe_squared_time_string_f);
-</code></pre>
+<h3 id="intro-8"><a class="header" href="#intro-8">intro 8</a></h3>
 <p>We need to check if the value is null and only pass it in if it’s not (this is a process called “narrowing”).</p>
 <p>We can do this with branching, typescript is smart enough to know that the “if” makes it impossible for the value to be
 null in this branch so this works…</p>
 <p>but it obviously reads terribly, and adds a lot of boilerplate if we have to do this a lot.</p>
+<h3 id="intro-9"><a class="header" href="#intro-9">intro 9</a></h3>
 <p>The next logical step is, if we’re just checking for null, we could abstract this to a generic function, which in
 typescript would look like this.</p>
 <p>Here we’re passing our function that takes T and returns U into another function that takes T or null, and returns U or
@@ -277,126 +214,52 @@ null.</p>
 <p>If the input isn’t null, we run the passed function, otherwise we return null.</p>
 <p>Now we can reuse this code a lot more easily but there’s still a lot of to-ing and fro-ing.</p>
 <p>Also, none of this works in Rust.</p>
+<h3 id="intro-10"><a class="header" href="#intro-10">intro 10</a></h3>
 <p>There’s another logical step we can take though, one that also lets us get back to Rust.</p>
 <p>One that’s a little more “fluent” if you will.</p>
 <h2 id="mmmmmmo-containers"><a class="header" href="#mmmmmmo-containers">Mmmmmmo…. Containers</a></h2>
+<h3 id="containers-1"><a class="header" href="#containers-1">containers 1</a></h3>
 <p>At the moment we’re dealing with a value that could be type T, or it could be the concept of nothing.</p>
 <p>There are two separate types.</p>
+<h3 id="containers-2"><a class="header" href="#containers-2">containers 2</a></h3>
 <p>What if we wrapped these types in a container that could hold either T or nothing.</p>
 <p>We’ll call our container <code>M</code> for Mmmm reasons.</p>
+<h3 id="containers-3"><a class="header" href="#containers-3">containers 3</a></h3>
 <p>So we have our container, <code>M&lt;T or nothing&gt;</code>, and our functions f(T) returning U</p>
-<p>We can give our container a way to take that function and return a new container, M<u or="" nothing="">.</u></p>
+<p>We can give our container a way to take that function and return a new container, <code>M&lt;U or nothing&gt;</code>.</p>
+<h3 id="containers-4"><a class="header" href="#containers-4">containers 4</a></h3>
 <p>Rust actually has a built-in type that already does this, but to explain the pattern we’re going to reproduce it.</p>
-<pre class="playground"><code class="language-rust edition2024">enum Maybe&lt;T&gt; {
-    Value(T),
-    Nothing,
-}
-
-impl&lt;T&gt; Maybe&lt;T&gt; {
-    fn map&lt;U, F: FnOnce(T) -&gt; U&gt;(self, f: F) -&gt; Maybe&lt;U&gt; {
-        match self {
-            Maybe::Value(inner) =&gt; Maybe::Value(f(inner)),
-            Maybe::Nothing =&gt; Maybe::Nothing,
-        }
-    }
-}
-
-fn square(input: i64) -&gt; i64 {
-    input * input
-}
-
-fn to_string(input: i64) -&gt; String {
-    format!("{input}")
-}
-
-fn get_even_time() -&gt; Maybe&lt;i64&gt; {
-    use std::time::{SystemTime, UNIX_EPOCH};
-  
-    let time = SystemTime::now()
-            .duration_since(UNIX_EPOCH)
-            .expect("Time went backwards!")
-            .as_secs() as i64;
-  
-    match time % 2 {
-        0 =&gt; Maybe::Value(time),
-        _ =&gt; Maybe::Nothing,
-    }
-}
-
-fn main() {
-    let maybe_time = get_even_time();
-    let maybe_squared_time = maybe_time.map(square);
-    let maybe_squared_time_string = maybe_squared_time.map(to_string);
-  
-    match maybe_squared_time_string {
-        Maybe::Value(s) =&gt; println!("{s}"),
-        Maybe::Nothing =&gt; println!("Nothing to show"),
-    }
-    
-    // ---
-  
-    let maybe_squared_time_string = get_even_time().map(square).map(to_string);
-    
-    match maybe_squared_time_string {
-        Maybe::Value(s) =&gt; println!("{s}"),
-        Maybe::Nothing =&gt; println!("Nothing to show"),
-    }
-}</code></pre>
 <p>We’ll start by creating an Enum called Maybe because maybe it contains a value, or maybe it contains nothing.</p>
-<p>We’ll then give it a method that will map from Maybe<t> to Maybe<u> using the provided function, f(T) -&gt; U.</u></t></p>
+<h3 id="containers-5"><a class="header" href="#containers-5">containers 5</a></h3>
+<p>We’ll then give it a method that will map from <code>Maybe&lt;T&gt;</code> to <code>Maybe&lt;U&gt;</code> using the provided function, <code>f(T) -&gt; U</code>.</p>
 <p>This function is functionally identical to our if_not_null function we wrote in TypeScript but operates directly on an
 owned version of the Maybe.</p>
-<p>Now when we call our Rust equivalent function to get even time, we’ll get a Maybe<i64> back.</i64></p>
-<p>We can map the Maybe<i64> using square.</i64></p>
-<p>Because square takes an i64 and returns an i64, using it on Maybe<i64> returns another Maybe<i64>.</i64></i64></p>
-<p>When we use to_string which takes an i64 and returns a String, our Maybe<i64> turns into a Maybe<string>.</string></i64></p>
+<p>Now when we call our Rust equivalent function to get even time, we’ll get a <code>Maybe&lt;i64&gt;</code> back.</p>
+<h3 id="containers-6"><a class="header" href="#containers-6">containers 6</a></h3>
+<p>We can map the <code>Maybe&lt;i64&gt;</code> using square.</p>
+<p>Because square takes an i64 and returns an i64, using it on <code>Maybe&lt;i64&gt;</code> returns another <code>Maybe&lt;i64&gt;</code>.</p>
+<p>When we use to_string which takes an i64 and returns a String, our <code>Maybe&lt;i64&gt;</code> turns into a <code>Maybe&lt;String&gt;</code>.</p>
 <p>Finally, we can print this to the screen by examining the Maybe directly.</p>
-<p>That’s all well and good, but hasn’t saved us much over what we were doing with if_not_null in TypeScript.</p>
+<h3 id="containers-7"><a class="header" href="#containers-7">containers 7</a></h3>
+<p>That’s all well and good, but it seems like this hasn’t saved us much over what we were doing with if_not_null in
+TypeScript.</p>
 <p>Where this pattern shines is that in TypeScript we were dealing with a value that could have two types.</p>
 <p>By encapsulating it in a Mmmmm… Container, we’re only dealing with one type, which means we’ve built ourselves a
 fluent interface for managing our data.</p>
+<h3 id="containers-8"><a class="header" href="#containers-8">containers 8</a></h3>
 <p>This means we can inline all of our maps, and it becomes far more readable than if we’d inlined our function calls.</p>
 <p>For what its worth, this pattern works perfectly fine in TypeScript too.</p>
-<pre><code class="language-typescript">class Maybe&lt;T: NonNullable&gt; {
-    inner: T | null,
-    
-    construct(inner: T | null) {
-        this.inner = inner;
-    }
-    
-    map&lt;T, U&gt;(f: (_: T) =&gt; U): Maybe&lt;U&gt; {
-        if (this.inner !== null) {
-            return new Maybe(null);
-        }
-        return new Maybe(f(this.inner));
-    }
-}
-
-function get_even_time(): Maybe&lt;number&gt; {
-  const time = Date.now() / 1000;
-  return new Maybe(time % 2 === 0 ? time : null);
-}
-
-function square(input: number): number {
-  return input * input;
-}
-
-function to_string(input: number): string {
-  return `${input}`;
-}
-
-const maybe_squared_time_string = get_even_time().map(square).map(to_string);
-
-console.log(maybe_squared_time_string);
-</code></pre>
 <h2 id="variations"><a class="header" href="#variations">Variations</a></h2>
+<h3 id="variations-1"><a class="header" href="#variations-1">variations 1</a></h3>
 <p>By now, you’ve probably worked out that our Maybe type is us creating a less fantastic Rust Option.</p>
 <p>Our containers can be more flexible than just T or nothing though.</p>
 <p>It’s perfectly reasonable for your container to potentially hold multiple things.</p>
+<h3 id="variations-2"><a class="header" href="#variations-2">variations 2</a></h3>
 <p>Let’s say we have a container that could hold types T or V.</p>
 <p>This container should not only be able to take <code>f(T) -&gt; U</code> which will give us a container potentially holding U or V,
 but it should also be able to take <code>f(V) -&gt; W</code> which will give us a container potentially holding T or W.</p>
 <p>A good example of this in Rust is the Result enum which holds an Ok variant of T and an Error variant of E</p>
+<h3 id="variations-3"><a class="header" href="#variations-3">variations 3</a></h3>
 <p>However, we can’t just hand over <code>f(T) -&gt; U</code> or <code>f(V) -&gt; W</code> and hope for the best because what if both variants hold the
 same type.</p>
 <p>It’s not unheard of for both types to be either a unit type or a string, I mean, it’s not ideal, but it’s not
@@ -404,26 +267,31 @@ impossible.</p>
 <p>Rust’s result type has separate methods for changing the Ok variant or the Error variant, the former still being “map”
 and the later being “map_err”.</p>
 <h2 id="rules--guidelines"><a class="header" href="#rules--guidelines">Rules / Guidelines</a></h2>
+<h3 id="rules-1"><a class="header" href="#rules-1">rules 1</a></h3>
 <p>I’m sure I’ll have made some hackles rise in my description of this pattern, so I do want to explain there are some
 specific rules that make this pattern what it is, it’s not just any old container.</p>
 <p>Firstly, for a given container, a value representable as a type inside that container, should be convertable to that
 container without changing its value.</p>
 <p>In our Maybe example (as well as in Option and Result), we simply pass the value to one of the enum variants, so the
 inner value doesn’t change.</p>
+<h3 id="rules-2"><a class="header" href="#rules-2">rules 2</a></h3>
 <p>Second, there needs to be a way to apply a function to the inner types such that if you apply <code>f(T) -&gt; U</code>  to a
 container potentially holding a value of T then you get a container potentially holding a value of U.</p>
-<p>In our Maybe, applying <code>f(T) -&gt; U</code> to Maybe<t> returns Maybe<u> regardless of whether it contained a value of T or not.</u></t></p>
+<p>In our Maybe, applying <code>f(T) -&gt; U</code> to <code>Maybe&lt;T&gt;</code> returns <code>Maybe&lt;U&gt;</code> regardless of whether it contained a value of T or
+not.</p>
+<h3 id="rules-3"><a class="header" href="#rules-3">rules 3</a></h3>
 <p>In some languages the rules are a little stricter and the pattern works very slightly differently, but there are
 plenty of videos that can explain this in more detail.</p>
 <p>I just wanted to explain the basic pattern in an easy to digest way because I think it’s an extremely cool pattern, one
 that’s surprisingly crucial to how Rust works.</p>
 <h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
+<h3 id="summary-1"><a class="header" href="#summary-1">summary 1</a></h3>
 <p>This pattern can significantly reduce complexity, removing a lot of cognitive overhead when reading and writing code.</p>
 <p>Rust is filled with this pattern, and in fact wouldn’t work as a language without it, we just don’t use that name
 because it feels overly complex.</p>
 <p>I hope I’ve aptly explained the pattern without all the scary words, but if you do want to learn more about this pattern
 warts and all, there’s a lot of great YouTube videos out there, I’ll recommend some in the description of this one.</p>
-<hr>
+<h3 id="summary-2"><a class="header" href="#summary-2">summary 2</a></h3>
 <p>If you enjoyed this video, don’t forget to like and subscribe.</p>
 <p>If you really liked the video, you can become a member of the channel or join the Patreon, see the description for more.</p>
 <p>Next time we’re going to talk about dependency injection, which is crucial to building complex yet maintainable
