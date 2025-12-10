@@ -60,4 +60,6 @@ fn main() {
         Maybe::Value(s) => println!("{s}"),
         Maybe::Nothing => println!("Nothing to show"),
     }
+
+    // ---
 }
