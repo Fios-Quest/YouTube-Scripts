@@ -29,6 +29,7 @@
 - [TypeState](space/typestate.md)
 - [Fluent Interface](space/fluent.md)
 - [Builder](space/builder.md)
+- [Higher Order Functions](space/hof.md)
 - [Monad](space/monad.md)
 
 # Channel Labs
