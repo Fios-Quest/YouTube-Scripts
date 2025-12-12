@@ -27,11 +27,13 @@ Function Pointers
 
 ### pointers 1
 
-Functions aren't data, but they do exist as a set of instructions in memory.
+Functions aren't data, but they do exist as a set of instructions in memory when your program runs
 
-If we know where they are, and what they look like, we could call them arbitrarily at runtime.
+And if it's in memory, that means it has an address, and if it has an address we can create a pointer to it.
 
-But what do they look like?
+Fun fact, unlike raw pointers, function pointers are safe in Rust.
+
+But in Rust pointers are typed, so what does a function pointer type look like.
 
 ### pointers 2
 
@@ -41,11 +43,13 @@ In this function, we have two parameters, a string slice and a u8.
 
 The return parameter is a String.
 
-If we know the signature of a function, we store a pointer to its location in memory with a function pointer.
+### pointers 3
 
-So we could define a type for a function pointer like this.
+The type of a function pointer is actually just this information writen like this.
 
-And we can set a variable of that type to point at our function.
+This is basically th function header written without any names.
+
+We can set a variable of that type to point at our function.
 
 Now, we wouldn't normally need to do this inline like this because Rust can infer the type of the function pointer.
 
@@ -97,11 +101,31 @@ fn main() {
 }
 ```
 
-We can even 
+Referencing a function using a function pointer can be esspecially useful for things like maps, filters, or even folds.
 
-so it's not quite right to say that they are typed, particularly within the specifics of Rust.
+```rust
+fn is_even(input: &usize) -> bool {
+    input % 2 == 0
+}
 
-But, function signatures, that is, the parameters they receive and the data they returned, can be described with types.
+fn to_string(input: usize) -> String {
+    format!("{input}")
+}
+
+fn combine(left: String, right: String) -> String {
+    format!("{left}{right}")
+}
+
+fn main() {
+    let output = (1..=10)
+        .into_iter()
+        .filter(is_even)
+        .map(to_string)
+        .fold(String::new(), combine);
+    assert_eq!(output, "246810");
+}
+```
+
 
 Closures
 --------
