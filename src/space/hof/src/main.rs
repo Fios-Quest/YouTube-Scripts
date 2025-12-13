@@ -26,5 +26,7 @@ fn main() {
     let output = does_something_with_numbers(repeat_pointer);
     assert_eq!(output, "ByeBye".to_string());
 
+    let test = async || true;
+
     // --
 }
