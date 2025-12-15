@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-7eb56a1a.js";
+            window.path_to_searchindex_js = "searchindex-ea400d71.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-6fd8910a.js"></script>
+        <script src="toc-cc4b049f.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -5530,11 +5530,214 @@ your Builder, but getting out of our comfort zones helps us develop our skills.<
 super into category theory but terrifying if you just want to understand what is actually a super useful pattern.</p>
 <p>If you want to join me upsetting a load of Haskell engineers, I hope I’ll see you then.</p>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="monads"><a class="header" href="#monads">Monads</a></h1>
+<h1 id="higher-order-function"><a class="header" href="#higher-order-function">Higher Order Function</a></h1>
+<h2 id="intro-7"><a class="header" href="#intro-7">Intro</a></h2>
 <h3 id="intro-1-4"><a class="header" href="#intro-1-4">intro 1</a></h3>
+<p>Higher Order Functions are functions that either take one or more <em>other</em> functions as parameters or return another
+function when called themselves.</p>
+<p>Easy right?</p>
+<p>But… what’s a function?</p>
+<h3 id="intro-2-5"><a class="header" href="#intro-2-5">intro 2</a></h3>
+<p>On Fio’s Quest we usually talk about data and types, but functions aren’t data, they’re just a set of instructions, so
+how can we pass them around?</p>
+<p>And while types can be involved in defining functions, are functions themselves typed?</p>
+<p>Kinda…</p>
+<h2 id="function-pointers"><a class="header" href="#function-pointers">Function Pointers</a></h2>
+<h3 id="pointers-1"><a class="header" href="#pointers-1">pointers 1</a></h3>
+<p>Functions aren’t data, but they do exist as a set of instructions in memory when your program runs</p>
+<p>And if it’s in memory, that means it has an address, and if it has an address we can create a pointer to it.</p>
+<h3 id="pointers-2"><a class="header" href="#pointers-2">pointers 2</a></h3>
+<p>Fun fact, unlike raw pointers, function pointers are safe in Rust.</p>
+<p>But in Rust pointers are typed, so what does a function pointer type look like.</p>
+<h3 id="pointers-3"><a class="header" href="#pointers-3">pointers 3</a></h3>
+<p>Functions have signatures.</p>
+<p>In this function, we have two parameters, a string slice and a u8.</p>
+<p>The return parameter is a String.</p>
+<h3 id="pointers-4"><a class="header" href="#pointers-4">pointers 4</a></h3>
+<p>The “type” of a function pointer is actually just this information written like this.</p>
+<p>This is basically the function signature written without any names.</p>
+<h3 id="pointers-5"><a class="header" href="#pointers-5">pointers 5</a></h3>
+<p>We can set a variable of that type to point at our function…</p>
+<p>Though, we wouldn’t normally do this inline because Rust can infer the type of the function pointer.</p>
+<h3 id="pointers-6"><a class="header" href="#pointers-6">pointers 6</a></h3>
+<p>Where this is actually useful is when defining another function that takes a function this shape as a parameter.</p>
+<p>Using the <code>RepeatFunction</code> type alias here makes the function header a lot easier to read, and, if we need to, allows us
+to reuse the alias in multiple places.</p>
+<h3 id="pointers-7"><a class="header" href="#pointers-7">pointers 7</a></h3>
+<p>Referencing a function using a function pointer can be especially useful for things like filters, maps, or folds.</p>
+<p>In this example we have a range of numbers 1 to 10.</p>
+<p>We use regular functions to filter out odd numbers, map each number to a string, and then combine what is now an
+iterator of strings into a single string.</p>
+<h3 id="pointers-8"><a class="header" href="#pointers-8">pointers 8</a></h3>
+<p>It’s worth noting though that <code>is_even</code> has the quirk of needing to explicitly take a reference to a usize because
+filter gives us a reference to T even if T is copy.</p>
+<h3 id="pointers-9"><a class="header" href="#pointers-9">pointers 9</a></h3>
+<p>We can also return function pointers from other functions.</p>
+<p>Here we have two functions that take a reference to a usize and return a bool…</p>
+<p>a type alias that matches those function signatures…</p>
+<p>and a function that returns a pointer to one of the other two functions when called</p>
+<h3 id="pointers-10"><a class="header" href="#pointers-10">pointers 10</a></h3>
+<p>We can then call <code>create_even_filter</code> to get a pointer to one of those two functions.</p>
+<p>But I think at this point we have to stop and wonder… how useful is this really?</p>
+<h3 id="pointers-11"><a class="header" href="#pointers-11">pointers 11</a></h3>
+<p>We can defer the choice of what code to execute until runtime, but you can literally do that with if statements and
+other branches.</p>
+<p>Using function pointers could be a little bit tidier, depending on the circumstance, but honestly, most of the time you
+probably won’t use them in higher order functions all that often.</p>
+<h3 id="pointers-12"><a class="header" href="#pointers-12">pointers 12</a></h3>
+<p>Higher Order Functions are more useful, and frankly more interesting, when you can configure the functions you send them
+at runtime…</p>
+<p>…but you can’t do that with function pointers.</p>
+<h2 id="closures"><a class="header" href="#closures">Closures</a></h2>
+<h3 id="closures-1"><a class="header" href="#closures-1">closures 1</a></h3>
+<p>Functions are simply a set of instructions.</p>
+<p>If we want to configure how they behave later we need to apply a little sprinkle of data…</p>
+<h3 id="closures-2"><a class="header" href="#closures-2">closures 2</a></h3>
+<p>We can provide functions with a scope that contains some data, and then pass that bundle of instructions and data
+around.</p>
+<p>This is where closure’s come in.</p>
+<h3 id="closures-3"><a class="header" href="#closures-3">closures 3</a></h3>
+<p>Rust has three types of closure, well, six technically, we’ll talk about the beardo weridos from the mirrorverse later.</p>
+<p>I’ll give you a few seconds to think about why Rust, specifically, needs 3 closure types when you bring stored data into
+the mix.</p>
+<h3 id="closures-4"><a class="header" href="#closures-4">closures 4</a></h3>
+<p>Let’s take a look at a very simple example.</p>
+<p>We’ll create a string, then we’ll create a closure.</p>
+<p>Closures look a little different from functions.</p>
+<h3 id="closures-5"><a class="header" href="#closures-5">closures 5</a></h3>
+<p>They aren’t named, but they can be stored in variables.</p>
+<p>They use pipes to surround parameters, and are followed by an expression, that can be a block expression, which is run
+when the closure is called.</p>
+<h3 id="closures-6"><a class="header" href="#closures-6">closures 6</a></h3>
+<p>For clarity, we’re going to go through three closure examples and each one is going to store the returned data in a
+variable called response before returning it</p>
+<p>This isn’t necessary, its more verbose than we’d really need, I just wanted to make this consistent and clear</p>
+<h3 id="closures-7"><a class="header" href="#closures-7">closures 7</a></h3>
+<p>This closure references the greeting…</p>
+<p>The reference to that String will be bundled into the closure.</p>
+<p>Because of this, behind the scenes, Rust will make sure that the closure doesn’t outlive the thing its referencing.</p>
+<h3 id="closures-8"><a class="header" href="#closures-8">closures 8</a></h3>
+<p>When we run the closure, it gives us back a string using the reference to our greeting and the provided name.</p>
+<p>Running it again with a different name gives us a different string.</p>
+<p>Greeting is still available and hasn’t changed.</p>
+<h3 id="closures-9"><a class="header" href="#closures-9">closures 9</a></h3>
+<p>We can also create closures that modify the data they’re given.</p>
+<p>In this version, we need to make sure both the data we’re referencing, greeting, and the closure itself are marked as mutable.</p>
+<p>This may initially seem odd, but there are two things to bear in mind.</p>
+<h3 id="closures-10"><a class="header" href="#closures-10">closures 10</a></h3>
+<p>First, conceptually, calling the closure multiple times will produce different results as if we’re modifying the closure
+itself.</p>
+<p>Second, technically, we are modifying the closure itself…</p>
+<p>the closure is storing a mutable reference to some data so just like almost any other data type that wants to let you
+mutate something its holding, it too must be marked as mutable.</p>
+<h3 id="closures-11"><a class="header" href="#closures-11">closures 11</a></h3>
+<p>This closure will capture a mutable reference to greeting.</p>
+<p>We didn’t need to tell it to do that specifically, Rust just knows that the push_str method on Strings requires a
+mutable reference so that’s what it stores.</p>
+<p>Again, it’ll work out if we’re using this safely without us needing to do much at all.</p>
+<h3 id="closures-12"><a class="header" href="#closures-12">closures 12</a></h3>
+<p>The first time we call this closure, we’ll get the same result, but the second time we call the closure, we get a
+difference.</p>
+<p>This is because we mutated the greeting String itself, which we can see if we inspect it.</p>
+<h3 id="closures-13"><a class="header" href="#closures-13">closures 13</a></h3>
+<p>Finally, we can actually just give the closure ownership of the data being used.</p>
+<p>In this example, I’m using the Add trait to combine a string with string slice references.</p>
+<h3 id="closures-14"><a class="header" href="#closures-14">closures 14</a></h3>
+<p>For types that aren’t copy (and String is not Copy), Add consumes the data, meaning after we call this closure we can
+never call it again.</p>
+<p>Luckily Rust knows this and will prevent us compiling code that attempts to do so.</p>
+<p>If we uncomment either of these lines we get a “value borrowed after move” error.</p>
+<h3 id="closures-15"><a class="header" href="#closures-15">closures 15</a></h3>
+<p>Earlier I mentioned that Rust has three basic types of closure, did you spot them?</p>
+<p>Just like anything to do with Data, Rust has three ways to think about it; immutably referenced, mutably referenced and
+owned.</p>
+<h3 id="closures-16"><a class="header" href="#closures-16">closures 16</a></h3>
+<p>In reverse order, our final function took ownership of the data and therefore could only be run a single time.</p>
+<p>This type of closure is known by the trait <code>FnOnce</code>.</p>
+<h3 id="closures-17"><a class="header" href="#closures-17">closures 17</a></h3>
+<p>Our middle closure captured a mutable reference to the data, and therefore could be run as many times as we liked.</p>
+<p>This type of closure is known by the trait <code>FnMut</code>.</p>
+<p>Anything that implements <code>FnMut</code> also implements <code>FnOnce</code>.</p>
+<h3 id="closures-18"><a class="header" href="#closures-18">closures 18</a></h3>
+<p>Our first example only captured an immutable reference.</p>
+<p>This type of closure is known by the trait <code>Fn</code>.</p>
+<p>Anything that implements <code>Fn</code> also implements <code>FnMut</code> and therefore <code>FnOnce</code>.</p>
+<h3 id="closures-19"><a class="header" href="#closures-19">closures 19</a></h3>
+<p>And if you’re wondering, function pointers, which do not capture any state, implement all three traits…</p>
+<p><em>and</em> closures that don’t capture any state can be treated like function pointers.</p>
+<p>This is why we could use function pointers in filter, map and fold earlier which accept anything of type <code>FnMut</code></p>
+<h3 id="closures-20"><a class="header" href="#closures-20">closures 20</a></h3>
+<p>If we go back to that example, we could write these closures in place.</p>
+<p>If your closure is very simple, like these, this may be preferable to writing a named function somewhere</p>
+<h3 id="closures-21"><a class="header" href="#closures-21">closures 21</a></h3>
+<p>Now, why was I just drawing a load of weird circles?</p>
+<p>This is my mental model for working out when to use which closure, not just for writing closures but for consuming them.</p>
+<h3 id="closures-22"><a class="header" href="#closures-22">closures 22</a></h3>
+<p>You can imagine these types being blocks that fit into slots.</p>
+<p>When you’re writing something that consumes the closure, you want to use the largest possible slot to allow the most
+number of blocks to fit.</p>
+<h3 id="closures-23"><a class="header" href="#closures-23">closures 23</a></h3>
+<p>If you’re only going to run the closure once, you can accept <code>FnOnce</code> and you’ll be able to take any kind of closure or
+a function pointer.</p>
+<p>Often you will need to run a closure multiple times though, in which case <code>FnMut</code> is the next best option, but you
+won’t be able to accept <code>FnOnce</code> closures.</p>
+<h3 id="closures-24"><a class="header" href="#closures-24">closures 24</a></h3>
+<p>If you’re writing a closure that needs to be passed to something else, then using the smallest possible block you can get
+away with will make your closure more portable.</p>
+<p>If it doesn’t need state then a function pointer or stateless closure will give you the most flexibility.</p>
+<h2 id="async-closures"><a class="header" href="#async-closures">Async Closures</a></h2>
+<h3 id="async-1-1"><a class="header" href="#async-1-1">async 1</a></h3>
+<p>So, those beirdo weirdo mirrorverse closures…</p>
+<p>Async closures are relatively new and so you’ll see a mixture of ways to encapsulate futures in closures.</p>
+<h3 id="async-2-1"><a class="header" href="#async-2-1">async 2</a></h3>
+<p>More recently AsyncFn, AsyncMut and AsyncOnce were stabalised, allowing you to write async in front of a closure.</p>
+<p>Because this is a relatively new feature, in older code you’ll likely see closures with async blocks, which feels
+backwards, but makes sense.</p>
+<h3 id="async-3-1"><a class="header" href="#async-3-1">async 3</a></h3>
+<p>The async keyword, whether applied to a function, code block, or now, a closure, is syntactic sugar that allows two
+things.</p>
+<p>First of all, the ability to defer a future with await…</p>
+<p>and second, and more importantly to what’s happening here, it says “this thing produces a Future”.</p>
+<h3 id="async-4-1"><a class="header" href="#async-4-1">async 4</a></h3>
+<p>If you create a standard closure, and immediately return an async block, then you’re returning future from the closure
+too.</p>
+<p>So in a way, Rust has had async closures for a while… but in a way, it also hasn’t.</p>
+<h3 id="async-5-1"><a class="header" href="#async-5-1">async 5</a></h3>
+<p>Using this older method causes all sorts of problems with lifetimes.</p>
+<p>So actually, you’ll almost always see an explicit move with closures that return an async block making the closure an
+<code>FnOnce</code> that happens to return a Future.</p>
+<h3 id="async-6-1"><a class="header" href="#async-6-1">async 6</a></h3>
+<p>One day Rust may introduce even more closure types.</p>
+<p>One that I’m personally excited by is that Rust contributors have been thinking how to add generator functions which
+implies both generator closures and async generator closures.</p>
+<h2 id="summary-4"><a class="header" href="#summary-4">Summary</a></h2>
+<h3 id="summary-1-2"><a class="header" href="#summary-1-2">summary 1</a></h3>
+<p>Closures and higher order functions are conceptually complex, but as we start writing them, they’re really clean and
+incredibly powerful.</p>
+<p>In Rust specifically the lifetime juggle can make things a bit more complex, and can be a bit of a headache to work
+around.</p>
+<p>Been there, believe me.</p>
+<h3 id="summary-2-2"><a class="header" href="#summary-2-2">summary 2</a></h3>
+<p>However, we can see that the amazing people contributing to the Rust language continue to improve usability and
+ergonomics.</p>
+<h3 id="summary-3-2"><a class="header" href="#summary-3-2">summary 3</a></h3>
+<p>Just as a reminder, if you enjoyed this video, don’t forget hit the like button and letting people know about the
+channel is the best way to support it.</p>
+<h3 id="summary-4-1"><a class="header" href="#summary-4-1">summary 4</a></h3>
+<p>Next time, now that we’ve seen how functions can be passed to other functions, we’re going to get a little wild.</p>
+<p>Our next video is going to explain… Monads… don’t worry though.</p>
+<h3 id="summary-5"><a class="header" href="#summary-5">summary 5</a></h3>
+<p>The pattern itself is actually super cool and much easier than it sounds.</p>
+<p>I’m going to explain the pattern while avoiding the complex language surrounding it.</p>
+<h3 id="summary-6"><a class="header" href="#summary-6">summary 6</a></h3>
+<p>This will undoubtedly frustrate the purists but its such an awesome pattern its worth discussing anyway!</p>
+<p>Hope to see you then.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="monads"><a class="header" href="#monads">Monads</a></h1>
+<h3 id="intro-1-5"><a class="header" href="#intro-1-5">intro 1</a></h3>
 <p>A quick intro, I’m going to explain Monads, but don’t panic.</p>
 <p>After this sentence we won’t use the words monads, monodic, monoid, functor, endofunctor or even category.</p>
-<h3 id="intro-2-5"><a class="header" href="#intro-2-5">intro 2</a></h3>
+<h3 id="intro-2-6"><a class="header" href="#intro-2-6">intro 2</a></h3>
 <p>That’s not because these words aren’t important, or learning about them isn’t interesting and enriching…</p>
 <p>… it’s because you don’t need to know these words to understand M… this pattern!</p>
 <p>I think the terminology can be off-putting which is a deep shame because this pattern is <em>mwah</em> chefs kiss.</p>
@@ -5554,7 +5757,7 @@ the same type).</p>
 way, but let’s say we have a function that returns either a number or nothing represented by “null”.</p>
 <p>The function isn’t important, it just represents that some functions, by their nature, may need to return different
 types depending on what happened when they were called.</p>
-<h3 id="intro-7"><a class="header" href="#intro-7">intro 7</a></h3>
+<h3 id="intro-7-1"><a class="header" href="#intro-7-1">intro 7</a></h3>
 <p>But our functions (reproduced in typescript here) only take numbers.</p>
 <p>This means we can’t just pass a variable that might be null into these functions.</p>
 <h3 id="intro-8"><a class="header" href="#intro-8">intro 8</a></h3>
@@ -5640,14 +5843,14 @@ not.</p>
 plenty of videos that can explain this in more detail.</p>
 <p>I just wanted to explain the basic pattern in an easy to digest way because I think it’s an extremely cool pattern, one
 that’s surprisingly crucial to how Rust works.</p>
-<h2 id="summary-4"><a class="header" href="#summary-4">Summary</a></h2>
-<h3 id="summary-1-2"><a class="header" href="#summary-1-2">summary 1</a></h3>
+<h2 id="summary-7"><a class="header" href="#summary-7">Summary</a></h2>
+<h3 id="summary-1-3"><a class="header" href="#summary-1-3">summary 1</a></h3>
 <p>This pattern can significantly reduce complexity, removing a lot of cognitive overhead when reading and writing code.</p>
 <p>Rust is filled with this pattern, and in fact wouldn’t work as a language without it, we just don’t use that name
 because it feels overly complex.</p>
 <p>I hope I’ve aptly explained the pattern without all the scary words, but if you do want to learn more about this pattern
 warts and all, there’s a lot of great YouTube videos out there, I’ll recommend some in the description of this one.</p>
-<h3 id="summary-2-2"><a class="header" href="#summary-2-2">summary 2</a></h3>
+<h3 id="summary-2-3"><a class="header" href="#summary-2-3">summary 2</a></h3>
 <p>If you enjoyed this video, don’t forget to like and subscribe.</p>
 <p>If you really liked the video, you can become a member of the channel or join the Patreon, see the description for more.</p>
 <p>Next time we’re going to talk about dependency injection, which is crucial to building complex yet maintainable

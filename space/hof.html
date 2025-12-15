@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Implementing Types - IRISS Scripts</title>
+        <title>Higher Order Function - IRISS Scripts</title>
 
 
         <!-- Custom HTML head -->
@@ -174,139 +174,218 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="implementing-types-if-held"><a class="header" href="#implementing-types-if-held">Implementing Types (if held)</a></h1>
-<p>Today we’re going to learn how to add functionality to data by modelling a common emotional pattern followed by my cat.</p>
-<p>As ever, this series is accompanied by a free book, check the description for a link straight to this chapter.</p>
-<p>My name is Daniel, his name is Yuki, welcome to IRISS.</p>
-<h1 id="implementing-types-if-alone"><a class="header" href="#implementing-types-if-alone">Implementing Types (if alone)</a></h1>
-<p>Today we’re going to learn how to add functionality to data by modelling a common emotional pattern followed by my cat Yuki.</p>
-<p>As ever, this series is accompanied by a free book, check the description for a link straight to this chapter.</p>
-<p>My name is Daniel, welcome to IRISS.</p>
-<hr>
-<p>We’ll model 3 emotional states of my Cat, describe behaviours unique to each state, and allow him to transition between
-those states.</p>
-<p>So what is the behaviour we want to model in these states?</p>
-<h2 id="yuki-states"><a class="header" href="#yuki-states">Yuki States</a></h2>
-<p>We’ll initialise Yuki in the Mischievous state because… that’s how he wakes up.</p>
-<p>In this state he makes lots of fun little noises
-He’ll also try to get up to various naughtiness
-But, if we forget to feed him he’ll get Hangry</p>
-<p>Once hangry, he only really makes one noise, a desperate plea to “pay attention and do your job”
-He’ll get hyper focused on getting your attention and may choose violence
-Once he’s fed though, he’ll get Eepy</p>
-<p>After eating, he’ll get sleepy, he won’t make any noises he’ll just settle down in one of his beds
-Once he’s slept, he’ll get right back to his mischievous state</p>
-<h2 id="making-a-cat"><a class="header" href="#making-a-cat">Making a Cat</a></h2>
-<p>Let’s create a new project with <code>cargo new yuki-state-machine</code> and open it in our IDE of choice.</p>
-<p>We’re going to create a separate cat module.</p>
-<p>In VSCode put the cursor on cat and open the context menu.</p>
-<p>We can now create a cat.rs file from here.</p>
-<p>Inside our <code>cat.rs</code> file lets create a structure to hold a cat, we’ll make it public by putting the word <code>pub</code> in front of the struct.</p>
-<p>Back in our <code>main.rs</code> lets try to create our Cat, we’ll use the use keyword to simplify things and…</p>
-<p>There’s a problem…</p>
-<p><code>Cat</code> might be public but <code>name</code> is not… so we can’t instantiate our object.</p>
-<p>We could, of course, simple make <code>name</code> public, but this means anything can access it at any time and, if your <code>cat</code> is mutable, the name can be changed.</p>
-<p>We don’t want anything renaming Yuki, so, we’ll manage the property privately.</p>
-<p>To create the object then, we’ll need a “constructor”, a function that is associated with our <code>Cat</code> type, that returns an instantiated object.</p>
-<p>To do this we need to use an <code>impl</code> block.</p>
-<h2 id="impl"><a class="header" href="#impl">impl</a></h2>
-<p>In Rust, code that is associated with specific types is called “implementation” code, and lives inside an <code>impl</code> block.</p>
-<p><code>impl</code> blocks are incredibly flexible, and we’ll see more of this in the next video, for now though, we’re just going to cover the basics.</p>
-<p>We “implement” code for a type with “impl” and the type name, followed by a block that contains the code for that type.</p>
-<p>Functions inside the block are called “methods”, and there are two types normal “methods” and “static methods”.</p>
-<p>Normal methods apply to the data, in our case this is Yuki, and static methods are part of the type, which here is Cat.</p>
-<p>To instantiate our <code>Cat</code> type, we’ll make a static method that instantiates a new Cat for us.</p>
-<hr>
-<p>We put our constructor inside the impl block, it’ll take the name of the cat as a String, and return the instantiated Cat object.</p>
-<p>Before we move on there are some nice shortcuts we can use here, first, when we assign name to name, Rust lets you shortcut this to just “name”.</p>
-<p>Second, inside “impl” blocks, there is a special type called “Self”, with a capital S. This is an alias for the Type that is being implemented.</p>
-<p>We can use this in place of Cat… for now this might seem pointless, and arguably it is, but as our types get more complicated, this will simplify our code… a lot.</p>
-<hr>
-<p>Before we move on, lets make our Cat a little bit more useful by creating a “getter” method for its name, this way we can access the name while still preventing modification.</p>
-<p>Normal methods, the kind that will be available on our Yuki object, have a first parameter that is one of, <code>self</code>, a reference to <code>self</code>, or a mutable reference to <code>self</code>.</p>
-<p>This is another one of those magic shortcuts:
-self is short for self Self
-ampersand self is short for self colon ampersand Self
-ampersand mut self is short for self colon ampersand mut Self</p>
-<p>For our getter we don’t need to own or modify our object, we just need a reference to it, we can then return a reference to the string slice inside our cats name.</p>
-<p>Because we’re only taking one reference in, and returning one reference, those references will automatically have their lifetimes tied together internally, so we don’t need to think about it.</p>
-<hr>
-<p>Finally, we can make our program work, lets return to <code>main</code>, and use our new implementation:</p>
-<p>Great, lets move on to Yuki’s state!</p>
-<h2 id="state-machines-and-rust"><a class="header" href="#state-machines-and-rust">State Machines and Rust</a></h2>
-<p>We want to represent three of Yuki’s many “states”, but in particular, we want to move between them in a very specific way.</p>
-<p>A naive approach to this could use an <code>enum</code> to represent the states, and then we could have methods that change the state.</p>
-<p>Here you can see the methods take a mutable reference to self so that we can modify the state.</p>
-<p>But let’s look again at the diagram:</p>
-<p>A Hangry cat doesn’t become Mischievous because it slept. What should happen if we try to call <code>sleep</code> on a Hangry cat?
-Should it do nothing?
-Should it throw an error?
-Does it even make sense for this to be an option?</p>
-<p>Furthermore, if we look back at the specification, a Hangry cat may choose violence, but Eepy cats and Mischievous cats won’t.</p>
-<p>Instead, we could use a pattern called a State Machine.</p>
-<p>In a State Machine we transition fully between different states, and those states have different functionality.</p>
-<hr>
-<p>Let’s make our states unit structs instead of an enum</p>
-<p>We can then apply the functionality to each struct in turn:</p>
-<p>This is <em>much</em> more ergonomic as <code>Hangry</code> simply does not have the method <code>sleep</code>, meaning you get compile time checking that your cat states are being used correctly.</p>
-<hr>
-<p>At this point, we don’t have any data about our cat though.
-There are a few ways we could deal with this.</p>
-<p>We could put our cat data into the states like this</p>
-<p>Now when we change state, we can call the constructor of the new state and pass our data across.</p>
-<p>Also, note that the state change functions take ownership of the old state
-this both saves us an expensive-ish memory allocation as we can move the data instead of copying it
-and, it also prevents old states hanging around, making it unclear what the valid state is.</p>
-<p>But this is going to get rather heavy if our Cat has a lot of details.</p>
-<p>It’s also not very flexible.</p>
-<p>What if we put our Cat type inside our States.</p>
-<hr>
-<p>You can see how this makes it easier to manage the Cat and states more easily,</p>
-<p>But Daniel, I imagine hearing you say, that isn’t actually any more flexible… and if you are saying that, wherever you are, then you’re right!</p>
-<p>So now lets swap our Cat out with Generics!</p>
-<h2 id="generics"><a class="header" href="#generics">Generics</a></h2>
-<p>Generics exist in many languages and are a way of creating templates that only become “concrete” at build time.</p>
-<p>Functions, Structs and Enums can all be made generic by adding triangle brackets after their name, containing a list of generic parameters.</p>
-<p>Very over you might see a single letter generic name, particularly you might see something like <code>T</code> as you do with <code>Option&lt;T&gt;</code>, however, you might want to hint about the purposed of the type like the Error <code>E</code> in <code>Result&lt;T, E&gt;</code>.</p>
-<p>You can even use whole words, though this is seen less.</p>
-<p>For our purposes, we’ll use the letter <code>A</code> to represent “Animal”.</p>
-<p>Later we can fill in the Generic and make it a “concrete” type, in our case this will eventually be <code>Mischievous&lt;Cat&gt;</code>.</p>
-<hr>
-<p>Next we’ll need to update our implementations.</p>
-<p>Implementations that involve Generic parts, need to list those after the <code>impl</code> to save confusing implementations on generic types and implementations on concrete variants of generic types</p>
-<p>This just means you can implement the concrete version of <code>Mischievous&lt;Cat&gt;</code> and that’s not a generic implementation, but <code>impl&lt;A&gt; Michievous&lt;A&gt;</code> is.</p>
-<p>Once we’ve specified the generic parameters of the impl block, we don’t need to respecify them for each function so long as the type is being used consistently.</p>
-<p>So, our <code>new</code> functions can use <code>A</code> for the animal parameter, and that will be linked to our state’s generic <code>A</code>, and our state changes can use <code>A</code> to show that when the state changes, the generic type will remain the same.</p>
-<p>I’m also going to add a quick extra function, <code>describe</code>, to each implementation for use at the end.</p>
-<hr>
-<p>Finally, lets update our Cat implementation to return a concrete <code>Mischievous&lt;Cat&gt;</code> type</p>
-<hr>
-<p>We can now play with all of this in our main function:</p>
-<h2 id="tidying-up"><a class="header" href="#tidying-up">Tidying up</a></h2>
-<p>Before we finish the video, our code has gotten a bit messy, we should clean it up.</p>
-<p>Now that our states are not Cat specific, they should be moved out of <code>cat.rs</code>.</p>
-<p>Let’s create a new module for states, and some sub modules for each state.</p>
-<p>We need to <code>use</code> each state in the appropriate file being used, and you need to make your individual state modules public in your general state <code>mod.rs</code>.</p>
-<p>And there we have it, a neat little project! (no tests or documentation admittedly)!</p>
-<h2 id="next-chapter"><a class="header" href="#next-chapter">Next Chapter</a></h2>
-<p>This is cool… but we’ve got a slight problem.</p>
-<p>We can’t get Yuki’s name from the state, and really his actions should belong to him, not be part of the state.</p>
-<p>Personally, I <em>try</em> not to choose violence when I’m hangry, so I wouldn’t be comfortable putting myself in this state.</p>
-<p>We should move some of this behaviour to the Cat, but how can we access details on our Cat type, when we don’t know that our Generic states will contain Cat’s until runtime?</p>
-<p>In the next chapter we’ll discuss Traits which provide a way to resolve this, as well as some other cool things they can do with Generics!</p>
-<p>If that sounds interesting to you, don’t forget to like and subscribe.</p>
-<p>Finally, there’s now a Patreon and more importantly a Discord server, so check the description and come join our growing community!</p>
-<p>And if I don’t see you there, I’ll see you next time. 👋🏻</p>
+                        <h1 id="higher-order-function"><a class="header" href="#higher-order-function">Higher Order Function</a></h1>
+<h2 id="intro"><a class="header" href="#intro">Intro</a></h2>
+<h3 id="intro-1"><a class="header" href="#intro-1">intro 1</a></h3>
+<p>Higher Order Functions are functions that either take one or more <em>other</em> functions as parameters or return another
+function when called themselves.</p>
+<p>Easy right?</p>
+<p>But… what’s a function?</p>
+<h3 id="intro-2"><a class="header" href="#intro-2">intro 2</a></h3>
+<p>On Fio’s Quest we usually talk about data and types, but functions aren’t data, they’re just a set of instructions, so
+how can we pass them around?</p>
+<p>And while types can be involved in defining functions, are functions themselves typed?</p>
+<p>Kinda…</p>
+<h2 id="function-pointers"><a class="header" href="#function-pointers">Function Pointers</a></h2>
+<h3 id="pointers-1"><a class="header" href="#pointers-1">pointers 1</a></h3>
+<p>Functions aren’t data, but they do exist as a set of instructions in memory when your program runs</p>
+<p>And if it’s in memory, that means it has an address, and if it has an address we can create a pointer to it.</p>
+<h3 id="pointers-2"><a class="header" href="#pointers-2">pointers 2</a></h3>
+<p>Fun fact, unlike raw pointers, function pointers are safe in Rust.</p>
+<p>But in Rust pointers are typed, so what does a function pointer type look like.</p>
+<h3 id="pointers-3"><a class="header" href="#pointers-3">pointers 3</a></h3>
+<p>Functions have signatures.</p>
+<p>In this function, we have two parameters, a string slice and a u8.</p>
+<p>The return parameter is a String.</p>
+<h3 id="pointers-4"><a class="header" href="#pointers-4">pointers 4</a></h3>
+<p>The “type” of a function pointer is actually just this information written like this.</p>
+<p>This is basically the function signature written without any names.</p>
+<h3 id="pointers-5"><a class="header" href="#pointers-5">pointers 5</a></h3>
+<p>We can set a variable of that type to point at our function…</p>
+<p>Though, we wouldn’t normally do this inline because Rust can infer the type of the function pointer.</p>
+<h3 id="pointers-6"><a class="header" href="#pointers-6">pointers 6</a></h3>
+<p>Where this is actually useful is when defining another function that takes a function this shape as a parameter.</p>
+<p>Using the <code>RepeatFunction</code> type alias here makes the function header a lot easier to read, and, if we need to, allows us
+to reuse the alias in multiple places.</p>
+<h3 id="pointers-7"><a class="header" href="#pointers-7">pointers 7</a></h3>
+<p>Referencing a function using a function pointer can be especially useful for things like filters, maps, or folds.</p>
+<p>In this example we have a range of numbers 1 to 10.</p>
+<p>We use regular functions to filter out odd numbers, map each number to a string, and then combine what is now an
+iterator of strings into a single string.</p>
+<h3 id="pointers-8"><a class="header" href="#pointers-8">pointers 8</a></h3>
+<p>It’s worth noting though that <code>is_even</code> has the quirk of needing to explicitly take a reference to a usize because
+filter gives us a reference to T even if T is copy.</p>
+<h3 id="pointers-9"><a class="header" href="#pointers-9">pointers 9</a></h3>
+<p>We can also return function pointers from other functions.</p>
+<p>Here we have two functions that take a reference to a usize and return a bool…</p>
+<p>a type alias that matches those function signatures…</p>
+<p>and a function that returns a pointer to one of the other two functions when called</p>
+<h3 id="pointers-10"><a class="header" href="#pointers-10">pointers 10</a></h3>
+<p>We can then call <code>create_even_filter</code> to get a pointer to one of those two functions.</p>
+<p>But I think at this point we have to stop and wonder… how useful is this really?</p>
+<h3 id="pointers-11"><a class="header" href="#pointers-11">pointers 11</a></h3>
+<p>We can defer the choice of what code to execute until runtime, but you can literally do that with if statements and
+other branches.</p>
+<p>Using function pointers could be a little bit tidier, depending on the circumstance, but honestly, most of the time you
+probably won’t use them in higher order functions all that often.</p>
+<h3 id="pointers-12"><a class="header" href="#pointers-12">pointers 12</a></h3>
+<p>Higher Order Functions are more useful, and frankly more interesting, when you can configure the functions you send them
+at runtime…</p>
+<p>…but you can’t do that with function pointers.</p>
+<h2 id="closures"><a class="header" href="#closures">Closures</a></h2>
+<h3 id="closures-1"><a class="header" href="#closures-1">closures 1</a></h3>
+<p>Functions are simply a set of instructions.</p>
+<p>If we want to configure how they behave later we need to apply a little sprinkle of data…</p>
+<h3 id="closures-2"><a class="header" href="#closures-2">closures 2</a></h3>
+<p>We can provide functions with a scope that contains some data, and then pass that bundle of instructions and data
+around.</p>
+<p>This is where closure’s come in.</p>
+<h3 id="closures-3"><a class="header" href="#closures-3">closures 3</a></h3>
+<p>Rust has three types of closure, well, six technically, we’ll talk about the beardo weridos from the mirrorverse later.</p>
+<p>I’ll give you a few seconds to think about why Rust, specifically, needs 3 closure types when you bring stored data into
+the mix.</p>
+<h3 id="closures-4"><a class="header" href="#closures-4">closures 4</a></h3>
+<p>Let’s take a look at a very simple example.</p>
+<p>We’ll create a string, then we’ll create a closure.</p>
+<p>Closures look a little different from functions.</p>
+<h3 id="closures-5"><a class="header" href="#closures-5">closures 5</a></h3>
+<p>They aren’t named, but they can be stored in variables.</p>
+<p>They use pipes to surround parameters, and are followed by an expression, that can be a block expression, which is run
+when the closure is called.</p>
+<h3 id="closures-6"><a class="header" href="#closures-6">closures 6</a></h3>
+<p>For clarity, we’re going to go through three closure examples and each one is going to store the returned data in a
+variable called response before returning it</p>
+<p>This isn’t necessary, its more verbose than we’d really need, I just wanted to make this consistent and clear</p>
+<h3 id="closures-7"><a class="header" href="#closures-7">closures 7</a></h3>
+<p>This closure references the greeting…</p>
+<p>The reference to that String will be bundled into the closure.</p>
+<p>Because of this, behind the scenes, Rust will make sure that the closure doesn’t outlive the thing its referencing.</p>
+<h3 id="closures-8"><a class="header" href="#closures-8">closures 8</a></h3>
+<p>When we run the closure, it gives us back a string using the reference to our greeting and the provided name.</p>
+<p>Running it again with a different name gives us a different string.</p>
+<p>Greeting is still available and hasn’t changed.</p>
+<h3 id="closures-9"><a class="header" href="#closures-9">closures 9</a></h3>
+<p>We can also create closures that modify the data they’re given.</p>
+<p>In this version, we need to make sure both the data we’re referencing, greeting, and the closure itself are marked as mutable.</p>
+<p>This may initially seem odd, but there are two things to bear in mind.</p>
+<h3 id="closures-10"><a class="header" href="#closures-10">closures 10</a></h3>
+<p>First, conceptually, calling the closure multiple times will produce different results as if we’re modifying the closure
+itself.</p>
+<p>Second, technically, we are modifying the closure itself…</p>
+<p>the closure is storing a mutable reference to some data so just like almost any other data type that wants to let you
+mutate something its holding, it too must be marked as mutable.</p>
+<h3 id="closures-11"><a class="header" href="#closures-11">closures 11</a></h3>
+<p>This closure will capture a mutable reference to greeting.</p>
+<p>We didn’t need to tell it to do that specifically, Rust just knows that the push_str method on Strings requires a
+mutable reference so that’s what it stores.</p>
+<p>Again, it’ll work out if we’re using this safely without us needing to do much at all.</p>
+<h3 id="closures-12"><a class="header" href="#closures-12">closures 12</a></h3>
+<p>The first time we call this closure, we’ll get the same result, but the second time we call the closure, we get a
+difference.</p>
+<p>This is because we mutated the greeting String itself, which we can see if we inspect it.</p>
+<h3 id="closures-13"><a class="header" href="#closures-13">closures 13</a></h3>
+<p>Finally, we can actually just give the closure ownership of the data being used.</p>
+<p>In this example, I’m using the Add trait to combine a string with string slice references.</p>
+<h3 id="closures-14"><a class="header" href="#closures-14">closures 14</a></h3>
+<p>For types that aren’t copy (and String is not Copy), Add consumes the data, meaning after we call this closure we can
+never call it again.</p>
+<p>Luckily Rust knows this and will prevent us compiling code that attempts to do so.</p>
+<p>If we uncomment either of these lines we get a “value borrowed after move” error.</p>
+<h3 id="closures-15"><a class="header" href="#closures-15">closures 15</a></h3>
+<p>Earlier I mentioned that Rust has three basic types of closure, did you spot them?</p>
+<p>Just like anything to do with Data, Rust has three ways to think about it; immutably referenced, mutably referenced and
+owned.</p>
+<h3 id="closures-16"><a class="header" href="#closures-16">closures 16</a></h3>
+<p>In reverse order, our final function took ownership of the data and therefore could only be run a single time.</p>
+<p>This type of closure is known by the trait <code>FnOnce</code>.</p>
+<h3 id="closures-17"><a class="header" href="#closures-17">closures 17</a></h3>
+<p>Our middle closure captured a mutable reference to the data, and therefore could be run as many times as we liked.</p>
+<p>This type of closure is known by the trait <code>FnMut</code>.</p>
+<p>Anything that implements <code>FnMut</code> also implements <code>FnOnce</code>.</p>
+<h3 id="closures-18"><a class="header" href="#closures-18">closures 18</a></h3>
+<p>Our first example only captured an immutable reference.</p>
+<p>This type of closure is known by the trait <code>Fn</code>.</p>
+<p>Anything that implements <code>Fn</code> also implements <code>FnMut</code> and therefore <code>FnOnce</code>.</p>
+<h3 id="closures-19"><a class="header" href="#closures-19">closures 19</a></h3>
+<p>And if you’re wondering, function pointers, which do not capture any state, implement all three traits…</p>
+<p><em>and</em> closures that don’t capture any state can be treated like function pointers.</p>
+<p>This is why we could use function pointers in filter, map and fold earlier which accept anything of type <code>FnMut</code></p>
+<h3 id="closures-20"><a class="header" href="#closures-20">closures 20</a></h3>
+<p>If we go back to that example, we could write these closures in place.</p>
+<p>If your closure is very simple, like these, this may be preferable to writing a named function somewhere</p>
+<h3 id="closures-21"><a class="header" href="#closures-21">closures 21</a></h3>
+<p>Now, why was I just drawing a load of weird circles?</p>
+<p>This is my mental model for working out when to use which closure, not just for writing closures but for consuming them.</p>
+<h3 id="closures-22"><a class="header" href="#closures-22">closures 22</a></h3>
+<p>You can imagine these types being blocks that fit into slots.</p>
+<p>When you’re writing something that consumes the closure, you want to use the largest possible slot to allow the most
+number of blocks to fit.</p>
+<h3 id="closures-23"><a class="header" href="#closures-23">closures 23</a></h3>
+<p>If you’re only going to run the closure once, you can accept <code>FnOnce</code> and you’ll be able to take any kind of closure or
+a function pointer.</p>
+<p>Often you will need to run a closure multiple times though, in which case <code>FnMut</code> is the next best option, but you
+won’t be able to accept <code>FnOnce</code> closures.</p>
+<h3 id="closures-24"><a class="header" href="#closures-24">closures 24</a></h3>
+<p>If you’re writing a closure that needs to be passed to something else, then using the smallest possible block you can get
+away with will make your closure more portable.</p>
+<p>If it doesn’t need state then a function pointer or stateless closure will give you the most flexibility.</p>
+<h2 id="async-closures"><a class="header" href="#async-closures">Async Closures</a></h2>
+<h3 id="async-1"><a class="header" href="#async-1">async 1</a></h3>
+<p>So, those beirdo weirdo mirrorverse closures…</p>
+<p>Async closures are relatively new and so you’ll see a mixture of ways to encapsulate futures in closures.</p>
+<h3 id="async-2"><a class="header" href="#async-2">async 2</a></h3>
+<p>More recently AsyncFn, AsyncMut and AsyncOnce were stabalised, allowing you to write async in front of a closure.</p>
+<p>Because this is a relatively new feature, in older code you’ll likely see closures with async blocks, which feels
+backwards, but makes sense.</p>
+<h3 id="async-3"><a class="header" href="#async-3">async 3</a></h3>
+<p>The async keyword, whether applied to a function, code block, or now, a closure, is syntactic sugar that allows two
+things.</p>
+<p>First of all, the ability to defer a future with await…</p>
+<p>and second, and more importantly to what’s happening here, it says “this thing produces a Future”.</p>
+<h3 id="async-4"><a class="header" href="#async-4">async 4</a></h3>
+<p>If you create a standard closure, and immediately return an async block, then you’re returning future from the closure
+too.</p>
+<p>So in a way, Rust has had async closures for a while… but in a way, it also hasn’t.</p>
+<h3 id="async-5"><a class="header" href="#async-5">async 5</a></h3>
+<p>Using this older method causes all sorts of problems with lifetimes.</p>
+<p>So actually, you’ll almost always see an explicit move with closures that return an async block making the closure an
+<code>FnOnce</code> that happens to return a Future.</p>
+<h3 id="async-6"><a class="header" href="#async-6">async 6</a></h3>
+<p>One day Rust may introduce even more closure types.</p>
+<p>One that I’m personally excited by is that Rust contributors have been thinking how to add generator functions which
+implies both generator closures and async generator closures.</p>
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
+<h3 id="summary-1"><a class="header" href="#summary-1">summary 1</a></h3>
+<p>Closures and higher order functions are conceptually complex, but as we start writing them, they’re really clean and
+incredibly powerful.</p>
+<p>In Rust specifically the lifetime juggle can make things a bit more complex, and can be a bit of a headache to work
+around.</p>
+<p>Been there, believe me.</p>
+<h3 id="summary-2"><a class="header" href="#summary-2">summary 2</a></h3>
+<p>However, we can see that the amazing people contributing to the Rust language continue to improve usability and
+ergonomics.</p>
+<h3 id="summary-3"><a class="header" href="#summary-3">summary 3</a></h3>
+<p>Just as a reminder, if you enjoyed this video, don’t forget hit the like button and letting people know about the
+channel is the best way to support it.</p>
+<h3 id="summary-4"><a class="header" href="#summary-4">summary 4</a></h3>
+<p>Next time, now that we’ve seen how functions can be passed to other functions, we’re going to get a little wild.</p>
+<p>Our next video is going to explain… Monads… don’t worry though.</p>
+<h3 id="summary-5"><a class="header" href="#summary-5">summary 5</a></h3>
+<p>The pattern itself is actually super cool and much easier than it sounds.</p>
+<p>I’m going to explain the pattern while avoiding the complex language surrounding it.</p>
+<h3 id="summary-6"><a class="header" href="#summary-6">summary 6</a></h3>
+<p>This will undoubtedly frustrate the purists but its such an awesome pattern its worth discussing anyway!</p>
+<p>Hope to see you then.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../iriss/008-iriss.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../space/builder.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../iriss/010-iriss.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../space/monad.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -316,11 +395,11 @@ and, it also prevents old states hanging around, making it unclear what the vali
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../iriss/008-iriss.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../space/builder.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../iriss/010-iriss.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../space/monad.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
