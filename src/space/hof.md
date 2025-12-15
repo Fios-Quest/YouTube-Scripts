@@ -1,5 +1,5 @@
-Higher Order Functions
-======================
+Higher Order Function
+=====================
 
 Intro
 -----
