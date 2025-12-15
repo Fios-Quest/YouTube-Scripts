@@ -47,11 +47,11 @@ The return parameter is a String.
 
 The type of a function pointer is actually just this information writen like this.
 
-This is basically th function header written without any names.
+This is basically the function header written without any names.
 
 We can set a variable of that type to point at our function.
 
-Now, we wouldn't normally need to do this inline like this because Rust can infer the type of the function pointer.
+We wouldn't normally need to do this inline like this because Rust can infer the type of the function pointer.
 
 ```rust
 fn unnecessary_repeat(s: &str, times: u8) -> String {
@@ -72,7 +72,8 @@ fn main() {
 }
 ```
 
-Where this is actually useful is when defining another function that takes one that's this shape.
+Where this is actually useful is when defining another function that takes a function as a parameter and we need to
+define that its this shape.
 
 
 ```rust
@@ -149,14 +150,14 @@ fn create_even_filter(invert: bool) -> NumericFilter {
 }
 ```
 
-But I think at this point we have to stop and wonder... is this useful?
+But I think at this point we have to stop and wonder... how useful is this really?
 
-We can defer the choice of what code to execute until runtime but you can litereally do that with if statements.
+We can defer the choice of what code to execute until runtime but you can litereally do that with if statements and other branches.
 
-Using function pointers could be a little bit tidier, depending on circustance, but honestly, most of the time you won't
+Using function pointers could be a little bit tidier, depending on the circustance, but honestly, most of the time you won't
 need to do this.
 
-Higher Order Functions are more useful, and frankly more intresting when you can configure the function itself at runtime...
+Higher Order Functions are more useful, and frankly more intresting, when you can configure the function itself at runtime...
 
 ...but you can't do that with function pointers.
 
@@ -167,16 +168,148 @@ Functions are literally just a set of instructions.
 
 If we want to configure how they behave later we need to apply a little sprinkle of data...
 
-some state that can be carried around with them as we pass them back and forth.
+We can provide functions with a scope that contains data.
 
 This is where closure's come in.
 
 Rust has three types of closure, well, six technically, we'll talk about the beardo weridos from the mirrorverse later.
 
-I'll give you a few seconds to think about why Rust, specifically, needs 3 closure types when you bring stored
+I'll give you a few seconds to think about why Rust, specifically, needs 3 closure types when you bring stored data into
+the mix.
+
+Lets take a look at a very simple example.
+
+Lets create a string, then we'll create a closure.
+
+Closures look a little different from functions.
+
+They aren't named but they can be stored in variables.
+
+They use pipes to surround parameters, and are followed by an expression, which can be a block expression, which is run
+when the closure is called.
+
+```rust
+fn main() {
+    let greeting = "Hello, ".to_string();
+
+    let greet = |name: &str| {
+        let response = format!("{}{}", &greeting, name);
+        response
+    };
+    
+    println!("{}", greet("Daniel"));
+    println!("{}", greet("Yuki"));
+    println!("{greeting}");
+}
+```
+
+-- This takes a reference to the original data and doens't modify it.
+
+We can also create closures that modify the data they're given.
+
+In this version, we need to make sure both the scoped data, greeting, and the closure itself are marked as mutable.
+
+This may initially seem odd, but there are two things to bear in mind.
+
+First, concepually, calling the closure multiple times will produce different results as if we're modifying the closure
+itself.
+
+Second, technically, we are modifying the closure itself...
+
+the closure is storing a mutable reference to some data so just like any other data type that wants to let you mutate
+something its holding, it too must be marked as mutable.
+
+```rust
+fn main() {
+    let mut greeting = "Hello, ".to_string();
+
+    let mut greet = |name: &str| {
+        greeting.push_str(", ");
+        greeting.push_str(name);
+        let response = greeting.clone();
+        response
+    };
+    
+    println!("{}", greet("Daniel"));
+    println!("{}", greet("Yuki"));
+    println!("{greeting}");
+}
+```
+
+Finally, we can actually just give the closure ownership of the data being used.
+
+In this example, I'm using the Add trait to combine a string with a string slice reference.
+
+For types that aren't copy (and String is not Copy), add consumes the data meaning after we call this closure we can
+never call it again, our code won't compile.
+
+
+```rust
+fn main() {
+    let greeting = "Hello, ".to_string();
+
+    let greet = |name: &str| {
+        let response = greeting + name;
+        response
+    };
+    
+    println!("{}", greet("Daniel"));
+    println!("{}", greet("Yuki"));
+    println!("{greeting}");
+}
+```
+
+Earlier I mentioned that Rust has three basic types of closure, did you spot them?
+
+Just like anything to do with Data, Rust has three ways to think about it; immutably referenced, mutably referenced and
+owned.
+
+In reverse order, our last function took ownership of the data and therefore could only be run a single time.
+
+This type of closure is known by the trait `FnOnce`.
+
+Our middle closure captured a mutable reference to the data, and therefore could be run as many times as we liked.
+
+This type of closure is known by the trait `FnMut`.
+
+Anything that implements `FnMut` also implements `FnOnce`.
+
+Our first example only captured an immutable reference.
+
+This type of closure is known by the trait `Fn`.
+
+Anything that implements `Fn` also implements `FnMut` and therefore `FnOnce`.
+
+And if you're wondering, function pointers, which do not capture any state, implement all three traits _and_ closures
+that don't capture any state can be treated like function pointers.
+
+This is why we could use function pointers in filter, map and fold earlier which accept anything of type `FnMut`
+
+Now, why did I just draw a load of circles?
+
+This is my mental model for working out when to use which closure, not just for writing closures but for consuming them.
+
+You can imagine these types being pegs that fit into holes.
+
+When you're writing something that consumes the closure, you want to use use the largest possible space to allow the
+most number of pegs to fit.
+
+If you're only going to run the closure once, you can accept `FnOnce` and you'll be able to take any kind of closure or
+a function pointer.
+
+Often you will need to run a closure multiple times though, in which case `FnMut` is the next best option, but you
+won't be able to accept `FnOnce` closures.
+
+If you're writing a closure that needs to be passed to something else, then using the smalled possible peg you can get
+away with will make your closure more portable.
+
+If it doesn't need state then a function pointer or stateless closure will give you the most flexibility.
+
 
 Async Closures
 --------------
+
+The beirdo weirdo mirrorverse closures
 
 Async closures are relatively new and so you'll see a mixture of ways to encapsulate futures in closures.
 
@@ -185,7 +318,8 @@ More recently AsyncFn, AsyncMut and AsyncOnce were stabalised, allowing you to w
 Because this is a relatively new feature, in older code you'll likely see closures with async blocks, which feels
 backwards, but makes sense.
 
-async, whether on a function, code block, or now, a closure, is syntactic sugar that allows two things.
+The async keyword, whether applied to a function, code block, or now, a closure, is syntactic sugar that allows two
+things.
 
 First of all, the ability to defer a future with await...
 
@@ -198,9 +332,13 @@ So in a way, Rust has had async closures for a while... but in a way, it also ha
 
 Using this older method causes all sorts of problems with lifetimes.
 
-So actually, you'll almost always see an explicit move with closures that return an async block...
+So actually, you'll almost always see an explicit move with closures that return an async block making the closure an
+`FnOnce` that happens to return a Future.
 
-Maybe multiple times...
+One day Rust may introduce even more closure types.
+
+One that I'm personally excited by is that Rust contributors have been thinking how to add generator functions which
+implies both generator closures and async generator closures.
 
 Summary
 -------
@@ -216,8 +354,6 @@ However, we can see that the amazing people contributing to the Rust language co
 ergonomics.
 
 Just as a reminder, if you enjoyed this video, don't forget hit the like button
-
-YouTubers are a fragile lot and it helps nurse our egos
 
 Next time, now that we've seen how functions can be passed to other functions, we're going to get a little wild.
 
