@@ -28,6 +28,21 @@ fn divide(dividend: i64, divisor: i64) -> Maybe<i64> {
 }
 
 fn main() {
+    // ---
+
+    let twenty_five = 5 * 5;
+    let five = 5.to_string();
+
+    assert_eq!(twenty_five, 25);
+    assert_eq!(five, "5");
+
+    // ---
+
+    assert_eq!(square(5), 25);
+    assert_eq!(to_string(5), "5".to_string());
+
+    // ---
+
     let maybe_result = divide(4, 2);
     let maybe_squared_result = maybe_result.map(square);
     let maybe_string_result = maybe_squared_result.map(to_string);
@@ -45,4 +60,6 @@ fn main() {
         Maybe::Value(s) => println!("{s}"),
         Maybe::Nothing => println!("Nothing to show"),
     }
+
+    // ---
 }
