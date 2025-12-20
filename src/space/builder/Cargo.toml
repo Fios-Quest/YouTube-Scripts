@@ -1,8 +1,8 @@
 [workspace]
-members = [ "builder-lite","newtypes", "no-builder", "typestate-builder"]
+members = ["builder-lite", "newtypes", "no-builder", "typestate-builder"]
+resolver = "3"
 
 [workspace.package]
-name = "builder"
 version = "0.1.0"
 edition = "2024"
 
