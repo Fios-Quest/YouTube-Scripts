@@ -6,8 +6,18 @@ use std::str::FromStr;
 #[derive(Debug)]
 struct User {
     username: Username,
-    email: EmailAddress,
+    email_address: EmailAddress,
     date_of_birth: DateOfBirth,
+}
+
+impl fmt::Display for User {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "{}, {}, {}",
+            self.username, self.email_address, self.date_of_birth
+        )
+    }
 }
 
 #[derive(Debug)]
@@ -34,7 +44,7 @@ impl Error for UserBuilderError {}
 #[derive(Default)]
 struct UserBuilder {
     username: Option<Username>,
-    email: Option<EmailAddress>,
+    email_address: Option<EmailAddress>,
     date_of_birth: Option<DateOfBirth>,
 }
 
@@ -48,8 +58,8 @@ impl UserBuilder {
         self
     }
 
-    fn with_email(mut self, email: EmailAddress) -> Self {
-        self.email = Some(email);
+    fn with_email(mut self, email_address: EmailAddress) -> Self {
+        self.email_address = Some(email_address);
         self
     }
 
@@ -63,12 +73,12 @@ impl UserBuilder {
 
     fn build(self) -> Result<User, UserBuilderError> {
         let username = self.username.ok_or(UserBuilderError::NoUsername)?;
-        let email = self.email.ok_or(UserBuilderError::NoEmailAddress)?;
+        let email_address = self.email_address.ok_or(UserBuilderError::NoEmailAddress)?;
         let date_of_birth = self.date_of_birth.ok_or(UserBuilderError::NoDateOfBirth)?;
 
         Ok(User {
             username,
-            email,
+            email_address,
             date_of_birth,
         })
     }

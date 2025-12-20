@@ -17,14 +17,14 @@ impl Error for UserNotOldEnough {}
 #[derive(Debug)]
 struct User {
     username: Username,
-    email: EmailAddress,
+    email_address: EmailAddress,
     date_of_birth: DateOfBirth,
 }
 
 impl User {
     fn new(
         username: Username,
-        email: EmailAddress,
+        email_address: EmailAddress,
         date_of_birth: DateOfBirth,
     ) -> Result<Self, UserNotOldEnough> {
         if date_of_birth.get_age() < 21 {
@@ -33,16 +33,26 @@ impl User {
 
         Ok(User {
             username,
-            email,
+            email_address,
             date_of_birth,
         })
+    }
+}
+
+impl fmt::Display for User {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "{}, {}, {}",
+            self.username, self.email_address, self.date_of_birth
+        )
     }
 }
 
 fn main() -> anyhow::Result<()> {
     let user_instantiate = User {
         username: Username::from_str("Yuki")?,
-        email: EmailAddress::from_str("yuki@example.com")?,
+        email_address: EmailAddress::from_str("yuki@example.com")?,
         date_of_birth: DateOfBirth::from_str("2009-05-01")?,
     };
 
