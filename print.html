@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-ea400d71.js";
+            window.path_to_searchindex_js = "searchindex-0cc144a0.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-cc4b049f.js"></script>
@@ -5426,11 +5426,11 @@ method chaining reduces code clutter.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="builder"><a class="header" href="#builder">Builder</a></h1>
 <h2 id="intro-6"><a class="header" href="#intro-6">Intro</a></h2>
-<p>The builder pattern allows us to construct complex types in steps.</p>
+<p>The builder pattern allows us to construct complex types in simple steps.</p>
 <p>For example, in our previous video, you don’t have to have watched it, we had a ‘User’ struct that had a username, an
 email and a date of birth.</p>
-<p>In that video, we allowed the date of birth to be set later, but a user also had to be older than 21 (which I mentioned
-was silly to do after the user was created).</p>
+<p>In that video, we allowed the date of birth to be set later, but a user also had to be older than 21 (which, I said at
+the time, was silly to check after the user was created).</p>
 <h3 id="intro-2-4"><a class="header" href="#intro-2-4">Intro 2</a></h3>
 <p>If we were to make all of these fields required, creating the struct gets a bit unwieldy.</p>
 <p>Do we instantiate it manually or write a constructor?</p>
@@ -5445,16 +5445,16 @@ our validation into a single function.</p>
 <p>Instead of constructing the object directly, we use another type to manage the construction.</p>
 <p>This Builder type collects data about the struct we want to create, then has a finalizer that creates the struct from
 the data we’ve given it.</p>
-<p>There are arguably two versions of this pattern: a simpler version that will work in just about any language that I’m
-going to refer to as “Builder Lite”, and a more complex version that only works in languages with strict generic typing,
-the “Typestate Builder”.</p>
+<p>There are arguably two versions of this pattern:</p>
+<p>a simpler version that will work in just about any language that I’m going to refer to as “Builder Lite”,</p>
+<p>and a more complex version that only works in languages with strict generic typing, the “Typestate Builder”.</p>
 <p>Each has their own pros and cons, so lets go over them.</p>
 <h2 id="builder-lite"><a class="header" href="#builder-lite">Builder Lite</a></h2>
 <p>The traditional builder pattern uses a type that mirrors the type you want to build but everything is optional.</p>
 <p>We use methods to update each field, and then have a finalizer that takes the data we’ve stored in the builder and
 attempts to convert it into the target type.</p>
 <p>Let’s build one for our <code>User</code> example.</p>
-<p>Before we start on the Builder we need to set up an Error type as there are a lot of ways this could go wrong.</p>
+<p>Before we start on the Builder though, we need to set up an Error type as there are a lot of ways this could go wrong.</p>
 <p>The UserBuilder itself looks just like the User, except the fields are all optional.</p>
 <p>Each of our “withers” will set the relevant value and return a new version of the UserBuilder with the new value.</p>
 <h3 id="lite-2"><a class="header" href="#lite-2">lite 2</a></h3>
@@ -5464,53 +5464,58 @@ attempts to convert it into the target type.</p>
 <p>Our first potential error is when setting the date of birth, where we test if the user is at least 21.</p>
 <p>This doesn’t matter to our Fluent Interface in Rust so long as you’re using the Builder in a context where you can
 bubble the Error.</p>
+<h3 id="lite-4"><a class="header" href="#lite-4">lite 4</a></h3>
 <p>Our finalizer method is called “build” and simply checks to see if all the Optional parameters have been set.</p>
 <p>If we missed any values we’ll return an appropriate error or if everything is ok, we’ll return the built User type.</p>
 <p>Here’s an example of where the User will be successfully built.</p>
-<h3 id="lite-4"><a class="header" href="#lite-4">lite 4</a></h3>
-<p>Here’s an example where we’ll get an error.</p>
+<h3 id="lite-5"><a class="header" href="#lite-5">lite 5</a></h3>
+<p>And, here’s an example where we’ll get an error.</p>
 <p>The biggest pro of this pattern is its really easy to understand at a glance and pretty easy to maintain.</p>
-<p>The biggest con though is that we should know, at compile time, that that second builder was never going to succeed.</p>
+<p>The biggest con though is that we should know, at compile time, that that second usage was never going to succeed.</p>
 <h2 id="typestate-builder"><a class="header" href="#typestate-builder">Typestate Builder</a></h2>
 <h3 id="typestate-1-2"><a class="header" href="#typestate-1-2">typestate 1</a></h3>
 <p>Let’s use the TypeState pattern to make that problem go away.</p>
 <p>If you’re not already familiar with this pattern we have a video on it, but the TL;DW is that we can bake the state of
-something into its Type, and then decide what your allowed to do with data based on its Type.</p>
+something into its Type,</p>
+<p>We can then decide what you’re allowed to do with the data by restricting behaviour with its TypeState.</p>
+<h3 id="typestate-2-1"><a class="header" href="#typestate-2-1">typestate 2</a></h3>
 <p>Let’s make a TypeState Builder for our User.</p>
 <p>First we can edit our Error down to a single event now, the others won’t be possible when we’re done.</p>
-<p>Next, we’re going to use generic for each of the properties in our builder.</p>
-<h3 id="typestate-2-1"><a class="header" href="#typestate-2-1">typestate 2</a></h3>
+<p>Next, we’re going to use a generic type for each of the properties in our builder.</p>
+<h3 id="typestate-3-1"><a class="header" href="#typestate-3-1">typestate 3</a></h3>
 <p>These generics can either be the type they’re supposed to be, or something that represents the fact we haven’t set them
 yet.</p>
-<p>To achieve this, I’ve created an “Unset” unit struct, and a trait to restrict each generic (this may not be necessary,
-but it is tidy).</p>
-<p>We’ll implement each trait for Unset, and for the type we <em>actually</em> want to use there.</p>
+<p>To achieve this, I’ve created an “Unset” unit struct, and a trait to restrict each generic</p>
+<p>(this may not be necessary, but it is tidy).</p>
+<h3 id="typestate-4-1"><a class="header" href="#typestate-4-1">typestate 4</a></h3>
+<p>We’ll implement each trait for Unset as well as the type we <em>actually</em> want it to become in User.</p>
 <p>Now we can create our Builder and the properties are all generics restricted by the relevant traits</p>
-<h3 id="typestate-3-1"><a class="header" href="#typestate-3-1">typestate 3</a></h3>
+<h3 id="typestate-5"><a class="header" href="#typestate-5">typestate 5</a></h3>
 <p>So U can be Username or Unset, E can be EmailAddress or Unset and D can be DateOfBirth or Unset</p>
 <p>We’re going to implement UserBuilder three times, each with different generic variants.</p>
+<h3 id="typestate-6"><a class="header" href="#typestate-6">typestate 6</a></h3>
 <p>The first one we’ll implement is when all of our generics are Unset, this allows us to have a constructor for the
 Builder that returns a version where everything starts off Unset.</p>
-<p>Next we want to implement the UserBuilder for all generics where we don’t know what the generic type is.</p>
-<h3 id="typestate-4-1"><a class="header" href="#typestate-4-1">typestate 4</a></h3>
+<p>Next we want to implement the UserBuilder where we don’t know what the generic types are.</p>
+<h3 id="typestate-7"><a class="header" href="#typestate-7">typestate 7</a></h3>
 <p>Each method here consumes the Builder and returns a new Builder with the data we wanted set.</p>
 <p>This updates the type, setting the generic we care about to that particular type but keeping the others as whatever type
 they were when the method was called.</p>
 <p>For example, the “with_username” method will return a UserBuilder with the first generic parameter set to Username, but
 the other two will just be whatever they were when that method was called.</p>
-<h3 id="typestate-4-1-1"><a class="header" href="#typestate-4-1-1">typestate 4</a></h3>
+<h3 id="typestate-8"><a class="header" href="#typestate-8">typestate 8</a></h3>
 <p>Same for the “with_email” method.</p>
 <p>The “with_date_of_birth” method is a touch different because it returns a Result, but the Ok variant will still inherit
-whatever concrete types U and E were set to when the method was called.</p>
+whatever concrete types U and E were set to previously.</p>
 <p>Finally, we’ll implement UserBuilder where all of our generics are now the types we want them to be.</p>
-<h3 id="typestate-5"><a class="header" href="#typestate-5">typestate 5</a></h3>
+<h3 id="typestate-9"><a class="header" href="#typestate-9">typestate 9</a></h3>
 <p>Here’s where we put our finaliser method.</p>
 <p>Because this method is only implemented for the concrete version of UserBuilder where all of our generics match the
 types in our User struct, we can just copy them straight over.</p>
 <p>When we come to use this pattern, we need to provide all the necessary data or the user can not be built.</p>
-<h3 id="typestate-6"><a class="header" href="#typestate-6">typestate 6</a></h3>
+<h3 id="typestate-10"><a class="header" href="#typestate-10">typestate 10</a></h3>
 <p>The build method simply doesn’t exist unless we’ve done that, so this code won’t compile, specifically telling us
-that build does not exist for UserBuilder&lt;Username, Unset, Unset&gt;.</p>
+that build does not exist for <code>UserBuilder&lt;Username, Unset, Unset&gt;</code>.</p>
 <p>This is objectively… awesome.</p>
 <p>There are two big pros to this pattern, the obvious one is that we can not muck up building our user type, but its also
 worth pointing out that we’ve removed all but one branch in our code, which will provide a significant runtime benefit.</p>
@@ -5525,10 +5530,9 @@ your Builder, but getting out of our comfort zones helps us develop our skills.<
 <h3 id="conclusion-2-3"><a class="header" href="#conclusion-2-3">conclusion 2</a></h3>
 <p>If you enjoyed this video, don’t forget to like and subscribe.</p>
 <p>If you really liked the video, you can become a member of the channel or join the Patreon, see the description for more.</p>
-<p>Next time we’re we’re getting wild.</p>
-<p>I’m going to explain the Monad pattern BUT without using any of the scary words that are genuinely helpful if you’re
-super into category theory but terrifying if you just want to understand what is actually a super useful pattern.</p>
-<p>If you want to join me upsetting a load of Haskell engineers, I hope I’ll see you then.</p>
+<p>Next time we’re going to talk about higher order functions, and do our best to demystify the fact Rust has numerous
+closure types.</p>
+<p>So join me next time for that.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="higher-order-function"><a class="header" href="#higher-order-function">Higher Order Function</a></h1>
 <h2 id="intro-7"><a class="header" href="#intro-7">Intro</a></h2>
