@@ -3,5 +3,5 @@
 version = 4
 
 [[package]]
-name = "advanced-typestate"
+name = "monad"
 version = "0.1.0"
