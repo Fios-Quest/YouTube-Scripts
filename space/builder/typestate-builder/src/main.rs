@@ -10,16 +10,30 @@ struct User {
     date_of_birth: DateOfBirth,
 }
 
-#[derive(Debug)]
-struct UserNotOldEnough;
-
-impl fmt::Display for UserNotOldEnough {
+impl fmt::Display for User {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "User is not old enough")
+        write!(
+            f,
+            "{}, {}, {}",
+            self.username, self.email_address, self.date_of_birth
+        )
     }
 }
 
-impl Error for UserNotOldEnough {}
+#[derive(Debug)]
+enum UserBuilderError {
+    NotOldEnough,
+}
+
+impl fmt::Display for UserBuilderError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Self::NotOldEnough => write!(f, "User is not old enough"),
+        }
+    }
+}
+
+impl Error for UserBuilderError {}
 
 struct Unset;
 
@@ -36,7 +50,12 @@ impl EmailAddressMarker for EmailAddress {}
 impl DateOfBirthMarker for DateOfBirth {}
 
 #[derive(Debug)]
-struct UserBuilder<U: UsernameMarker, E: EmailAddressMarker, D: DateOfBirthMarker> {
+struct UserBuilder<U, E, D>
+where
+    U: UsernameMarker,
+    E: EmailAddressMarker,
+    D: DateOfBirthMarker,
+{
     username: U,
     email: E,
     date_of_birth: D,
@@ -72,9 +91,9 @@ impl<U: UsernameMarker, E: EmailAddressMarker, D: DateOfBirthMarker> UserBuilder
     fn with_date_of_birth(
         self,
         date_of_birth: DateOfBirth,
-    ) -> Result<UserBuilder<U, E, DateOfBirth>, UserNotOldEnough> {
+    ) -> Result<UserBuilder<U, E, DateOfBirth>, UserBuilderError> {
         if date_of_birth.get_age() < 21 {
-            return Err(UserNotOldEnough);
+            return Err(UserBuilderError::NotOldEnough);
         }
         Ok(UserBuilder {
             username: self.username,
@@ -102,13 +121,10 @@ fn main() -> anyhow::Result<()> {
         .with_date_of_birth(DateOfBirth::from_str("2000-01-01")?)?
         .build();
 
-    dbg!(user);
-
     // But if we don't give all the required information we get an error
-    // let user = UserBuilder::new()
-    //     .with_username(Username::from_str("Fio")?)
-    //     .build();
-    // dbg!(user);
+    let user = UserBuilder::new()
+        .with_username(Username::from_str("Fio")?)
+        .build();
 
     Ok(())
 }
