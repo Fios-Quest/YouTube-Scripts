@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-0cc144a0.js";
+            window.path_to_searchindex_js = "../searchindex-cc033b00.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-cc4b049f.js"></script>
@@ -203,27 +203,29 @@ types depending on what happened when they were called.</p>
 <p>This means we can’t just pass a variable that might be null into these functions.</p>
 <h3 id="intro-8"><a class="header" href="#intro-8">intro 8</a></h3>
 <p>We need to check if the value is null and only pass it in if it’s not (this is a process called “narrowing”).</p>
-<p>We can do this with branching, typescript is smart enough to know that the “if” makes it impossible for the value to be
+<p>We can do this with branching, TypeScript is smart enough to know that it’s impossible for the value to be
 null in this branch so this works…</p>
-<p>but it obviously reads terribly, and adds a lot of boilerplate if we have to do this a lot.</p>
 <h3 id="intro-9"><a class="header" href="#intro-9">intro 9</a></h3>
+<p>but it obviously reads terribly, and adds a lot of boilerplate if we have to do this often.</p>
 <p>The next logical step is, if we’re just checking for null, we could abstract this to a generic function, which in
 typescript would look like this.</p>
+<h3 id="intro-10"><a class="header" href="#intro-10">intro 10</a></h3>
 <p>Here we’re passing our function that takes T and returns U into another function that takes T or null, and returns U or
 null.</p>
 <p>If the input isn’t null, we run the passed function, otherwise we return null.</p>
+<h3 id="intro-11"><a class="header" href="#intro-11">intro 11</a></h3>
 <p>Now we can reuse this code a lot more easily but there’s still a lot of to-ing and fro-ing.</p>
 <p>Also, none of this works in Rust.</p>
-<h3 id="intro-10"><a class="header" href="#intro-10">intro 10</a></h3>
-<p>There’s another logical step we can take though, one that also lets us get back to Rust.</p>
-<p>One that’s a little more “fluent” if you will.</p>
+<h3 id="intro-12"><a class="header" href="#intro-12">intro 12</a></h3>
+<p>There’s another logical step we can take though, one that lets us get back to Rust.</p>
+<p>One that’s also a little more… “fluent” if you will.</p>
 <h2 id="mmmmmmo-containers"><a class="header" href="#mmmmmmo-containers">Mmmmmmo…. Containers</a></h2>
 <h3 id="containers-1"><a class="header" href="#containers-1">containers 1</a></h3>
 <p>At the moment we’re dealing with a value that could be type T, or it could be the concept of nothing.</p>
-<p>There are two separate types.</p>
+<p>These are two separate types.</p>
 <h3 id="containers-2"><a class="header" href="#containers-2">containers 2</a></h3>
 <p>What if we wrapped these types in a container that could hold either T or nothing.</p>
-<p>We’ll call our container <code>M</code> for Mmmm reasons.</p>
+<p>We’ll call our container <code>M</code> for Mon… reasons.</p>
 <h3 id="containers-3"><a class="header" href="#containers-3">containers 3</a></h3>
 <p>So we have our container, <code>M&lt;T or nothing&gt;</code>, and our functions f(T) returning U</p>
 <p>We can give our container a way to take that function and return a new container, <code>M&lt;U or nothing&gt;</code>.</p>
@@ -232,56 +234,64 @@ null.</p>
 <p>We’ll start by creating an Enum called Maybe because maybe it contains a value, or maybe it contains nothing.</p>
 <h3 id="containers-5"><a class="header" href="#containers-5">containers 5</a></h3>
 <p>We’ll then give it a method that will map from <code>Maybe&lt;T&gt;</code> to <code>Maybe&lt;U&gt;</code> using the provided function, <code>f(T) -&gt; U</code>.</p>
-<p>This function is functionally identical to our if_not_null function we wrote in TypeScript but operates directly on an
+<p>This method is functionally identical to our if_not_null function we wrote in TypeScript but operates directly on an
 owned version of the Maybe.</p>
-<p>Now when we call our Rust equivalent function to get even time, we’ll get a <code>Maybe&lt;i64&gt;</code> back.</p>
 <h3 id="containers-6"><a class="header" href="#containers-6">containers 6</a></h3>
+<p>Now when we call our Rust equivalent function to divide two numbers, we’ll get a <code>Maybe&lt;i64&gt;</code> back.</p>
 <p>We can map the <code>Maybe&lt;i64&gt;</code> using square.</p>
+<h3 id="containers-7"><a class="header" href="#containers-7">containers 7</a></h3>
 <p>Because square takes an i64 and returns an i64, using it on <code>Maybe&lt;i64&gt;</code> returns another <code>Maybe&lt;i64&gt;</code>.</p>
 <p>When we use to_string which takes an i64 and returns a String, our <code>Maybe&lt;i64&gt;</code> turns into a <code>Maybe&lt;String&gt;</code>.</p>
+<h3 id="containers-8"><a class="header" href="#containers-8">containers 8</a></h3>
 <p>Finally, we can print this to the screen by examining the Maybe directly.</p>
-<h3 id="containers-7"><a class="header" href="#containers-7">containers 7</a></h3>
 <p>That’s all well and good, but it seems like this hasn’t saved us much over what we were doing with if_not_null in
 TypeScript.</p>
+<h3 id="containers-9"><a class="header" href="#containers-9">containers 9</a></h3>
 <p>Where this pattern shines is that in TypeScript we were dealing with a value that could have two types.</p>
 <p>By encapsulating it in a Mmmmm… Container, we’re only dealing with one type, which means we’ve built ourselves a
 fluent interface for managing our data.</p>
-<h3 id="containers-8"><a class="header" href="#containers-8">containers 8</a></h3>
+<h3 id="containers-10"><a class="header" href="#containers-10">containers 10</a></h3>
 <p>This means we can inline all of our maps, and it becomes far more readable than if we’d inlined our function calls.</p>
 <p>For what its worth, this pattern works perfectly fine in TypeScript too.</p>
 <h2 id="variations"><a class="header" href="#variations">Variations</a></h2>
 <h3 id="variations-1"><a class="header" href="#variations-1">variations 1</a></h3>
 <p>By now, you’ve probably worked out that our Maybe type is us creating a less fantastic Rust Option.</p>
 <p>Our containers can be more flexible than just T or nothing though.</p>
-<p>It’s perfectly reasonable for your container to potentially hold multiple things.</p>
 <h3 id="variations-2"><a class="header" href="#variations-2">variations 2</a></h3>
+<p>It’s perfectly reasonable for your container to potentially hold multiple things.</p>
 <p>Let’s say we have a container that could hold types T or V.</p>
-<p>This container should not only be able to take <code>f(T) -&gt; U</code> which will give us a container potentially holding U or V,
-but it should also be able to take <code>f(V) -&gt; W</code> which will give us a container potentially holding T or W.</p>
-<p>A good example of this in Rust is the Result enum which holds an Ok variant of T and an Error variant of E</p>
 <h3 id="variations-3"><a class="header" href="#variations-3">variations 3</a></h3>
+<p>This container should not only be able to take <code>f(T) -&gt; U</code> which will give us a container potentially holding U or V</p>
+<p>but it should also be able to take <code>f(V) -&gt; W</code> which will give us a container potentially holding T or W.</p>
+<h3 id="variations-4"><a class="header" href="#variations-4">variations 4</a></h3>
+<p>A good example of this in Rust is the Result enum which holds an Ok variant of T and an Error variant of E</p>
 <p>However, we can’t just hand over <code>f(T) -&gt; U</code> or <code>f(V) -&gt; W</code> and hope for the best because what if both variants hold the
 same type.</p>
-<p>It’s not unheard of for both types to be either a unit type or a string, I mean, it’s not ideal, but it’s not
-impossible.</p>
+<h3 id="variations-5"><a class="header" href="#variations-5">variations 5</a></h3>
+<p>It’s not unheard of for both variants of a Result to be the same type… either a unit type or a string</p>
+<p>I mean, it’s not ideal, but it’s not impossible.</p>
+<h3 id="variations-6"><a class="header" href="#variations-6">variations 6</a></h3>
 <p>Rust’s result type has separate methods for changing the Ok variant or the Error variant, the former still being “map”
 and the later being “map_err”.</p>
 <h2 id="rules--guidelines"><a class="header" href="#rules--guidelines">Rules / Guidelines</a></h2>
 <h3 id="rules-1"><a class="header" href="#rules-1">rules 1</a></h3>
 <p>I’m sure I’ll have made some hackles rise in my description of this pattern, so I do want to explain there are some
 specific rules that make this pattern what it is, it’s not just any old container.</p>
+<h3 id="rules-2"><a class="header" href="#rules-2">rules 2</a></h3>
 <p>Firstly, for a given container, a value representable as a type inside that container, should be convertable to that
 container without changing its value.</p>
 <p>In our Maybe example (as well as in Option and Result), we simply pass the value to one of the enum variants, so the
 inner value doesn’t change.</p>
-<h3 id="rules-2"><a class="header" href="#rules-2">rules 2</a></h3>
+<h3 id="rules-3"><a class="header" href="#rules-3">rules 3</a></h3>
 <p>Second, there needs to be a way to apply a function to the inner types such that if you apply <code>f(T) -&gt; U</code>  to a
 container potentially holding a value of T then you get a container potentially holding a value of U.</p>
+<h3 id="rules-4"><a class="header" href="#rules-4">rules 4</a></h3>
 <p>In our Maybe, applying <code>f(T) -&gt; U</code> to <code>Maybe&lt;T&gt;</code> returns <code>Maybe&lt;U&gt;</code> regardless of whether it contained a value of T or
 not.</p>
-<h3 id="rules-3"><a class="header" href="#rules-3">rules 3</a></h3>
-<p>In some languages the rules are a little stricter and the pattern works very slightly differently, but there are
-plenty of videos that can explain this in more detail.</p>
+<h3 id="rules-5"><a class="header" href="#rules-5">rules 5</a></h3>
+<p>In some languages the rules are a little stricter and the pattern works very slightly differently, but there are plenty
+of videos that can explain the specifics for those languages in more detail.</p>
+<h3 id="rules-6"><a class="header" href="#rules-6">rules 6</a></h3>
 <p>I just wanted to explain the basic pattern in an easy to digest way because I think it’s an extremely cool pattern, one
 that’s surprisingly crucial to how Rust works.</p>
 <h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
@@ -289,11 +299,13 @@ that’s surprisingly crucial to how Rust works.</p>
 <p>This pattern can significantly reduce complexity, removing a lot of cognitive overhead when reading and writing code.</p>
 <p>Rust is filled with this pattern, and in fact wouldn’t work as a language without it, we just don’t use that name
 because it feels overly complex.</p>
+<h3 id="summary-2"><a class="header" href="#summary-2">summary 2</a></h3>
 <p>I hope I’ve aptly explained the pattern without all the scary words, but if you do want to learn more about this pattern
 warts and all, there’s a lot of great YouTube videos out there, I’ll recommend some in the description of this one.</p>
-<h3 id="summary-2"><a class="header" href="#summary-2">summary 2</a></h3>
+<h3 id="summary-3"><a class="header" href="#summary-3">summary 3</a></h3>
 <p>If you enjoyed this video, don’t forget to like and subscribe.</p>
 <p>If you really liked the video, you can become a member of the channel or join the Patreon, see the description for more.</p>
+<h3 id="summary-4"><a class="header" href="#summary-4">summary 4</a></h3>
 <p>Next time we’re going to talk about dependency injection, which is crucial to building complex yet maintainable
 software.</p>
 <p>I hope I’ll see you then.</p>

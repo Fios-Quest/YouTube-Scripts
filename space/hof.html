@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-0cc144a0.js";
+            window.path_to_searchindex_js = "../searchindex-cc033b00.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-cc4b049f.js"></script>
@@ -266,7 +266,8 @@ variable called response before returning it</p>
 <p>Greeting is still available and hasn’t changed.</p>
 <h3 id="closures-9"><a class="header" href="#closures-9">closures 9</a></h3>
 <p>We can also create closures that modify the data they’re given.</p>
-<p>In this version, we need to make sure both the data we’re referencing, greeting, and the closure itself are marked as mutable.</p>
+<p>In this version, we need to make sure both the data we’re referencing, greeting, and the closure itself are marked as
+mutable.</p>
 <p>This may initially seem odd, but there are two things to bear in mind.</p>
 <h3 id="closures-10"><a class="header" href="#closures-10">closures 10</a></h3>
 <p>First, conceptually, calling the closure multiple times will produce different results as if we’re modifying the closure
@@ -326,8 +327,8 @@ a function pointer.</p>
 <p>Often you will need to run a closure multiple times though, in which case <code>FnMut</code> is the next best option, but you
 won’t be able to accept <code>FnOnce</code> closures.</p>
 <h3 id="closures-24"><a class="header" href="#closures-24">closures 24</a></h3>
-<p>If you’re writing a closure that needs to be passed to something else, then using the smallest possible block you can get
-away with will make your closure more portable.</p>
+<p>If you’re writing a closure that needs to be passed to something else, then using the smallest possible block you can
+get away with will make your closure more portable.</p>
 <p>If it doesn’t need state then a function pointer or stateless closure will give you the most flexibility.</p>
 <h2 id="async-closures"><a class="header" href="#async-closures">Async Closures</a></h2>
 <h3 id="async-1"><a class="header" href="#async-1">async 1</a></h3>
