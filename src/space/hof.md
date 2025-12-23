@@ -174,7 +174,8 @@ Greeting is still available and hasn't changed.
 
 We can also create closures that modify the data they're given.
 
-In this version, we need to make sure both the data we're referencing, greeting, and the closure itself are marked as mutable.
+In this version, we need to make sure both the data we're referencing, greeting, and the closure itself are marked as
+mutable.
 
 This may initially seem odd, but there are two things to bear in mind.
 
@@ -285,8 +286,8 @@ won't be able to accept `FnOnce` closures.
 
 ### closures 24
 
-If you're writing a closure that needs to be passed to something else, then using the smallest possible block you can get
-away with will make your closure more portable.
+If you're writing a closure that needs to be passed to something else, then using the smallest possible block you can
+get away with will make your closure more portable.
 
 If it doesn't need state then a function pointer or stateless closure will give you the most flexibility.
 
