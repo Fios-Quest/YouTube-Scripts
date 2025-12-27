@@ -16,7 +16,6 @@ fn create_even_filter(invert: bool) -> NumericFilter {
 }
 
 fn main() {
-    // 2 should be even
     let even_filter = create_even_filter(false);
     assert!(even_filter(&4));
 
