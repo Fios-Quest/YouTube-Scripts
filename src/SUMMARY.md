@@ -31,6 +31,7 @@
 - [Builder](space/builder.md)
 - [Higher Order Function](space/hof.md)
 - [Monad](space/monad.md)
+- [Dependency Injection](space/di.md)
 
 # Channel Labs
 
