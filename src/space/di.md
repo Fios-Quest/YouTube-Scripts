@@ -9,7 +9,7 @@ Intro
 This video is a bit of a double episode as I want to talk about two patterns that are so tightly coupled, people often
 (and fairly) treat them like one thing.
 
-Dependecy Injection lets us better compartmentalise our code, seperating concerns, making the code easier to reason
+Dependency Injection lets us better compartmentalise our code, separating concerns, making the code easier to reason
 about, and reducing code duplication.
 
 ### intro 2
@@ -36,14 +36,53 @@ Dependency Injection, while sounding fancy, does exactly what it says on the tin
 
 Rather than constructing things we're dependent on where we need them, we inject those dependencies from outside.
 
-In this example we have a User Store; it can store and retrieve user objects from a MySql database.
+Let's run through an example.
 
-### di 4
+### di 4 (code)
 
-When we construct the User Store we create an instance of a MySql database connection using a username and password that
-we take from environment variables.
+Lets saw we have some users we want to store.
 
-<!-- We'll show DI with just MySql, then show P&A using the UserStore -->
+We'll keep it fairly simple with just a username and email address.
+
+### di 5 (code)
+
+We want to store our users in a mysql database, so when we construct the user store we'll also connect to the database,
+collecting the connection settings from the environment.
+
+If you aren't familiar with databases (or if you are and this looks silly) don't worry too much, this is just to show
+that there is _some_ small amount of work in making that connection.
+
+The point here is that the mysql connection is a dependency for our user store.
+
+### di 6 (code)
+
+Once our user store is instantiated, we can now use it to store our users and our interface for doing so is nice and
+simple because all our sql logic is hidden behind method calls.
+
+And if that was it, this would be ok, kinda, I'll get back to this point.
+
+But it's really rare for us to ever make a program that only stores one thing... so let's create a pet.
+
+### di 7 (code)
+
+Again, we'll keep things simple, the pet has a name and a carer *cough* I don't like the word owner, Yuki owns himself,
+I just look after him.
+
+Next lets create the pet store and...  now our problems are laid bare.
+
+### di 8 (code)
+
+It's not just that we have to redo all of this logic, which breaks the cardinal rule of "Don't Repeat Yourself"...
+but there's a problem with this instantiation method that existed even when we just had the one store.
+
+The new method is fallible, meaning it returns a Result, but every error it can produce is related not to the store 
+itself, but to the mysql connection... or the environment.
+
+Let's fix that
+
+### di 9 (code)
+
+First we'll 
 
 Ports and Adapters
 ------------------
