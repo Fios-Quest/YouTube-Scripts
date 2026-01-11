@@ -8,7 +8,7 @@ struct User {
 }
 
 struct Pet {
-    carer: User,
+    butler: User,
     name: String,
 }
 
@@ -66,7 +66,7 @@ impl PetStore {
                 VALUES
                   (?, ?)
             ",
-            &[pet.carer.username.as_str(), pet.name.as_str()],
+            &[pet.butler.username.as_str(), pet.name.as_str()],
         )
     }
 }
@@ -84,7 +84,7 @@ fn main() -> anyhow::Result<()> {
     user_store.store(&daniel)?;
 
     let yuki = Pet {
-        carer: daniel,
+        butler: daniel,
         name: String::from("Yuki"),
     };
 
