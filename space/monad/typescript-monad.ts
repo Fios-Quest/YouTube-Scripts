@@ -5,13 +5,16 @@ class Maybe<T> {
         this.inner = inner;
     }
 
-    map<U>(f: (_: T) => U): Maybe<U> {
-        if (this.inner !== null) {
-            return new Maybe(f(this.inner) || null);
-        }
-        return new Maybe<U>(null);
+    map<U>(f: (_: T) => NonNullable<U>): Maybe<U> {
+        return this.inner === null
+            ? new Maybe<U>(null)
+            : new Maybe(f(this.inner));
     }
 }
+
+const maybe_squared_time_string = divide(4, 2)
+    .map(square)
+    .map(to_string);
 
 function divide(x: number, y: number): Maybe<number> {
     if (y === 0) {
@@ -28,6 +31,6 @@ function to_string(input: number): string {
     return `${input}`;
 }
 
-const maybe_squared_time_string = divide(4, 2).map(square).map(to_string);
+
 
 console.log(maybe_squared_time_string);
