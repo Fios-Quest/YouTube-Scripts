@@ -1,5 +1,7 @@
 # Summary
 
+- [Checklist](./checklist.md)
+
 # IRISS
  
 - [Welcome to IRISS](iriss/000-iriss.md)
