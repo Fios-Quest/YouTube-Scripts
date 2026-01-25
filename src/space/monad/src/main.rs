@@ -1,3 +1,4 @@
+#[derive(PartialEq, Debug)]
 enum Maybe<T> {
     Value(T),
     Nothing,
@@ -12,14 +13,6 @@ impl<T> Maybe<T> {
     }
 }
 
-fn square(input: i64) -> i64 {
-    input * input
-}
-
-fn to_string(input: i64) -> String {
-    format!("{input}")
-}
-
 fn divide(dividend: i64, divisor: i64) -> Maybe<i64> {
     match divisor {
         0 => Maybe::Nothing,
@@ -31,21 +24,40 @@ fn main() {
     // ---
 
     let twenty_five = 5 * 5;
-    let five = 5.to_string();
-
     assert_eq!(twenty_five, 25);
+
+    let five = 5.to_string();
     assert_eq!(five, "5");
 
     // ---
 
-    assert_eq!(square(5), 25);
-    assert_eq!(to_string(5), "5".to_string());
+    fn square(input: i64) -> i64 {
+        input * input
+    }
+
+    fn to_string(input: i64) -> String {
+        format!("{input}")
+    }
+
+    let twenty_five = square(5);
+    assert_eq!(twenty_five, 25);
+
+    let five = to_string(5);
+    assert_eq!(five, "5");
+
+    type example = fn(T) -> U;
 
     // ---
 
-    let maybe_result = divide(4, 2);
-    let maybe_squared_result = maybe_result.map(square);
-    let maybe_string_result = maybe_squared_result.map(to_string);
+    fn divide(dividend: i64, divisor: i64) -> Maybe<i64> {
+        match divisor {
+            0 => Maybe::Nothing,
+            _ => Maybe::Value(dividend / divisor),
+        }
+    }
+
+    // Rust
+    let maybe_result = divide(4, 2).map(square).map(to_string);
 
     match maybe_string_result {
         Maybe::Value(s) => println!("{s}"),
@@ -62,4 +74,22 @@ fn main() {
     }
 
     // ---
+
+    fn bleh() -> Result<&str, &str> {
+        let maybe_example = Maybe::Value("Hello");
+
+        let option_example = Some("Hi!");
+
+        let result_example = Ok("Ok!");
+
+        result_example
+    }
+
+    let maybe_result = divide(4, 0);
+
+    assert_eq!(maybe_result, Maybe::Nothing);
+
+    let maybe_string = maybe_result.map(square).map(to_string);
+
+    assert_eq!(maybe_string, Maybe::Nothing);
 }

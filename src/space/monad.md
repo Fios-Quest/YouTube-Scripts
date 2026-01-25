@@ -13,7 +13,7 @@ That's not because these words aren't important, or learning about them isn't in
 
 ... it's because you don't need to know these words to understand M... this pattern!
 
-I think the terminology can be off-putting which is a deep shame because this pattern is *mwah* chefs kiss. 
+I think the terminology can be off-putting which is a deep shame because this pattern is *mwah* chefs kiss.
 
 ### intro 3
 
@@ -23,7 +23,7 @@ In fact its pretty much all we do, right?
 
 ### intro 4
 
-Let's say we have the value `5` which is an integer. 
+Let's say we have the value `5` which is an integer.
 
 We could square the value which gives us `25` which is still an integer...
 
@@ -162,7 +162,7 @@ Our containers can be more flexible than just T or nothing though.
 
 It's perfectly reasonable for your container to potentially hold multiple things.
 
-Let's say we have a container that could hold types T or V. 
+Let's say we have a container that could hold types T or V.
 
 ### variations 3
 
@@ -199,7 +199,7 @@ specific rules that make this pattern what it is, it's not just any old containe
 ### rules 2
 
 Firstly, for a given container, a value representable as a type inside that container, should be convertable to that
-container without changing its value. 
+container without changing its value.
 
 In our Maybe example (as well as in Option and Result), we simply pass the value to one of the enum variants, so the
 inner value doesn't change.
@@ -212,7 +212,7 @@ container potentially holding a value of T then you get a container potentially 
 ### rules 4
 
 In our Maybe, applying `f(T) -> U` to `Maybe<T>` returns `Maybe<U>` regardless of whether it contained a value of T or
-not.  
+not.
 
 ### rules 5
 
@@ -247,7 +247,7 @@ If you really liked the video, you can become a member of the channel or join th
 
 ### summary 4
 
-Next time we're going to talk about dependency injection, which is crucial to building complex yet maintainable 
+Next time we're going to talk about dependency injection, which is crucial to building complex yet maintainable
 software.
 
 I hope I'll see you then.
