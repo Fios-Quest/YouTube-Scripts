@@ -10,3 +10,6 @@ create-missing = true
 
 [rust]
 edition = "2024"
+
+[output.html]
+additional-js = ["scripts/enable-checkboxes.js"]
