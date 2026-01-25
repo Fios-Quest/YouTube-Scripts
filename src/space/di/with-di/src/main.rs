@@ -1,5 +1,5 @@
 use std::str::FromStr;
-use fake_database::nondi::*;
+use fake_database::di::*;
 use newtypes::*;
 
 struct User {
@@ -8,7 +8,7 @@ struct User {
 }
 
 struct Pet {
-    carer: User,
+    butler: User,
     name: String,
 }
 
@@ -29,7 +29,7 @@ impl UserStore {
     }
 
     fn store(&self, user: &User) -> anyhow::Result<()> {
-        self.mysql.query(
+        self.mysql.querty(
             "
                 INSERT INTO users
                   (email_address, username)
@@ -59,14 +59,14 @@ impl PetStore {
     }
 
     fn store(&self, pet: &Pet) -> anyhow::Result<()> {
-        self.mysql.query(
+        self.mysql.querty(
             "
                 INSERT INTO pets
                   (carer, name)
                 VALUES
                   (?, ?)
             ",
-            &[pet.carer.username.as_str(), pet.name.as_str()],
+            &[pet.butler.username.as_str(), pet.name.as_str()],
         )
     }
 }
@@ -84,7 +84,7 @@ fn main() -> anyhow::Result<()> {
     user_store.store(&daniel)?;
 
     let yuki = Pet {
-        carer: daniel,
+        butler: daniel,
         name: String::from("Yuki"),
     };
 
