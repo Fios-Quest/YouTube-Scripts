@@ -1,5 +1,5 @@
 [package]
-name = "without-di"
+name = "with-di"
 version.workspace = true
 edition.workspace = true
 

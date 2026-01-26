@@ -1,6 +1,6 @@
-use std::str::FromStr;
 use fake_database::nondi::*;
 use newtypes::*;
+use std::str::FromStr;
 
 struct User {
     email_address: EmailAddress,
@@ -8,8 +8,8 @@ struct User {
 }
 
 struct Pet {
-    carer: User,
     name: String,
+    butler: User,
 }
 
 struct UserStore {
@@ -41,7 +41,6 @@ impl UserStore {
     }
 }
 
-
 struct PetStore {
     mysql: MySql,
 }
@@ -66,15 +65,15 @@ impl PetStore {
                 VALUES
                   (?, ?)
             ",
-            &[pet.carer.username.as_str(), pet.name.as_str()],
+            &[pet.butler.username.as_str(), pet.name.as_str()],
         )
     }
 }
 
-
 fn main() -> anyhow::Result<()> {
-    let user_store = UserStore::new()?;
     let pet_store = PetStore::new()?;
+
+    let user_store = UserStore::new()?;
 
     let daniel = User {
         username: Username::from_str("Daniel")?,
@@ -84,7 +83,7 @@ fn main() -> anyhow::Result<()> {
     user_store.store(&daniel)?;
 
     let yuki = Pet {
-        carer: daniel,
+        butler: daniel,
         name: String::from("Yuki"),
     };
 

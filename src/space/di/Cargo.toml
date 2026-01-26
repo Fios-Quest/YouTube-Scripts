@@ -1,5 +1,5 @@
 [workspace]
-members = ["di-mysql","fake-database", "newtypes", "without-di"]
+members = ["di-mysql", "fake-database", "newtypes", "without-di", "with-di"]
 resolver = "3"
 
 [workspace.package]
