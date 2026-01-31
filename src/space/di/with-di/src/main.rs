@@ -150,6 +150,22 @@ impl UserStore {
             &[user.email_address.as_str(), user.username.as_str()],
         )
     }
+
+    fn get_by_email(&self, email: &EmailAddress) -> anyhow::Result<User> {
+        let _ = email;
+        Ok(User {
+            email_address: EmailAddress::from_str("")?,
+            username: Username::from_str("")?,
+        })
+    }
+
+    fn get_by_username(&self, username: &Username) -> anyhow::Result<User> {
+        let _ = username;
+        Ok(User {
+            email_address: EmailAddress::from_str("")?,
+            username: Username::from_str("")?,
+        })
+    }
 }
 
 struct PetStore {
@@ -195,6 +211,9 @@ fn main() -> anyhow::Result<()> {
     };
 
     pet_store.store(&yuki)?;
+
+    user_store.get_by_email(&EmailAddress::from_str("")?)?;
+    user_store.get_by_username(&Username::from_str("")?)?;
 
     Ok(())
 }

@@ -13,7 +13,7 @@ impl fmt::Display for ImpossibleError {
 
 impl Error for ImpossibleError {}
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Username(String);
 
 impl FromStr for Username {
@@ -36,7 +36,7 @@ impl Username {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct EmailAddress(String);
 
 impl FromStr for EmailAddress {

@@ -24,8 +24,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "integration-tests"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "newtypes",
+]
+
+[[package]]
 name = "newtypes"
 version = "0.1.0"
+
+[[package]]
+name = "ports-and-adapters"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "newtypes",
+]
 
 [[package]]
 name = "with-di"
