@@ -1,1 +1,14 @@
-# 5 things I wish others would steal
+# 5 things others languages should steal from Rust
+
+
+## Consistent Documentation
+
+## Testing
+
+## Ownership
+
+## No Throw and Strict Type Systems
+
+## Daniel is a liar
+
+## Outro
