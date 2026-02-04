@@ -9,9 +9,11 @@ any purpose.
 
 Its typed, forgiving and easy to learn.
 
+I even think well written TypeScript is aesthetically pleasing to look at.
+
 I love TypeScript.
 
-TypeScript is my favourite dumpster fire.
+It's my favourite dumpster fire.
 
 ## Surprise
 
@@ -31,20 +33,20 @@ Surprise.
 
 ## Good TypeScript
 
-Surprise is the enemy of good software engineering.
+Surprise is the enemy of good software engineering, and I think TypeScript is esspecially suprising.
 
 Have a look at this code.
 
 I think this is fairly standard TypeScript.
 
-But, surprise, there are at least four errors in here.
+But, SURPRISE, there are at least four errors in here.
 
-That is to say I created four errors (without double counting the same error multiple times), but I'm not confident
-there aren't more.
+That is to say I created four intentional errors (without double counting the same error multiple times), but I'm not
+confident there aren't more.
 
 Can you spot them?
 
-Would you have spotted them if you came across this code in naturally in your application or a code review?
+Would you have spotted them if you came across this code organically in your application or in a code review?
 
 ## TypeScript is JavaScript
 
@@ -65,31 +67,35 @@ This I think is a less controversial take, especially if you've already seen Gar
 I'm not going to reiterate Gary's work, it's great, go watch it, but all the weirdness Gary talks about stems from Type
 errors.
 
-TypeScript provides a type system for JavaScript so it prevents you from making those kinds of mistakes...
+TypeScript provides a type system for JavaScript so it prevents you from making those kinds of mistakes.
 
-...or at least it still lets you make those mistakes, but now it warns you about them first.
+Here is the final bit of code from Gary's talk, TypeScript correctly points out that this code is nonesense.
 
-And if that was all that was wrong with JavaScript that would be fine.
+It still lets you run it, but... hey... it warned us, that's an improvement
+
+And if that was all that was wrong with JavaScript, TypeScript would be fine.
 
 ## Three Dogs
 
 Here I've got three dogs.
 
-`Object.create()` lets me make new dogs based on the old dogs.
+`Object.create()` lets me make new dogs based on old dogs.
 
-Right now, all the dogs names are Fido, so lets update two of them.
+Right now, all the dogs are named "Fido", so lets update the first two.
 
 Surprise!
 
 Ok, this isn't a problem you're likely to run into very often.
 
-The giveaway is if we check that each Dog has a name.
+The giveaway is when we ask each dog if it has a name.
 
 Dog's one and two do, but dog three does not.
 
-JavaScript is a prototype based language. 
+TypeScript is JavaScript, and JavaScript is a prototype based language. 
 
-Because dog3 was created from dog2, it doesn't get its own name. It actually doesn't get its own anything.
+Because dog3 was created from dog2, it doesn't get its own name.
+
+It actually doesn't get its own anything.
 
 Instead, dog3 references dog2, and anything you try to do with it that it doesn't know how to do it asks dog2 how to do
 
@@ -97,15 +103,15 @@ So when we asked it its name, it didn't have a name, so it asked dog2 what its n
 
 We gave dog 2 its own name so it returned that!
 
+Had we not done that, dog2 would have asked dog1.
+
 ## Surprise Cat
 
-Ok, lets forget our dogs for now.
+OK, lets forget our dogs for now.
 
-Let's talk Cats.
+Let's talk Cats
 
-Cats have names
-
-Here I've got a function that takes a Cat, and prints it's name and age.
+Here I've got a function that takes a Cat, and prints it's name... and age.
 
 That's right Cat's have ages.
 
@@ -115,22 +121,32 @@ Why does this work?
 
 Surprise, interface merging.
 
-Got multiple interfaces called the same thing, well now your objects have to implement all of them.
+When you have multiple interfaces called the same thing, objects implementing that name of interface have to implement
+all of them.
 
 And we can prove that Cats have an age with hasOwnProperty... or surprise, we could, if our cats were guaranteed to have
 the method hasOwnProperty.
 
+Now you might think at this point, TypeScript can not be working here.
+
+hasOwnProperty isn't part of Cat, so surely we should see an error
+
+But to prove that it is, I can show you that Cats have no bark.
+
 Normally when you create an object, like dog1, it inherits from the object "Object".
 
-The object "Object" provides utility methods like hasOwnProperty.
+The object called "Object" provides utility methods like hasOwnProperty.
 
 For cat1, I didn't do that though, I actually created it with no prototype at all.
 
 It _does_ match the interface, but the interface doesn't say it needs to inherit Object, yet TypeScript still let me
 make this mistake.
 
-So never trust an Object has these utility methods, instead you can just invoke the method from the Object prototype
-which is weird and verbose, or use the `in` keyword.
+So never trust an Object has these utility methods.
+
+You can invoke the method from the Object prototype itself like this, but that's weird and verbose.
+
+Instead, you can use the `in` keyword.
 
 Ok, but at least our describeCat function can only take Cats, you couldn't say pass in a Dog...
 
@@ -161,7 +177,11 @@ Dog 2 and 3, they don't look like dogs... they look like anything and everything
 In the early days of TypeScript, pre-1.0, before we had generics, we needed a way to describe the types on existing
 JavaScript tools and functionality.
 
-What does `JSON.parse` return? What do you get back from `Object.create`? It could be anything right.
+What does `JSON.parse` return? What do you get back from `Object.create`? 
+
+It could be anything right.
+
+These methods return the `any` type.
 
 The `any` type, unfortunately doesn't mean, "this could be anything".
 
@@ -171,9 +191,10 @@ Something that's the `any` type will match anything.
 
 Dog2 and Dog3 were created with `Object.create` which returns something of the `any` type.
 
-This means, we can pass them to a function that takes a Cat because they are not Dogs "anything".
+This means, we can pass them to a function that takes a Cat because they are not Dogs, they are "anything".
 
-Today, if you have a function which returns something that could be anything, use the `unknown` type instead
+Today, if you have a function which returns something that could be anything, use the `unknown` type instead, you can
+narrow it down later.
 
 Don't worry though we can cast them to Dog's with `as`
 
@@ -183,9 +204,15 @@ Right... but we didn't actually do anything to check that this `any` type was a 
 
 We can't... we can't cast something that's definitely a Dog as Cat right?
 
-Surprise! yay 😐 If we're still surprised at this point?
+Surprise! yay 😐 Are we still surprised at this point?
 
-Honestly, I push the teams I work with to never use `as`, it just doesn't work the way people naturally expect it to.
+Never use `as`.
+
+Make a lint for it.
+
+Ban your teams from using it.
+
+It does not do what you think.
 
 Instead, use type predicates.
 
@@ -195,37 +222,40 @@ I've spent a lot of time moaning about TypeScript, and now I'm going to show you
 
 A type predicate is a function that tests whether a type is what it's supposed to be.
 
-It returns a boolean, but we annotate it with a special type.
-
 Let's create one for our simplest type, Dog.
 
-Our function name just says what the predicate does
+Our function name just says what the predicate does, it tests `isDog`.
 
 It takes one parameter that's maybe a dog, but we don't know that yet so the type is `unknown`.
 
-The function return type is whether maybeDog is Dog or not.
+The predicate will return a boolean, but we annotate it with a special return type.
 
-We can make the predicate one line so rather than using curly brackets and returning something we'll make it a statement.
+Predicates (type or otherwise) can usually be one line so we don't need curly brackets or a return, we can just
+have the statement.
 
-Now we know that Dog's have names so we'll check if maybeDog has one
+For the body of the function, we know that Dog's have names so we'll check if maybeDog has one
 
-TypeScript now alerts us that, we don't know what maybeDog is, so to fix that we'll check if maybeDog is an object.
+And here's where things start getting good.
+
+TypeScript now alerts us that, we don't even know if maybeDog is an object, so lets test that first.
 
 Now we have a new warning, that maybeDog could be null, because null is an object
 
-(Aside, I'm not critiquing this, null is garbage, but lots of languages make Null or Nill an Object so we'll forgive
-TypeScript this quirk)
+> Aside, I'm not critiquing this, null is garbage, but lots of languages make Null or Nill an Object that can match
+against other types but not be used as them. 
+> 
+> JavaScript wasn't the first or last to follow the "billion-dollar mistake" that's a whole other topic
 
-And that's all there is to it.
+Once we add a check for null, that's all there is to it.
 
-We leant into the compiler, and we made something I genuinely think is rather beauitiful.
+We leaned into the TypeScript compiler, and we made something I genuinely think is rather beauitiful.
 
-It's not perfect, but who is.
+It's not perfect, but who amongst us is.
 
 ## But seriously, I love it
 
-TypeScript is a beautiful mess... but aren't we all.
+TypeScript is a beautiful mess... but the best of us are.
 
-I really do love the language, not despite its flaws but because of them.
+All languages are flawed, learning those flaws helps keep us safe, and lets us make smug content for the internet.
 
-All languages are flawed, but learning how to manage those flaws ... <something>
+And for that, if nothing else, how can I not love TypeScript.
