@@ -11,13 +11,19 @@ type Dog = {
     name: string,
 }
 
+const hello = (name: string = `World`) => console.log(`Hello, ${name}`!);
+
+hello(null);
+
 const dog1: Dog = { name: 'Fido' };
 const dog2 = Object.create(dog1);
 const dog3 = Object.create(dog2);
 
 const dogs = [dog1, dog2, dog3];
 
-const printDogName = (dog: Dog) => console.log(dog.name);
+const printDogName = (dog: NonNullable<Dog>) => console.log(dog.name);
+
+printDogName(null);
 
 for (const dog of dogs) {
     printDogName(dog)
