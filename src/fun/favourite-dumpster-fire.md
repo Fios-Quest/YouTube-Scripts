@@ -18,9 +18,9 @@ That's not fair, right?
 
 Every language is flawed, so what?
 
-What does it matter if TypeScript is flawed?
+Why should anyone care how or why TypeScript is flawed?
 
-That's easy.
+Let me explain.
 
 Surprise.
 
@@ -38,13 +38,13 @@ Have a look at this code.
 
 This is fairly standard TypeScript.
 
-But, SURPRISE, there are at least four errors in here.
+But, SURPRISE, there are at least three errors in here.
 
-That is to say I created four intentional errors, but I'm not confident there aren't more.
+That is to say I created three intentional errors, but I'm not confident there aren't more.
 
-Can you spot them?
+Now that you know they're there, can you spot them?
 
-Would you have spotted them if you came across this code organically like in a code review?
+Would you have spotted them if you just came across this code in a code review?
 
 ## TypeScript is JavaScript
 
@@ -96,7 +96,7 @@ To be fair, this isn't a problem you're likely to run into very often.
 
 Dog 3 doesn't actually have name.
 
-TypeScript is JavaScript, and JavaScript is a prototype based language. 
+JavaScript, and therefore TypeScript, is a prototype based language. 
 
 Because dog3 was created from dog2, it doesn't get its own name.
 
@@ -133,6 +133,8 @@ all of them.
 
 We can prove Cats have an age with hasOwnProperty... 
 
+## null prototypes
+
 or surprise, we could, if our cats were guaranteed to have the method hasOwnProperty.
 
 Now you might think at this point, is TypeScript even on?
@@ -143,11 +145,11 @@ But look, Dogs aren't Cats, this is an error.
 
 Remember our dogs, and how they inherited from each other.
 
-Dog1 also has a prototype from "Object"
+Although we didn't specify it, Dog1's prototype is "Object"
 
 The object called "Object" provides utility methods like hasOwnProperty.
 
-For cat1, I didn't do that though, I actually created it with no prototype at all.
+For cat1, I didn't do that though, I created it with no prototype at all.
 
 TypeScript doesn't see it.
 
@@ -155,11 +157,11 @@ It _does_ match the interface, but the interface doesn't say it needs to inherit
 
 TypeScript still let me make this mistake.
 
-Never trust an Object has these utility methods.
+You can't trust an Object has these utility methods.
 
 Use the `in` keyword to see if an object has a property.
 
-But at least our describeCat function can only take Cats, you couldn't say pass in a Dog...
+But at least we know describeCat function can only take Cats, we can see that it rejects dogs...
 
 Oh for fu
 
@@ -221,11 +223,15 @@ Surprise! yay 😐 Are we still surprised at this point?
 
 Never use `as`.
 
+If you take one thing from this video.
+
+Never. Use. As.
+
 Make a lint for it.
 
 Ban your teams from using it.
 
-It does not do what you think.
+It does not do what folks seem to think.
 
 `as` can get in the bin.
 
@@ -235,36 +241,68 @@ Instead, use type predicates.
 
 I've spent a lot of time moaning about TypeScript, lets take a reprieve while I show you a reason to love it.
 
-A type predicate is a function that tests whether a type is what it's supposed to be.
+A type predicate is a function that tests whether a value is the type it's supposed to be.
 
-Let's create one for our simplest type, Dog.
+A type predicate for Dog, might look like this.
 
-Our function name just says what the predicate does, it tests `isDog`.
+Let's just take a seond to appreciate how asthetic this is.
 
-It takes one parameter that's maybe a dog, but we don't know that yet so the type is `unknown`.
+TypeScript is, in my opinion, the prettiest of modern languages, and...
 
-The predicate will return a boolean, but we annotate it with a special return type.
+Hang on...
 
-Predicates (type or otherwise) can usually be one line so we don't need curly brackets or a return, we can just
-have the statement.
+Why do we test if the Object is null after we know its an object?
 
-For the body of the function, we know that Dog's have names so we'll check if maybeDog has one
+Suprise
 
-And here's where things start getting good.
+## Null
 
-TypeScript now alerts us that, we don't even know if maybeDog is an object, so lets test that first.
+Null, in any language, can absolutely get in the bin. Sorry.
 
-Now we have a new warning, that maybeDog could be null, because null is an object
+In TypeScript, null is an object that represents nothing.
 
-We'll... come back to this in a moment
+So, any time you check something is an object you'll also want to check if its null.
 
-Once we add a check for null, that's all there is to it.
+Furthermore, null, despite being an Object, doesn't use the Object prototype.
 
-We leaned into the TypeScript compiler, and we made something I genuinely think is rather beauitiful.
+Outside of smug YouTubers creating things will Object.create to prove a point...
+
+its the only time you're likely to find an object that doesn't.
+
+If that wasn't bad enough though, by default, null can be used instead of values even if they're typed.
+
+You can turn this off in the config.
+
+For the love of the programming gods, turn it off in the config.
 
 ## Finally Throw
 
+Let's go back to the code we started with
 
+Now you can see all of the mistakes I made.
+
+email can be null, we can fix that in our config
+
+user could be anything, we can fix that with a type predicate
+
+But what's the third error?
+
+You might notice that I'm attempting to return Result.
+
+Results are great because they force the caller of a function to deal with potential Errors
+
+You can't just accidentally forget about them like Exceptions
+
+Like we forgot to deal with them here, suprise, last one I promise
+
+Exceptions, like nulls, are a problem much bigger than TypeScript.
+
+In fact, excluding HTML/CSS, the top 10 of Stack Overflows most used languages all either use exceptions or something
+worse.
+
+There will be a subset of people who feel attacked by this video.
+
+But here's the thing... it's ok.
 
 ## But seriously, I love it
 
