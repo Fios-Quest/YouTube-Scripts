@@ -4,7 +4,9 @@
 
 I love TypeScript.
 
-Its typed, forgiving, easy to learn, and you can use it for almost anything.
+Its typed, forgiving, easy to learn,
+
+ you can use it for almost anything.
 
 Good TypeScript is even aesthetically pleasing to look at.
 
@@ -19,8 +21,6 @@ That's not fair, right?
 Every language is flawed, so what?
 
 Why should anyone care how or why TypeScript is flawed?
-
-Let me explain.
 
 Surprise.
 
@@ -38,19 +38,19 @@ Have a look at this code.
 
 This is fairly standard TypeScript.
 
-But, SURPRISE, there are at least three errors in here.
+But, SURPRISE, there are at least three different kinds of errors in here.
 
 That is to say I created three intentional errors, but I'm not confident there aren't more.
 
 Now that you know they're there, can you spot them?
 
-Would you have spotted them if you just came across this code in a code review?
+Would you have spotted in a code review, had I not just told you they are there?
 
 ## TypeScript is JavaScript
 
 Before we get into what's wrong here...
 
-Let's do the YouTuber thing, and go back to the beginning.
+Let's do the classic YouTuber thing, and go back to the beginning.
 
 TypeScript is a superset of JavaScript.
 
@@ -62,7 +62,9 @@ and JavaScript is a dumpster fire.
 
 ## Gary Bernhardt
 
-This is a less controversial take, especially if you've already seen Gary Bernhardt's excellent talk WAT
+[//]: # (still needs work)
+
+This is a less controversial take, especially if you've already seen Gary Bernhardt's hilarious lightning talk WAT
 
 I'm not going to reiterate Gary's work, it's great, go watch it, 
 
@@ -70,7 +72,7 @@ but the weirdness Gary talks about is specifically Type errors.
 
 TypeScript provides a type system for JavaScript.
 
-Here is the final bit of code from Gary's talk.
+Here's the final bit of code from Gary's talk.
 
 TypeScript correctly points out that this code is nonesense.
 
@@ -84,15 +86,11 @@ This is TypeScript.
 
 These are three dogs.
 
-[//]: # (`Object.create&#40;&#41;` lets me make new dogs based on old dogs.)
-
-Right now, all the dogs are named "Fido" 
+Currently, all the dogs are named "Fido" 
 
 Let's update the first two.
 
 Surprise!
-
-To be fair, this isn't a problem you're likely to run into very often.
 
 Dog 3 doesn't actually have name.
 
@@ -122,8 +120,6 @@ This function that takes a Cat, and prints it's name... and age.
 
 That's right Cat's have ages.
 
-We know they have ages because TypeScript says this is fine.
-
 Why does this work?
 
 Surprise, interface merging.
@@ -137,19 +133,21 @@ We can prove Cats have an age with hasOwnProperty...
 
 or surprise, we could, if our cats were guaranteed to have the method hasOwnProperty.
 
-Now you might think at this point, is TypeScript even on?
+Now you might be wondering, is TypeScript even on?
 
-hasOwnProperty isn't part of Cat, surely we should see an error
+I promise it is, and has been this whole time.
 
-But look, Dogs aren't Cats, this is an error.
+Dogs aren't Cats, this is an error.
 
-Remember our dogs, and how they inherited from each other.
+Speaking of our dogs, remember how they inherited from each other.
 
 Although we didn't specify it, Dog1's prototype is "Object"
 
 The object called "Object" provides utility methods like hasOwnProperty.
 
-For cat1, I didn't do that though, I created it with no prototype at all.
+For cat1, I didn't do that though
+
+I created it with no prototype at all.
 
 TypeScript doesn't see it.
 
@@ -281,7 +279,7 @@ Let's go back to the code we started with
 
 Now you can see all of the mistakes I made.
 
-email can be null, we can fix that in our config
+email could be null, we can fix that in our config
 
 user could be anything, we can fix that with a type predicate
 
