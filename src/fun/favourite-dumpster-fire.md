@@ -2,17 +2,17 @@
 
 ## Dumpster Fire
 
-I love TypeScript.
+TypeScript is an amazing language.
 
 Its typed, forgiving, easy to learn,
 
- you can use it for almost anything.
+you can use it for almost anything.
 
 Good TypeScript is even aesthetically pleasing to look at.
 
-It's an amazing language.
+I love TypeScript.
 
-TypeScript is my favourite dumpster fire.
+It's my favourite dumpster fire.
 
 ## Surprise
 
@@ -38,13 +38,13 @@ Have a look at this code.
 
 This is fairly standard TypeScript.
 
-But, SURPRISE, there are at least three different kinds of errors in here.
+But, SURPRISE, there are at least three errors in here.
 
 That is to say I created three intentional errors, but I'm not confident there aren't more.
 
 Now that you know they're there, can you spot them?
 
-Would you have spotted in a code review, had I not just told you they are there?
+Would you have spotted them if you just came across this code in a code review?
 
 ## TypeScript is JavaScript
 
@@ -62,13 +62,13 @@ and JavaScript is a dumpster fire.
 
 ## Gary Bernhardt
 
-[//]: # (still needs work)
+This is a less controversial take.
 
-This is a less controversial take, especially if you've already seen Gary Bernhardt's hilarious lightning talk WAT
+Maybe you've already seen Gary Bernhardt's excellent talk WAT
 
-I'm not going to reiterate Gary's work, it's great, go watch it, 
+I'm not going to reiterate Gary's work here, it's great, go watch it.
 
-but the weirdness Gary talks about is specifically Type errors.
+But the weirdness Gary talks about is specifically Type errors.
 
 TypeScript provides a type system for JavaScript.
 
@@ -133,7 +133,7 @@ We can prove Cats have an age with hasOwnProperty...
 
 or surprise, we could, if our cats were guaranteed to have the method hasOwnProperty.
 
-Now you might be wondering, is TypeScript even on?
+At this point you might be wondering, is TypeScript even on?
 
 I promise it is, and has been this whole time.
 
@@ -155,13 +155,13 @@ It _does_ match the interface, but the interface doesn't say it needs to inherit
 
 TypeScript still let me make this mistake.
 
-You can't trust an Object has these utility methods.
+Don't trust that an Object has these utility methods.
 
-Use the `in` keyword to see if an object has a property.
+For properties, we can use `in` keyword instead.
 
 But at least we know describeCat function can only take Cats, we can see that it rejects dogs...
 
-Oh for fu
+Oh for...
 
 Surprise!
 
@@ -170,6 +170,8 @@ Surprise!
 If any of TypeScript's oddities is its Original Sin... other than, you know, basically being JavaScript... this is it.
 
 I may have lied earlier, dog3 isn't a dog.
+
+---
 
 Actually, sidebar, none of the cats or dogs we've created so far are what they're pretending to be...
 
@@ -237,25 +239,29 @@ Instead, use type predicates.
 
 ## Predicates
 
-I've spent a lot of time moaning about TypeScript, lets take a reprieve while I show you a reason to love it.
+I've spent a lot of time moaning about TypeScript
+
+Let's take a break, and I'll show you a reason to love it.
 
 A type predicate is a function that tests whether a value is the type it's supposed to be.
 
 A type predicate for Dog, might look like this.
 
-Let's just take a seond to appreciate how asthetic this is.
+Let's just take a second to appreciate how aesthetic this is.
 
-TypeScript is, in my opinion, the prettiest of modern languages, and...
+TypeScript is, in my opinion, the prettiest of all modern languages, and...
 
 Hang on...
 
-Why do we test if the Object is null after we know its an object?
+Why do we test if the value is null after we know it's an object?
 
-Suprise
+Surprise!
 
 ## Null
 
-Null, in any language, can absolutely get in the bin. Sorry.
+Null, in any language, can absolutely get in the bin. 
+
+Sorry, not sorry.
 
 In TypeScript, null is an object that represents nothing.
 
@@ -263,9 +269,9 @@ So, any time you check something is an object you'll also want to check if its n
 
 Furthermore, null, despite being an Object, doesn't use the Object prototype.
 
-Outside of smug YouTubers creating things will Object.create to prove a point...
+Outside of smug YouTubers creating things will `Object.create` to prove a point...
 
-its the only time you're likely to find an object that doesn't.
+it's the only time you're likely to find an object that doesn't implement Object.
 
 If that wasn't bad enough though, by default, null can be used instead of values even if they're typed.
 
