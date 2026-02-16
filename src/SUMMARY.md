@@ -38,6 +38,7 @@
 
 # Fun
 
+- [My Favourite Dumpster Fire](fun/favourite-dumpster-fire.md)
 - [5 things I wish Rust would steal](fun/5-things-rust-should-steal.md)
 - [5 things I wish others would steal](fun/5-things-others-should-steal.md)
 - [Rust is hard, right?](fun/rust-is-hard.md)
