@@ -2,6 +2,16 @@
 
 // ---
 
+async function getUser(email: string): Promise<Result<Error, User>> {
+    const response = await fetch(`https://example.com/${email}`);
+    const user = await response.json();
+    return user.email === email
+        ? Result.ok(user)
+        : Result.error(new Error('Incorrect user returned'));
+}
+
+// ---
+
 const gary = Array(16).join('wat' - 1) + ' Batman!';
 console.log(gary);
 
