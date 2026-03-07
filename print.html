@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-408a80f7.js";
+            window.path_to_searchindex_js = "searchindex-dccc8e1b.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-f6e09bda.js"></script>
+        <script src="toc-6a85d1b3.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -5937,6 +5937,198 @@ software.</p>
 <p>Don’t forget to drop by the Discord, link in the description be… maybe not below anymore, YouTube moved it, so I’m going to have to change my IRISS intro’s from now on.</p>
 <p>But, to end as we usually begin</p>
 <p>My name is Daniel, welcome to Fio’s Quest.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="typescript-is-my-favourite-dumpster-fire"><a class="header" href="#typescript-is-my-favourite-dumpster-fire">TypeScript is my favourite dumpster fire</a></h1>
+<h2 id="dumpster-fire"><a class="header" href="#dumpster-fire">Dumpster Fire</a></h2>
+<p>TypeScript is an amazing language.</p>
+<p>Its typed, forgiving, easy to learn,</p>
+<p>you can use it for almost anything.</p>
+<p>Good TypeScript is even aesthetically pleasing to look at.</p>
+<p>I love TypeScript.</p>
+<p>It’s my favourite dumpster fire.</p>
+<h2 id="surprise"><a class="header" href="#surprise">Surprise</a></h2>
+<p>That’s not fair, right?</p>
+<p>Every language is flawed, so what?</p>
+<p>Why should anyone care how or why TypeScript is flawed?</p>
+<p>Surprise.</p>
+<p>Surprise!</p>
+<p>Surprise.</p>
+<h2 id="good-typescript"><a class="header" href="#good-typescript">Good TypeScript</a></h2>
+<p>Surprise is the enemy of good software engineering,</p>
+<p>and TypeScript is esspecially suprising.</p>
+<p>Have a look at this code.</p>
+<p>This is fairly standard TypeScript.</p>
+<p>But, SURPRISE, there are at least three errors in here.</p>
+<p>That is to say I created three intentional errors, but I’m not confident there aren’t more.</p>
+<p>Now that you know that they’re there, can you spot them?</p>
+<p>Would you have spotted them if you just… came across this code in a review?</p>
+<h2 id="typescript-is-javascript"><a class="header" href="#typescript-is-javascript">TypeScript is JavaScript</a></h2>
+<p>Before we get into what’s wrong here…</p>
+<p>Let’s do the classic YouTuber thing, and go back to the beginning.</p>
+<p>TypeScript is a superset of JavaScript.</p>
+<p>This doesn’t just mean that TypeScript is JavaScript with extra bits.</p>
+<p>It means that TypeScript contains all of JavaScript,</p>
+<p>and JavaScript… is a dumpster fire.</p>
+<h2 id="gary-bernhardt"><a class="header" href="#gary-bernhardt">Gary Bernhardt</a></h2>
+<p>This is a less controversial take.</p>
+<p>Maybe you’ve already seen Gary Bernhardt’s excellent talk WAT</p>
+<p>I’m not going to reiterate Gary’s work here, it’s great, go watch it.</p>
+<p>But the weirdness Gary talks about is specifically down to Type errors.</p>
+<p>TypeScript provides a type system for JavaScript.</p>
+<p>Here’s the final bit of code from Gary’s talk.</p>
+<p>TypeScript correctly points out that this code is nonesense.</p>
+<p>Still lets you run it, but… hey… it warned us, that’s an improvement</p>
+<p>And if that was all that was wrong with JavaScript, TypeScript would be fine.</p>
+<h2 id="three-dogs"><a class="header" href="#three-dogs">Three Dogs</a></h2>
+<p>This is TypeScript.</p>
+<p>These are three dogs.</p>
+<p>Currently, all the dogs are named “Fido”</p>
+<p>Let’s update the first two.</p>
+<p>Surprise!</p>
+<p>Dog 3 doesn’t actually have name.</p>
+<p>JavaScript, and therefore TypeScript, is a prototype based language.</p>
+<p>Because dog3 was created from dog2, it doesn’t get its own name.</p>
+<p>It actually doesn’t get its own anything.</p>
+<p>dog3 references dog2</p>
+<p>Anything you try to do with dog3 that it doesn’t know how to do, it asks dog2 how to do</p>
+<p>We asked it its name, it didn’t have one, so it asked dog2.</p>
+<p>We gave dog 2 a name so it returned that!</p>
+<p>If we hadn’t, dog2 would have asked dog1.</p>
+<h2 id="surprise-cat"><a class="header" href="#surprise-cat">Surprise Cat</a></h2>
+<p>Forget our dogs for a moment.</p>
+<p>Let’s talk Cats</p>
+<p>This function takes a Cat, and prints it’s name… and age.</p>
+<p>That’s right Cat’s have ages.</p>
+<p>Why does this work?</p>
+<p>Surprise, interface merging.</p>
+<p>When you have multiple interfaces with the same name, objects implementing them have to implement them all.</p>
+<p>We can prove Cats have an age with hasOwnProperty…</p>
+<h2 id="null-prototypes"><a class="header" href="#null-prototypes">null prototypes</a></h2>
+<p>or SURPRISE, we could, if our cats were guaranteed to have the method hasOwnProperty.</p>
+<p>At this point you might be wondering, is TypeScript even on?</p>
+<p>I promise it is, and has been this whole time.</p>
+<p>Look, Dogs aren’t Cats, this is an error.</p>
+<p>Speaking of our dogs, remember how they inherited from each other.</p>
+<p>Although we didn’t specify it, Dog1’s prototype is “Object”</p>
+<p>The object called “Object” provides utility methods like hasOwnProperty.</p>
+<p>For cat1, I didn’t do that,</p>
+<p>I created it with no prototype at all.</p>
+<p>TypeScript doesn’t see that.</p>
+<p>It <em>does</em> check the interface, but the interface doesn’t say it needs to inherit Object.</p>
+<p>TypeScript still let me make this mistake though.</p>
+<p>Never trust that an Object has these utility methods.</p>
+<p>To check for properties, we can use the <code>in</code> keyword instead.</p>
+<p>But at least we know that the describeCat function can only take Cats, we’ve seen that it rejects dogs…</p>
+<p>Oh for…</p>
+<p>Surprise!</p>
+<h2 id="any-is-any"><a class="header" href="#any-is-any">Any is any</a></h2>
+<p>If any of TypeScript’s oddities are its Original Sin… other than, you know, basically being JavaScript… this is it.</p>
+<p>I may have lied earlier, dogs 2 and 3 aren’t dogs.</p>
+<hr>
+<p>Actually, sidebar, none of the cats or dogs we’ve created so far are cats or dogs…</p>
+<p>At best, they’re ducks.</p>
+<p>Dog1 looks like a dog, quacks like a dog, therefore we can use it as a dog.</p>
+<p>Cat1 looks like a cat, quacks like a cat, and therefore we can use it as a cat…</p>
+<p>but, Cat1 also quacks like a dog, so we can totally use it like a dog.</p>
+<p>Duck typing is its own mess, but not actually the problem here.</p>
+<hr>
+<p>Dogs 2 and 3 don’t look like dogs, or cats, or ducks… they look like anything and everything.</p>
+<p>In the early days of TypeScript, we needed a way to describe the types on existing JavaScript functionality.</p>
+<p>What does <code>JSON.parse</code> return?</p>
+<p>What do you get back from <code>Object.create</code>?</p>
+<p>These methods return the <code>any</code> type.</p>
+<p>The <code>any</code> type doesn’t mean “this <em>could</em> be anything”.</p>
+<p>It means “this <em>is</em> anything”.</p>
+<p>Something that’s <code>any</code> will match anything.</p>
+<p>Dog2 and Dog3 were created with <code>Object.create</code>.</p>
+<p>They are <code>any</code> typed.</p>
+<hr>
+<p>If you have a function which returns something that <em>could</em> be anything…</p>
+<p>I am begging you, use the <code>unknown</code> type instead.</p>
+<p>Don’t worry though, we can cast our dogs to Dog types with <code>as</code></p>
+<h2 id="as-is-ass"><a class="header" href="#as-is-ass">As is ass</a></h2>
+<p>Right… but we didn’t actually do anything to check that this <code>any</code> type was a dog did we…</p>
+<p>We can’t… we can’t cast something that’s definitely a Dog as Cat right?</p>
+<p>Surprise!</p>
+<hr>
+<p>Never use <code>as</code>.</p>
+<p>If you take one thing from this video.</p>
+<p>Never. Use. <code>as</code>.</p>
+<p>Make a lint for it.</p>
+<p>Ban your teams from using it.</p>
+<p>It does not do what people expect.</p>
+<p><code>as</code> can get in the bin.</p>
+<p>Instead, use type predicates.</p>
+<h2 id="predicates"><a class="header" href="#predicates">Predicates</a></h2>
+<p>I’ve spent a lot of time moaning about TypeScript</p>
+<p>Let’s take a break, and I’ll show you a reason to love it.</p>
+<p>A type predicate is a function that tests whether a value is the type it’s supposed to be at runtime.</p>
+<p>A type predicate for Dog, might look like this.</p>
+<p>Let’s just take a second to appreciate how aesthetic this is.</p>
+<p>TypeScript is, in my opinion, the prettiest of all modern languages, and…</p>
+<p>Hang on…</p>
+<p>Why do we test if the value is <code>null</code> after we know it’s an object?</p>
+<p>Surprise!</p>
+<h2 id="null"><a class="header" href="#null">Null</a></h2>
+<p><code>Null</code>, in any language, can also, absolutely get in the bin.</p>
+<p>Sorry, not sorry.</p>
+<p>In TypeScript, <code>null</code> is an object that represents nothing.</p>
+<p>So, any time you check something is an object you’ll also want to check if its <code>null</code>.</p>
+<p><code>null</code>, despite being an Object, doesn’t inherit the Object prototype.</p>
+<p>Apart from smug YouTubers creating things with <code>Object.create</code> to prove a point…</p>
+<p>this is the only time you’re likely to find an object that doesn’t implement Object.</p>
+<p>If that wasn’t bad enough though, by default, <code>null</code> can be used for any value even if it’s typed.</p>
+<p>You can turn this off in the config.</p>
+<p>For the love of the programming gods, turn it off in the config.</p>
+<h2 id="finally-throw"><a class="header" href="#finally-throw">Finally Throw</a></h2>
+<p>Let’s go back to the code we started with</p>
+<p>Now you can see all the mistakes I made.</p>
+<p>email could be <code>null</code>, we can fix that in our config</p>
+<p>user could be anything, we can fix that with a type predicate</p>
+<p>But what’s the third error?</p>
+<p>Notice that I’m attempting to return a Result.</p>
+<p>Results are great because they force the caller of a function to deal with potential Errors</p>
+<p>You can’t just accidentally forget about them like Exceptions</p>
+<p>Like… I forgot here… and here</p>
+<p>SURPRISE, last one I promise</p>
+<p>Exceptions, like <code>null</code>s, are a problem much bigger than TypeScript.</p>
+<p>In fact, excluding HTML, all top 10 of the most used programming languages either use exceptions or something worse.</p>
+<p>You can fix this in a number of ways, how you do it is up to you.</p>
+<h2 id="but-seriously-i-love-it"><a class="header" href="#but-seriously-i-love-it">But seriously, I love it</a></h2>
+<p>Please don’t leave this video thinking TypeScript is awful, or that I hate it.</p>
+<p>TypeScript is a beautiful mess… but the best of us are.</p>
+<p>All languages are flawed, knowing those flaws keeps us safe,</p>
+<p>and lets some of us make smug content for the internet.</p>
+<p>And for that, if nothing else, how can I not love TypeScript.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="5-things-rust-should-steal-from-other-language"><a class="header" href="#5-things-rust-should-steal-from-other-language">5 things Rust should steal from other language</a></h1>
+<h2 id="intro-13"><a class="header" href="#intro-13">Intro</a></h2>
+<p>Rust is an amazing language, ecosystem and community.</p>
+<p>In fact, it’s easily my favourite language, ecosystem and community.</p>
+<p>But nothing is perfect so here’s 5 things I think Rust should steal.</p>
+<p>Let’s start with the obvious, and ramp things up to some very my hot takes.</p>
+<h2 id="namespaced-packages"><a class="header" href="#namespaced-packages">Namespaced packages</a></h2>
+<h2 id="official-program-interpreter"><a class="header" href="#official-program-interpreter">Official Program Interpreter</a></h2>
+<h2 id="official-async-runtime"><a class="header" href="#official-async-runtime">Official async Runtime</a></h2>
+<h2 id="dynamic-libraries"><a class="header" href="#dynamic-libraries">Dynamic Libraries</a></h2>
+<h2 id="automatic-atomic-referencing-with-copy-on-write"><a class="header" href="#automatic-atomic-referencing-with-copy-on-write">Automatic Atomic Referencing with Copy on Write</a></h2>
+<h2 id="daniel-is-a-liar"><a class="header" href="#daniel-is-a-liar">Daniel is a liar</a></h2>
+<p>You can set up Rust to have</p>
+<h2 id="outro-1"><a class="header" href="#outro-1">Outro</a></h2>
+<p>I hope no one takes this list too seriously.</p>
+<p>Rust is a fantastic, incredibly well-designed language, with brilliant maintainers and contributors who just keep adding more amazing features!</p>
+<p>But, in your perfect world, even if it makes not reasonable sense, what would you have Rust steal, and what trade-offs would you make?</p>
+<p>If you enjoyed this video, check out the companion video, 5 things other languages should steal from Rust.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="5-things-others-languages-should-steal-from-rust"><a class="header" href="#5-things-others-languages-should-steal-from-rust">5 things others languages should steal from Rust</a></h1>
+<h2 id="consistent-documentation"><a class="header" href="#consistent-documentation">Consistent Documentation</a></h2>
+<h2 id="testing"><a class="header" href="#testing">Testing</a></h2>
+<h2 id="ownership"><a class="header" href="#ownership">Ownership</a></h2>
+<h2 id="no-throw-and-strict-type-systems"><a class="header" href="#no-throw-and-strict-type-systems">No Throw and Strict Type Systems</a></h2>
+<h2 id="daniel-is-a-liar-1"><a class="header" href="#daniel-is-a-liar-1">Daniel is a liar</a></h2>
+<h2 id="outro-2"><a class="header" href="#outro-2">Outro</a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="rust-is-hard-right"><a class="header" href="#rust-is-hard-right">Rust is hard, right?</a></h1>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="lifetimes-in-60s"><a class="header" href="#lifetimes-in-60s">Lifetimes in 60s</a></h1>
 <p>Rust lifetimes in 60 seconds</p>
