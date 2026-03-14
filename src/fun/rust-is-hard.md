@@ -24,15 +24,25 @@ Rust is hard BECAUSE
 
 programming is hard.
 
-I don't like telling people programming is hard.
+We don't like telling people programming is hard.
 
-Even before starting this channel, I advocated for anyone and everyone to try learning to code
+You might even think programming is easy.
 
-But we need to be honest, programming in any language is tricky.
+Particularly if, like me,
 
-At times it can be deeply frustrating when things don't work
+you have don't have the best opinion of yourself
 
-and I don't want people to feel like they aren't good enough the first time they hit a road block.
+"If I can do it, it must be easy"
+
+But we need to be honest, programming is tricky.
+
+It can be deeply frustrating when things don't work
+
+If we tell people programming is easy
+
+when it isn't
+
+They'll think something is wrong with them the first time they struggle
 
 The truth is, programming is hard, 
 
@@ -42,11 +52,17 @@ but you can do it
 
 All you need to succeed is to want to do it
 
+To keep going
+
+To push on until th task at hand is done
+
 Rust is no different
 
 ## Why is Rust uniquely called out?
 
-Why is Rust uniquely called out as hard, even by those who've mastered it?
+So why is Rust uniquely called out as hard,
+
+even by those who've mastered it?
 
 I think there are a few reasons
 
@@ -62,30 +78,31 @@ The tooling wasn't as complete
 
 But that's all changed
 
-The Rust community is full of amazing people contributing to making learning and using Rust an amazing experience
+The Rust community is full of amazing people contributing to making using and learning Rust an amazing experience
 
-Second, I think its a bit of a badge of honour
+Second, its a bit of a badge of honour
 
 If Rust is hard, those of us who manage to learn it must be special
 
-I don't think anyone does this on purpose, and like I said, Rust _is_ hard
-
-I just don't think its uniquely hard
+And maybe that's true if you learned in the 2010s, but times have changes
 
 Third, it's different
 
-If you're coming from languages like JavaScript or Python, you now need to think about where in memory things are
-stored.
+If you're coming from languages like JavaScript or Python,
 
-If you're coming from C or C++ you need to describe how that stored data will actually be used.
+you now need to think about where in memory things are stored.
 
-...
+If you're coming from C or C++
+
+you need to describe how that stored data will actually be used.
 
 Finally, its self perpetuating,
 
-Everyone knows Rust is hard, because Rust is hard.
+Everyone knows Rust is hard, because everyone says Rust is hard.
 
-So why do I think Rust is no more difficult than any other language
+Rust is no harder than any other language
+
+and I'd like to prove it
 
 ## Evidence
 
@@ -99,21 +116,45 @@ It was significantly faster and more efficient than similar systems but...
 
 no one wanted to touch it
 
-No one, until we hired a junior developer straight out of bootcamp
+It was different, scary, and in reality, not worth the gains we saw to learn it
+
+No one but me touched it...
+
+until we hired a junior developer straight out of bootcamp
 
 They took to it like a duck to water
 
 That left me wondering
 
-This new engineer definitely found it easier to learn,
+If, with six months programming experience they could learn it
 
-easier than the other engineers,
+it couldn't be that much harder than anything they'd done up to that point
 
-easier even than it'd been for me.
+## So is Rust hard?
 
-What was the difference
+So is Rust hard, yes.
+
+Is it uniquely hard, no.
+
+And I fully belive that anyone can learn it
+
+Regardless of whether its their 1st language or 10th
+
+But, what if you're struggling with it right now
+
+Or what if you know someone who is
+
+How can we get them over the hump
 
 ## How to master it
+
+If Rust is your first language
+
+Take the time to learn a little bit of how memory works
+
+Not a lot, a little is enough
+
+If Rust is not your first language, well
 
 I'm told, by people much smarter than me
 
