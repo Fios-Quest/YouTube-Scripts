@@ -18,7 +18,7 @@ Are they gone?
 
 Great.
 
-So here's the nuiance.
+Here's the nuiance.
 
 Rust is hard BECAUSE
 
@@ -30,11 +30,13 @@ You might even think programming is easy.
 
 Particularly if, like me,
 
-you have don't have the best opinion of yourself
+you have don't have the highest opinion of yourself
 
 "If I can do it, it must be easy"
 
-But we need to be honest, programming is tricky.
+But we need to be honest,
+
+programming is tricky.
 
 It can be deeply frustrating when things don't work
 
@@ -44,23 +46,27 @@ when it isn't
 
 They'll think something is wrong with them the first time they struggle
 
-The truth is, programming is hard, 
+The truth is, programming _is_ hard, 
 
-no matter how long you do it for, it remains hard, 
+no matter how long you do it for
+
+it remains hard, 
 
 but you can do it
 
-All you need to succeed is to want to do it
+All you really need to succeed
+
+is to want to do it
 
 To keep going
 
-To push on until th task at hand is done
+To push on until the task at hand is done
 
 Rust is no different
 
 ## Why is Rust uniquely called out?
 
-So why is Rust uniquely called out as hard,
+So why _is_ Rust uniquely called out as hard,
 
 even by those who've mastered it?
 
@@ -78,13 +84,17 @@ The tooling wasn't as complete
 
 But that's all changed
 
-The Rust community is full of amazing people contributing to making using and learning Rust an amazing experience
+The Rust community is full of amazing people
+
+all contributing to making Rust an amazing experience
 
 Second, its a bit of a badge of honour
 
 If Rust is hard, those of us who manage to learn it must be special
 
-And maybe that's true if you learned in the 2010s, but times have changes
+And maybe that's true if you were an early adopter
+
+but times have changes
 
 Third, it's different
 
@@ -112,21 +122,23 @@ The other engineers agreed the potential benefits were worth the experiment.
 
 I built it, and our hypothesis was right,
 
-It was significantly faster and more efficient than similar systems but...
+It was 4 times faster and 5 times more memory efficient than our equivilant systems but...
 
 no one wanted to touch it
 
-It was different, scary, and in reality, not worth the gains we saw to learn it
+It was different, scary, and in reality, those gains werent _really_ worth it
 
 No one but me touched it...
 
-until we hired a junior developer straight out of bootcamp
+until we hired a junior developer straight out of a bootcamp
 
 They took to it like a duck to water
 
 That left me wondering
 
-If, with six months programming experience they could learn it
+If they could learn it 
+
+with six months programming experience,
 
 it couldn't be that much harder than anything they'd done up to that point
 
@@ -142,7 +154,7 @@ Regardless of whether its their 1st language or 10th
 
 But, what if you're struggling with it right now
 
-Or what if you know someone who is
+Or if you know someone who is
 
 How can we get them over the hump
 
@@ -194,8 +206,4 @@ Rust is hard,
 
 but so was your last language, and you managed that
 
----
-
-This video was a little different
-
-I'm trying to work out where I want to take the channel
+You've got this
