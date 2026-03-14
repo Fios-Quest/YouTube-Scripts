@@ -20,7 +20,9 @@ Great.
 
 Here's the nuiance.
 
-Rust is hard BECAUSE
+Rust is hard
+
+BECAUSE
 
 programming is hard.
 
@@ -30,7 +32,7 @@ You might even think programming is easy.
 
 Particularly if, like me,
 
-you have don't have the highest opinion of yourself
+you don't have the highest opinion of yourself
 
 "If I can do it, it must be easy"
 
@@ -54,7 +56,7 @@ it remains hard,
 
 but you can do it
 
-All you really need to succeed
+All you need to succeed
 
 is to want to do it
 
@@ -100,7 +102,7 @@ Third, it's different
 
 If you're coming from languages like JavaScript or Python,
 
-you now need to think about where in memory things are stored.
+you now need to think about where things are stored in memory.
 
 If you're coming from C or C++
 
@@ -108,7 +110,9 @@ you need to describe how that stored data will actually be used.
 
 Finally, its self perpetuating,
 
-Everyone knows Rust is hard, because everyone says Rust is hard.
+Everyone knows Rust is hard,
+
+because everyone says Rust is hard.
 
 Rust is no harder than any other language
 
@@ -128,7 +132,7 @@ no one wanted to touch it
 
 It was different, scary, and in reality, those gains werent _really_ worth it
 
-No one but me touched it...
+So no one but me touched it...
 
 until we hired a junior developer straight out of a bootcamp
 
