@@ -1,0 +1,411 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Dependency Injection - IRISS Scripts</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex-d3168e6e.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-88b249bd.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">IRISS Scripts</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="dependency-injection"><a class="header" href="#dependency-injection">Dependency Injection</a></h1>
+<h2 id="intro"><a class="header" href="#intro">Intro</a></h2>
+<h3 id="intro-1"><a class="header" href="#intro-1">intro 1</a></h3>
+<p>This video is a bit of a double episode as I want to talk about two patterns that are so tightly coupled, people often (and fairly) treat them like one thing.</p>
+<p>Dependency Injection lets us better compartmentalise our code, separating concerns, making the code easier to reason about, and reducing code duplication.</p>
+<h3 id="intro-2"><a class="header" href="#intro-2">intro 2</a></h3>
+<p>Ports and Adaptors builds on this pattern to make the code more flexible.</p>
+<p>It lets you pick the right tool at the right time and is amazing for testing.</p>
+<h2 id="dependency-injection-1"><a class="header" href="#dependency-injection-1">Dependency Injection</a></h2>
+<h3 id="di-1"><a class="header" href="#di-1">di 1</a></h3>
+<p>Dependency Injection is incredible powerful and is the foundation of a number of other patterns, including the one we’ll be discussing later in this video.</p>
+<h3 id="di-2"><a class="header" href="#di-2">di 2</a></h3>
+<p>And yet it’s such a simple pattern you might already be using it without realising it.</p>
+<p>Dependency Injection, while sounding fancy, does exactly what it says on the tin.</p>
+<h3 id="di-3"><a class="header" href="#di-3">di 3</a></h3>
+<p>Rather than constructing things we’re dependent on where we need them, we inject those dependencies from outside.</p>
+<p>Let’s run through an example.</p>
+<h3 id="di-4-code"><a class="header" href="#di-4-code">di 4 (code)</a></h3>
+<p>Lets say we have some user data that we want to store.</p>
+<p>We’ll keep it fairly simple with just a username and email address.</p>
+<h3 id="di-5-code"><a class="header" href="#di-5-code">di 5 (code)</a></h3>
+<p>We want to store our users in a mysql database, so when we construct the user store we’ll also connect to the database, collecting the connection settings from the environment.</p>
+<p>If you aren’t familiar with databases (or if you are and this looks silly) don’t worry too much, this is just to show that there is <em>some</em> small amount of work in making that connection.</p>
+<p>The point here is that the mysql connection is a dependency for our user store.</p>
+<h3 id="di-6-code"><a class="header" href="#di-6-code">di 6 (code)</a></h3>
+<p>Once our user store is instantiated, we can now use it to store our users and our interface for doing so is nice and simple because all our SQL logic is hidden behind method calls.</p>
+<p>And if that was it, this would be ok, kinda, I’ll get back to this point.</p>
+<p>But it’s really rare for us to ever make a program that only stores one thing… so let’s create a pet.</p>
+<h3 id="di-7-code"><a class="header" href="#di-7-code">di 7 (code)</a></h3>
+<p>Again, we’ll keep things simple, the pet has a name and a butler.</p>
+<p>Next lets create the pet store and…  now our problems are laid bare.</p>
+<h3 id="di-8-code"><a class="header" href="#di-8-code">di 8 (code)</a></h3>
+<p>It’s not just that we have to redo all of this logic, which breaks the cardinal rule of “Don’t Repeat Yourself”… but there’s a problem with this instantiation method that existed even when we just had the one store.</p>
+<p>Our constructor is fallible, meaning it returns a Result, but every error it can produce is related not to the store itself, but to either the mysql connection or the environment.</p>
+<h3 id="di-9"><a class="header" href="#di-9">di 9</a></h3>
+<p>We can break this down into three problem domains in our code.</p>
+<p>We have some kind of configuration for connecting to the database.</p>
+<p>The act of connecting to the database.</p>
+<p>And the abstraction around the database that manages the storage of our users or our pets.</p>
+<p>Let’s rewrite our code separating it into these different domains.</p>
+<h3 id="di-10-code"><a class="header" href="#di-10-code">di 10 (code)</a></h3>
+<p>First we have our mysql connection configuration.</p>
+<p>We know that we need an address, a port, a username and a password.</p>
+<p>We’ll create a configuration struct to hold this data.</p>
+<p>Next we’ll instantiate our configuration from environment variables.</p>
+<h3 id="di-11-code"><a class="header" href="#di-11-code">di 11 (code)</a></h3>
+<p>Having a configuration type like this benefits us in a number of ways.</p>
+<p>Future engineers have one place to make changes to how this configuration is structured and created.</p>
+<h3 id="di-12-code"><a class="header" href="#di-12-code">di 12 (code)</a></h3>
+<p>Similarly, it moves error handling into this one place.</p>
+<p>Before, reading environment variables could spew errors out all over our code, now it won’t.</p>
+<h3 id="di-13-code"><a class="header" href="#di-13-code">di 13 (code)</a></h3>
+<p>Additionally, having a well named type with well named parameters and good controls, makes using this type easier for anyone who needs a mysql configuration in the future.</p>
+<h3 id="di-14-code"><a class="header" href="#di-14-code">di 14 (code)</a></h3>
+<p>Finally, while we have this method for getting the settings from the environment, we aren’t restricted to that.</p>
+<p>Depending on how the application is tested and deployed, there might be a variety of ways we want to construct this type.</p>
+<h3 id="di-15-code"><a class="header" href="#di-15-code">di 15 (code)</a></h3>
+<p>Now we can restructure our code so that we inject the configuration dependency into the MySql connection.</p>
+<p>Then inject the MySql connection into our user and pet stores.</p>
+<h3 id="di-16"><a class="header" href="#di-16">di 16</a></h3>
+<p>So dependency injection lets us better separate our code into logical domains, reduces code repetitions, and makes our code easier to understand.</p>
+<p>Now that we’ve started talking about logical domains, I want to talk about an old favourite pattern of mine, one that is enabled by dependency injection.</p>
+<h2 id="ports-and-adapters"><a class="header" href="#ports-and-adapters">Ports and Adapters</a></h2>
+<h3 id="pa-1"><a class="header" href="#pa-1">p&amp;a 1</a></h3>
+<p>So we’ve created our stores that talk to a MySql database.</p>
+<p>However, software rarely sits still.</p>
+<p>Business needs change, and we might find ourselves needing to use a different storage mechanism other than MySql.</p>
+<h3 id="pa-2"><a class="header" href="#pa-2">p&amp;a 2</a></h3>
+<p>I actually went through this recently, working on my little job tracker.</p>
+<p>My initial plan was to store the data in RocksDB, using SurrealDB as a communication layer.</p>
+<p>That didn’t work due to some complexity with the lock file, so I then switched to libsql, a fork of sqlite that also sits on disk.</p>
+<h3 id="pa-3"><a class="header" href="#pa-3">p&amp;a 3</a></h3>
+<p>I wasn’t happy with that either so I ended up storing the data as JSON files.</p>
+<p>This was only possible because I was following a pattern called hexagonal architecture, also known as ports and adapters.</p>
+<h3 id="pa-4"><a class="header" href="#pa-4">p&amp;a 4</a></h3>
+<p>Thinking about logic domains again, we have our software that we control, and external software that we don’t.</p>
+<p>Whether that’s storage such as database servers, logging infrastructure, 3rd party SaaS providers, any external thing our software has to communicate with is an external domain.</p>
+<h3 id="pa-5"><a class="header" href="#pa-5">p&amp;a 5</a></h3>
+<p>Ports and Adapters allows us to compartmentalise that domain.</p>
+<p>We separate how <em>we</em> think about data and logic inside the core of our software, and the code we write to communicate with these external services and how <em>they</em> want to think about data and logic.</p>
+<h3 id="pa-6"><a class="header" href="#pa-6">p&amp;a 6</a></h3>
+<p>The description of how we want to communicate our needs is called a port…</p>
+<p>and the bit of code that matches that description (plugs into that port) and converts it to the way our 3rd party works is called an adapter.</p>
+<p>Let’s show this separation using our stores from earlier.</p>
+<h3 id="pa-7"><a class="header" href="#pa-7">p&amp;a 7</a></h3>
+<p>We need to store users, but our user store is actually doing two things.</p>
+<p>First, it describes to the rest of our code how to store and retrieve users.</p>
+<p>Second, it does the storing and retrieving.</p>
+<p>The ports and adapters pattern makes this two different responsibilities.</p>
+<h3 id="pa-8"><a class="header" href="#pa-8">p&amp;a 8</a></h3>
+<p>We can apply this to our code by creating a UserStore trait, that describes how to store and retrieve users.</p>
+<p>And a MySqlUserStore type that implements the trait and acts as the translation layer.</p>
+<h3 id="pa-9"><a class="header" href="#pa-9">p&amp;a 9</a></h3>
+<p>If we wanted to talk to a different backend, we can easily create a new implementation of the trait for Postgres, Redis, SurrealDB, our options are literally limitless so long as we follow the trait.</p>
+<p>This is why it was so easy for me to change between RocksDb, libsql and eventually settle on JSON files.</p>
+<h2 id="integration-tests"><a class="header" href="#integration-tests">Integration Tests</a></h2>
+<h3 id="integration-1"><a class="header" href="#integration-1">integration 1</a></h3>
+<p>I’m not going to get into the weeds of integration tests for this video (if you’d like a video on that, let me know in the comments).</p>
+<p>What I want to show is that if your program is using ports and adapters, and has multiple adapters for the same ports, you need to make sure that the adapters all behave identically when used.</p>
+<h3 id="integration-2"><a class="header" href="#integration-2">integration 2</a></h3>
+<p>To achieve this, I’ve found the best thing to do is write integration tests for ports (not adapters), then pass in adapters to those tests.</p>
+<p>For example, a simple test for us might be can we get a user by their username.</p>
+<h3 id="integration-3-code"><a class="header" href="#integration-3-code">integration 3 (code)</a></h3>
+<p>To test that this works, we simply insert the user into the store, then try to get them back again.</p>
+<p>So let’s write that test only using the trait.</p>
+<p>Next we can configure any number of our adapters, and pass them into the test.</p>
+<h3 id="integration-4"><a class="header" href="#integration-4">integration 4</a></h3>
+<p>As we build up our suite, we likely will spot minor differences in how our backends work, that require bespoke code to work around.</p>
+<p>Little things like, what order are lists returned in, or are our fields case-sensitive.</p>
+<p>I have seen production bugs caused by things this minor, so be thorough when you test.</p>
+<h3 id="integration-5"><a class="header" href="#integration-5">integration 5</a></h3>
+<p>Now, outside my example of a personal project that was less well architected than anything I’ve done strictly professionally, its actually quite rare for something like a database to end up being completely changed.</p>
+<p>In my 15 years of professional software engineering, this has only happened to me maybe twice.</p>
+<h3 id="integration-6"><a class="header" href="#integration-6">integration 6</a></h3>
+<p>However, even if it had never happened, even if you are sure you will never change your database backed, this pattern is still incredibly powerful.</p>
+<p>Let me explain why.</p>
+<h2 id="stub-adapters"><a class="header" href="#stub-adapters">Stub Adapters</a></h2>
+<h3 id="stubs-1"><a class="header" href="#stubs-1">stubs 1</a></h3>
+<p>I’ve actually already talked about Ports and Adapters on this channel before, in my most disliked video.</p>
+<p>Don’t worry, you don’t need to have seen it, I’ll cover all the points here.</p>
+<h3 id="stubs-2"><a class="header" href="#stubs-2">stubs 2</a></h3>
+<p>While I don’t stand by a number of things in that video; the video quality, the audio quality, the presentation style, how many times I said “um”… I do stand by the point I was trying to make.</p>
+<p>Mocks. Are. Bad. Don’t use them.</p>
+<h3 id="stubs-3"><a class="header" href="#stubs-3">stubs 3</a></h3>
+<p>Through that video I showed that mocks provide a behavioural abstraction in your test code, which is bad, and that the behavioural abstraction might be incorrect which is even worse.</p>
+<p>If you use mocks in your tests, even though they are not the thing being tested, your test might be wrong because of them, and you won’t know.</p>
+<h3 id="stubs-4"><a class="header" href="#stubs-4">stubs 4</a></h3>
+<p>A stub adapter is an adapter that doesn’t reach out to anything external.</p>
+<p>When I was taught this pattern, we called them “In Memory” adapters because we were using them as stand-ins for databases, and they simply stored the information in memory.</p>
+<h3 id="stubs-5"><a class="header" href="#stubs-5">stubs 5</a></h3>
+<p>But you can use the same pattern to stub out all kinds of external interactions.</p>
+<p>For now though, lets make an in memory stub adapter for our database.</p>
+<h3 id="stubs-6-code"><a class="header" href="#stubs-6-code">stubs 6 (code)</a></h3>
+<p>We already have a trait for our store type, so the next step is to implement that trait in a way where data is stored and recalled internally.</p>
+<p>The easiest way to achieve this is to use a Vector.</p>
+<h3 id="stubs-7-code"><a class="header" href="#stubs-7-code">stubs 7 (code)</a></h3>
+<p>We can push new users on to the vector, and recall existing users by searching through it.</p>
+<p>That’s not quite enough though.</p>
+<h3 id="stubs-8"><a class="header" href="#stubs-8">stubs 8</a></h3>
+<p>If our other user stores enforce rules, such as “username must be unique”, then this stub adaptor need to too.</p>
+<p>This means we need to add it to our shared integration test from earlier.</p>
+<h3 id="stubs-9-code"><a class="header" href="#stubs-9-code">stubs 9 (code)</a></h3>
+<p>Because we already wrote the tests though, this is trivial, we just construct our stub adapter, pass it into the tests and bam, we’re good!</p>
+<h3 id="stubs-10"><a class="header" href="#stubs-10">stubs 10</a></h3>
+<p>Now that we’ve created a stub adapter, and proved it’s a perfectly good stand-in for our other user stores, we can use it in unit tests any time we’d otherwise need to talk to a database or use a <em>yuck</em> mock.</p>
+<p>But that’s not all.</p>
+<h3 id="stubs-11"><a class="header" href="#stubs-11">stubs 11</a></h3>
+<p>If you leave this video thinking stub adapters are only for testing, I’ve failed to do my job… again.</p>
+<p>Almost every time I’ve created a stub adapter for testing, I’ve ended up using it in production code later.</p>
+<h3 id="stubs-12"><a class="header" href="#stubs-12">stubs 12</a></h3>
+<p>When I was working on hotel advertising, we used our stub adapters for processing reports in cloud functions.</p>
+<p>When I was working on an authentication service, we provided a full stub of our library for people to use in their tests and that wrapped the same stub adapters we wrote for our tests.</p>
+<h3 id="stubs-13"><a class="header" href="#stubs-13">stubs 13</a></h3>
+<p>And when I finally moved to JSON files for the Job Tracker, I used the stub adapters I made back with the initial RocksDB implementation as a cache inside the JSON implementation.</p>
+<p>These things, are seriously underrated.</p>
+<p>They’re trivial to write, and insanely flexible.</p>
+<h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
+<h3 id="conclusion-1"><a class="header" href="#conclusion-1">conclusion 1</a></h3>
+<p>I love these patterns… in case you couldn’t tell.</p>
+<p>They’re often sold as being good to make sure your code is flexible, that if you need to you could change database or SaaS provider with little effort, but I think this is a minor benefit.</p>
+<h3 id="conclusion-2"><a class="header" href="#conclusion-2">conclusion 2</a></h3>
+<p>You probably won’t drastically change the physical architecture of your solutions so often for this pattern to be worthwhile on its own.</p>
+<p>But even if you never change your architecture, these patterns have strong benefits when it comes to maintainability.</p>
+<h3 id="conclusion-3"><a class="header" href="#conclusion-3">conclusion 3</a></h3>
+<p>First, by modularising our code, we make each part of it do less, and only do things related to one specific domain.</p>
+<p>This makes it much easier to reason about the code, so when you come back to the code later you can more quickly understand it.</p>
+<h3 id="conclusion-4"><a class="header" href="#conclusion-4">conclusion 4</a></h3>
+<p>It’s also easier to write tests for sections of your code that only do one thing.</p>
+<p>Second, by using a stub adaptor which is tested against integration tests, we can be <em>very</em> confident that our tests are testing code in the exact way that it will be used.</p>
+<h3 id="conclusion-5"><a class="header" href="#conclusion-5">conclusion 5</a></h3>
+<p>Finally, it’s easy to get distracted by the word “maintainability” and feel that this is something that <em>only</em> matters in the future.</p>
+<p>While most of the benefit is in the future, writing well tested, maintainable code is invariably faster than rushing something out, even in the short term, because fewer things go wrong while developing, let alone once something’s in production.</p>
+<h3 id="conclusion-5-1"><a class="header" href="#conclusion-5-1">conclusion 5</a></h3>
+<p>Next time we’re going to talk about Event Driven Architecture, which, full disclosure is something I’ve always been fascinated in but have yet to have a good reason to use at the software level.</p>
+<p>We’ll talk about its pros and cons, and when it’s a good choice to use.</p>
+<p>I hope to see you then.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../space/monad.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../channel-news/001-fios-quest.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../space/monad.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../channel-news/001-fios-quest.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/enable-checkboxes-3ea146e3.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

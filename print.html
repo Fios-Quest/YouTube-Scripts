@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-dccc8e1b.js";
+            window.path_to_searchindex_js = "searchindex-d3168e6e.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-6a85d1b3.js"></script>
+        <script src="toc-88b249bd.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -5900,6 +5900,183 @@ warts and all, there’s a lot of great YouTube videos out there, I’ll recomme
 software.</p>
 <p>I hope I’ll see you then.</p>
 <div style="break-before: page; page-break-before: always;"></div>
+<h1 id="dependency-injection"><a class="header" href="#dependency-injection">Dependency Injection</a></h1>
+<h2 id="intro-13"><a class="header" href="#intro-13">Intro</a></h2>
+<h3 id="intro-1-6"><a class="header" href="#intro-1-6">intro 1</a></h3>
+<p>This video is a bit of a double episode as I want to talk about two patterns that are so tightly coupled, people often (and fairly) treat them like one thing.</p>
+<p>Dependency Injection lets us better compartmentalise our code, separating concerns, making the code easier to reason about, and reducing code duplication.</p>
+<h3 id="intro-2-7"><a class="header" href="#intro-2-7">intro 2</a></h3>
+<p>Ports and Adaptors builds on this pattern to make the code more flexible.</p>
+<p>It lets you pick the right tool at the right time and is amazing for testing.</p>
+<h2 id="dependency-injection-1"><a class="header" href="#dependency-injection-1">Dependency Injection</a></h2>
+<h3 id="di-1"><a class="header" href="#di-1">di 1</a></h3>
+<p>Dependency Injection is incredible powerful and is the foundation of a number of other patterns, including the one we’ll be discussing later in this video.</p>
+<h3 id="di-2"><a class="header" href="#di-2">di 2</a></h3>
+<p>And yet it’s such a simple pattern you might already be using it without realising it.</p>
+<p>Dependency Injection, while sounding fancy, does exactly what it says on the tin.</p>
+<h3 id="di-3"><a class="header" href="#di-3">di 3</a></h3>
+<p>Rather than constructing things we’re dependent on where we need them, we inject those dependencies from outside.</p>
+<p>Let’s run through an example.</p>
+<h3 id="di-4-code"><a class="header" href="#di-4-code">di 4 (code)</a></h3>
+<p>Lets say we have some user data that we want to store.</p>
+<p>We’ll keep it fairly simple with just a username and email address.</p>
+<h3 id="di-5-code"><a class="header" href="#di-5-code">di 5 (code)</a></h3>
+<p>We want to store our users in a mysql database, so when we construct the user store we’ll also connect to the database, collecting the connection settings from the environment.</p>
+<p>If you aren’t familiar with databases (or if you are and this looks silly) don’t worry too much, this is just to show that there is <em>some</em> small amount of work in making that connection.</p>
+<p>The point here is that the mysql connection is a dependency for our user store.</p>
+<h3 id="di-6-code"><a class="header" href="#di-6-code">di 6 (code)</a></h3>
+<p>Once our user store is instantiated, we can now use it to store our users and our interface for doing so is nice and simple because all our SQL logic is hidden behind method calls.</p>
+<p>And if that was it, this would be ok, kinda, I’ll get back to this point.</p>
+<p>But it’s really rare for us to ever make a program that only stores one thing… so let’s create a pet.</p>
+<h3 id="di-7-code"><a class="header" href="#di-7-code">di 7 (code)</a></h3>
+<p>Again, we’ll keep things simple, the pet has a name and a butler.</p>
+<p>Next lets create the pet store and…  now our problems are laid bare.</p>
+<h3 id="di-8-code"><a class="header" href="#di-8-code">di 8 (code)</a></h3>
+<p>It’s not just that we have to redo all of this logic, which breaks the cardinal rule of “Don’t Repeat Yourself”… but there’s a problem with this instantiation method that existed even when we just had the one store.</p>
+<p>Our constructor is fallible, meaning it returns a Result, but every error it can produce is related not to the store itself, but to either the mysql connection or the environment.</p>
+<h3 id="di-9"><a class="header" href="#di-9">di 9</a></h3>
+<p>We can break this down into three problem domains in our code.</p>
+<p>We have some kind of configuration for connecting to the database.</p>
+<p>The act of connecting to the database.</p>
+<p>And the abstraction around the database that manages the storage of our users or our pets.</p>
+<p>Let’s rewrite our code separating it into these different domains.</p>
+<h3 id="di-10-code"><a class="header" href="#di-10-code">di 10 (code)</a></h3>
+<p>First we have our mysql connection configuration.</p>
+<p>We know that we need an address, a port, a username and a password.</p>
+<p>We’ll create a configuration struct to hold this data.</p>
+<p>Next we’ll instantiate our configuration from environment variables.</p>
+<h3 id="di-11-code"><a class="header" href="#di-11-code">di 11 (code)</a></h3>
+<p>Having a configuration type like this benefits us in a number of ways.</p>
+<p>Future engineers have one place to make changes to how this configuration is structured and created.</p>
+<h3 id="di-12-code"><a class="header" href="#di-12-code">di 12 (code)</a></h3>
+<p>Similarly, it moves error handling into this one place.</p>
+<p>Before, reading environment variables could spew errors out all over our code, now it won’t.</p>
+<h3 id="di-13-code"><a class="header" href="#di-13-code">di 13 (code)</a></h3>
+<p>Additionally, having a well named type with well named parameters and good controls, makes using this type easier for anyone who needs a mysql configuration in the future.</p>
+<h3 id="di-14-code"><a class="header" href="#di-14-code">di 14 (code)</a></h3>
+<p>Finally, while we have this method for getting the settings from the environment, we aren’t restricted to that.</p>
+<p>Depending on how the application is tested and deployed, there might be a variety of ways we want to construct this type.</p>
+<h3 id="di-15-code"><a class="header" href="#di-15-code">di 15 (code)</a></h3>
+<p>Now we can restructure our code so that we inject the configuration dependency into the MySql connection.</p>
+<p>Then inject the MySql connection into our user and pet stores.</p>
+<h3 id="di-16"><a class="header" href="#di-16">di 16</a></h3>
+<p>So dependency injection lets us better separate our code into logical domains, reduces code repetitions, and makes our code easier to understand.</p>
+<p>Now that we’ve started talking about logical domains, I want to talk about an old favourite pattern of mine, one that is enabled by dependency injection.</p>
+<h2 id="ports-and-adapters"><a class="header" href="#ports-and-adapters">Ports and Adapters</a></h2>
+<h3 id="pa-1"><a class="header" href="#pa-1">p&amp;a 1</a></h3>
+<p>So we’ve created our stores that talk to a MySql database.</p>
+<p>However, software rarely sits still.</p>
+<p>Business needs change, and we might find ourselves needing to use a different storage mechanism other than MySql.</p>
+<h3 id="pa-2"><a class="header" href="#pa-2">p&amp;a 2</a></h3>
+<p>I actually went through this recently, working on my little job tracker.</p>
+<p>My initial plan was to store the data in RocksDB, using SurrealDB as a communication layer.</p>
+<p>That didn’t work due to some complexity with the lock file, so I then switched to libsql, a fork of sqlite that also sits on disk.</p>
+<h3 id="pa-3"><a class="header" href="#pa-3">p&amp;a 3</a></h3>
+<p>I wasn’t happy with that either so I ended up storing the data as JSON files.</p>
+<p>This was only possible because I was following a pattern called hexagonal architecture, also known as ports and adapters.</p>
+<h3 id="pa-4"><a class="header" href="#pa-4">p&amp;a 4</a></h3>
+<p>Thinking about logic domains again, we have our software that we control, and external software that we don’t.</p>
+<p>Whether that’s storage such as database servers, logging infrastructure, 3rd party SaaS providers, any external thing our software has to communicate with is an external domain.</p>
+<h3 id="pa-5"><a class="header" href="#pa-5">p&amp;a 5</a></h3>
+<p>Ports and Adapters allows us to compartmentalise that domain.</p>
+<p>We separate how <em>we</em> think about data and logic inside the core of our software, and the code we write to communicate with these external services and how <em>they</em> want to think about data and logic.</p>
+<h3 id="pa-6"><a class="header" href="#pa-6">p&amp;a 6</a></h3>
+<p>The description of how we want to communicate our needs is called a port…</p>
+<p>and the bit of code that matches that description (plugs into that port) and converts it to the way our 3rd party works is called an adapter.</p>
+<p>Let’s show this separation using our stores from earlier.</p>
+<h3 id="pa-7"><a class="header" href="#pa-7">p&amp;a 7</a></h3>
+<p>We need to store users, but our user store is actually doing two things.</p>
+<p>First, it describes to the rest of our code how to store and retrieve users.</p>
+<p>Second, it does the storing and retrieving.</p>
+<p>The ports and adapters pattern makes this two different responsibilities.</p>
+<h3 id="pa-8"><a class="header" href="#pa-8">p&amp;a 8</a></h3>
+<p>We can apply this to our code by creating a UserStore trait, that describes how to store and retrieve users.</p>
+<p>And a MySqlUserStore type that implements the trait and acts as the translation layer.</p>
+<h3 id="pa-9"><a class="header" href="#pa-9">p&amp;a 9</a></h3>
+<p>If we wanted to talk to a different backend, we can easily create a new implementation of the trait for Postgres, Redis, SurrealDB, our options are literally limitless so long as we follow the trait.</p>
+<p>This is why it was so easy for me to change between RocksDb, libsql and eventually settle on JSON files.</p>
+<h2 id="integration-tests-1"><a class="header" href="#integration-tests-1">Integration Tests</a></h2>
+<h3 id="integration-1"><a class="header" href="#integration-1">integration 1</a></h3>
+<p>I’m not going to get into the weeds of integration tests for this video (if you’d like a video on that, let me know in the comments).</p>
+<p>What I want to show is that if your program is using ports and adapters, and has multiple adapters for the same ports, you need to make sure that the adapters all behave identically when used.</p>
+<h3 id="integration-2"><a class="header" href="#integration-2">integration 2</a></h3>
+<p>To achieve this, I’ve found the best thing to do is write integration tests for ports (not adapters), then pass in adapters to those tests.</p>
+<p>For example, a simple test for us might be can we get a user by their username.</p>
+<h3 id="integration-3-code"><a class="header" href="#integration-3-code">integration 3 (code)</a></h3>
+<p>To test that this works, we simply insert the user into the store, then try to get them back again.</p>
+<p>So let’s write that test only using the trait.</p>
+<p>Next we can configure any number of our adapters, and pass them into the test.</p>
+<h3 id="integration-4"><a class="header" href="#integration-4">integration 4</a></h3>
+<p>As we build up our suite, we likely will spot minor differences in how our backends work, that require bespoke code to work around.</p>
+<p>Little things like, what order are lists returned in, or are our fields case-sensitive.</p>
+<p>I have seen production bugs caused by things this minor, so be thorough when you test.</p>
+<h3 id="integration-5"><a class="header" href="#integration-5">integration 5</a></h3>
+<p>Now, outside my example of a personal project that was less well architected than anything I’ve done strictly professionally, its actually quite rare for something like a database to end up being completely changed.</p>
+<p>In my 15 years of professional software engineering, this has only happened to me maybe twice.</p>
+<h3 id="integration-6"><a class="header" href="#integration-6">integration 6</a></h3>
+<p>However, even if it had never happened, even if you are sure you will never change your database backed, this pattern is still incredibly powerful.</p>
+<p>Let me explain why.</p>
+<h2 id="stub-adapters"><a class="header" href="#stub-adapters">Stub Adapters</a></h2>
+<h3 id="stubs-1"><a class="header" href="#stubs-1">stubs 1</a></h3>
+<p>I’ve actually already talked about Ports and Adapters on this channel before, in my most disliked video.</p>
+<p>Don’t worry, you don’t need to have seen it, I’ll cover all the points here.</p>
+<h3 id="stubs-2"><a class="header" href="#stubs-2">stubs 2</a></h3>
+<p>While I don’t stand by a number of things in that video; the video quality, the audio quality, the presentation style, how many times I said “um”… I do stand by the point I was trying to make.</p>
+<p>Mocks. Are. Bad. Don’t use them.</p>
+<h3 id="stubs-3"><a class="header" href="#stubs-3">stubs 3</a></h3>
+<p>Through that video I showed that mocks provide a behavioural abstraction in your test code, which is bad, and that the behavioural abstraction might be incorrect which is even worse.</p>
+<p>If you use mocks in your tests, even though they are not the thing being tested, your test might be wrong because of them, and you won’t know.</p>
+<h3 id="stubs-4"><a class="header" href="#stubs-4">stubs 4</a></h3>
+<p>A stub adapter is an adapter that doesn’t reach out to anything external.</p>
+<p>When I was taught this pattern, we called them “In Memory” adapters because we were using them as stand-ins for databases, and they simply stored the information in memory.</p>
+<h3 id="stubs-5"><a class="header" href="#stubs-5">stubs 5</a></h3>
+<p>But you can use the same pattern to stub out all kinds of external interactions.</p>
+<p>For now though, lets make an in memory stub adapter for our database.</p>
+<h3 id="stubs-6-code"><a class="header" href="#stubs-6-code">stubs 6 (code)</a></h3>
+<p>We already have a trait for our store type, so the next step is to implement that trait in a way where data is stored and recalled internally.</p>
+<p>The easiest way to achieve this is to use a Vector.</p>
+<h3 id="stubs-7-code"><a class="header" href="#stubs-7-code">stubs 7 (code)</a></h3>
+<p>We can push new users on to the vector, and recall existing users by searching through it.</p>
+<p>That’s not quite enough though.</p>
+<h3 id="stubs-8"><a class="header" href="#stubs-8">stubs 8</a></h3>
+<p>If our other user stores enforce rules, such as “username must be unique”, then this stub adaptor need to too.</p>
+<p>This means we need to add it to our shared integration test from earlier.</p>
+<h3 id="stubs-9-code"><a class="header" href="#stubs-9-code">stubs 9 (code)</a></h3>
+<p>Because we already wrote the tests though, this is trivial, we just construct our stub adapter, pass it into the tests and bam, we’re good!</p>
+<h3 id="stubs-10"><a class="header" href="#stubs-10">stubs 10</a></h3>
+<p>Now that we’ve created a stub adapter, and proved it’s a perfectly good stand-in for our other user stores, we can use it in unit tests any time we’d otherwise need to talk to a database or use a <em>yuck</em> mock.</p>
+<p>But that’s not all.</p>
+<h3 id="stubs-11"><a class="header" href="#stubs-11">stubs 11</a></h3>
+<p>If you leave this video thinking stub adapters are only for testing, I’ve failed to do my job… again.</p>
+<p>Almost every time I’ve created a stub adapter for testing, I’ve ended up using it in production code later.</p>
+<h3 id="stubs-12"><a class="header" href="#stubs-12">stubs 12</a></h3>
+<p>When I was working on hotel advertising, we used our stub adapters for processing reports in cloud functions.</p>
+<p>When I was working on an authentication service, we provided a full stub of our library for people to use in their tests and that wrapped the same stub adapters we wrote for our tests.</p>
+<h3 id="stubs-13"><a class="header" href="#stubs-13">stubs 13</a></h3>
+<p>And when I finally moved to JSON files for the Job Tracker, I used the stub adapters I made back with the initial RocksDB implementation as a cache inside the JSON implementation.</p>
+<p>These things, are seriously underrated.</p>
+<p>They’re trivial to write, and insanely flexible.</p>
+<h2 id="conclusion-6"><a class="header" href="#conclusion-6">Conclusion</a></h2>
+<h3 id="conclusion-1-5"><a class="header" href="#conclusion-1-5">conclusion 1</a></h3>
+<p>I love these patterns… in case you couldn’t tell.</p>
+<p>They’re often sold as being good to make sure your code is flexible, that if you need to you could change database or SaaS provider with little effort, but I think this is a minor benefit.</p>
+<h3 id="conclusion-2-4"><a class="header" href="#conclusion-2-4">conclusion 2</a></h3>
+<p>You probably won’t drastically change the physical architecture of your solutions so often for this pattern to be worthwhile on its own.</p>
+<p>But even if you never change your architecture, these patterns have strong benefits when it comes to maintainability.</p>
+<h3 id="conclusion-3-1"><a class="header" href="#conclusion-3-1">conclusion 3</a></h3>
+<p>First, by modularising our code, we make each part of it do less, and only do things related to one specific domain.</p>
+<p>This makes it much easier to reason about the code, so when you come back to the code later you can more quickly understand it.</p>
+<h3 id="conclusion-4-1"><a class="header" href="#conclusion-4-1">conclusion 4</a></h3>
+<p>It’s also easier to write tests for sections of your code that only do one thing.</p>
+<p>Second, by using a stub adaptor which is tested against integration tests, we can be <em>very</em> confident that our tests are testing code in the exact way that it will be used.</p>
+<h3 id="conclusion-5-1"><a class="header" href="#conclusion-5-1">conclusion 5</a></h3>
+<p>Finally, it’s easy to get distracted by the word “maintainability” and feel that this is something that <em>only</em> matters in the future.</p>
+<p>While most of the benefit is in the future, writing well tested, maintainable code is invariably faster than rushing something out, even in the short term, because fewer things go wrong while developing, let alone once something’s in production.</p>
+<h3 id="conclusion-5-1-1"><a class="header" href="#conclusion-5-1-1">conclusion 5</a></h3>
+<p>Next time we’re going to talk about Event Driven Architecture, which, full disclosure is something I’ve always been fascinated in but have yet to have a good reason to use at the software level.</p>
+<p>We’ll talk about its pros and cons, and when it’s a good choice to use.</p>
+<p>I hope to see you then.</p>
+<div style="break-before: page; page-break-before: always;"></div>
 <h1 id="long-live-fios-quest"><a class="header" href="#long-live-fios-quest">Long Live Fio’s Quest</a></h1>
 <p>It had to happen eventually, Rust, simply is dead. Let’s take a moment  … Ok, that’s enough, Rust simply is dead, long live Fio’s Quest.</p>
 <p>== Fio Jump</p>
@@ -6102,7 +6279,7 @@ software.</p>
 <p>And for that, if nothing else, how can I not love TypeScript.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="5-things-rust-should-steal-from-other-language"><a class="header" href="#5-things-rust-should-steal-from-other-language">5 things Rust should steal from other language</a></h1>
-<h2 id="intro-13"><a class="header" href="#intro-13">Intro</a></h2>
+<h2 id="intro-14"><a class="header" href="#intro-14">Intro</a></h2>
 <p>Rust is an amazing language, ecosystem and community.</p>
 <p>In fact, it’s easily my favourite language, ecosystem and community.</p>
 <p>But nothing is perfect so here’s 5 things I think Rust should steal.</p>
