@@ -66,7 +66,7 @@ This is a less controversial take.
 
 Maybe you've already seen Gary Bernhardt's excellent talk WAT
 
-I'm not going to reiterate Gary's work here, it's great, go watch it.
+I'm not going to reiterate WAT here, it's great, go watch it.
 
 But the weirdness Gary talks about is specifically down to Type errors.
 
@@ -106,7 +106,7 @@ Anything you try to do with dog3 that it doesn't know how to do, it asks dog2 ho
 
 We asked it its name, it didn't have one, so it asked dog2.
 
-We gave dog 2 a name so it returned that!
+We gave dog 2 a name so dog 3 returned that!
 
 If we hadn't, dog2 would have asked dog1.
 
@@ -218,7 +218,7 @@ Don't worry though, we can cast our dogs to Dog types with `as`
 
 Right... but we didn't actually do anything to check that this `any` type was a dog did we...
 
-We can't... we can't cast something that's definitely a Dog as Cat right?
+We can't... cast something that's definitely a Dog as Cat right?
 
 Surprise!
 
@@ -242,7 +242,7 @@ Instead, use type predicates.
 
 ## Predicates
 
-I've spent a lot of time moaning about TypeScript
+I've spent a lot of time bashing TypeScript
 
 Let's take a break, and I'll show you a reason to love it.
 
@@ -268,9 +268,9 @@ Sorry, not sorry.
 
 In TypeScript, `null` is an object that represents nothing.
 
-So, any time you check something is an object you'll also want to check if its `null`.
+So, any time you check something is an object you'll also want to check it's not `null`.
 
-`null`, despite being an Object, doesn't inherit the Object prototype.
+Despite being an Object, `null` doesn't inherit the Object prototype.
 
 Apart from smug YouTubers creating things with `Object.create` to prove a point...
 

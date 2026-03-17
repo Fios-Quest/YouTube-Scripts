@@ -2,8 +2,36 @@
 
 // ---
 
-async function getUser(email: string): Promise<Result<Error, User>> {
-    const response = await fetch(`https://example.com/${email}`);
+class Result<Err, Ok> {
+    ok?: Ok;
+    err?: Err;
+
+    static ok<Err, Ok>(ok: Ok): Result<Err, Ok> {
+        const result = new Result<Err, Ok>();
+        result.ok = ok;
+        return result;
+    }
+
+    static error<Err, Ok>(err: Err): Result<Err, Ok> {
+        const result = new Result<Err, Ok>();
+        result.err = err;
+        return result;
+    }
+}
+
+type User = {}
+
+class Email {
+    email: string,
+
+    urlEncode(): string {
+        return encodeURIComponent(this.email)
+    }
+}
+
+
+async function getUser(email: Email): Promise<Result<Error, User>> {
+    const response = await fetch(`https://example.com/${email.urlEncode()}`);
     const user = await response.json();
     return user.email === email
         ? Result.ok(user)
