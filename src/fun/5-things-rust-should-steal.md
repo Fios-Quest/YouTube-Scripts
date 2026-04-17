@@ -10,6 +10,28 @@ But nothing is perfect so here's 5 things I think Rust should steal.
 
 ## Official Program Interpreter
 
+I recently found myself sitting down to write what I expected to be a small one file script.
+
+This script would be part of a much larger infrasctructure project used by dozens of other engineers.
+
+Unfortunately this meant Rust wasn't an option.
+
+Using Rust would mean building either building executable that would be opaue and I couldn't really store in Git.
+
+Alternatively I could distribute the source code but then anyone using it would have to install Rust.
+
+If Rust came with a light weight interpreter then I could have used that.
+
+`cargo-script` is pretty close to that but you still need all of Rust installed to use it.
+
+Instead I chose my other favourite language, TypeScript, and spent an the hour configuring all the things cargo new gets you for free.
+
+Is an interpreter possible though... unfortunately the answer is, probably not.
+
+Rustc is quite small, so in the worst case you could make a simple compile and run wrapper...
+
+...but the standard library is enormous, so that's not practical for something as portable as node or python.
+
 ## Official async Runtime
 
 ## Dynamic Libraries
