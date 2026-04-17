@@ -70,6 +70,36 @@ In the future though, I wouldn't rule it out.
 
 ## Dynamic Libraries
 
+Dynamic Libraries allow us to compile reusable code that can be shared among many programs.
+
+By separating out these libraries we can reduce the size of our programs _and_ make security updates easier and more impactful.
+
+For example, when Heartbleed happened, we only needed to update the OpenSSL library, we didn't need to update every program that consumed it separately.
+
+If Rustls has a flaw, every Rust library that uses it will need to be updated and redistributed separately.
+
+Because Dynamic Libraries are loaded at runtime, we need to communicate with them through a foreign function interface, abbreviated as FFI.
+
+FFIs are not safe because they make assumptions about how code on the other side of the boundry will work.
+
+Rusts super power is its type system, but a dynamic library is just some pre-compiled code, there's no types, its just pointers.
+
+You cn use both produce and concume dynamic libraries in Rust but only through using the Abstract Binary Interfaces (ABIs) of other languages, such as C.
+
+So the chance of us getting a Rust dynamic library with proper types is unlikely... however.
+
+Rust has possibly the best WebAssembly tooling of any language.
+
+Not only can you compile to WebAssembly but you can import WebAssemply components and run them inside Rust.
+
+WebAssembly does allow you to expose interfaces and types, giving you an easy way to write strictly typed dynamic libraries Rust can consume.
+
+WebAssembly isn't as fast as native code but it is pretty close for single threaded use.
+
+It's still a growing ecosystem too and new features are constantly dropping.
+
+I'm personally pretty hopeful about this as a potential alternative.
+
 ## Automatic Atomic Referencing with Copy on Write
 
 ## Namespaced packages
