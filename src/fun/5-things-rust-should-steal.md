@@ -102,6 +102,46 @@ I'm personally pretty hopeful about this as a potential alternative.
 
 ## Automatic Atomic Referencing with Copy on Write
 
+Ownership is probably the number one tripping point for new rustaceans.
+
+Sure, it gives us a clean, safe and surprisingly ergonomic way to think about memory... but mastering it is non trivial.
+
+Whats worse is that sometimes... those benefits don't even mean much.
+
+Rust works basically runs on anything
+
+In fact, today, you can run Rust in more places that Java, the write once run anywhere language.
+
+That includes places that use page files instead of giving you heap access, like the browsers or embedded devices.
+
+You could even write your own allocator to provide page files for other systems too.
+
+When you have a page file... ownership starts to matter a lot less.
+
+It would be nice if we could, in these circumstance, just... forget about ownership.
+
+And you sort of can.
+
+Wrapping everything in COWs and wrapping the COWs in ARCs means you don't need to worry about who owns what any more.
+
+It all just requires extra work.
+
+Wouldn't it be nice if we could just have a compiler flag that did that for us, so we didn't need to worry about it?
+
+Well... ok, probably not.
+
+For a start, a compiler flag for your code is something other people, including your consumers if you're writing a crate, then need to worry about.
+
+Its also not a panacea.
+
+Any kind of reference counting adds work to the runtime, using ownership avoids that.
+
+Finally, we've not really side stepped the problem of ownership being hard.
+
+To master efficient Rust, you still need to learn it.
+
+It might be difficult, but once you've got your head around it, you'll be making incredibly fast and efficient programs with the compiler still holding you hand.
+
 ## Namespaced packages
 
 You might have guessed my other options were not esspecially sincere, but here'ssomething I do want to see.
