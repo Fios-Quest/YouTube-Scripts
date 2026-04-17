@@ -28,11 +28,45 @@ Instead I chose my other favourite language, TypeScript, and spent an the hour c
 
 Is an interpreter possible though... unfortunately the answer is, probably not.
 
-Rustc is quite small, so in the worst case you could make a simple compile and run wrapper...
+Rustc is only about 40 megabytes, so in the worst case you could make a simple compile and run wrapper...
 
-...but the standard library is enormous, so that's not practical for something as portable as node or python.
+...but the standard library is enormous, 
+
+All in, you're looking at about half a gig which make Rust decidedly less portable than say node which is about 50 megabytes or Python which is barely 10.
 
 ## Official async Runtime
+
+JavaScript and C# both have very similar async syntax to Rust but don't require you to set up a complex runtime to actually use it.
+
+Rust doesn't come with a runtime, meaning you have to either write your own, or use something like Tokio or smol.
+
+I've spoken to a few people who find this really off putting, and list it among reasons they've not really given Rust a shot, which is a shame.
+
+So why can't Rust have a built in runtime like other languages?
+
+One benefit of Rust's approach is flexibility.
+
+You can write or choose a runtime that best fits your goals and target hardware.
+
+Meanwhile, JavaScript is a single threaded language which means there's a limited number of ways a runtime can even work.
+
+Using an event loop with external callbacks is not only elegant, it also fits with the mental model JavaScript has had for decades.
+
+C# is a little more complex as programs usually run on a "platform", framework, or host which configures a Synchronization Context for you.
+
+This Syncronization Context is what decides when and where tasks are run.
+
+You can configure or bypass the Syncronization Context but this is rare and could be problematic in rare circumstances.
+
+Still, why doesn't Rust provide a sensible default for your async runtime?
+
+I think its actually fairer to say Rust doesn't have an async runtime _yet_.
+
+While most day to day async code is runtime agnostic, there are a lot of edge cases where the best way to handle a situation remain undecided.
+
+Right now an official asyn runtime would need to make too many assumptions, which is something 3rd party libraries have more tolerance for.
+
+In the future though, I wouldn't rule it out.
 
 ## Dynamic Libraries
 
