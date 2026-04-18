@@ -201,6 +201,8 @@ puts example.inner_value
 
 ## No Throw and Strict Type Systems
 
+## Communities
+
 ## Daniel is a liar
 
 ## Outro

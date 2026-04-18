@@ -100,7 +100,7 @@ It's still a growing ecosystem too and new features are constantly dropping.
 
 I'm personally pretty hopeful about this as a potential alternative.
 
-## Automatic Atomic Referencing with Copy on Write
+## Atomic Cows
 
 Ownership is probably the number one tripping point for new rustaceans.
 
