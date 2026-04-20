@@ -18,6 +18,54 @@ I know, I know, if one thing about Rust is called out as uniquely difficult its 
 
 // Examples implicit of COW in other languges being confusing
 
+
+```basic
+TYPE Example
+    innerValue AS STRING
+END TYPE
+
+SUB updateExample(example AS Example)
+    example.innerValue = "Updated"
+END SUB
+
+SUB updateString(s AS STRING)
+    s = "Updated Again"
+END SUB
+
+DIM example as Example
+example.innerValue = "Initial Value"
+
+updateExample(example)
+print example.innerValue
+
+updateString(example.innerValue)
+print example.innerValue
+```
+
+```qbasic
+TYPE Example
+    innerValue AS STRING
+END TYPE
+
+SUB updateExample(example AS Example)
+    example.innerValue = "Updated"
+END SUB
+
+SUB updateString(s AS STRING)
+    s = "Updated Again"
+END SUB
+
+
+DIM example as Example
+example.innerValue = "Initial Value"
+
+CALL updateExample(example)
+print example.innerValue
+
+CALL updateString(example.innerValue)
+print example.innerValue
+```
+
 ```typescript
 class ExampleClass {
 	public innerValue: string = 'Some initial value';
@@ -197,6 +245,35 @@ puts example.inner_value
 
 update_string(example.inner_value)
 puts example.inner_value
+```
+
+
+```go
+package main
+
+import "fmt"
+
+type Example struct {
+	innerValue string
+}
+
+func updateExample(example Example) {
+	example.innerValue = "Updated"
+}
+
+func updateString(s string) {
+	s = "Updated Again"
+}
+
+func main() {
+	example := Example{"Initial Value"}
+
+	updateExample(example)
+	fmt.Println(example.innerValue)
+
+	updateString(example.innerValue)
+	fmt.Println(example.innerValue)
+}
 ```
 
 ## No Throw and Strict Type Systems
