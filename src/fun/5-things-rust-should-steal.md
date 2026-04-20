@@ -184,4 +184,4 @@ Rust is a fantastic, incredibly well-designed language, with brilliant maintaine
 
 What else do you think Rust could learn from other languages, let me know in the comments, even if, like me, you know you're being a little disingenuous.
 
-If you enjoyed this video, check out the companion video, 5 things other languages should steal from Rust.
+If you enjoyed this video, check out the companion video, 3 things other languages should steal from Rust.

@@ -1,18 +1,20 @@
-# 5 things others languages should steal from Rust
+# 3 things others languages should steal from Rust
 
-Throughout my life I've used, C, C++, Java, Perl, Visual Basic, PHP, GDScript, JavaScript, and TypeScript somewhat extensively
+Throughout my life I've used, C, C++, Java, Perl, PHP, GDScript, JavaScript, and TypeScript somewhat extensively
 
 And I've used QBasic, Visual Basic, C#, Groovy, Python, Ruby, and Go somewhat less so.
 
 I love programming and programming languages but my favourite, so far, is Rust.
 
-Rust has learned a huge amount from the languages that came before it but here are 5 things I wish other languages would steal right back!
+Rust is amazing because of what its learned (and arguably stolen) from the languages that came before it.
+
+So what could those languages steal right back?
 
 ## Consistent Documentation
 
 ## Testing
 
-## Ownership
+## No Surprised
 
 I know, I know, if one thing about Rust is called out as uniquely difficult its ownership.
 
