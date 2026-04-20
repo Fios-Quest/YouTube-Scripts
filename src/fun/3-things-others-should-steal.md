@@ -10,11 +10,44 @@ Rust is amazing because of what its learned (and arguably stolen) from the langu
 
 So what could those languages steal right back?
 
-## Consistent Documentation
-
 ## Testing
 
-## No Surprised
+## Documentation
+
+Documentating your code is really important and their are documentation tools for most languages.
+
+JavaDoc really set the standard here and its something that has been adopted and adapted by most languages with things
+like TSDoc, JSDoc, PhpDoc, etc.
+
+Being able to document your code in your code is incredibly powerful.
+
+You end up with not only searchable publishable document but something people can read in place while working on the code and even something your IDE can pick up. 
+
+Rust has taken this idea and absolutely turbocharged it.
+
+First, rustdoc is part of the base tooling.
+
+You don't need to install and configure it separately, and everyone uses the same tool.
+
+This means when working on your code locally, you can not only document your code, but you can access the documentation of all your dependencies right in the same place, locally, with no fuss.
+
+Everyone documenting the same way also means documentation is easier to navigate, follows consistent standards and it becomes easier for us to learn from each other what good documentation looks like.
+
+Second, tests.
+
+Its one thing to write documentation, but keeping it up to date is hard.
+
+Having documentation that's wrong can be worse than having none at all, something I expect most of us have experienced.
+
+In Rust, your code examples can not be wrong because when you run `cargo test` it also runs your code examples.
+
+This is why you'll regularly see code examples use assertions
+
+They don't just show you, the reader, what to expect when you call a function, they prove that its true!
+
+These tests even count towards things like test coverage so writing tests into your documentation kills two birds with one stone.
+
+## No Surprises
 
 I know, I know, if one thing about Rust is called out as uniquely difficult its ownership.
 
