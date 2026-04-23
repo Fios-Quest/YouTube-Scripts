@@ -12,6 +12,29 @@ So what could those languages steal right back?
 
 ## Testing
 
+Hi, I'm Daniel, and if we've met you know I'm obsessed with testing!
+
+I tend not to believe it when people tell me nice things about my work, but when I write a test and it goes green, ohh that feels good.
+
+There are testing frameworks in every language, and if one doesn't take your fancy, creating basic assertions is extremely trivial.
+
+So what's so special about Rust?
+
+Rust provides a complete test harness out of the box.
+
+You get all the tooling you need to write unit tests, integration tests and one other kind of test we'll cover later, all without needing addition libraries or configuration.
+
+Macro's also let you write complex repetative test code once and reuse it, even if you need slight variations.
+
+Is it perfect, no.
+
+There are libraries for providing things like fake data or mo... mo... ugh, mocking.
+
+You may also need a little extra tooling to capture coverage, though some IDEs handle that for you.
+
+None the less, testing is a first class citizen in Rust which is unusual.
+
+
 ## Documentation
 
 Documentating your code is really important and their are documentation tools for most languages.
@@ -34,6 +57,8 @@ This means when working on your code locally, you can not only document your cod
 Everyone documenting the same way also means documentation is easier to navigate, follows consistent standards and it becomes easier for us to learn from each other what good documentation looks like.
 
 Second, tests.
+
+No, I haven't jumped back a section, and yes I realy am obsessed.
 
 Its one thing to write documentation, but keeping it up to date is hard.
 
