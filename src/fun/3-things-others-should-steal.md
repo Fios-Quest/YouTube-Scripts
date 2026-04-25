@@ -26,7 +26,7 @@ You get all the tooling you need to write unit tests, integration tests and one 
 
 Is it perfect, no.
 
-There are libraries for providing things like fake data or mo... mo... ugh, mocking.
+You'll need additional libraries for providing things like fake data or mo... mo... ugh, mocking.
 
 You may also need a little extra tooling to capture coverage, though some IDEs handle that for you.
 
@@ -36,11 +36,11 @@ Everyone should do this!
 
 ## Documentation
 
-Documentating your code is really important though it tends to be the sort of thing you only notice when faced with _bad_ documentation.
+Good documentating is really important, though it tends to be the sort of thing you only notice when faced with _bad_ documentation.
 
 There are documentation tools for most languages.
 
-Javadoc really set the standard here, and it's something that has been adopted and adapted by most languages with things like JSDoc, PhpDoc, and so on.
+Javadoc really set the standard here, and it's something that has been adopted and adapted by most languages with things like JSDoc, PhpDoc, and even rustdoc.
 
 Being able to document your code in your code with these tools is incredibly powerful.
 
@@ -54,7 +54,7 @@ You don't need to install and configure it separately, and everyone uses the sam
 
 This means when working on your code locally, you can not only document your code, but you can access the documentation of all your dependencies right in the same place, locally, with no fuss.
 
-Everyone documenting the same way also means documentation is easier to navigate.
+Everyone documenting the same way also means documentation is easier follow, there's fewer surprises.
 
 It follows consistent standards, and it becomes easier for us to learn from each other what good documentation looks like.
 
@@ -86,13 +86,13 @@ There are no surprises... or at least, almost no surprises.
 
 There's several ways Rust achieves this from its strict type system to avoiding out of order execution mechanisms like exceptions.
 
-Perhaps the most impactful way Rust prevents surprises though is with Ownership.
+Perhaps the most impactful way Rust prevents surprises is with Ownership.
 
 I know, I know, if one thing is called out as uniquely difficult in Rust; its ownership.
 
 But, lets look at some simple code.
 
-So here's some TypeScript where we define and create an example struct with some initial data.
+Here's some TypeScript where we define and create an example struct with some initial data.
 
 We'll can call a function that modifies the example struct.
 
@@ -120,7 +120,7 @@ I won't make you wait any longer, the answer is Updated, Updated Again... for QB
 
 Updated, Updated for TypeScript, PHP, Java, C#, and Ruby because they all pass the object by reference but the string by copy.
 
-And Initial Value, Initial Value for C, C++, Go and Python because they all pass both values by reference.
+And Initial Value, Initial Value for C, C++, Go and Python because they all pass both values by copy.
 
 Now, the fact all these languages do it differently isn't actually the problem.
 
@@ -140,7 +140,7 @@ In that case we can explicitly clone the value... but that still doesn't work as
 
 So let's do that, and now we get "Initial value, Initial value" output (because we're changing copies of the data), but look we also got warnings...
 
-...but only on the `update_string` function so I am going to call Rust out for not picking up on the same problem in `update_example`.
+...but only on the `update_string` function so I am going to call Rust out for not picking up the same problem in `update_example`.
 
 Look, I did say _almost_ no surprises.
 
@@ -152,21 +152,23 @@ we need to _explicitly_ pass mutable reference into those functions,
 
 and we need to make example _explicitly_ mutable
 
-For some reason we also need to dereference the string... but not the struct, I'm not sure about that but the compiler does tell you about it so I don't think it counts as a surprise
+For some reason we also need to dereference the string... but not the struct.
+
+I'm not sure about exactly why that is but the compiler does tell you about it, so I don't think it counts as a surprise
 
 Now we get the objectively correct, warning free code that only the highly professional QBasic could give us before.
 
 I know, the ownership model can be a bit of a brain melter to get your head around when you first start using it...
 
-but I think this objectively leads to less nasty surprises than the other examples we saw.
+but I think this objectively leads to fewer nasty surprises than the other examples we saw.
 
-Unfortunately... existing languages can't steal the ownership model, it's just too different to what they already do.
+Unfortunately... existing languages can't steal the ownership model, it's just too different from what they already do.
 
-But I do think all new languages should seriously consider it.
+But I do think all _new_ languages should seriously consider it.
 
 The speed of low level languages, with the confidence of high level languages and less surprising than either, it's a no-brainer.
 
-And remember at the start I said, "my favourite, so far, is Rust"?
+And remember at the start I said, "my language favourite, so far, is Rust"?
 
 I'm genuinely excited for the next generation of languages that continue to build on every language that came before them.
 
@@ -520,7 +522,7 @@ fn main() {
 
 ## Outro
 
-I hope you enjoyed that and took it for the passion for programming it was meant to be.
+I hope you enjoyed that and took it for the expression of passion for programming it was meant to be.
 
 I love, maybe not all, but most programming languages.
 
