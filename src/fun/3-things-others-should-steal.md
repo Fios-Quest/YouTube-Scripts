@@ -12,7 +12,7 @@ So what could those languages steal right back?
 
 ## Testing
 
-Hi, I'm Daniel, and if we've met you know I'm obsessed with testing!
+Hi, I'm Daniel, and if we've met you people know one thing about me its that I'm obsessed with testing!
 
 I tend not to believe it when people tell me nice things about my work, but when I write a test and it goes green, ohh that feels good.
 
@@ -32,19 +32,20 @@ There are libraries for providing things like fake data or mo... mo... ugh, mock
 
 You may also need a little extra tooling to capture coverage, though some IDEs handle that for you.
 
-None the less, testing is a first class citizen in Rust which is unusual.
+None the less, testing is a first class citizen in Rust which is unusual... and awesome!
 
 
 ## Documentation
 
-Documentating your code is really important and their are documentation tools for most languages.
+Documentating your code is really important though it tends to be the sort of thing you only notice when faces with _bad_ documentation.
 
-JavaDoc really set the standard here and its something that has been adopted and adapted by most languages with things
-like TSDoc, JSDoc, PhpDoc, etc.
+There are documentation tools for most languages.
 
-Being able to document your code in your code is incredibly powerful.
+JavaDoc really set the standard here and its something that has been adopted and adapted by most languages with things like TSDoc, JSDoc, PhpDoc, and so on.
 
-You end up with not only searchable publishable document but something people can read in place while working on the code and even something your IDE can pick up. 
+Being able to document your code in your code with these tools is incredibly powerful.
+
+You end up with not only searchable publishable documention but something people can read in place while working on the code and even something your IDE can pick up. 
 
 Rust has taken this idea and absolutely turbocharged it.
 
@@ -54,7 +55,9 @@ You don't need to install and configure it separately, and everyone uses the sam
 
 This means when working on your code locally, you can not only document your code, but you can access the documentation of all your dependencies right in the same place, locally, with no fuss.
 
-Everyone documenting the same way also means documentation is easier to navigate, follows consistent standards and it becomes easier for us to learn from each other what good documentation looks like.
+Everyone documenting the same way also means documentation is easier to navigate.
+
+It follows consistent standards and it becomes easier for us to learn from each other what good documentation looks like.
 
 Second, tests.
 
@@ -66,15 +69,48 @@ Having documentation that's wrong can be worse than having none at all, somethin
 
 In Rust, your code examples can not be wrong because when you run `cargo test` it also runs your code examples.
 
-This is why you'll regularly see code examples use assertions
+This is why you'll regularly see code examples in documentation using assertions
 
 They don't just show you, the reader, what to expect when you call a function, they prove that its true!
 
 These tests even count towards things like test coverage so writing tests into your documentation kills two birds with one stone.
 
+I have seen this feature in some documentation libraries in other languages, but...
+
+Having documentation and testing all wrapped up neatly with no configuration required, and consistency across the whole ecosystem is absolutely worth every language stealing.
+
 ## No Surprises
 
+In many ways, Rust is an incredibly boring language.
+
+There are no surprises... or at least, almost no surprises.
+
+There's two big ways Rust does this.
+
+First, lets talk about order of excution.
+
+Here's some Rust for getting User data from an endpoint...
+
+...and here's that same code in TypeScript.
+
+I'm using Result types to make sure that errors are explicit, not implicit...
+
+Except...
+
+These can still throw exceptions, and this may not actually create a user.
+
+
+The other, and perhaps even more impactful way Rust prevents surprises is with Ownership.
+
 I know, I know, if one thing about Rust is called out as uniquely difficult its ownership.
+
+But, lets look at some simple code.
+
+So here'ssome TypeScript where we define and create an example struct with some initial data.
+
+We'll can call a function that modifies the example struct.
+
+Then we'll call a function that modifies the string in that struct.
 
 // Examples implicit of COW in other languges being confusing
 
@@ -336,10 +372,5 @@ func main() {
 }
 ```
 
-## No Throw and Strict Type Systems
-
-## Communities
-
-## Daniel is a liar
 
 ## Outro
