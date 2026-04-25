@@ -81,39 +81,97 @@ Having documentation and testing all wrapped up neatly with no configuration req
 
 ## No Surprises
 
-In many ways, Rust is an incredibly boring language.
+In many ways, Rust is an incredibly boring language, and that's a good thing.
 
 There are no surprises... or at least, almost no surprises.
 
-There's two big ways Rust does this.
+There's several ways Rust achieves this from its strict type system to avoiding out of order execution mechanisms like exceptions.
 
-First, lets talk about order of excution.
+Perhaps the most impactful way Rust prevents surprises though is with Ownership.
 
-Here's some Rust for getting User data from an endpoint...
-
-...and here's that same code in TypeScript.
-
-I'm using Result types to make sure that errors are explicit, not implicit...
-
-Except...
-
-These can still throw exceptions, and this may not actually create a user.
-
-
-The other, and perhaps even more impactful way Rust prevents surprises is with Ownership.
-
-I know, I know, if one thing about Rust is called out as uniquely difficult its ownership.
+I know, I know, if one thing is called out as uniquely difficult in Rust; its ownership.
 
 But, lets look at some simple code.
 
-So here'ssome TypeScript where we define and create an example struct with some initial data.
+So here's some TypeScript where we define and create an example struct with some initial data.
 
 We'll can call a function that modifies the example struct.
 
 Then we'll call a function that modifies the string in that struct.
 
-// Examples implicit of COW in other languges being confusing
+What do we expect the output of this program to be?
 
+I'll give you three possibilities:
+
+Updated, Updated Again
+
+Updated, Updated
+
+or
+
+Initial Value, Initial Value
+
+Before I answer that question, here's the same code in php... C#... C++... C... Go... Java... Python... Ruby... QBasic...
+
+The code is, I would argue, the same in each example.
+
+Do they all do the same thing?
+
+I won't make you wait any longer, the answer is Updated, Updated Again... for QBasic because both values are passed by reference.
+
+Updated, Updated for TypeScript, PHP, Java, C#, and Ruby because they all pass the object by reference but the string by copy.
+
+And Initial Value, Initial Value for C, C++, Go and Python because they all pass both values by reference.
+
+Now, the fact all these languages do it differently isn't actually the problem.
+
+Its confusing if you have to jump languages a lot but once you know the behaviour you know the behaviour.
+
+What I personally don't think is OK, is that in all but one of those languages we set a value and never use it in at least one function... and we don't even get a warning for behaviour I think is obviously wrong.
+
+So what does Rust do?
+
+Well... this code doesn't work in Rust.
+
+When we pass Example into the first function, we transfer ownership of the value to that function.
+
+This means `main` no longer has access to the variable, so we can't use it any more.
+
+In that case we can explicitly clone the value... but that still doesn't work as we haven't explicitly described the parameters of the function as mutable.
+
+So let's do that, and now we get "Initial value, Initial value" output (because we're changing copies of the data), but look we also got warnings...
+
+...but only on the `update_string` function so I am going to call Rust out for not picking up on the same problem in `update_example`.
+
+Look, I did say _almost_ no surprises.
+
+Anyway, lets clear out that warning as we do want to change our example data.
+
+We need to make our functions _explicitly_ take mutable reference, 
+
+we need to _explicitly_ pass mutable reference into those functions, 
+
+and we need to make example _explicitly_ mutable
+
+For some reason we also need to dereference the string... but not the struct, I'm not sure about that but the compiler does tell you about it so I don't think it counts as a surprise
+
+Now we get the objectively correct, warning free code that only the highly professional QBasic could give us before.
+
+I know, the ownership model can be a bit of a brain melter to get your head around when you first start using it...
+
+but I think this objectively leads to less nasty surprises than the other examples we saw.
+
+Unfortunately... existing languages can't steal the ownership model, it's just too different to what they already do.
+
+But I do think all new languages should seriously consider it.
+
+The speed of low level languages, with the confidence of high level languages and less surprising than either, it's a no-brainer.
+
+And remember at the start I said, "my favourite, so far, is Rust"?
+
+I'm genuinely excited for the next generation of languages that continue to build on every language that came before them.
+
+### Updated, Updated Again
 
 ```basic
 TYPE Example
@@ -138,6 +196,7 @@ updateString(example.innerValue)
 print example.innerValue
 ```
 
+
 ```qbasic
 TYPE Example
     innerValue AS STRING
@@ -156,11 +215,42 @@ DIM example as Example
 example.innerValue = "Initial Value"
 
 CALL updateExample(example)
-print example.innerValue
+PRINT example.innerValue
 
 CALL updateString(example.innerValue)
-print example.innerValue
+PRINT example.innerValue
 ```
+
+### Updated, Updated
+
+```java
+class Example {
+    public String innerValue = "Initial Value";
+}
+
+
+public class Main {
+    static void updateExample(Example example) {
+        example.innerValue = "Updated";
+    }
+    
+    static void updateString(String s) {
+        s = "Updated Again";
+    }
+    
+    
+    public static void main( String args[] ) {
+        Example example = new Example();
+        
+        updateExample(example);
+        System.out.println( example.innerValue );
+        
+        updateString(example.innerValue);
+        System.out.println( example.innerValue );
+    }
+}
+```
+
 
 ```typescript
 class ExampleClass {
@@ -183,6 +273,7 @@ function editString(s: string) {
 editString(example.innerValue);
 console.log(example.innerValue);
 ```
+
 
 ```php
 <?php
@@ -207,6 +298,7 @@ function editString(string $s) {
 editString($example->innerValue);
 echo $example->innerValue;
 ```
+
 
 ```c#
 using System;
@@ -238,83 +330,6 @@ public class Program
 }
 ```
 
-```c11
-#include <stdio.h>
-
-struct Example {
-    char *innerValue;
-};
-
-void updateExample(struct Example example) {
-    example.innerValue = "Updated";
-}
-
-void updateString(char *s) {
-    s = "Updated again";
-}
-
-int main() {
-    struct Example example = { "Initial value" };
-    
-    updateExample(example);
-    printf("%s\n", example.innerValue);
-    
-    updateString(example.innerValue);
-    printf("%s\n", example.innerValue);
-}
-```
-
-```c++20
-#include <stdio.h>
-
-struct Example {
-    char *innerValue;
-};
-
-void updateExample(Example example) {
-    example.innerValue = (char *)"Updated";
-}
-
-void updateString(char *s) {
-    s = (char *)"Updated again";
-}
-
-int main() {
-    Example example = Example { (char *)"Initial value" };
-    
-    updateExample(example);
-    printf("%s", example.innerValue);
-    
-    updateString(example.innerValue);
-    printf("%s", example.innerValue);
-}
-```
-
-```java
-class Example {
-    public String innerValue = "Initial Value";
-}
-
-
-void updateExample(Example example) {
-    example.innerValue = "Updated";
-}
-
-void updateString(String s) {
-    s = "Updated Again";
-}
-
-
-void main( String args[] ) {
-    Example example = new Example();
-    
-    updateExample(example);
-    System.out.println( example.innerValue );
-    
-    updateString(example.innerValue);
-    System.out.println( example.innerValue );
-}
-```
 
 ```ruby
 class Example
@@ -341,6 +356,61 @@ puts example.inner_value
 
 update_string(example.inner_value)
 puts example.inner_value
+```
+
+### Initial value, initial value
+
+```c11
+#include <stdio.h>
+
+struct Example {
+    char *innerValue;
+};
+
+void updateExample(struct Example example) {
+    example.innerValue = "Updated";
+}
+
+void updateString(char *s) {
+    s = "Updated again";
+}
+
+int main() {
+    struct Example example = { "Initial value" };
+    
+    updateExample(example);
+    printf("%s\n", example.innerValue);
+    
+    updateString(example.innerValue);
+    printf("%s\n", example.innerValue);
+}
+```
+
+
+```c++20
+#include <stdio.h>
+
+struct Example {
+    char *innerValue;
+};
+
+void updateExample(Example example) {
+    example.innerValue = (char *)"Updated";
+}
+
+void updateString(char *s) {
+    s = (char *)"Updated again";
+}
+
+int main() {
+    Example example = Example { (char *)"Initial value" };
+    
+    updateExample(example);
+    printf("%s", example.innerValue);
+    
+    updateString(example.innerValue);
+    printf("%s", example.innerValue);
+}
 ```
 
 
@@ -372,5 +442,81 @@ func main() {
 }
 ```
 
+
+```python
+class Example:
+  innerValue = "Initial Value"
+
+def update_example(example: Example):
+  example.inner_value = "Updated"
+
+
+def update_string(s: str):
+  s = "Updated again"
+
+
+example = Example()
+
+update_example(example)
+print(example.innerValue)
+
+update_string(example.innerValue)
+print(example.innerValue)
+```
+
+### Rust
+
+```rust
+#[derive(Clone)]
+struct Example {
+    inner_value: String,
+}
+
+fn update_example(mut example: Example) {
+    example.inner_value = "Updated".to_string();
+}
+
+fn update_string(mut s: String) {
+    s = "Updated Again".to_string();
+}
+
+fn main() {
+    let example = Example {
+        inner_value: "Initial value".to_string(),
+    };
+    
+    update_example(example.clone());
+    println!("{}", example.inner_value);
+    
+    update_string(example.inner_value.clone());
+    println!("{}", example.inner_value);
+}
+```
+
+```Rust
+struct Example {
+    inner_value: String,
+}
+
+fn update_example(example: &mut Example) {
+    example.inner_value = "Updated".to_string();
+}
+
+fn update_string(s: &mut String) {
+    *s = "Updated Again".to_string();
+}
+
+fn main() {
+    let mut example = Example {
+        inner_value: "Initial value".to_string(),
+    };
+    
+    update_example(&mut example);
+    println!("{}", example.inner_value);
+    
+    update_string(&mut example.inner_value);
+    println!("{}", example.inner_value);
+}
+```
 
 ## Outro
