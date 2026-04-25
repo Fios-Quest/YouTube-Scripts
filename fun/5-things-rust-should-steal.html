@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-1c38503d.js";
+            window.path_to_searchindex_js = "../searchindex-945b0ef0.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-88b249bd.js"></script>
@@ -174,24 +174,113 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="5-things-rust-should-steal-from-other-language"><a class="header" href="#5-things-rust-should-steal-from-other-language">5 things Rust should steal from other language</a></h1>
+                        <h1 id="5-things-rust-should-steal-from-other-languages"><a class="header" href="#5-things-rust-should-steal-from-other-languages">5 things Rust should steal from other languages</a></h1>
 <h2 id="intro"><a class="header" href="#intro">Intro</a></h2>
 <p>Rust is an amazing language, ecosystem and community.</p>
 <p>In fact, it’s easily my favourite language, ecosystem and community.</p>
-<p>But nothing is perfect so here’s 5 things I think Rust should steal.</p>
-<p>Let’s start with the obvious, and ramp things up to some very my hot takes.</p>
-<h2 id="namespaced-packages"><a class="header" href="#namespaced-packages">Namespaced packages</a></h2>
+<p>A lot of that is thanks to how much Rust has learned… stollen… from the languages that came before it.</p>
+<p>But nothing is perfect so here’s 5 more things I think Rust should steal from other languages.</p>
 <h2 id="official-program-interpreter"><a class="header" href="#official-program-interpreter">Official Program Interpreter</a></h2>
+<p>I recently found myself sitting down to write what I expected to be a small one file script.</p>
+<p>It ended up not being that but that’s besides the point.</p>
+<p>This script would be part of a large infrastructure project used by dozens of other engineers.</p>
+<p>Unfortunately this meant Rust wasn’t an option.</p>
+<p>Using Rust would mean either building an executable that would be opaque and couldn’t… shouldn’t be stored in Git.</p>
+<p>Alternatively I could distribute the source code but then anyone using it would have to install Rust and compile it themselves.</p>
+<p>If Rust came with a lightweight interpreter then I could have used that.</p>
+<p><code>cargo-script</code> is pretty close to that, but you still need the full Rust suite to use it.</p>
+<p>Instead, I chose my other favourite language, TypeScript…</p>
+<p>and spent an hour configuring all the things <code>cargo new</code> gets you for free.</p>
+<p>Is an interpreter possible though… unfortunately the answer is, maybe not.</p>
+<p>Rustc is only about 40 megabytes, so in the worst case you’d think you  could make a simple compile and run wrapper…</p>
+<p>…but the standard library is enormous,</p>
+<p>All in, you’re looking at about half a gig which makes Rust decidedly less portable than say node which is about 50 megabytes or Python which is barely 10.</p>
+<p>But that’s uncompiled code for a multitude of operating systems, targets, et cetera.</p>
+<p>I wonder how small you could make a very targeted JIT for Rust.</p>
+<p>Not to mention the name, “rusti”, for a Rust Interpreter practically writes itself!</p>
 <h2 id="official-async-runtime"><a class="header" href="#official-async-runtime">Official async Runtime</a></h2>
+<p>JavaScript and C# both have very similar async ergonmics to Rust but don’t require you to set up a complex runtime to actually use them.</p>
+<p>Rust doesn’t come with an async runtime, meaning you have to either write your own, or use something like Tokio or Smol.</p>
+<p>I’ve spoken to a few people who find this really off-putting, and list it among reasons they’ve not really given Rust a shot, which is fair, but a shame.</p>
+<p>So why can’t Rust have a built-in runtime like other languages?</p>
+<p>One benefit of Rust’s approach is flexibility.</p>
+<p>You can write or choose a runtime that best fits your goals and your target hardware.</p>
+<p>Meanwhile, JavaScript is a single threaded language which means there’s a limited number of ways a runtime can even work.</p>
+<p>Using an event loop with external callbacks is not only elegant, it also fits with the mental model JavaScript has had for decades.</p>
+<p>C# is a little more complex as programs usually run on a platform, framework, or host which configures a sensible Synchronization Context for you.</p>
+<p>This Synchronization Context is what decides when and where tasks are run.</p>
+<p>You can configure or bypass the Synchronization Context but this is rare and could be problematic in some circumstances.</p>
+<p>Still, why doesn’t Rust provide a sensible default for your async runtime?</p>
+<p>I think it’s actually fairer to say Rust doesn’t provide a sensible default async runtime <em>yet</em>.</p>
+<p>While most day to day async code is runtime agnostic, there are a lot of edge cases where the best way to handle a situation remains undecided.</p>
+<p>Right now an official async runtime would need to make too many assumptions, which is something 3rd party libraries have more tolerance for.</p>
+<p>In the future though, I wouldn’t rule it out.</p>
 <h2 id="dynamic-libraries"><a class="header" href="#dynamic-libraries">Dynamic Libraries</a></h2>
-<h2 id="automatic-atomic-referencing-with-copy-on-write"><a class="header" href="#automatic-atomic-referencing-with-copy-on-write">Automatic Atomic Referencing with Copy on Write</a></h2>
-<h2 id="daniel-is-a-liar"><a class="header" href="#daniel-is-a-liar">Daniel is a liar</a></h2>
-<p>You can set up Rust to have</p>
+<p>Dynamic Libraries allow us to compile reusable code that can be shared among many programs.</p>
+<p>By separating out these libraries we can reduce the size of our programs <em>and</em> make security updates easier and more impactful.</p>
+<p>For example, when Heartbleed happened, we only needed to update the OpenSSL library, we didn’t need to update every program that consumed it.</p>
+<p>If RusTLS, the Rust TLS library, has a flaw, every Rust program that uses it will need to be updated and redistributed separately.</p>
+<p>However, because Dynamic Libraries are loaded at runtime, we need to communicate with them through a foreign function interface, an FFI.</p>
+<p>FFIs are not safe because they make assumptions about how code on the other side of the boundary will work.</p>
+<p>Rust’s superpower is its type system, but a dynamic library is just some pre-compiled code, there’s no types, its really just a bunch of pointers.</p>
+<p>You can produce and consume dynamic libraries in Rust but only through using the Abstract Binary Interface (ABI) of another language, such as C.</p>
+<p>The chance of us getting a Rust ABI with proper types is unlikely… however, what if we think outside the box.</p>
+<p>Rust has possibly the best WebAssembly tooling of any language.</p>
+<p>Not only can you compile to WebAssembly, but you can import WebAssembly components and run them inside Rust.</p>
+<p>WebAssembly does allow you to expose interfaces and types, giving you an easy way to write strictly typed dynamic libraries Rust can consume.</p>
+<p>WebAssembly isn’t as fast as native code, but it’s pretty close.</p>
+<p>It’s still a growing ecosystem, new features are constantly dropping.</p>
+<p>I’m personally pretty hopeful about this as a potential alternative, and I’ll be exploring it for my own projects in the future.</p>
+<p>Let me know if you’d like to see a video on how to consume WebAssembly components inside your Rust apps.</p>
+<h2 id="atomic-cows"><a class="header" href="#atomic-cows">Atomic Cows</a></h2>
+<p>Ownership is probably the number one tripping point for new Rustaceans.</p>
+<p>Sure, it gives us a clean, safe and surprisingly ergonomic way to think about memory… but mastering it is non-trivial.</p>
+<p>What’s worse is that sometimes… those benefits don’t even mean much.</p>
+<p>Rust basically runs on anything, right?</p>
+<p>Rust can be used in places that use page files instead of giving you heap access, like with WebAssembly or embedded devices.</p>
+<p>You can even write your own memory allocator to provide page files for other systems too.</p>
+<p>When you have a page file… ownership starts to matter a lot less.</p>
+<p>It would be nice if we could, in these circumstance, just… forget about ownership.</p>
+<p>And you sort of can.</p>
+<p>Wrapping everything in a Copy On Write and wrapping the COW in an Atomic Reference Counter means you don’t need to worry about who owns what any more.</p>
+<p>It all just requires extra work.</p>
+<p>Wouldn’t it be nice if we could have a compiler flag that did that for us, so we didn’t need to worry about it?</p>
+<p>Well… OK, probably not.</p>
+<p>For a start, a compiler flag for your code is something anyone compiling your code then need to worry about.</p>
+<p>It’s also not a panacea.</p>
+<p>Any kind of reference counting adds work to the runtime, especially atomic reference counting.</p>
+<p>Using the ownership model avoids that.</p>
+<p>Finally, we’ve not really side stepped the problem of ownership being hard.</p>
+<p>To master efficient Rust, you still need to learn it.</p>
+<p>It might be difficult, but once you’ve got your head around ownership, you’ll be making incredibly fast and efficient programs with the compiler still holding you hand.</p>
+<p>So, sadly, no atomic cows.</p>
+<h2 id="namespaced-packages"><a class="header" href="#namespaced-packages">Namespaced packages</a></h2>
+<p>Interpreters, async runtimes and a form of dynamic library are all essentially possible and may even be on their way.</p>
+<p>Atomic Cows was perhaps a little bit of an insincere suggestion on my part, but here’s something I <em>really</em> to see…</p>
+<p>Unfortunately for me, unlike the first three options, this one has already been ruled out.</p>
+<p>Namespaced packages are, frankly, a settled discussion, so I’m not expecting to change minds, just state my case.</p>
+<p>Many languages have package or library ecosystems.</p>
+<p>In my opinion, two of the best are JavaScript’s NPM and PHP’s Composer (the latter basically copying the best parts of the former).</p>
+<p>Cargo works very similarly.</p>
+<p>All three of them allow you to publish and consume libraries of code safely</p>
+<p>** cut to all the recent headlines **</p>
+<p>ish</p>
+<p>One feature that NPM and Composer offer that <em>does</em> help with security is namespacing</p>
+<p>In JavaScript, a common example of this might be the Angular framework which is broken down into multiple packages across a single namespace.</p>
+<p>In PHP people regularly use packages in the Symfony and Laravel namespaces.</p>
+<p>I believe there are two big benefits</p>
+<p>First, it helps with discoverability and trust.</p>
+<p>If you’re looking for plugins and extensions to something you’re already using, it’s easier to trust packages within the same namespace.</p>
+<p>Second, it allows an organisation fine grain control over their corner of the ecosystem.</p>
+<p>Whether the code is being produced by an open source community or a large corporation, security controls can be set across the namespace.</p>
+<p>For some organisations, the lack of consistent control of their ecosystem makes Rust less desirable.</p>
 <h2 id="outro"><a class="header" href="#outro">Outro</a></h2>
-<p>I hope no one takes this list too seriously.</p>
 <p>Rust is a fantastic, incredibly well-designed language, with brilliant maintainers and contributors who just keep adding more amazing features!</p>
-<p>But, in your perfect world, even if it makes not reasonable sense, what would you have Rust steal, and what trade-offs would you make?</p>
-<p>If you enjoyed this video, check out the companion video, 5 things other languages should steal from Rust.</p>
+<p>What else do you think Rust could learn from other languages though?</p>
+<p>Let me know in the comments, even if, like me, you might be a little disingenuous with some of it.</p>
+<p>If you enjoyed this video, check out the companion video on my second channel, 3 things other languages should steal from Rust.</p>
+<p>See if you spot which of those makes me a massive hypocrite!</p>
+<p>See ya.</p>
 
                     </main>
 
