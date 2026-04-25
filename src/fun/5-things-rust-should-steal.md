@@ -6,7 +6,9 @@ Rust is an amazing language, ecosystem and community.
 
 In fact, it's easily my favourite language, ecosystem and community.
 
-But nothing is perfect so here's 5 things I think Rust should steal from other languages.
+A lot of that is thanks to how much Rust has learned... stollen... from the languages that came before it.
+
+But nothing is perfect so here's 5 more things I think Rust should steal from other languages.
 
 ## Official Program Interpreter
 
@@ -38,9 +40,11 @@ Rustc is only about 40 megabytes, so in the worst case you could make a simple c
 
 All in, you're looking at about half a gig which makes Rust decidedly less portable than say node which is about 50 megabytes or Python which is barely 10.
 
-Arguably you could package an interpreter with only the parts of the standard library for the target system all pre-compiled but even so...
+But that's uncompiled code for a multitude of operating systems, targets, etc.
 
-I'm not sure that this is the way to go.
+I wonder how small you could make a very targeted JIT for Rust.
+
+Not to mention the name, "rusti", for a Rust Interpreter practically writes itself! 
 
 ## Official async Runtime
 
@@ -48,7 +52,7 @@ JavaScript and C# both have very similar async ergonmics to Rust but don't requi
 
 Rust doesn't come with a runtime, meaning you have to either write your own, or use something like Tokio or Smol.
 
-I've spoken to a few people who find this really off-putting, and list it among reasons they've not really given Rust a shot, which is a shame.
+I've spoken to a few people who find this really off-putting, and list it among reasons they've not really given Rust a shot, which is fair, but a shame.
 
 So why can't Rust have a built-in runtime like other languages?
 
@@ -156,7 +160,11 @@ It might be difficult, but once you've got your head around ownership, you'll be
 
 ## Namespaced packages
 
-You might have guessed my other suggestions were fanciful and maybe not especially sincere, but here's something I do want to see.
+Interpreters, async runtimes and a form of dynamic library are all essentially possible and may even be on their way.
+
+Atomic Cows was perhaps a little insincere, but here's something I do want to see...
+
+Unfortunately for me, unlike the first three options, this one has already been ruled out.
 
 Namespaced packages are, frankly, a settled discussion, so I'm not expecting to change minds, just state my case.
 

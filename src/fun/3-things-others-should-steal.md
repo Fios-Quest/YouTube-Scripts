@@ -1,8 +1,8 @@
 # 3 things others languages should steal from Rust
 
-Throughout my life I've used, C, C++, Java, Perl, PHP, GDScript, JavaScript, and TypeScript somewhat extensively
+Throughout the last 25 years I've used, C, C++, Java, Perl, PHP, GDScript, JavaScript, and TypeScript all fairly extensively at different times.
 
-And I've used QBasic, Visual Basic, C#, Groovy, Python, Ruby, and Go somewhat less so.
+And I've also used QBasic, Visual Basic, C#, Groovy, Python, Ruby, and Go but somewhat less so.
 
 I love programming and programming languages but my favourite, so far, is Rust.
 
@@ -12,9 +12,9 @@ So what could those languages steal right back?
 
 ## Testing
 
-Hi, I'm Daniel, and if we've met you people know one thing about me its that I'm obsessed with testing!
+Hi, I'm Daniel, and if we've met you know I'm obsessed with testing!
 
-I tend not to believe it when people tell me nice things about my work, but when I write a test and it goes green, ohh that feels good.
+I tend not to believe it when people tell me nice things about my work, but when I write a test, and it goes green, ohh that feels good.
 
 There are testing frameworks in every language, and if one doesn't take your fancy, creating basic assertions is extremely trivial.
 
@@ -24,30 +24,29 @@ Rust provides a complete test harness out of the box.
 
 You get all the tooling you need to write unit tests, integration tests and one other kind of test we'll cover later, all without needing addition libraries or configuration.
 
-Macro's also let you write complex repetative test code once and reuse it, even if you need slight variations.
-
 Is it perfect, no.
 
 There are libraries for providing things like fake data or mo... mo... ugh, mocking.
 
 You may also need a little extra tooling to capture coverage, though some IDEs handle that for you.
 
-None the less, testing is a first class citizen in Rust which is unusual... and awesome!
+Nonetheless, testing is a first class citizen in Rust which is surprisingly unusual... and awesome!
 
+Everyone should do this!
 
 ## Documentation
 
-Documentating your code is really important though it tends to be the sort of thing you only notice when faces with _bad_ documentation.
+Documentating your code is really important though it tends to be the sort of thing you only notice when faced with _bad_ documentation.
 
 There are documentation tools for most languages.
 
-JavaDoc really set the standard here and its something that has been adopted and adapted by most languages with things like TSDoc, JSDoc, PhpDoc, and so on.
+Javadoc really set the standard here, and it's something that has been adopted and adapted by most languages with things like JSDoc, PhpDoc, and so on.
 
 Being able to document your code in your code with these tools is incredibly powerful.
 
-You end up with not only searchable publishable documention but something people can read in place while working on the code and even something your IDE can pick up. 
+You end up with not only searchable, publishable documentation but something people can read in place while working on the code and even something your IDE can pick up. 
 
-Rust has taken this idea and absolutely turbocharged it.
+Rust has taken this idea and absolutely turbocharged it in two crucial ways.
 
 First, rustdoc is part of the base tooling.
 
@@ -57,11 +56,11 @@ This means when working on your code locally, you can not only document your cod
 
 Everyone documenting the same way also means documentation is easier to navigate.
 
-It follows consistent standards and it becomes easier for us to learn from each other what good documentation looks like.
+It follows consistent standards, and it becomes easier for us to learn from each other what good documentation looks like.
 
 Second, tests.
 
-No, I haven't jumped back a section, and yes I realy am obsessed.
+No, I haven't jumped back a section, and yes I really am obsessed.
 
 Its one thing to write documentation, but keeping it up to date is hard.
 
@@ -69,15 +68,15 @@ Having documentation that's wrong can be worse than having none at all, somethin
 
 In Rust, your code examples can not be wrong because when you run `cargo test` it also runs your code examples.
 
-This is why you'll regularly see code examples in documentation using assertions
+This is why you'll regularly see code examples in Rust documentation using assertions
 
-They don't just show you, the reader, what to expect when you call a function, they prove that its true!
+They don't just show you, the reader, what to expect when you call a function, they prove that it's true!
 
 These tests even count towards things like test coverage so writing tests into your documentation kills two birds with one stone.
 
 I have seen this feature in some documentation libraries in other languages, but...
 
-Having documentation and testing all wrapped up neatly with no configuration required, and consistency across the whole ecosystem is absolutely worth every language stealing.
+Having documentation and testing all wrapped up neatly with no configuration required, and consistency across the whole ecosystem is a concept absolutely worth stealing.
 
 ## No Surprises
 
