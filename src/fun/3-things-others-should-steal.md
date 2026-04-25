@@ -1,6 +1,6 @@
 # 3 things others languages should steal from Rust
 
-Throughout the last 25 years I've used, C, C++, Java, Perl, PHP, GDScript, JavaScript, and TypeScript all fairly extensively at different times.
+Over the last 30 years I've used, C, C++, Java, Perl, PHP, GDScript, JavaScript, and TypeScript all fairly extensively at different times.
 
 And I've also used QBasic, Visual Basic, C#, Groovy, Python, Ruby, and Go but somewhat less so.
 
@@ -20,7 +20,7 @@ There are testing frameworks in every language, and if one doesn't take your fan
 
 So what's so special about Rust?
 
-Rust provides a complete test harness out of the box.
+Rust provides almost everything you need for testing out of the box.
 
 You get all the tooling you need to write unit tests, integration tests and one other kind of test we'll cover later, all without needing addition libraries or configuration.
 
@@ -30,13 +30,13 @@ You'll need additional libraries for providing things like fake data or mo... mo
 
 You may also need a little extra tooling to capture coverage, though some IDEs handle that for you.
 
-Nonetheless, testing is a first class citizen in Rust which is surprisingly unusual... and awesome!
+Nonetheless, in Rust, testing is a first class citizen which as far as programming goes, is surprisingly unusual... and awesome!
 
 Everyone should do this!
 
 ## Documentation
 
-Good documentating is really important, though it tends to be the sort of thing you only notice when faced with _bad_ documentation.
+Good documentation is really important, though it tends to be the sort of thing you only notice when faced with _bad_ documentation.
 
 There are documentation tools for most languages.
 
@@ -44,7 +44,7 @@ Javadoc really set the standard here, and it's something that has been adopted a
 
 Being able to document your code in your code with these tools is incredibly powerful.
 
-You end up with not only searchable, publishable documentation but something people can read in place while working on the code and even something your IDE can pick up. 
+You end up with not only searchable, publishable documentation, but something people can read in place while working on the code and even something your IDE can pick up. 
 
 Rust has taken this idea and absolutely turbocharged it in two crucial ways.
 
@@ -56,19 +56,17 @@ This means when working on your code locally, you can not only document your cod
 
 Everyone documenting the same way also means documentation is easier follow, there's fewer surprises.
 
-It follows consistent standards, and it becomes easier for us to learn from each other what good documentation looks like.
-
 Second, tests.
 
 No, I haven't jumped back a section, and yes I really am obsessed.
 
-Its one thing to write documentation, but keeping it up to date is hard.
+Its one thing to write documentation, but another to keep it up to date.
 
 Having documentation that's wrong can be worse than having none at all, something I expect most of us have experienced.
 
 In Rust, your code examples can not be wrong because when you run `cargo test` it also runs your code examples.
 
-This is why you'll regularly see code examples in Rust documentation using assertions
+This is why you'll regularly see code examples in Rust documentation using assertions.
 
 They don't just show you, the reader, what to expect when you call a function, they prove that it's true!
 
@@ -92,9 +90,11 @@ I know, I know, if one thing is called out as uniquely difficult in Rust; its ow
 
 But, lets look at some simple code.
 
-Here's some TypeScript where we define and create an example struct with some initial data.
+Here's some TypeScript.
 
-We'll can call a function that modifies the example struct.
+We define and create an example struct with some initial data.
+
+We'll call a function that modifies the example struct.
 
 Then we'll call a function that modifies the string in that struct.
 
@@ -110,9 +110,9 @@ or
 
 Initial Value, Initial Value
 
-Before I answer that question, here's the same code in php... C#... C++... C... Go... Java... Python... Ruby... QBasic...
+Before I answer that question, here's the same code in PHP... C#... C++... C... Go... Java... Python... Ruby... QBasic...
 
-The code is, I would argue, the same in each example.
+The code is, I would argue, equivalent in each example.
 
 Do they all do the same thing?
 
@@ -124,9 +124,9 @@ And Initial Value, Initial Value for C, C++, Go and Python because they all pass
 
 Now, the fact all these languages do it differently isn't actually the problem.
 
-Its confusing if you have to jump languages a lot but once you know the behaviour you know the behaviour.
+It is confusing if you have to jump languages a lot but once you know the behaviour you know the behaviour.
 
-What I personally don't think is OK, is that in all but one of those languages we set a value and never use it in at least one function... and we don't even get a warning for behaviour I think is obviously wrong.
+What I personally don't think is OK, is that in all but one of those languages we set a value and never use it in at least one function... but we don't even get a warning for behaviour I think is obviously wrong.
 
 So what does Rust do?
 
@@ -136,11 +136,11 @@ When we pass Example into the first function, we transfer ownership of the value
 
 This means `main` no longer has access to the variable, so we can't use it any more.
 
-In that case we can explicitly clone the value... but that still doesn't work as we haven't explicitly described the parameters of the function as mutable.
+We can hold on to ownership by explicitly cloning the values... but that still doesn't work as we haven't explicitly described the parameters of the function as mutable.
 
 So let's do that, and now we get "Initial value, Initial value" output (because we're changing copies of the data), but look we also got warnings...
 
-...but only on the `update_string` function so I am going to call Rust out for not picking up the same problem in `update_example`.
+...but only on the `update_string` function, so I _am_ going to call Rust out for not picking up the same problem in `update_example`.
 
 Look, I did say _almost_ no surprises.
 
@@ -162,7 +162,7 @@ I know, the ownership model can be a bit of a brain melter to get your head arou
 
 but I think this objectively leads to fewer nasty surprises than the other examples we saw.
 
-Unfortunately... existing languages can't steal the ownership model, it's just too different from what they already do.
+Unfortunately... existing languages can't exactly steal the ownership model, it's just too different from what they already do.
 
 But I do think all _new_ languages should seriously consider it.
 
@@ -522,7 +522,7 @@ fn main() {
 
 ## Outro
 
-I hope you enjoyed that and took it for the expression of passion for programming it was meant to be.
+I hope you enjoyed that and took it for the expression of passion for programming that it was meant to be.
 
 I love, maybe not all, but most programming languages.
 

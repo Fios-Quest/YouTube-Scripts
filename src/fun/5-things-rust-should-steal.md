@@ -6,7 +6,7 @@ Rust is an amazing language, ecosystem and community.
 
 In fact, it's easily my favourite language, ecosystem and community.
 
-A lot of that is thanks to how much Rust has learned... stollen... from languages that came before it.
+A lot of that is thanks to how much Rust has learned... stollen... from the languages that came before it.
 
 But nothing is perfect so here's 5 more things I think Rust should steal from other languages.
 
@@ -34,7 +34,7 @@ and spent an hour configuring all the things `cargo new` gets you for free.
 
 Is an interpreter possible though... unfortunately the answer is, maybe not.
 
-Rustc is only about 40 megabytes, so in the worst case you could make a simple compile and run wrapper...
+Rustc is only about 40 megabytes, so in the worst case you'd think you  could make a simple compile and run wrapper...
 
 ...but the standard library is enormous, 
 
@@ -64,7 +64,7 @@ Meanwhile, JavaScript is a single threaded language which means there's a limite
 
 Using an event loop with external callbacks is not only elegant, it also fits with the mental model JavaScript has had for decades.
 
-C# is a little more complex as programs usually run on a platform, framework, or host which configures a Synchronization Context for you.
+C# is a little more complex as programs usually run on a platform, framework, or host which configures a sensible Synchronization Context for you.
 
 This Synchronization Context is what decides when and where tasks are run.
 
@@ -86,7 +86,7 @@ Dynamic Libraries allow us to compile reusable code that can be shared among man
 
 By separating out these libraries we can reduce the size of our programs _and_ make security updates easier and more impactful.
 
-For example, when Heartbleed happened, we only needed to update the OpenSSL library, we didn't need to update every program that consumed it separately.
+For example, when Heartbleed happened, we only needed to update the OpenSSL library, we didn't need to update every program that consumed it.
 
 If RusTLS, the Rust TLS library, has a flaw, every Rust program that uses it will need to be updated and redistributed separately.
 
@@ -112,7 +112,7 @@ It's still a growing ecosystem, new features are constantly dropping.
 
 I'm personally pretty hopeful about this as a potential alternative, and I'll be exploring it for my own projects in the future.
 
-Let me know if you'd like to see a video of how to consume WebAssembly inside your Rust apps.
+Let me know if you'd like to see a video on how to consume WebAssembly components inside your Rust apps.
 
 ## Atomic Cows
 
@@ -123,10 +123,6 @@ Sure, it gives us a clean, safe and surprisingly ergonomic way to think about me
 What's worse is that sometimes... those benefits don't even mean much.
 
 Rust basically runs on anything, right?
-
-In fact, today, you can run Rust in at least as many places as Java.
-
-You know Java, the write once, run anywhere language.
 
 Rust can be used in places that use page files instead of giving you heap access, like with WebAssembly or embedded devices.
 
