@@ -520,3 +520,29 @@ fn main() {
 ```
 
 ## Outro
+
+I hope you enjoyed that and took it for the passion for programming it was meant to be.
+
+I love, maybe not all, but most programming languages.
+
+I love how people approach problems from different angles and come up with different solution.
+
+As much as I love Rust, I don't want it to be my last language, and I want to keep being able to use my old languages too.
+
+What did I miss? 
+
+What else could we learn from Rusts design?
+
+Let me know in the comments, but please be kind.
+
+The languages you don't like might be someone else's favourite and vice versa, and there's still lots we can learn from each other.
+
+If you need a palette cleanser, there's a companion video to this one on my main channel, that goes the other way
+
+5 things Rust should steal from other languages
+
+I'm trying out a second channel for things I want to talk about that aren't as tightly related to my main content which is more explicitly learning about Rust, so let me know what you think.
+
+I've got some more ideas for here so, I hope you'll be back.
+
+See ya then :)
