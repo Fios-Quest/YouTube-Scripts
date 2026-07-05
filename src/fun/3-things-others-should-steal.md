@@ -4,7 +4,7 @@ Over the last 30 years I've used, C, C++, Java, Perl, PHP, GDScript, JavaScript,
 
 And I've also used QBasic, Visual Basic, C#, Groovy, Python, Ruby, and Go but somewhat less so.
 
-I love programming and programming languages but my favourite, so far, is Rust.
+I love programming and programming languages but my favourite language, so far, is Rust.
 
 Rust is amazing because of what its learned (and arguably stolen) from the languages that came before it.
 
@@ -14,7 +14,11 @@ So what could those languages steal right back?
 
 Hi, I'm Daniel, and if we've met you know I'm obsessed with testing!
 
-I tend not to believe it when people tell me nice things about my work, but when I write a test, and it goes green, ohh that feels good.
+I tend not to believe it when people tell me nice things about my work, but when I write a test, and it goes green, oph.
+
+---
+
+p2
 
 There are testing frameworks in every language, and if one doesn't take your fancy, creating basic assertions is extremely trivial.
 
@@ -44,7 +48,7 @@ Javadoc really set the standard here, and it's something that has been adopted a
 
 Being able to document your code in your code with these tools is incredibly powerful.
 
-You end up with not only searchable, publishable documentation, but something people can read in place while working on the code and even something your IDE can pick up. 
+You end up with not only searchable, publishable documentation, but something people can read in place while working on the code and even something your IDE can pick up.
 
 Rust has taken this idea and absolutely turbocharged it in two crucial ways.
 
@@ -54,7 +58,7 @@ You don't need to install and configure it separately, and everyone uses the sam
 
 This means when working on your code locally, you can not only document your code, but you can access the documentation of all your dependencies right in the same place, locally, with no fuss.
 
-Everyone documenting the same way also means documentation is easier follow, there's fewer surprises.
+Everyone documenting the same way also means documentation is easier to follow, and there's fewer surprises.
 
 Second, tests.
 
@@ -64,11 +68,11 @@ Its one thing to write documentation, but another to keep it up to date.
 
 Having documentation that's wrong can be worse than having none at all, something I expect most of us have experienced.
 
-In Rust, your code examples can not be wrong because when you run `cargo test` it also runs your code examples.
+In Rust, your code examples _can not_ be wrong because when you run `cargo test` it also runs the examples.
 
-This is why you'll regularly see code examples in Rust documentation using assertions.
+This is why you'll regularly see Rust documentation using assertions.
 
-They don't just show you, the reader, what to expect when you call a function, they prove that it's true!
+Rust documentation don't just _show_ you what to expect when you call a function, it proves it!
 
 These tests even count towards things like test coverage so writing tests into your documentation kills two birds with one stone.
 
@@ -118,7 +122,7 @@ Do they all do the same thing?
 
 I won't make you wait any longer, the answer is Updated, Updated Again... for QBasic because both values are passed by reference.
 
-Updated, Updated for TypeScript, PHP, Java, C#, and Ruby because they all pass the object by reference but the string by copy.
+You get Updated, Updated for TypeScript, PHP, Java, C#, and Ruby because they all pass the object by reference but the string by copy.
 
 And Initial Value, Initial Value for C, C++, Go and Python because they all pass both values by copy.
 
@@ -138,7 +142,7 @@ This means `main` no longer has access to the variable, so we can't use it any m
 
 We can hold on to ownership by explicitly cloning the values... but that still doesn't work as we haven't explicitly described the parameters of the function as mutable.
 
-So let's do that, and now we get "Initial value, Initial value" output (because we're changing copies of the data), but look we also got warnings...
+So let's do that, and now we get the "Initial value, Initial value" output (because we're changing copies of the data), but look we also got warnings...
 
 ...but only on the `update_string` function, so I _am_ going to call Rust out for not picking up the same problem in `update_example`.
 
@@ -168,9 +172,39 @@ But I do think all _new_ languages should seriously consider it.
 
 The speed of low level languages, with the confidence of high level languages and less surprising than either, it's a no-brainer.
 
-And remember at the start I said, "my language favourite, so far, is Rust"?
+And remember at the start I said, "my favourite language, so far, is Rust"?
 
 I'm genuinely excited for the next generation of languages that continue to build on every language that came before them.
+
+## Outro
+
+I hope you enjoyed that and took it for the expression of passion for programming that it was meant to be.
+
+I love, maybe not all, but most programming languages.
+
+I love how people approach problems from different angles and come up with different solution.
+
+As much as I love Rust, I don't want it to be my last language, and I want to keep being able to use my old languages too.
+
+What did I miss? 
+
+What else could we learn from Rusts design?
+
+Let me know in the comments, but please be kind.
+
+The languages you don't like might be someone else's favourite and vice versa, and there's still lots we can learn from each other.
+
+If you need a palette cleanser, there's a companion video to this one on my main channel, that goes the other way
+
+5 things Rust should steal from other languages
+
+I'm trying out a second channel for things I want to talk about that aren't as tightly related to my main content which is more explicitly about learning Rust, so let me know what you think.
+
+I've got some more ideas for here so, I hope you'll be back.
+
+See ya then :)
+
+## Code examples
 
 ### Updated, Updated Again
 
@@ -519,31 +553,3 @@ fn main() {
     println!("{}", example.inner_value);
 }
 ```
-
-## Outro
-
-I hope you enjoyed that and took it for the expression of passion for programming that it was meant to be.
-
-I love, maybe not all, but most programming languages.
-
-I love how people approach problems from different angles and come up with different solution.
-
-As much as I love Rust, I don't want it to be my last language, and I want to keep being able to use my old languages too.
-
-What did I miss? 
-
-What else could we learn from Rusts design?
-
-Let me know in the comments, but please be kind.
-
-The languages you don't like might be someone else's favourite and vice versa, and there's still lots we can learn from each other.
-
-If you need a palette cleanser, there's a companion video to this one on my main channel, that goes the other way
-
-5 things Rust should steal from other languages
-
-I'm trying out a second channel for things I want to talk about that aren't as tightly related to my main content which is more explicitly learning about Rust, so let me know what you think.
-
-I've got some more ideas for here so, I hope you'll be back.
-
-See ya then :)

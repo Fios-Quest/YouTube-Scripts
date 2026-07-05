@@ -36,7 +36,7 @@ Is an interpreter possible though... unfortunately the answer is, maybe not.
 
 Rustc is only about 40 megabytes, so in the worst case you'd think you  could make a simple compile and run wrapper...
 
-...but the standard library is enormous, 
+...but the standard library is enormous,
 
 All in, you're looking at about half a gig which makes Rust decidedly less portable than say node which is about 50 megabytes or Python which is barely 10.
 
@@ -124,7 +124,7 @@ What's worse is that sometimes... those benefits don't even mean much.
 
 Rust basically runs on anything, right?
 
-Rust can be used in places that use page files instead of giving you heap access, like with WebAssembly or embedded devices.
+That means Rust can be used in places that use page files instead of giving you heap access, like with WebAssembly or embedded devices.
 
 You can even write your own memory allocator to provide page files for other systems too.
 
@@ -142,7 +142,7 @@ Wouldn't it be nice if we could have a compiler flag that did that for us, so we
 
 Well... OK, probably not.
 
-For a start, a compiler flag for your code is something anyone compiling your code then need to worry about.
+For a start, a compiler flag for your code is something anyone compiling your code then needs to worry about.
 
 It's also not a panacea.
 
@@ -170,7 +170,7 @@ Namespaced packages are, frankly, a settled discussion, so I'm not expecting to 
 
 Many languages have package or library ecosystems.
 
-In my opinion, two of the best are JavaScript's NPM and PHP's Composer (the latter basically copying the best parts of the former).
+In my opinion, two of the best are JavaScript's NPM and PHP's Composer.
 
 Cargo works very similarly.
 
@@ -204,9 +204,9 @@ Rust is a fantastic, incredibly well-designed language, with brilliant maintaine
 
 What else do you think Rust could learn from other languages though?
 
-Let me know in the comments, even if, like me, you might be a little disingenuous with some of it.
+Let me know in the comments, even if, like me, you want to get a little disingenuous with it.
 
-If you enjoyed this video, check out the companion video on my second channel, 3 things other languages should steal from Rust.
+If you enjoyed this video, there's a companion video on my new second channel, 3 things other languages should steal from Rust.
 
 See if you spot which of those makes me a massive hypocrite!
 
