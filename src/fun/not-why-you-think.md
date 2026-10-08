@@ -344,3 +344,236 @@ If you do decide to look for tutorial videos, I have a whole series called Idiom
 see you there.
 
 Best of luck!
+
+---
+---
+
+Speaker Note Version
+====================
+
+- Why try Rust. / Already use it, encourage
+- Lots of great languages, when you think of Rust, what comes to mind?
+- My name is Daniel, this is Fio's Quest, real reasons not why you think
+
+---
+
+- Obvious reasons
+- Rust is fast but
+- Zig and C++ are just as fast
+- C is a little bit faster 
+- Real speed: assembly
+- "fast" not unique.
+
+---
+
+- Rust is memory safety.
+- 70% of vulnerabilities
+- Java, Go, JavaScript, PHP, Perl, Python etc
+- Not a great reason either.
+
+---
+
+- Rust is both
+- who cares.
+- safety critical realtime systems
+- web dev
+- Built web servers for speed and mem
+- 8ms to 2ms, 20mb to 4mb
+- not good reasons
+
+---
+
+- still think you should try
+- it's boring.
+- unsurprising.
+- I really love TypeScript.
+- probably fourth web programming language
+- easily my favourite language before Rust
+
+---
+
+- TypeScript gets a Pokémon object from an API by its id
+- fetch, parses, verifies the data, returns a Result
+- This code is valid... 
+- 3 mistakes. 4 with duplicate. Maybe more
+- Can you spot them? pause if needed
+
+---
+
+-  `number` is a double
+- can be negative, fractions, Infinite or NaN.
+- Function takes values not fit for purpose
+- still call api
+- leads us to 2
+- What happens if the fetch fails?
+
+---
+
+- depends
+- can cause an Exception to be thrown.
+- because of result we're misleading
+- same on the next line, json
+
+---
+
+- The last mistake
+- very subtle,
+- won't surface here, it'll surface somewhere else
+- something not a Pokémon but still has an id
+- TypeScript has ways to do ambiguous data
+- for historic reasons, parsing always wrong
+- TypeScript 3,  `unknown` introduced.
+- Before that `any`
+- without id check, empty object, arrays, the word "true".
+
+---
+
+- So, in these few lines we have;
+  - a data problem, two execution flow problems, and a type problem,
+  - each worse than the last
+- Let's look at the Rust.
+  - I'm very slightly cheating here,
+  - almost identical, cosmetic changes.
+  - Let's go over the fixes
+
+---
+
+- id u16
+- could use newtype low effort fix
+- higher effort question marks
+- No exceptions, only Results
+- If succeeds, unwrap carry on.
+- If Error return
+- succinct, easy to understand nearly impossible to muck up
+
+---
+
+- Type Error
+- Serde
+- Parsing with Nom
+- Chris Biscardi (?)
+
+---
+
+- Lots of languages can do this, what else
+- Speed?
+- (You said Speed wasn't a good reason earlier)
+- Absolutely right hidden voice.
+- Not that kind of speed
+- hardware is cheaper than engineers...
+- time is expensive, less time more value
+
+---
+
+- Rust reputation for being slow to write
+- more likely to be correct
+- Deliver something faster but full of mistakes, have you actually delivered
+- Rust is less faff.
+- If compiles, and tests pass, confident
+
+---
+
+- one more way Rust is faster.
+- niche, finite, stupid, favourite language
+- start new ts project
+  - npm init
+  - Install and configure TypeScript
+  - Install and configure a linter
+  - Install and configure a style checker
+  - Install and configure a testing framework
+  - Fiddle with all the configurations
+  - Start working on the project
+- remember all the config, changes to ecosystem, googling
+- Usually takes around an hour.
+
+---
+
+- set up rust
+  - run `cargo new` 
+  - no more steps
+- comes with all tooling
+- tooling is another great reason to try Rust.
+- Let's talk about that tooling.
+
+---
+
+- RustC; compiler, type checking, etc
+- unfair reputation for being a difficult
+- hand-holdy
+- no cryptic linker errors... C++
+- point to problem, explanation, usually suggestions
+- No Boilerplate "Rust is Easy".
+- Writes "Hello World" in JavaScript covert to Rust
+
+---
+
+- Testing in Rust
+- Written right next to the code 
+- test module, test attribute.
+- handful of assertion macros
+- many libraries if you need them
+
+---
+
+- Rust formatter is boring
+- Run with cargo fmt
+- Configured out of the box
+- can change configuration, people rarely do
+- easy to swap between projects
+- what about linting
+
+---
+
+- RustC prevents invalid Rust, valid doesn't mean Good
+- Clippy prevents common mistakes in valid Rust.
+- unnecessary references, inefficient memory, etc
+- reconfigure, nursery, pedantic
+- Pedantic lints _can_ be over the top
+
+---
+
+- for example
+  - get the average of an array
+  - by divide sum by the length
+  - usize 2^64 but float integers 2^52
+  - its valid, it'll work, not accurate
+  - clippy lets you know
+  - in this case can ignore it
+  - use reason to let future you know why
+
+---
+
+- Documentation not part of TypeScript set up
+- if you take one thing from this video, should be this
+- might be used to writing documentation in docblocks
+- everything you need is included
+- its markdown, titles, code blocks, links
+- `cargo doc`
+- all docs are the same, no need to think
+- one repository of docs, docs.rs
+- offline documentation
+
+---
+
+- title, description, signature, example
+- wait, the example is wrong
+- tests will pick this up
+- documentation absolutely the best reason to try rust
+
+---
+
+- In conclusion
+- fewer surprises
+- build fast
+- tooling lets you focus
+
+---
+
+- what next.
+- my tutorials, but start with official docs
+- Rust good for whatever; sys tools, servers, sites.
+- recursive slide 
+- let me know what you do even if it's not for you
+- Mention IRISS
+- Best of luck!
+
