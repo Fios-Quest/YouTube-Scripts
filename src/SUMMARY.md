@@ -45,6 +45,7 @@
 - [5 things Rust should steal](fun/5-things-rust-should-steal.md)
 - [3 things others should steal](fun/3-things-others-should-steal.md)
 - [Rust is hard, right?](fun/rust-is-hard.md)
+- [Not Why You Think](fun/not-why-you-think.md)
 
 # Shorts
 
