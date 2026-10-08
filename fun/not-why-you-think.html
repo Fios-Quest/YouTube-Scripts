@@ -1,0 +1,682 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Not Why You Think - IRISS Scripts</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex-0151ee72.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-18280e25.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">IRISS Scripts</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="not-why-you-think"><a class="header" href="#not-why-you-think">Not Why You Think</a></h1>
+<p>Why should you try Rust. Or maybe you already use Rust and want to encourage other people to try it out.</p>
+<p>There are a lot of great languages out there, but when you think of Rust, what comes to mind as its big selling points?</p>
+<p>My name is Daniel, this is Fio’s Quest, and I’m here to tell you the reasons you should try Rust are not why you think.</p>
+<hr>
+<p>Let’s get the obvious reasons out of the way.</p>
+<p>Rust is fast, that’s true.</p>
+<p>But Zig and C++ are just as fast, C is a little bit faster and if speed is all that matters you should use assembly.</p>
+<p>So “fast” is hardly a unique selling point.</p>
+<hr>
+<p>Rust is memory safety.</p>
+<p>Memory safety is important, supposedly around 70% of all security vulnerabilities are related to memory unsafety.</p>
+<p>But pretty much all popular modern languages are memory safe; Java, Go, JavaScript, PHP, Perl, Python and so on are all
+as safer or, arguably, safer than Rust.</p>
+<p>So that’s not a great reason either.</p>
+<hr>
+<p>Rust is both fast and memory safe.</p>
+<p>Ok of the languages I just mentioned it’s the only language that’s both fast <em>and</em> safe but to that I say… who cares.</p>
+<p>I mean some people care of course, particularly anyone building safety critical realtime systems, but I’m a web dev.</p>
+<p>I have built web servers in Rust on the pretense of it being faster and more memory efficient than TypeScript.</p>
+<p>But reducing my response times from 8ms to 2ms and my memory footprint from 20MB to 4MB while making a project my
+colleagues didn’t want to touch made me realize I’d mucked up.</p>
+<p>For most people, speed and memory safety are not actually good reasons to try Rust.</p>
+<hr>
+<p>But I still think you should try Rust… why?</p>
+<p>Well, first of all… it’s boring.</p>
+<p>Or perhaps I should say, it’s unsurprising.</p>
+<p>As I mentioned, I’m a web dev, and I really love TypeScript.</p>
+<p>TypeScript was probably the fourth programming language I used for web.</p>
+<p>It was easily my favourite language before Rust, so trust me, I’m picking on it here because I love it.</p>
+<p>Here’s some TypeScript that gets a Pokémon object from an API by its id.</p>
+<p>It does a fetch, parses the data, verifies the data, and even returns a Result to avoid dealing with exceptions.</p>
+<p>This code is valid… and it contains 3 mistakes. 4 if you count the duplicate. More if I’ve missed any.</p>
+<p>Can you spot them? pause the video now if you need more time.</p>
+<hr>
+<p>First one is here, <code>number</code>. In TypeScript a <code>number</code> is always a double precision floating point number.</p>
+<p>The problem with this is that <code>numbers</code> can be negative, fractions, Infinite or NaN, <code>Not A Number</code>.</p>
+<p>So this function will take a lot of values that are not fit for purpose and will still attempt to call the API with them</p>
+<p>And that leads us to our second mistake.</p>
+<p>What happens if the fetch fails?</p>
+<hr>
+<p>Well, without going too deep into it, it actually depends on what specifically failed and where, but awaiting a fetch
+can cause an Exception to be thrown.</p>
+<p>But we’ve told anyone calling this code we’re going to return a Result, which is then misleading as to how this code
+actually works.</p>
+<p>We see this again on the next line, the duplicate I mentioned, where if the data returned isn’t JSON, this will also
+throw an exception.</p>
+<p>The last mistake is the worst because its very subtle, and it won’t surface in this code, it’ll surface somewhere else
+in the program, and you’ll have to trace it back here.</p>
+<hr>
+<p>This is actually a Type problem. You see TypeScript has two different types for dealing with ambiguity and, for historic
+reasons, parsing has always used the wrong one.</p>
+<p>In TypeScript 3, the <code>unknown</code> type was introduced. This type doesn’t match with any other type and its up to you to
+prove that an unknown type is actually the type you expect it to by writing a special validation function called a type
+predicate.</p>
+<p>Before TypeScript 3, all that existed was <code>any</code> and unfortunately <code>any</code> doesn’t mean this <em>could</em> be anything, it means
+this <em>is</em> anything.</p>
+<p>No matter what the API returns, if it’s JSON, and it has an id, this function will tell the rest of your code that it’s
+a valid Pokémon.</p>
+<p>If we didn’t have the id check it’d even work for an empty object… or arrays… or just the word “true”.</p>
+<hr>
+<p>So, in these few lines we have; a data problem, two execution flow problems, and a type problem, each increasing in
+severity, and all, I think, fairly well hidden.</p>
+<p>Let’s look at the Rust.</p>
+<p>Now I’ll confess I’m very slightly cheating here, and I’ll explain that in a moment, but overall this looks almost
+identical to the TypeScript with some superficial cosmetic changes.</p>
+<p>Let’s go over the fixes</p>
+<hr>
+<p>First we’ve changed the id type to be a bit more appropriate. An unsigned 16bit integer can still be zero or too big,
+but it can’t be any of the other options we talked about.</p>
+<p>In both languages, you could go further and make a newtype (or value class) to wrap the ID, but this at least isn’t
+<em>as</em> terrible, so we’ll call that a low effort win.</p>
+<p>A slightly higher effort win, and where I’ve cheated slightly, is these question marks.</p>
+<p>Rust doesn’t have exceptions. All functions that can fail (in a recoverable way) should return a Result type.</p>
+<p>The question mark here does something really cool. If the function succeeded, this unwraps the expected data and lets
+you carry on.</p>
+<p>If it returned an Error though, it’ll automatically return the Error it received from this function, calling code to
+transform it if the Error is not the same type.</p>
+<p>The reason I’ve cheated a little here is that I’m going to get an Error from fetching on this line, and an Error from
+parsing on this line and both will need transformation code to turn them into the GetPokemonError I’m not showing here.</p>
+<p>So you do need to write a bit more code, not a lot, but in return you get this code that’s succinct, easy to understand
+and nearly impossible to muck up.</p>
+<hr>
+<p>Finally, that Type error from the TypeScript version of this code is, as you’d imagine, also prevented by Rusts robust
+type system.</p>
+<p>In this case the parsing is managed by a library called serde, but Rust is actually generally a great language to write
+parsers in, and pro tip, libraries like <code>nom</code> come in clutch for things like Advent of Code.</p>
+<hr>
+<p>That was a big focus on Rust being boring, but there are other languages that do that sort of thing well too, so what
+else have we got.</p>
+<p>How about Speed?</p>
+<p>(You said Speed wasn’t a good reason earlier)</p>
+<p>Absolutely right hidden voice.</p>
+<p>In my first ever industry job, my boss mentioned that hardware is cheaper than engineers… this was pre AI and
+blockchain but for now his point still stands.</p>
+<p>His point was, he’d rather just buy a bigger machine than have us spend ages tracking down every little inefficiency.</p>
+<p>Our time is expensive, so the less time we spend working on something the better value it’ll be.</p>
+<p>Rust has a reputation for being slower to write but as we’ve just seen, what you write is more likely to be correct.</p>
+<p>If you deliver something faster but its full of mistakes you have to fix, have you actually delivered it?</p>
+<p>As someone who’s worked in a lot of languages, I think Rust is just less faff.</p>
+<p>If it compiles and my tests pass, then I’m much more confident what I’ve got works.</p>
+<p>There’s one more way Rust makes me faster.</p>
+<p>It’s niche, it’s finite, it might just be that I’m an idiot, and again, I’m going to pick on my other favourite
+language.</p>
+<p>When I start a new TypeScript project, assuming I have node set up then I have to…</p>
+<ul>
+<li>npm init</li>
+<li>Install and configure TypeScript</li>
+<li>Install and configure a linter</li>
+<li>Install and configure a style checker</li>
+<li>Install and configure a testing framework</li>
+<li>Fiddle with all the configurations</li>
+<li>Start working on the project</li>
+</ul>
+<p>I can never remember all the config bits and frameworks constantly change so there’s a fair bit of googling every time.</p>
+<p>This usually takes around an hour.</p>
+<p>It’s just an hour, but its every, single, time.</p>
+<p>Let’s compare that to setting up a Rust project with all the same tooling.</p>
+<p>First we run <code>cargo new</code> and then, end of steps, it’s done, we can start working on our project.</p>
+<p>Rust comes with all the tooling we need all configured in sensible ways and the tooling is another great reason to try
+Rust.</p>
+<p>Let’s talk about that tooling.</p>
+<hr>
+<p>RustC is the compiler and does all your type checking and stuff for you.</p>
+<p>While Rust still has a reputation for being a difficult language to learn I don’t think that’s fair anymore.</p>
+<p>Rust is one of the most hand-holdy languages available today.</p>
+<p>When something goes wrong, there are no cryptic linker errors or anything like that… I’m looking at you C++,
+thats time I’ll never get back.</p>
+<p>The compiler will always point to exactly where a problem occurs, give you a solid explanation of why something is
+wrong, and it’ll usually make suggestions on how to fix it.</p>
+<p>In fact, the best example of this comes from Tris of No Boilerplate in his video “Rust is Easy”.</p>
+<p>He writes “Hello World” in JavaScript and by doing nothing other than following RustC’s suggestions is able to rewrite
+it into Rust.</p>
+<hr>
+<p>Testing in Rust is also a fantastic experience.</p>
+<p>Unit Tests are written right next to the code they’re testing, usually wrapped in a module to excluded then from typical
+compilation.</p>
+<p>When you run the test suite it runs any function marked with a test attribute.</p>
+<p>There’s a handful of assertion macros for confirming expectations.</p>
+<p>If that’s too barebones, then there are a bunch of testing frameworks too, but I personally almost never use
+them, this is more than enough for me.</p>
+<hr>
+<p>Rust’s built-in formatter is very boring, again, in a good way.</p>
+<p>You run it with cargo fmt, and it formats your code.</p>
+<p>Its comes configured out of the box and while you can tweak that configuration, people rarely do, so all Rust code
+ends up looking the same.</p>
+<p>That means its really easy to jump between Rust projects, even ones you didn’t create, there’s no wondering which
+version of AirBnB’s closures styles you need to worry about or what namespacing schema is being used.</p>
+<p>What about linting?</p>
+<hr>
+<p>RustC will prevent you from writing invalid Rust, but valid doesn’t always mean Good</p>
+<p>Clippy prevents a lot of common mistakes in valid Rust.</p>
+<p>Stuff like unnecessary use of references or inefficient use of memory, that sort of thing.</p>
+<p>This is actually one thing a lot of people <em>will</em> reconfigure, but only to make it more hardcore.</p>
+<p>Clippy comes with several lint packs but some like “nursery” which is more experimental, or “pedantic” which is…
+well… pedantic, are usually turned off.</p>
+<p>Many of us will turn them back on just to know we’re writing the best Rust we can.</p>
+<p>Obviously Pedantic lints <em>can</em> be over the top, for example, here’s an array I want to get the average of by dividing
+the sum by the length, but Clippy correctly points out that the length could be so large that it doesn’t accurately
+fall into the 2^52 bits we have for whole numbers in f64s.</p>
+<p>This is valid Rust, it’ll work even in that case, it just may not give us the exact right answer.</p>
+<p>Clippy picks up on this, tells us where the problem is, and what it is.</p>
+<p>In this case we’re not likely to have that many elements but for the sake of an average we probably don’t need perfect
+precision, so we can tell Clippy not to worry about it with an attribute</p>
+<p>What’s particularly good about turning the lint off like this is we can write a reason down</p>
+<p>This lets us immediately see there’s a danger here and why we were so confident ignoring it when we come to the code
+later</p>
+<hr>
+<p>Documentation wasn’t part of that TypeScript set up but I want to talk about it anyway</p>
+<p>RustDoc is where things get <em>really</em> interesting, and if you only take one reason to try Rust from this video, it should
+be this.</p>
+<p>Many of you will be used to writing documentation into special comments above the thing being documented but, again,
+we don’t need another framework here, it’s all included.</p>
+<p>When we run <code>cargo doc</code>, our documentation is automatically generated, and, everyone uses this tool the same way.</p>
+<p>This means that in addition to Rust providing a free repository of all documentation for every library released, and
+all libraries coming with their documentation which you can access offline using this tooling, all
+of it is written in the same way meaning you don’t have to think too hard about how to follow it.</p>
+<p>We can see the name of the thing being documented, its signature, the description we wrote and even the example we
+wrote</p>
+<p>In conclusion…</p>
+<p>Wait… go back… ah whoops, adding one to one does not in fact equal three…</p>
+<p>Luckily, when we run our tests… our documentation examples are also tested, so our tests fail <em>because</em> our
+documentation is wrong.</p>
+<p>Like I said, I think this alone is the best reason to try Rust</p>
+<hr>
+<p>In conclusion</p>
+<p>When using Rust, there’s very few surprises compared to most other languages</p>
+<p>You can build stuff really fast. That lets you go outside and touch grass or move onto the next project way quicker.</p>
+<p>And the tooling lets you focus on the things that actually matter. You focus about your project, not managing
+everything around it.</p>
+<hr>
+<p>So what next.</p>
+<p>If you’re looking for tutorials, I happen to know a guy, but honestly, you should maybe hop in with the official
+learning resources or whatever works best for you</p>
+<p>Rust is actually pretty good for whatever thing you want to build; system tools, web servers, even websites.</p>
+<p>In fact there’s presentation version of this video I gave at work that is itself written in Rust, here’s a slide that
+shows the code for itself.</p>
+<p>If I’ve convinced you to try Rust, I’d love to hear where your journey goes next, maybe it doesn’t work out, I’d still
+like to hear why.</p>
+<p>If you do decide to look for tutorial videos, I have a whole series called Idiomatic Rust in Simple Steps, maybe I’ll
+see you there.</p>
+<p>Best of luck!</p>
+<hr>
+<hr>
+<h1 id="speaker-note-version"><a class="header" href="#speaker-note-version">Speaker Note Version</a></h1>
+<ul>
+<li>Why try Rust. / Already use it, encourage</li>
+<li>Lots of great languages, when you think of Rust, what comes to mind?</li>
+<li>My name is Daniel, this is Fio’s Quest, real reasons not why you think</li>
+</ul>
+<hr>
+<ul>
+<li>Obvious reasons</li>
+<li>Rust is fast but</li>
+<li>Zig and C++ are just as fast</li>
+<li>C is a little bit faster</li>
+<li>Real speed: assembly</li>
+<li>“fast” not unique.</li>
+</ul>
+<hr>
+<ul>
+<li>Rust is memory safety.</li>
+<li>70% of vulnerabilities</li>
+<li>Java, Go, JavaScript, PHP, Perl, Python etc</li>
+<li>Not a great reason either.</li>
+</ul>
+<hr>
+<ul>
+<li>Rust is both</li>
+<li>who cares.</li>
+<li>safety critical realtime systems</li>
+<li>web dev</li>
+<li>Built web servers for speed and mem</li>
+<li>8ms to 2ms, 20mb to 4mb</li>
+<li>not good reasons</li>
+</ul>
+<hr>
+<ul>
+<li>still think you should try</li>
+<li>it’s boring.</li>
+<li>unsurprising.</li>
+<li>I really love TypeScript.</li>
+<li>probably fourth web programming language</li>
+<li>easily my favourite language before Rust</li>
+</ul>
+<hr>
+<ul>
+<li>TypeScript gets a Pokémon object from an API by its id</li>
+<li>fetch, parses, verifies the data, returns a Result</li>
+<li>This code is valid…</li>
+<li>3 mistakes. 4 with duplicate. Maybe more</li>
+<li>Can you spot them? pause if needed</li>
+</ul>
+<hr>
+<ul>
+<li><code>number</code> is a double</li>
+<li>can be negative, fractions, Infinite or NaN.</li>
+<li>Function takes values not fit for purpose</li>
+<li>still call api</li>
+<li>leads us to 2</li>
+<li>What happens if the fetch fails?</li>
+</ul>
+<hr>
+<ul>
+<li>depends</li>
+<li>can cause an Exception to be thrown.</li>
+<li>because of result we’re misleading</li>
+<li>same on the next line, json</li>
+</ul>
+<hr>
+<ul>
+<li>The last mistake</li>
+<li>very subtle,</li>
+<li>won’t surface here, it’ll surface somewhere else</li>
+<li>something not a Pokémon but still has an id</li>
+<li>TypeScript has ways to do ambiguous data</li>
+<li>for historic reasons, parsing always wrong</li>
+<li>TypeScript 3,  <code>unknown</code> introduced.</li>
+<li>Before that <code>any</code></li>
+<li>without id check, empty object, arrays, the word “true”.</li>
+</ul>
+<hr>
+<ul>
+<li>So, in these few lines we have;
+<ul>
+<li>a data problem, two execution flow problems, and a type problem,</li>
+<li>each worse than the last</li>
+</ul>
+</li>
+<li>Let’s look at the Rust.
+<ul>
+<li>I’m very slightly cheating here,</li>
+<li>almost identical, cosmetic changes.</li>
+<li>Let’s go over the fixes</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li>id u16</li>
+<li>could use newtype low effort fix</li>
+<li>higher effort question marks</li>
+<li>No exceptions, only Results</li>
+<li>If succeeds, unwrap carry on.</li>
+<li>If Error return</li>
+<li>succinct, easy to understand nearly impossible to muck up</li>
+</ul>
+<hr>
+<ul>
+<li>Type Error</li>
+<li>Serde</li>
+<li>Parsing with Nom</li>
+<li>Chris Biscardi (?)</li>
+</ul>
+<hr>
+<ul>
+<li>Lots of languages can do this, what else</li>
+<li>Speed?</li>
+<li>(You said Speed wasn’t a good reason earlier)</li>
+<li>Absolutely right hidden voice.</li>
+<li>Not that kind of speed</li>
+<li>hardware is cheaper than engineers…</li>
+<li>time is expensive, less time more value</li>
+</ul>
+<hr>
+<ul>
+<li>Rust reputation for being slow to write</li>
+<li>more likely to be correct</li>
+<li>Deliver something faster but full of mistakes, have you actually delivered</li>
+<li>Rust is less faff.</li>
+<li>If compiles, and tests pass, confident</li>
+</ul>
+<hr>
+<ul>
+<li>one more way Rust is faster.</li>
+<li>niche, finite, stupid, favourite language</li>
+<li>start new ts project
+<ul>
+<li>npm init</li>
+<li>Install and configure TypeScript</li>
+<li>Install and configure a linter</li>
+<li>Install and configure a style checker</li>
+<li>Install and configure a testing framework</li>
+<li>Fiddle with all the configurations</li>
+<li>Start working on the project</li>
+</ul>
+</li>
+<li>remember all the config, changes to ecosystem, googling</li>
+<li>Usually takes around an hour.</li>
+</ul>
+<hr>
+<ul>
+<li>set up rust
+<ul>
+<li>run <code>cargo new</code></li>
+<li>no more steps</li>
+</ul>
+</li>
+<li>comes with all tooling</li>
+<li>tooling is another great reason to try Rust.</li>
+<li>Let’s talk about that tooling.</li>
+</ul>
+<hr>
+<ul>
+<li>RustC; compiler, type checking, etc</li>
+<li>unfair reputation for being a difficult</li>
+<li>hand-holdy</li>
+<li>no cryptic linker errors… C++</li>
+<li>point to problem, explanation, usually suggestions</li>
+<li>No Boilerplate “Rust is Easy”.</li>
+<li>Writes “Hello World” in JavaScript covert to Rust</li>
+</ul>
+<hr>
+<ul>
+<li>Testing in Rust</li>
+<li>Written right next to the code</li>
+<li>test module, test attribute.</li>
+<li>handful of assertion macros</li>
+<li>many libraries if you need them</li>
+</ul>
+<hr>
+<ul>
+<li>Rust formatter is boring</li>
+<li>Run with cargo fmt</li>
+<li>Configured out of the box</li>
+<li>can change configuration, people rarely do</li>
+<li>easy to swap between projects</li>
+<li>what about linting</li>
+</ul>
+<hr>
+<ul>
+<li>RustC prevents invalid Rust, valid doesn’t mean Good</li>
+<li>Clippy prevents common mistakes in valid Rust.</li>
+<li>unnecessary references, inefficient memory, etc</li>
+<li>reconfigure, nursery, pedantic</li>
+<li>Pedantic lints <em>can</em> be over the top</li>
+</ul>
+<hr>
+<ul>
+<li>for example
+<ul>
+<li>get the average of an array</li>
+<li>by divide sum by the length</li>
+<li>usize 2^64 but float integers 2^52</li>
+<li>its valid, it’ll work, not accurate</li>
+<li>clippy lets you know</li>
+<li>in this case can ignore it</li>
+<li>use reason to let future you know why</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li>Documentation not part of TypeScript set up</li>
+<li>if you take one thing from this video, should be this</li>
+<li>might be used to writing documentation in docblocks</li>
+<li>everything you need is included</li>
+<li>its markdown, titles, code blocks, links</li>
+<li><code>cargo doc</code></li>
+<li>all docs are the same, no need to think</li>
+<li>one repository of docs, docs.rs</li>
+<li>offline documentation</li>
+</ul>
+<hr>
+<ul>
+<li>title, description, signature, example</li>
+<li>wait, the example is wrong</li>
+<li>tests will pick this up</li>
+<li>documentation absolutely the best reason to try rust</li>
+</ul>
+<hr>
+<ul>
+<li>In conclusion</li>
+<li>fewer surprises</li>
+<li>build fast</li>
+<li>tooling lets you focus</li>
+</ul>
+<hr>
+<ul>
+<li>what next.</li>
+<li>my tutorials, but start with official docs</li>
+<li>Rust good for whatever; sys tools, servers, sites.</li>
+<li>recursive slide</li>
+<li>let me know what you do even if it’s not for you</li>
+<li>Mention IRISS</li>
+<li>Best of luck!</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../fun/rust-is-hard.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../shorts/001-sixty-seconds.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../fun/rust-is-hard.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../shorts/001-sixty-seconds.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-09f2665d.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/enable-checkboxes-3ea146e3.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

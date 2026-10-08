@@ -15,8 +15,8 @@
         <link rel="icon" href="../favicon-de23e50b.svg">
         <link rel="shortcut icon" href="../favicon-8114d1fc.png">
         <link rel="stylesheet" href="../css/variables-8adf115d.css">
-        <link rel="stylesheet" href="../css/general-2459343d.css">
-        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../css/chrome-d279d366.css">
         <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
@@ -35,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-6e68e63e.js";
+            window.path_to_searchindex_js = "../searchindex-0151ee72.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-ba7e779f.js"></script>
+        <script src="../toc-18280e25.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -201,7 +201,7 @@
 <p><code>macro_rules!</code> is, itself, a macro, providing its own domain specific language that allows you to create more macros.</p>
 <p>This gets very powerful and, honestly, very weird.</p>
 <p>Let’s take it slow.</p>
-<p><img src="016-macros/00-macro-rules-structure.png" alt="00-macro-rules-structure.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/00-macro-rules-structure.png" alt="00-macro-rules-structure.png"><span class="img-wrapper"><img src="016-macros/00-macro-rules-structure.png" alt="00-macro-rules-structure.png"></span></label></p>
 <p>🦀👨🏻 The general layout of <code>macro_rules!</code> looks like this:</p>
 <p>🦀👨🏻 We write <code>macro_rules!</code>, with an exclamation mark, followed by the name the macro we’re creating.</p>
 <p>🦀👨🏻 We then have a block containing a list of rules.</p>
@@ -212,7 +212,7 @@
 <p>This makes it much safer and more fully featured that copy-paste style macros you might have worked with in the past.</p>
 <h2 id="hello-macro"><a class="header" href="#hello-macro">Hello, macro!</a></h2>
 <p>We’ll start by making a hello world macro that produces a <code>String</code>.</p>
-<p><img src="016-macros/01-hello.png" alt="01-hello.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/01-hello.png" alt="01-hello.png"><span class="img-wrapper"><img src="016-macros/01-hello.png" alt="01-hello.png"></span></label></p>
 <p>🦀👨🏻 As we said a moment ago, immediately after <code>macro_rules!</code> we provide the name of the macro we’re creating, in this case <code>hello</code>.</p>
 <p>🦀👨🏻 Our first draft won’t match anything between the brackets, so we leave those empty.</p>
 <p>🦀👨🏻 We then have an arrow, followed by some curly brackets surrounding what our macro will generate.</p>
@@ -221,7 +221,7 @@
 <p>🦀👨🏻 This type of macro <em>could</em> be useful if you have a block of code you need to repeat but don’t want to put in a function.</p>
 <p>🦀👨🏻 But let’s be honest, that’s not going to come up very often.</p>
 <p>🦀👨🏻 Let’s upgrade our macro to match a pattern.</p>
-<p><img src="016-macros/02-hello-tokens.png" alt="02-hello-tokens.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/02-hello-tokens.png" alt="02-hello-tokens.png"><span class="img-wrapper"><img src="016-macros/02-hello-tokens.png" alt="02-hello-tokens.png"></span></label></p>
 <p>🦀👨🏻 What madness is this?!</p>
 <p>🦀👨🏻 What kind of parameters are we passing to this macro?</p>
 <p>🦀👨🏻 The key to understanding the power of macros is that they <em>don’t</em> take parameters.</p>
@@ -230,12 +230,12 @@
 <p>🦀👨🏻 Here, <code>this must be present</code> is parsed as four token trees: <code>this</code>, <code>must</code>, <code>be</code> and <code>present</code>.</p>
 <p>🦀👨🏻 Different tokens won’t match our pattern, so this won’t compile.</p>
 <p>🦀👨🏻 We can invoke different rules based on the matched pattern.</p>
-<p><img src="016-macros/03-hello-token-rules.png" alt="03-hello-token-rules.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/03-hello-token-rules.png" alt="03-hello-token-rules.png"><span class="img-wrapper"><img src="016-macros/03-hello-token-rules.png" alt="03-hello-token-rules.png"></span></label></p>
 <p>🦀👨🏻 So we could match several people by making a rule for each of them.</p>
 <p>🦀👨🏻 We obviously can’t write out <em>every</em> possible thing that we might want match on though.</p>
 <p>🦀👨🏻 What if we want to be able to say “hello” to lots of different people?</p>
 <p>🦀👨🏻 Instead, we can capture tokens into metavariables.</p>
-<p><img src="016-macros/04-hello-metavariables-a.png" alt="04-hello-metavariables.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/04-hello-metavariables-a.png" alt="04-hello-metavariables.png"><span class="img-wrapper"><img src="016-macros/04-hello-metavariables-a.png" alt="04-hello-metavariables.png"></span></label></p>
 <p>🦀👨🏻 Things got a little bit weird here, right?</p>
 <p>🦀👨🏻 Let’s step through our changes.</p>
 <p>🦀👨🏻 First, we added a metavariable, and you’ll immediately notice this looks nothing like a normal function parameter in Rust.</p>
@@ -249,22 +249,22 @@
 <p>🦀👨🏻 The second change we’ve made here is that inside of the code block… we’ve added <em>another</em> block.</p>
 <p>🦀👨🏻 The reason for this is that when we invoke the macro, Rust generates code at the point that you place the macro.</p>
 <p>🦀👨🏻 If we didn’t have the extra brackets, when we use the macro in our <code>assert_eq!</code>, our code would look to Rust as if it were this:</p>
-<p><img src="016-macros/04-hello-metavariables-b.png" alt="04-hello-metavariables-b.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/04-hello-metavariables-b.png" alt="04-hello-metavariables-b.png"><span class="img-wrapper"><img src="016-macros/04-hello-metavariables-b.png" alt="04-hello-metavariables-b.png"></span></label></p>
 <p>🦀👨🏻 This doesn’t work because <code>assert_eq!</code>, which is also a macro, expects to match expressions, represented by the fragment-specifier <code>:expr</code>.</p>
 <p>🦀👨🏻 Oh… I’m going to have to work out how to vocalise a few unique things this episode, wish me luck!</p>
 <p>In Rust, an expression is a segment of code that produces a value.</p>
 <p>So <code>String::from("Hello, ")</code> is an expression, but <code>let mut output = String::from("Hello, ");</code> is not, that’s a <code>:stmt</code>, a statement.</p>
 <p>Blocks of code, even multiple statements, surrounded by curly brackets are expressions though, they have a value, even if the value is the unit type.</p>
 <p>When we wrap our macro in curly brackets then, and have some value as the final line, our code block becomes a single expression the value and type of which matches that final value.</p>
-<p><img src="016-macros/04-hello-metavariables-c.png" alt="04-hello-metavariables-c.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/04-hello-metavariables-c.png" alt="04-hello-metavariables-c.png"><span class="img-wrapper"><img src="016-macros/04-hello-metavariables-c.png" alt="04-hello-metavariables-c.png"></span></label></p>
 <p>🦀👨🏻 This means that when we add those extra curly brackets to our macro, the generated code now looks like this, which is valid!</p>
 <p>🦀👨🏻 Expressions in Rust are particularly useful as they have a type and a value, just like variables, allowing you to use them inside other expressions.</p>
 <p>🦀👨🏻 Let’s go deeper and add another rule.</p>
 <p>🦀👨🏻 Let’s bring back our original behaviour for an empty <code>hello!</code> macro:</p>
-<p><img src="016-macros/05-hello-metavariables-rules-a.png" alt="05-hello-metavariables-rules.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/05-hello-metavariables-rules-a.png" alt="05-hello-metavariables-rules.png"><span class="img-wrapper"><img src="016-macros/05-hello-metavariables-rules-a.png" alt="05-hello-metavariables-rules.png"></span></label></p>
 <p>🦀👨🏻 This is fine, but we’re repeating ourselves a little bit.</p>
 <p>🦀👨🏻 We should avoid having two copies of the <code>"Hello, "</code> string slice.</p>
-<p><img src="016-macros/05-hello-metavariables-rules-b.png" alt="05-hello-metavariables-rules-b.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/05-hello-metavariables-rules-b.png" alt="05-hello-metavariables-rules-b.png"><span class="img-wrapper"><img src="016-macros/05-hello-metavariables-rules-b.png" alt="05-hello-metavariables-rules-b.png"></span></label></p>
 <p>🦀👨🏻 To maintain consistency, we can call our macro recursively!</p>
 <p>We’re nearly there now, but I think our hello macro is missing one critical feature; what if we want to greet lots of people at the same time?</p>
 <p>We can “repeat” patterns inside macros by surrounding them with parenthesis preceded by a dollar and followed by either a <code>?</code>, a <code>+</code>, or a <code>*</code>.</p>
@@ -281,7 +281,7 @@
 <p>Repeats are used in rule matchers to match patterns, including metavariables, multiple times</p>
 <p>They’re also used in code generation to repeat code for each repeated metavariable.</p>
 <p>We already have zero and one metavariable dealt with, so we want a rule in our macro that takes two or more inputs</p>
-<p><img src="016-macros/05-hello-metavariables-rules-c.png" alt="05-hello-metavariables-rules-c.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/05-hello-metavariables-rules-c.png" alt="05-hello-metavariables-rules-c.png"><span class="img-wrapper"><img src="016-macros/05-hello-metavariables-rules-c.png" alt="05-hello-metavariables-rules-c.png"></span></label></p>
 <p>🦀👨🏻 For want of space, I’m going to condense the formatting from now on, so keep an eye out for those double curly brackets</p>
 <p>🦀👨🏻 Our new rule looks a bit like the previous one, but now there’s a comma after <code>$name:literal</code> and then a repeat pattern.</p>
 <p>🦀👨🏻 The repeat pattern contains a metavariable, <code>$rest:literal</code>, which will be used to store all metavariables passed to the macro after the first.</p>
@@ -290,18 +290,18 @@
 <p>🦀👨🏻 We then have another repeat pattern that contains code with the <code>$rest</code> metavariable.</p>
 <p>🦀👨🏻 Because we have a repeated metavariable inside a repeated block, this block will be repeated for every <code>literal</code> that <code>$rest</code> matched to.</p>
 <p>🦀👨🏻 If we were to unwrap the code generated for the final test, it would look something like this:</p>
-<p><img src="016-macros/05-hello-metavariables-rules-d.png" alt="05-hello-metavariables-rules-d.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/05-hello-metavariables-rules-d.png" alt="05-hello-metavariables-rules-d.png"><span class="img-wrapper"><img src="016-macros/05-hello-metavariables-rules-d.png" alt="05-hello-metavariables-rules-d.png"></span></label></p>
 <p>Hopefully, you’re starting to see why writing a quick macro can really cut down on repeated boilerplate code, and we’re really only making a quick toy macro to demonstrate the power they provide!</p>
 <p>You might be wondering if we can use repeats to reduce the number of match arms we have.</p>
 <p>We unfortunately can’t do things like treat the first or last element of a repeat differently using macro repeats <em>undecided look</em>,</p>
 <p>but we can merge the second and third arms using a <code>*</code>.</p>
-<p><img src="016-macros/06-hello-better-loops.png" alt="06-hello-better-loops.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/06-hello-better-loops.png" alt="06-hello-better-loops.png"><span class="img-wrapper"><img src="016-macros/06-hello-better-loops.png" alt="06-hello-better-loops.png"></span></label></p>
 <p>🦀👨🏻 You’ll notice that the <code>,</code> after <code>$name:literal</code> has moved inside the repeat pattern, and the <code>,</code> being used as a separator for the repeat has been dropped.</p>
 <p>🦀👨🏻 This is because if we were to try to match <code>($name:literal, $($rest:literal),*)</code> then we’d <em>have</em> to use the comma after the first literal so <code>hello!("Yuki")</code> would <em>have</em> to be <code>hello!("Yuki", )</code> to work.</p>
 <p>🦀👨🏻 Instead, we’ve moved the comma token to the beginning of the repeat pattern which can contain things that aren’t metavariables too.</p>
 <p>Ok, so I wasn’t exactly lying about not being able to treat the first and last elements differently with macro repeats… we can’t do it with <em>just</em> macro repeats</p>
 <p>BUT, we can work around that with very low-cost language features like slices.</p>
-<p><img src="016-macros/07-hello-with-simple-rust.png" alt="07-hello-with-simple-rust.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/07-hello-with-simple-rust.png" alt="07-hello-with-simple-rust.png"><span class="img-wrapper"><img src="016-macros/07-hello-with-simple-rust.png" alt="07-hello-with-simple-rust.png"></span></label></p>
 <p>🦀👨🏻 We can split the names out directly into an array.</p>
 <p>🦀👨🏻 This will be part of the binary, created at compile time, so doesn’t require any heap allocations</p>
 <p>🦀👨🏻 Next let’s get an iterator over the array.</p>
@@ -320,9 +320,9 @@
 <p>If tokens are protons and neutrons, then token trees are atoms, and are the smallest thing that we can process in <code>macro_rules!</code>.</p>
 <p>An important differentiation with Token Trees to a simple list of tokens are that delimiters (that’s parentheses, square brackets and curly brackets) are matched up for us.</p>
 <p>For example, if we break the statement <code>let hello = String::from("Hello");</code> into tokens, its looks like this.</p>
-<p><img src="016-macros/Tokens.svg" alt="Tokens.svg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/Tokens.svg" alt="Tokens.svg"><span class="img-wrapper"><img src="016-macros/Tokens.svg" alt="Tokens.svg"></span></label></p>
 <p>But if we break it into token trees, then the parenthesis is a single token tree containing the token tree “Hello”.</p>
-<p><img src="016-macros/TokenTree.svg" alt="TokenTreeLight.svg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/TokenTree.svg" alt="TokenTreeLight.svg"><span class="img-wrapper"><img src="016-macros/TokenTree.svg" alt="TokenTreeLight.svg"></span></label></p>
 <p>In the previous <code>hello!</code> example, we captured tokens that were literals into metavariables with fragment-specifiers, but we can categorise tokens and token trees as more than just literals in <code>macro_rules!</code>.</p>
 <p>Here’s a quick rundown of some of the most common fragment-specifiers:</p>
 <hr>
@@ -379,13 +379,13 @@
 <hr>
 <p>In the Job Tracker app I’ve been building with the help of folks on my streams, I’ve leaned heavily into composing my types using Traits to form common behaviour.</p>
 <p>For example, at time of writing, I allow the user to create things like <code>Flags</code>, <code>Roles</code> and <code>Values</code> that belong to <code>Company</code>s, so those types implement the trait <code>HasCompany</code>.</p>
-<p><img src="016-macros/08-usefully-dry-no-macros-a.png" alt="08-usefully-dry-no-macros-a.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/08-usefully-dry-no-macros-a.png" alt="08-usefully-dry-no-macros-a.png"><span class="img-wrapper"><img src="016-macros/08-usefully-dry-no-macros-a.png" alt="08-usefully-dry-no-macros-a.png"></span></label></p>
 <p>🦀👨🏻 Here’s an example of how that might look for <code>Role</code>.</p>
 <p>🦀👨🏻 Role is pretty simple, it has an id of its own, an id that links it to a company, and a name.</p>
 <p>🦀👨🏻The <code>HasCompany</code> trait has a single method, <code>get_company_id</code>.</p>
 <p>🦀👨🏻 When we implement it for role, it just returns that <code>company_id</code> which is <code>Copy</code> so the code is nice and simple.</p>
 <p>🦀👨🏻 I’m also a huge advocate for unit testing and even for code like this we ought to provide a simple test.</p>
-<p><img src="016-macros/08-usefully-dry-no-macros-b.png.png" alt="08-usefully-dry-no-macros-b.png.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/08-usefully-dry-no-macros-b.png.png" alt="08-usefully-dry-no-macros-b.png.png"><span class="img-wrapper"><img src="016-macros/08-usefully-dry-no-macros-b.png.png" alt="08-usefully-dry-no-macros-b.png.png"></span></label></p>
 <p>🦀👨🏻 This is pretty nice code, even if I do say so myself.</p>
 <p>🦀👨🏻 It’s clean, easy to understand, easy to use.</p>
 <p>🦀👨🏻 But, is it DRY?</p>
@@ -394,7 +394,7 @@
 <p>This isn’t the only Trait that is applied to “storable” types, and we have multiple “storage” types that also have lots of shared traits that all need implementing and testing.</p>
 <hr>
 <p>🦀👨🏻 Let’s look at how macros can help us generate boilerplate code.</p>
-<p><img src="016-macros/09-usefully-dry-impl-company.png" alt="09-usefully-dry-impl-company.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/09-usefully-dry-impl-company.png" alt="09-usefully-dry-impl-company.png"><span class="img-wrapper"><img src="016-macros/09-usefully-dry-impl-company.png" alt="09-usefully-dry-impl-company.png"></span></label></p>
 <p>🦀👨🏻 First, we’ll create a macro that will implement <code>HasCompany</code> for any type that has a <code>company_id</code> field.</p>
 <p>🦀👨🏻 Obviously if you try to implement this trait on something without this field, the macro will generate code that won’t compile, but if you <em>need</em> to do that, you can still write your own implementation.</p>
 <p>🦀👨🏻 Role does have this field though so we can now implement the trait with one short line</p>
@@ -408,9 +408,9 @@
 <p>🦀👨🏻 Test name is an ident which we’ll use to name the test function</p>
 <p>🦀👨🏻 Storable is what I call any object in this project that can be stored, and in this case is the test subject.</p>
 <p>🦀👨🏻 The test here is super rudimentary, we’re just going to make sure that when we request the id, we get something back.</p>
-<p><img src="016-macros/10-usefully-dry-test-a.png" alt="10-usefully-dry-test-a.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/10-usefully-dry-test-a.png" alt="10-usefully-dry-test-a.png"><span class="img-wrapper"><img src="016-macros/10-usefully-dry-test-a.png" alt="10-usefully-dry-test-a.png"></span></label></p>
 <p>🦀👨🏻 By implementing the trait for each type that I want to test, I can add tests trivially like this:</p>
-<p><img src="016-macros/10-usefully-dry-test-b.png" alt="10-usefully-dry-test-b.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/10-usefully-dry-test-b.png" alt="10-usefully-dry-test-b.png"><span class="img-wrapper"><img src="016-macros/10-usefully-dry-test-b.png" alt="10-usefully-dry-test-b.png"></span></label></p>
 <p>🦀👨🏻 This might initially seem like just as much work as before, as we add more traits and more types that implement those traits, the amount of extra work drops dramatically.</p>
 <p>🦀👨🏻 Furthermore, there are more complex examples in Fio’s Job Tracker like the ones that manage the storing and recalling of these storable objects.</p>
 <h2 id="domain-specific-languages"><a class="header" href="#domain-specific-languages">Domain Specific Languages</a></h2>
@@ -462,12 +462,12 @@
 <p>square brackets loop the contained code</p>
 <p>Each time the loop begins the value at the current position is checked, if the value is 0, it skips the loop.</p>
 <hr>
-<p><img src="016-macros/11-brain-fudge-minimal-b.png" alt="11-brain-fudge-minimal-b.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/11-brain-fudge-minimal-b.png" alt="11-brain-fudge-minimal-b.png"><span class="img-wrapper"><img src="016-macros/11-brain-fudge-minimal-b.png" alt="11-brain-fudge-minimal-b.png"></span></label></p>
 <p>🦀👨🏻 That sounds easy enough, right…</p>
 <p>🦀👨🏻 well, here’s Hello World in Brain Fudge.</p>
 <p>🦀👨🏻 Don’t panic! We’re not here to learn Brain Fudge ourselves.</p>
 <p>🦀👨🏻 We’ll just trust that this is the Hello World program, we’ll implement the instructions and see what happens when we run it.</p>
-<p><img src="016-macros/11-brain-fudge-minimal-a.png" alt="11-brain-fudge-minimal-a.png">
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/11-brain-fudge-minimal-a.png" alt="11-brain-fudge-minimal-a.png"><span class="img-wrapper"><img src="016-macros/11-brain-fudge-minimal-a.png" alt="11-brain-fudge-minimal-a.png"></span></label>
 🦀👨🏻 We’re going to use two macros.</p>
 <p>🦀👨🏻 First let’s create a macro that initialises the program.</p>
 <p>🦀👨🏻 The input to our transpiler is a repeat pattern of token tree, which we’ll store in the metavariable token.</p>
@@ -485,12 +485,12 @@
 <hr>
 <p>🦀👨🏻 So now we need to handle the token stream, but before we do that, lets write some tests.</p>
 <p>🦀👨🏻 We’ll keep it simple for now, while this is the official Hello World</p>
-<p><img src="016-macros/11-brain-fudge-minimal-b.png" alt="11-brain-fudge-minimal-b.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/11-brain-fudge-minimal-b.png" alt="11-brain-fudge-minimal-b.png"><span class="img-wrapper"><img src="016-macros/11-brain-fudge-minimal-b.png" alt="11-brain-fudge-minimal-b.png"></span></label></p>
 <p>🦀👨🏻 and… actually that’s kinda hard to read, lets add some white space</p>
-<p><img src="016-macros/11-brain-fudge-minimal-b2.png" alt="11-brain-fudge-minimal-b2.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/11-brain-fudge-minimal-b2.png" alt="11-brain-fudge-minimal-b2.png"><span class="img-wrapper"><img src="016-macros/11-brain-fudge-minimal-b2.png" alt="11-brain-fudge-minimal-b2.png"></span></label></p>
 <p>🦀👨🏻 yeah… no that didn’t help</p>
 <p>🦀👨🏻 Anyway, while this is hello world, so is this</p>
-<p><img src="016-macros/11-brain-fudge-minimal-d.png" alt="11-brain-fudge-minimal-c.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/11-brain-fudge-minimal-d.png" alt="11-brain-fudge-minimal-c.png"><span class="img-wrapper"><img src="016-macros/11-brain-fudge-minimal-d.png" alt="11-brain-fudge-minimal-c.png"></span></label></p>
 <p>🦀👨🏻 In the official hello world, loops are used to increment values, but in <em>this</em> version, we’re just adding to the current memory location</p>
 <p>🦀👨🏻 exporting it</p>
 <p>🦀👨🏻 and moving to the next memory location.</p>
@@ -498,7 +498,7 @@
 <p>🦀👨🏻 I made this version of Hello World because it only uses three characters out of the eight used in brain fudge, so to make this test pass, we only need to implement three operations</p>
 <p>🦀👨🏻 So now we have a test, lets work out how to handle greater than, add, and period.</p>
 <hr>
-<p><img src="016-macros/11-brain-fudge-minimal-c.png" alt="11-brain-fudge-minimal-d.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/11-brain-fudge-minimal-c.png" alt="11-brain-fudge-minimal-d.png"><span class="img-wrapper"><img src="016-macros/11-brain-fudge-minimal-c.png" alt="11-brain-fudge-minimal-d.png"></span></label></p>
 <p>🦀👨🏻 We’ll create a new helper macro that can handle each of these tokens, by having a rule that matches each specific token.</p>
 <p>🦀👨🏻 These rules will be called recursively so we will also need a special rule to handle when there are no tokens left so we have an endpoint to the recursion.</p>
 <p>🦀👨🏻 To make it work, each rule will need to access the memory, the pointer, and the output buffer, so we’ll add an expectation of those to the match pattern.</p>
@@ -519,16 +519,16 @@
 <p>🦀👨🏻 It takes the value at the current pointer and writes it to our output buffer</p>
 <p>🦀👨🏻 Finally, we have a match arm for when there are no more tokens left that doesn’t do anything.</p>
 <p>🦀👨🏻 Now we can update our <code>brain_fudge!</code> macro to call the helper, passing in the program state.</p>
-<p><img src="016-macros/11-brain-fudge-minimal-e.png" alt="11-brain-fudge-minimal-e.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/11-brain-fudge-minimal-e.png" alt="11-brain-fudge-minimal-e.png"><span class="img-wrapper"><img src="016-macros/11-brain-fudge-minimal-e.png" alt="11-brain-fudge-minimal-e.png"></span></label></p>
 <p>🦀👨🏻 So we now have a program that has our brain fudge macro, a brain fudge helper macro that passes 3 of the 8 tokens, and a test…</p>
 <p>🦀👨🏻 when build the program</p>
 <p>🦀👨🏻 we get this error</p>
-<p><img src="016-macros/11-brain-fudge-minimal-f.png" alt="11-brain-fudge-minimal-f.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/11-brain-fudge-minimal-f.png" alt="11-brain-fudge-minimal-f.png"><span class="img-wrapper"><img src="016-macros/11-brain-fudge-minimal-f.png" alt="11-brain-fudge-minimal-f.png"></span></label></p>
 <p>🦀👨🏻 Rust keeps track of how many times we recurse, that is, call a function or macro from the same function or macro.</p>
 <p>🦀👨🏻 By default, the maximum amount of times we can do this is 128.</p>
 <p>🦀👨🏻 Our macro, when parsing our silly Hello World example, recurses 1120 times!</p>
 <p>🦀👨🏻 So, we <em>could</em> avoid recursing by looping through the tokens instead, and that will work for this current instruction set… but it won’t work for loops.</p>
-<p><img src="016-macros/11-brain-fudge-minimal-z.png" alt="11-brain-fudge-minimal-z.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/11-brain-fudge-minimal-z.png" alt="11-brain-fudge-minimal-z.png"><span class="img-wrapper"><img src="016-macros/11-brain-fudge-minimal-z.png" alt="11-brain-fudge-minimal-z.png"></span></label></p>
 <p>🦀👨🏻 We probably could come up with a way of mixing loops and recursion but to keep things simple, we’re going to play a dangerous game and manually tell Rust it’s fine for it to recurse 2048 times.</p>
 <p>🦀👨🏻 The <code>recursion_limit</code> attribute applies at the crate level so be careful with this one!</p>
 <p>🦀👨🏻 And now our code runs!</p>
@@ -536,9 +536,9 @@
 <hr>
 <p>🦀👨🏻 Lets implement some of the other operations.</p>
 <p>🦀👨🏻 Dealing with less than and minus is easy enough, they’re the opposite of what we already have.</p>
-<p><img src="016-macros/12-brain-fudge-mostly-implemented-a.png" alt="12-brain-fudge-mostly-implemented-a.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/12-brain-fudge-mostly-implemented-a.png" alt="12-brain-fudge-mostly-implemented-a.png"><span class="img-wrapper"><img src="016-macros/12-brain-fudge-mostly-implemented-a.png" alt="12-brain-fudge-mostly-implemented-a.png"></span></label></p>
 <p>🦀👨🏻 Minus similar to Add, does a wrapping subtract of the value at the pointer</p>
-<p><img src="016-macros/12-brain-fudge-mostly-implemented-b.png" alt="12-brain-fudge-mostly-implemented-b.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/12-brain-fudge-mostly-implemented-b.png" alt="12-brain-fudge-mostly-implemented-b.png"><span class="img-wrapper"><img src="016-macros/12-brain-fudge-mostly-implemented-b.png" alt="12-brain-fudge-mostly-implemented-b.png"></span></label></p>
 <p>🦀👨🏻 Less than does a saturating subtract of our pointer.</p>
 <p>🦀👨🏻 This is where that saturating behaviour matters; were we to wrap it, 0 - 1 becomes a number so large I can’t even say it.</p>
 <p>🦀👨🏻 More complex is the loop.</p>
@@ -546,16 +546,16 @@
 <p>🦀👨🏻 In Rust, these bracket pairs specifically are all considered tokens that wrap other tokens.</p>
 <p>🦀👨🏻 They’re treated as a single token tree that contain more token trees.</p>
 <p>🦀👨🏻 So Rust will correctly handle them in pairs, even when nested.</p>
-<p><img src="016-macros/12-brain-fudge-mostly-implemented-c.png" alt="12-brain-fudge-mostly-implemented-c.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/12-brain-fudge-mostly-implemented-c.png" alt="12-brain-fudge-mostly-implemented-c.png"><span class="img-wrapper"><img src="016-macros/12-brain-fudge-mostly-implemented-c.png" alt="12-brain-fudge-mostly-implemented-c.png"></span></label></p>
 <p>🦀👨🏻 This means to make our loop rule work, we can match against any token tree that starts with an open square bracket, contains more tokens which may include more square bracket pairs, and matches its ending close square bracket.</p>
 <p>🦀👨🏻 This is followed by yet more tokens!</p>
 <p>🦀👨🏻 How cool is it that we got this for free!?</p>
 <p>🦀👨🏻 The loop is really easy to implement too!</p>
 <p>🦀👨🏻 We check the value at the current pointer position, if it’s not zero we run the code in the loop and check again.</p>
 <p>🦀👨🏻 If it is zero then we continue recursing with the rest of the code just like every other rule.</p>
-<p><img src="016-macros/12-brain-fudge-mostly-implemented-d.png" alt="12-brain-fudge-mostly-implemented-d.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/12-brain-fudge-mostly-implemented-d.png" alt="12-brain-fudge-mostly-implemented-d.png"><span class="img-wrapper"><img src="016-macros/12-brain-fudge-mostly-implemented-d.png" alt="12-brain-fudge-mostly-implemented-d.png"></span></label></p>
 <p>🦀👨🏻 To make sure our new code works we’ll update our test with the “real” Hello World.</p>
-<p><img src="016-macros/12-brain-fudge-mostly-implemented-e.png" alt="12-brain-fudge-mostly-implemented-e.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/12-brain-fudge-mostly-implemented-e.png" alt="12-brain-fudge-mostly-implemented-e.png"><span class="img-wrapper"><img src="016-macros/12-brain-fudge-mostly-implemented-e.png" alt="12-brain-fudge-mostly-implemented-e.png"></span></label></p>
 <p>🦀👨🏻 And when we build… it doesn’t work again</p>
 <p>🦀👨🏻 It actually gives us a number of errors, all different, all valid, but I’m only showing the first because it tells us what we need to know</p>
 <p>🦀👨🏻 Why is it pointing at two greater than signs?</p>
@@ -564,7 +564,7 @@
 <p>Rust considers two greater than symbols to be a single token.</p>
 <p>Specifically it’s a “right shift” operator.</p>
 <p>Tokens in Rust can be multiple characters.</p>
-<p><img src="016-macros/12-brain-fudge-mostly-implemented-f.png" alt="12-brain-fudge-mostly-implemented-f.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/12-brain-fudge-mostly-implemented-f.png" alt="12-brain-fudge-mostly-implemented-f.png"><span class="img-wrapper"><img src="016-macros/12-brain-fudge-mostly-implemented-f.png" alt="12-brain-fudge-mostly-implemented-f.png"></span></label></p>
 <p>🦀👨🏻 Here are our problem tokens and what they mean in each language:</p>
 <p>🦀👨🏻 “dot, dot” in Rust is a range literal, but in Brain Fudge it just means output the current value twice.</p>
 <p>🦀👨🏻 “greater than, greater than” in Rust is a right shift operator, but in Brain Fudge it means increment the pointer twice</p>
@@ -575,7 +575,7 @@
 <p>Soooo… unfortunately we need to take care of these special cases.</p>
 <p>Fortunately, while “greater than, greater than” is a right shift token, “greater than, space, greater than” <em>is</em> two greater than tokens.</p>
 <p>Tokens can be seperated by whitespace which is ignored by the token tree fragment-specifier</p>
-<p><img src="016-macros/12-brain-fudge-mostly-implemented-g.png" alt="12-brain-fudge-mostly-implemented-g.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/12-brain-fudge-mostly-implemented-g.png" alt="12-brain-fudge-mostly-implemented-g.png"><span class="img-wrapper"><img src="016-macros/12-brain-fudge-mostly-implemented-g.png" alt="12-brain-fudge-mostly-implemented-g.png"></span></label></p>
 <p>All we need to do is split the token and pass it back into the macro</p>
 <p>Now when we run our code it works!</p>
 <p>And we just created a transpiler for another language inside Rust!</p>
@@ -584,7 +584,7 @@
 <p>I stopped setting homework, but I thought I’d set a little challenge for anyone who wants to do it.</p>
 <p>We only implemented seven of the eight Brain Fudge operations.</p>
 <p>Can you edit our <code>brain_fudge!</code> macro to work with programs that take input via the comma token?</p>
-<p><img src="016-macros/13-brain-fudge-challenge.png" alt="13-brain-fudge-challenge.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="016-macros/13-brain-fudge-challenge.png" alt="13-brain-fudge-challenge.png"><span class="img-wrapper"><img src="016-macros/13-brain-fudge-challenge.png" alt="13-brain-fudge-challenge.png"></span></label></p>
 <p>🦀👨🏻 To do this I recommend making the following change to the main <code>brain_fudge!</code> macro:</p>
 <p>🦀👨🏻 This will allow callers to control inputs and outputs as they please.</p>
 <p>🦀👨🏻 There is a test in the IRISS book that you can copy for a ROT13 program</p>
@@ -642,11 +642,11 @@
 
         <script src="../elasticlunr-ef4e11c1.min.js"></script>
         <script src="../mark-09e88c2c.min.js"></script>
-        <script src="../searcher-c2a407aa.js"></script>
+        <script src="../searcher-09f2665d.js"></script>
 
         <script src="../clipboard-1626706a.min.js"></script>
         <script src="../highlight-abc7f01d.js"></script>
-        <script src="../book-a0b12cfe.js"></script>
+        <script src="../book-609e4cb8.js"></script>
 
         <!-- Custom JS scripts -->
         <script src="../scripts/enable-checkboxes-3ea146e3.js"></script>

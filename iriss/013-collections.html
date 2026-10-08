@@ -15,8 +15,8 @@
         <link rel="icon" href="../favicon-de23e50b.svg">
         <link rel="shortcut icon" href="../favicon-8114d1fc.png">
         <link rel="stylesheet" href="../css/variables-8adf115d.css">
-        <link rel="stylesheet" href="../css/general-2459343d.css">
-        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../css/chrome-d279d366.css">
         <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
@@ -35,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-6e68e63e.js";
+            window.path_to_searchindex_js = "../searchindex-0151ee72.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-ba7e779f.js"></script>
+        <script src="../toc-18280e25.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -190,28 +190,28 @@
 <p>We can create arrays in two ways</p>
 <p>🦀 either by defining a list of expressions,</p>
 <p>🦀 or by using an expression and a length:</p>
-<p><img src="013-collections/array-instantiation.png" alt="array-instantiation.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/array-instantiation.png" alt="array-instantiation.png"><span class="img-wrapper"><img src="013-collections/array-instantiation.png" alt="array-instantiation.png"></span></label></p>
 <p>🦀 If you’ve used other languages, you’re probably used to accessing the items in arrays and array like structures with square brackets and you can do that in Rust…</p>
-<p><img src="013-collections/array-square.png" alt="array-square.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/array-square.png" alt="array-square.png"><span class="img-wrapper"><img src="013-collections/array-square.png" alt="array-square.png"></span></label></p>
 <p>🦀 but you have to be careful! This code will panic, can you see why?</p>
-<p><img src="013-collections/array-square-panic.png" alt="array-square-panic.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/array-square-panic.png" alt="array-square-panic.png"><span class="img-wrapper"><img src="013-collections/array-square-panic.png" alt="array-square-panic.png"></span></label></p>
 <p>🦀 The final index used is out of bounds</p>
 <p>🦀💁🏻‍♂️ This example is a little contrived to demonstrate the problem, there are better ways to step through items in arrays</p>
-<p><img src="013-collections/array-square-compile-fail.png" alt="array-square-compile-fail.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/array-square-compile-fail.png" alt="array-square-compile-fail.png"><span class="img-wrapper"><img src="013-collections/array-square-compile-fail.png" alt="array-square-compile-fail.png"></span></label></p>
 <p>🦀💁🏻‍♂️  That said, because Arrays are sized, Rust is smart enough to know if you’ve hardcoded an index out of bounds, so this
 won’t even compile!</p>
-<p><img src="013-collections/array-square-compile-fail-message.png" alt="array-square-compile-fail-message.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/array-square-compile-fail-message.png" alt="array-square-compile-fail-message.png"><span class="img-wrapper"><img src="013-collections/array-square-compile-fail-message.png" alt="array-square-compile-fail-message.png"></span></label></p>
 <p>🦀 If you’re not sure an index is definitely in bounds, a safer way to get the data there is to use, well… the get method which returns an option containing a reference to the data inside the array</p>
-<p><img src="013-collections/array-get.png" alt="array-get.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/array-get.png" alt="array-get.png"><span class="img-wrapper"><img src="013-collections/array-get.png" alt="array-get.png"></span></label></p>
 <p>🦀 If the array is mutable, you can get a mutable reference to an entry in the array using <code>get_mut</code>.</p>
-<p><img src="013-collections/array-get_mut.png" alt="array-get_mut.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/array-get_mut.png" alt="array-get_mut.png"><span class="img-wrapper"><img src="013-collections/array-get_mut.png" alt="array-get_mut.png"></span></label></p>
 <p>🦀 Note the use of if-let to unwrap the Option we get back from get_mut</p>
 <p>🦀 Also because get and get_mut actually return references, to change the value, we have to dereference first</p>
 <p>🦀 Finally, you can pass arrays into functions, and if the types in the array are copy, the array itself is also copy meaning you won’t lose ownership when you do this.</p>
 <p>🦀 Passing an array like this needs the type of the array to be defined including its size, so if the size is different, it won’t work.</p>
-<p><img src="013-collections/array-fn.png" alt="array-fn.png"></p>
-<p><img src="013-collections/array-fn-good.png" alt="array-fn-good.png"></p>
-<p><img src="013-collections/array-fn-bad.png" alt="array-fn-bad.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/array-fn.png" alt="array-fn.png"><span class="img-wrapper"><img src="013-collections/array-fn.png" alt="array-fn.png"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/array-fn-good.png" alt="array-fn-good.png"><span class="img-wrapper"><img src="013-collections/array-fn-good.png" alt="array-fn-good.png"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/array-fn-bad.png" alt="array-fn-bad.png"><span class="img-wrapper"><img src="013-collections/array-fn-bad.png" alt="array-fn-bad.png"></span></label></p>
 <p>🦀 If you want to pass an arbitrarily sized array into a function, you can… by using a slice.</p>
 <h2 id="slices"><a class="header" href="#slices">Slices</a></h2>
 <p>Obviously, passing exactly sized arrays around isn’t particularly useful in most real world circumstances.</p>
@@ -219,7 +219,7 @@ won’t even compile!</p>
 <p>You can think of a slice as a view or window into a series of contiguous data.</p>
 <p>The fact that it’s a view of some other type hopefully indicates to you that this is a reference type</p>
 <p>🦀 The simplest way to get a slice is to reference an array or any other compatible collection.</p>
-<p><img src="013-collections/slice-reference.png" alt="slice-reference.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/slice-reference.png" alt="slice-reference.png"><span class="img-wrapper"><img src="013-collections/slice-reference.png" alt="slice-reference.png"></span></label></p>
 <p>You can also get a sub slice of an array by using range notation, which we’ve discussed before, but let’s do a quick recap</p>
 <p>This can include open ranges which are a bit more complicated.</p>
 <p>The way to think about this is, where <code>X..Y</code>:</p>
@@ -227,13 +227,13 @@ won’t even compile!</p>
 <p>🦀 if Y is preceded by an equals sign, the slice ends after the <code>Y</code>th element</p>
 <p>🦀 if X is not specified, the slice begins at the start of the collection being sliced</p>
 <p>🦀 if Y is not specified, the slice ends at the end of the collection being sliced</p>
-<p><img src="013-collections/slice-range.png" alt="slice-range.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/slice-range.png" alt="slice-range.png"><span class="img-wrapper"><img src="013-collections/slice-range.png" alt="slice-range.png"></span></label></p>
 <p>When using slices, you don’t need to specify their size, that information is encoded into the data at runtime, meaning you can work with slices of arbitrary size.</p>
 <p>Bear in mind though that they are references, so you <em>may</em> need to use lifetimes to keep track, if you need a reminder of lifetimes (and even those of us well versed in Rust often need a reminder), I covered them in the functions video, linky in the corner.</p>
 <p>In that video we discussed a function for splitting a <code>String</code> which returned two  “string slice references”.</p>
 <p>That’s right, <code>str</code> is another, special, kind of slice.</p>
 <p>🦀 Here’s that code again, and here’s some things to note that will hopefully make a lot more sense after the last few chapters:</p>
-<p><img src="013-collections/slice-split-fn.png" alt="slice-split-fn.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/slice-split-fn.png" alt="slice-split-fn.png"><span class="img-wrapper"><img src="013-collections/slice-split-fn.png" alt="slice-split-fn.png"></span></label></p>
 <p>🦀 <code>String</code> implements <code>Deref</code> targeting <code>str</code> so we can get a string slice just by referencing <code>String</code></p>
 <p>🦀 The lifetime <code>'a</code> (attached to <code>yuki</code>) enters <code>split()</code> through <code>input</code> and is tied to the return parameters <code>left</code> and <code>right</code>.</p>
 <p>🦀 The same range notation is used to create the slices as our previous examples</p>
@@ -251,20 +251,20 @@ won’t even compile!</p>
 <p>This will construct an empty <code>Vec</code> with at least (but possibly not exactly) the capacity you requested.</p>
 <p>🦀 Note that capacity and length are not the same thing in Rust.</p>
 <p>🦀 You can get the number of items of data currently in the vector with <code>.len()</code> and its capacity with <code>.capacity()</code>.</p>
-<p><img src="013-collections/vec-len-v-capacity.png" alt="vec-len-v-capacity.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/vec-len-v-capacity.png" alt="vec-len-v-capacity.png"><span class="img-wrapper"><img src="013-collections/vec-len-v-capacity.png" alt="vec-len-v-capacity.png"></span></label></p>
 <p>🦀 If you’re not worried about the potential costs of resizing your vector, particularly if you’re not going to resize it, and you already have some data that you want to instantiate, you should use the <code>vec!</code> macro as this can be optimised by the compiler.</p>
-<p><img src="013-collections/vec-macro.png" alt="vec-macro.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/vec-macro.png" alt="vec-macro.png"><span class="img-wrapper"><img src="013-collections/vec-macro.png" alt="vec-macro.png"></span></label></p>
 <p>🦀 Usually you’ll make Vectors mutable, and they provide a huge array (pun intended) of useful methods, but here are some of the basics.</p>
 <p>🦀 To add elements to the end of a vector we use the <code>.push(t: T)</code> method</p>
 <p>🦀 and to remove them from the end of the vector we use the <code>.pop()</code> method which returns an <code>Option&lt;T&gt;</code>, since the vector may be empty.</p>
 <p>🦀 Like arrays, you <em>can</em> index directly into a <code>Vec</code> <em>but</em>, just like arrays, you generally shouldn’t.</p>
-<p><img src="013-collections/vec-panic.png" alt="vec-panic.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/vec-panic.png" alt="vec-panic.png"><span class="img-wrapper"><img src="013-collections/vec-panic.png" alt="vec-panic.png"></span></label></p>
 <p>🦀 If you try to access an element out of bounds, your program will panic, an unlike sized arrays, there’s not even any protection against hard coded out-of-bounds indices.</p>
 <p>🦀 Again, using <code>.get()</code> and <code>.get_mut()</code> will return an <code>Option</code> containing either an immutable or mutable reference to an item inside the vector.</p>
-<p><img src="013-collections/vec-get.png" alt="vec-get.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/vec-get.png" alt="vec-get.png"><span class="img-wrapper"><img src="013-collections/vec-get.png" alt="vec-get.png"></span></label></p>
 <p>🦀 This is much safer as the program will not halt if there is no item at the given index, you’ll simply get a <code>None</code>.</p>
 <p>🦀 <code>.get()</code> and <code>.get_mut()</code> will also allow you to create an array slice if you give it a <code>Range</code> instead.</p>
-<p><img src="013-collections/vec-get-range.png" alt="vec-get-range.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/vec-get-range.png" alt="vec-get-range.png"><span class="img-wrapper"><img src="013-collections/vec-get-range.png" alt="vec-get-range.png"></span></label></p>
 <p>🦀 Note the weird syntax as <code>get</code> returns an array slice, not an array</p>
 <p>🦀 You can even edit values inside the returned slice</p>
 <p>🦀 Be careful, this is actually element 2!</p>
@@ -274,7 +274,7 @@ won’t even compile!</p>
 <h3 id="vecdequeue"><a class="header" href="#vecdequeue">VecDequeue</a></h3>
 <p><code>VecDeque</code> is very similar to <code>Vec</code> however, where in <code>Vec</code> you can only add and remove items to and from the end of the collection, <code>VecDeque</code> also allows you to add and remove items to and from the front!</p>
 <p>🦀 You can create a <code>VecDeque</code> in much the same way as a <code>Vec</code>, though there isn’t a macro.</p>
-<p><img src="013-collections/vec-deque.png" alt="vec-deque.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/vec-deque.png" alt="vec-deque.png"><span class="img-wrapper"><img src="013-collections/vec-deque.png" alt="vec-deque.png"></span></label></p>
 <p>🦀 Instead, here we’ll use the <code>From</code> trait to take a static array and turn it into a <code>VecDeque</code>.</p>
 <p>🦀 We can then push elements onto the back of a <code>VecDeque</code> with <code>push_back</code> or on to the front with, you probably guessed it, <code>push_front</code>.</p>
 <p>🦀 Similarly, we can remove elements from the front of a <code>VecDeque</code> with <code>pop_front</code>, or from the back using <code>pop_back</code>.</p>
@@ -283,7 +283,7 @@ won’t even compile!</p>
 <p><code>Vec</code> and <code>VecDeque</code> will almost always beat <code>LinkedList</code> in both speed and memory efficiency if all you want to do is add items to the end of a list (or, in the case of <code>VecDeque</code> to the front).</p>
 <p>Where <code>LinkedList</code>s are useful though, is when splitting and merging your collection is a core feature you will be heavily reliant on.</p>
 <p>🦀 To demonstrate this, lets create a simple example by pushing items on to the end of a linked list.</p>
-<p><img src="013-collections/linked-list.png" alt="linked-list.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/linked-list.png" alt="linked-list.png"><span class="img-wrapper"><img src="013-collections/linked-list.png" alt="linked-list.png"></span></label></p>
 <p>🦀 I’m intentionally skipping over 2 here</p>
 <p>🦀 In order to add 2 in at the logical position we can split the linked list before the 2nd element using <code>split_off(2)</code></p>
 <p>🦀 We can then append a new element onto the end of the left part of the list (in the original variable) and then re-append the right part of the list.</p>
@@ -291,11 +291,11 @@ won’t even compile!</p>
 <h3 id="binaryheap"><a class="header" href="#binaryheap">BinaryHeap</a></h3>
 <p><code>BinaryHeap</code>s allow you to add items to a heap in any order, but the first item off the heap is always the largest item according to its <code>Ord</code>.</p>
 <p>🦀 For example, lets add some chars to a <code>BinaryHeap</code></p>
-<p><img src="013-collections/binary-heap.png" alt="binary-heap.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/binary-heap.png" alt="binary-heap.png"><span class="img-wrapper"><img src="013-collections/binary-heap.png" alt="binary-heap.png"></span></label></p>
 <p>🦀 When we pop them off the heap, they come out from largest to smallest.</p>
 <p>🦀 The obvious limitation here though is, what do you do if you need to know the smallest value in the stack?</p>
 <p>🦀 In the standard library there’s a cool little newtype that can wrap other types and inverts their ordering:</p>
-<p><img src="013-collections/binary-heap-reverse.png" alt="binary-heap-reverse.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/binary-heap-reverse.png" alt="binary-heap-reverse.png"><span class="img-wrapper"><img src="013-collections/binary-heap-reverse.png" alt="binary-heap-reverse.png"></span></label></p>
 <p>🦀 The only slight downside is that the item will pop off the <code>BinaryHeap</code> still wrapped in the <code>Reverse</code> newtype</p>
 <p>🦀 Because the newtype is a tuple struct with a public field, you can access the data directly there</p>
 <p>🦀 Pattern matching will also allow you to extract the inner data</p>
@@ -306,37 +306,37 @@ won’t even compile!</p>
 <p>Hashing the key results in a <code>u64</code> that is used to create the lookup table.</p>
 <p>There’s more details on how hashing works in the official book, including how to create a <code>HashMap</code> with a different hashing algorithm, but that’s beyond the scope of <em>this</em> series.</p>
 <p>🦀 Similar to <code>Vec</code>s, <code>HashMap</code>s can be initialised in a few ways, the main three you’re likely to use are:</p>
-<p><img src="013-collections/hashmap-init.png" alt="hashmap-init.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/hashmap-init.png" alt="hashmap-init.png"><span class="img-wrapper"><img src="013-collections/hashmap-init.png" alt="hashmap-init.png"></span></label></p>
 <p>🦀 “new” which creates a hashmap with arbitrary capacity</p>
 <p>🦀 “with_capacity” which, like with other collections, can help minimise re-allocation</p>
 <p>🦀 or you can create a hashmap from a collection of tuples representing key-value pairs</p>
 <p>🦀 To access data you’ve stored in your hashmap, there’s a few handy methods:</p>
 <p>🦀 <code>.get()</code> and <code>.get_mut()</code> work the same as with other collections but take a key instead of an index.</p>
-<p><img src="013-collections/hashmap-get.png" alt="hashmap-get.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/hashmap-get.png" alt="hashmap-get.png"><span class="img-wrapper"><img src="013-collections/hashmap-get.png" alt="hashmap-get.png"></span></label></p>
 <p>🦀 As with other collections, using <code>get</code> will return an <code>Option</code> making it very safe to use</p>
 <p>🦀 And <code>get_mut</code> will allow us to modify data via a mutable reference</p>
 <p>🦀 The <code>.entry()</code> method returns a special <code>Entry</code> enum that allows you to modify a value if it exists</p>
-<p><img src="013-collections/hashmap-entry.png" alt="hashmap-entry.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/hashmap-entry.png" alt="hashmap-entry.png"><span class="img-wrapper"><img src="013-collections/hashmap-entry.png" alt="hashmap-entry.png"></span></label></p>
 <p>🦀 or insert a value if it doesn’t</p>
 <p>🦀 Pretty handy right!</p>
 <p>🦀 The <code>.remove</code> method takes a value out of the HashMap (if it exists)</p>
-<p><img src="013-collections/hashmap-remove.png" alt="hashmap-remove.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/hashmap-remove.png" alt="hashmap-remove.png"><span class="img-wrapper"><img src="013-collections/hashmap-remove.png" alt="hashmap-remove.png"></span></label></p>
 <p>🦀 This is really handy because inserting values into collections, moves ownership into them, and <code>remove</code> allows you to move ownership out again</p>
 <p>🦀 Similarly <code>.remove_entry()</code> can be used to gain ownership of both the value <em>and</em> the key as you remove them from the map</p>
-<p><img src="013-collections/hashmap-remove-entry.png" alt="hashmap-remove-entry.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/hashmap-remove-entry.png" alt="hashmap-remove-entry.png"><span class="img-wrapper"><img src="013-collections/hashmap-remove-entry.png" alt="hashmap-remove-entry.png"></span></label></p>
 <h2 id="btreemap"><a class="header" href="#btreemap">BTreeMap</a></h2>
 <p><code>BTreeMap</code> is a Binary Search Tree version of <code>HashMap</code>.</p>
 <p>Now, for storing arbitrary data it’s a touch slower than <code>HashMap</code>, but it internally sorts keys so that you can easily get the values at the largest and smallest keys, a little bit like a <code>VecDeque</code>:</p>
 <p>🦀 Let’s say we have BTreeMap with some keys and values.</p>
-<p><img src="013-collections/btreemap.png" alt="btreemap.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/btreemap.png" alt="btreemap.png"><span class="img-wrapper"><img src="013-collections/btreemap.png" alt="btreemap.png"></span></label></p>
 <p>🦀 You can see I’ve intentionally got the keys out of order here</p>
 <p>🦀 We can get references to the first or last key/values according to the Ord of the key type</p>
 <p>🦀 We can also get Entry enums this way</p>
 <p>🦀 Finally we can pop both the key and value from either the front or back of the BTreeMap, much like a <code>VecDeque</code>, but sorted!</p>
 <h2 id="sets"><a class="header" href="#sets">Sets</a></h2>
 <p>🦀 There are two Set types in Rust that allow you to store values with no duplicates, <code>HashSet</code> and <code>BTreeSet</code>.</p>
-<p><img src="013-collections/set-hashset.png" alt="set-hashset.png">
-<img src="013-collections/set-btreeset.png" alt="set-btreeset.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/set-hashset.png" alt="set-hashset.png"><span class="img-wrapper"><img src="013-collections/set-hashset.png" alt="set-hashset.png"></span></label>
+<label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/set-btreeset.png" alt="set-btreeset.png"><span class="img-wrapper"><img src="013-collections/set-btreeset.png" alt="set-btreeset.png"></span></label></p>
 <p>🦀 These are implemented using <code>HashMap&lt;K, ()&gt;</code> and <code>BTreeMap&lt;K, ()&gt;</code>, though they “fix” some of the issues you might run in to if you were to naively do this yourself.</p>
 <p>🦀 For example, <code>.insert(T)</code> only takes a single value, and methods like <code>.get(K)</code> return an Option with only one value.</p>
 <p>🦀 The differences between <code>HashSet</code> and <code>BTreeSet</code> are the same as between <code>HashMap</code> and <code>BTreeMap</code>, including <code>BTreeSet</code> allowing easy access to the “first” and “last”.</p>
@@ -355,11 +355,11 @@ won’t even compile!</p>
 <p>Wait! Before you go I want to talk about a “mistake” in the HashMap section</p>
 <p>I noticed this while writing the script but wanted to leave it in, and talk about it at the end of the video.</p>
 <p>🦀 When showing the code for <code>get</code>, did you spot this…</p>
-<p><img src="013-collections/hashmap-get.png" alt="hashmap-get.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/hashmap-get.png" alt="hashmap-get.png"><span class="img-wrapper"><img src="013-collections/hashmap-get.png" alt="hashmap-get.png"></span></label></p>
 <p>🦀 See the hashmap key type is a String <em>but</em> I’ve accidentally used a string slice as the parameter in <code>get</code>.</p>
 <p>🦀 This code works though… how?</p>
 <p>📕 Well, if we check the documentation, we can see that <code>get</code> does not take the same generic type as the <code>Key</code>, <code>K</code>, but a different generic <code>Q</code></p>
-<p><img src="013-collections/hashmap-get-docs.png" alt="hashmap-get-docs.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="013-collections/hashmap-get-docs.png" alt="hashmap-get-docs.png"><span class="img-wrapper"><img src="013-collections/hashmap-get-docs.png" alt="hashmap-get-docs.png"></span></label></p>
 <p>📕 <code>Q</code> is any type that <code>K</code> implements <code>Borrow</code> for (and is Hash, Eq and may or may not be sized), which feels very backwards but makes sense.</p>
 <p>📕 String, our key type, implements Borrow string slice, so we can use string slices in the get method.</p>
 <p>📕 Using the actual <code>Key</code> type, <code>K</code>, or <code>String</code> in this case, will always work too because all types implement <code>Borrow</code> for themselves</p>
@@ -410,11 +410,11 @@ won’t even compile!</p>
 
         <script src="../elasticlunr-ef4e11c1.min.js"></script>
         <script src="../mark-09e88c2c.min.js"></script>
-        <script src="../searcher-c2a407aa.js"></script>
+        <script src="../searcher-09f2665d.js"></script>
 
         <script src="../clipboard-1626706a.min.js"></script>
         <script src="../highlight-abc7f01d.js"></script>
-        <script src="../book-a0b12cfe.js"></script>
+        <script src="../book-609e4cb8.js"></script>
 
         <!-- Custom JS scripts -->
         <script src="../scripts/enable-checkboxes-3ea146e3.js"></script>

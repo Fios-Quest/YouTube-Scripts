@@ -15,8 +15,8 @@
         <link rel="icon" href="../favicon-de23e50b.svg">
         <link rel="shortcut icon" href="../favicon-8114d1fc.png">
         <link rel="stylesheet" href="../css/variables-8adf115d.css">
-        <link rel="stylesheet" href="../css/general-2459343d.css">
-        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../css/chrome-d279d366.css">
         <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
@@ -35,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-6e68e63e.js";
+            window.path_to_searchindex_js = "../searchindex-0151ee72.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-ba7e779f.js"></script>
+        <script src="../toc-18280e25.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -203,41 +203,41 @@
 <p>The specific part of the Process responsible for executing your code is called a thread, and a single process will always have at least one thread but can have many.</p>
 <p>Threads are scheduled by the operating system independently, allowing one process to do multiple things effectively concurrently.</p>
 <h2 id="starting-a-thread"><a class="header" href="#starting-a-thread">Starting a thread</a></h2>
-<p><img src="015-threads/01-thread-main.png" alt="01-thread-main.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="015-threads/01-thread-main.png" alt="01-thread-main.png"><span class="img-wrapper"><img src="015-threads/01-thread-main.png" alt="01-thread-main.png"></span></label></p>
 <p>🦀👨🏻 Your program always has at least one thread, even your basic hello-world program runs in a thread.</p>
 <p>🦀👨🏻 What we’re interested in today is how we start more threads.</p>
 <p>🦀👨🏻 This is a process called Spawning.</p>
-<p><img src="015-threads/02-thread-spawn.png" alt="02-thread-spawn.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="015-threads/02-thread-spawn.png" alt="02-thread-spawn.png"><span class="img-wrapper"><img src="015-threads/02-thread-spawn.png" alt="02-thread-spawn.png"></span></label></p>
 <p>🦀👨🏻 To spawn a thread, we use <code>std::thread::spawn</code>… but, this will do little on its own.</p>
 <p>🦀👨🏻 If we run this code, can you see what’s missing in the output?</p>
-<p><img src="015-threads/02-thread-spawn-output-nix.png" alt="02-thread-spawn-output-nix.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="015-threads/02-thread-spawn-output-nix.png" alt="02-thread-spawn-output-nix.png"><span class="img-wrapper"><img src="015-threads/02-thread-spawn-output-nix.png" alt="02-thread-spawn-output-nix.png"></span></label></p>
 <p>🦀👨🏻 It looks like our thread didn’t run… but actually, its even worse than that.</p>
 <p>🦀👨🏻 When writing this portion of the book, this is the output I consistently got from my Mac, and from Rust Playground.</p>
 <p>🦀👨🏻 That consistency actually surprised me a little, but then when writing the script for this video on my Windows machine…</p>
-<p><img src="015-threads/02-thread-spawn-output-win.png" alt="02-thread-spawn-output-win.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="015-threads/02-thread-spawn-output-win.png" alt="02-thread-spawn-output-win.png"><span class="img-wrapper"><img src="015-threads/02-thread-spawn-output-win.png" alt="02-thread-spawn-output-win.png"></span></label></p>
 <p>🦀👨🏻 I got this.</p>
 <p>🦀👨🏻 This is the inconsistency I was actually expecting, its not that our thread doesn’t run, it’s that it might… or it might not.</p>
-<p><img src="015-threads/02-thread-spawn.png" alt="02-thread-spawn.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="015-threads/02-thread-spawn.png" alt="02-thread-spawn.png"><span class="img-wrapper"><img src="015-threads/02-thread-spawn.png" alt="02-thread-spawn.png"></span></label></p>
 <p>🦀👨🏻 Spawning a thread returns a <code>JoinHandle</code>.</p>
 <p>🦀👨🏻 The <code>JoinHandle</code> is what ties the spawned thread to the thread that spawned it.</p>
 <p>🦀👨🏻 When the <code>JoinHandle</code> is dropped, which in this case happens instantly, the thread is orphaned.</p>
 <p>🦀👨🏻 It may still run but, in this case, the process ends at the end of main, so whether the child thread runs or not, is no longer up to us.</p>
-<p><img src="015-threads/03-thread-join.png" alt="03-thread-join.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="015-threads/03-thread-join.png" alt="03-thread-join.png"><span class="img-wrapper"><img src="015-threads/03-thread-join.png" alt="03-thread-join.png"></span></label></p>
 <p>🦀👨🏻 We can tell our main thread to pause and wait for a running thread to end by calling <code>join</code> on the <code>JoinHandle</code>.</p>
-<p><img src="015-threads/04-thread-join-fn.png" alt="04-thread-join-fn.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="015-threads/04-thread-join-fn.png" alt="04-thread-join-fn.png"><span class="img-wrapper"><img src="015-threads/04-thread-join-fn.png" alt="04-thread-join-fn.png"></span></label></p>
 <p>🦀👨🏻 We’ve been using closures, but functions work just as well and can be better for more complex programs.</p>
-<p><img src="015-threads/spawn-doc.png" alt="spawn-doc.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="015-threads/spawn-doc.png" alt="spawn-doc.png"><span class="img-wrapper"><img src="015-threads/spawn-doc.png" alt="spawn-doc.png"></span></label></p>
 <p>📕 The only restrictions are:</p>
 <p>📕 - the function needs to be “FnOnce returning T, Send and static”</p>
 <p>📕 - and T also needs to be “Send and static”</p>
 <p>Exactly <em>when</em> threads are allowed to execute code is controlled by a scheduler which we can’t directly manage ourselves, but we can influence it.</p>
 <p>Putting one thread to sleep can allow another thread to run.</p>
-<p><img src="015-threads/05-thread-sans-sleep.png" alt="05-thread-sans-sleep.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="015-threads/05-thread-sans-sleep.png" alt="05-thread-sans-sleep.png"><span class="img-wrapper"><img src="015-threads/05-thread-sans-sleep.png" alt="05-thread-sans-sleep.png"></span></label></p>
 <p>🦀 If we run this code as-is, you’ll see the main thread runs to completion before the child thread starts</p>
-<p><img src="015-threads/05-thread-sans-sleep-output.png" alt="05-thread-sans-sleep-output.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="015-threads/05-thread-sans-sleep-output.png" alt="05-thread-sans-sleep-output.png"><span class="img-wrapper"><img src="015-threads/05-thread-sans-sleep-output.png" alt="05-thread-sans-sleep-output.png"></span></label></p>
 <p>🦀 If we put each thread to sleep after it writes to standard out, we can “encourage” the scheduler to start work on the other thread if it isn’t already.</p>
-<p><img src="015-threads/06-thread-sleep.png" alt="06-thread-sleep.png"></p>
-<p><img src="015-threads/06-thread-sleep-output.png" alt="06-thread-sleep-output.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="015-threads/06-thread-sleep.png" alt="06-thread-sleep.png"><span class="img-wrapper"><img src="015-threads/06-thread-sleep.png" alt="06-thread-sleep.png"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="015-threads/06-thread-sleep-output.png" alt="06-thread-sleep-output.png"><span class="img-wrapper"><img src="015-threads/06-thread-sleep-output.png" alt="06-thread-sleep-output.png"></span></label></p>
 <p>🦀👨🏻 There’s two <em>very</em> important things I want you to note here though</p>
 <p>🦀👨🏻 Firstly, thread::sleep is <em>not</em> a timer, your thread may sleep for longer than you requested or not at all in certain situations.</p>
 <p>🦀👨🏻 Secondly, the scheduler ultimately decides when code is run, so there’s no guarantee you will get this <em>exact</em> output, so bare that in mind if <em>when code runs</em> matters to you.</p>
@@ -245,11 +245,11 @@
 <p>We can pass data into a thread before it starts so long as the data is <code>Send</code>.</p>
 <p>We previously talked about this trait in the Traits video, but to recap, data is <code>Send</code> so long as it can be safely sent between threads.</p>
 <p>This trait is automatically implemented for all types that can be <code>Send</code> (though it is also possible to opt out of it).</p>
-<p><img src="015-threads/07-thread-move.png" alt="07-thread-move.png"></p>
-<p><img src="015-threads/07-thread-move-output.png" alt="07-thread-move-output.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="015-threads/07-thread-move.png" alt="07-thread-move.png"><span class="img-wrapper"><img src="015-threads/07-thread-move.png" alt="07-thread-move.png"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="015-threads/07-thread-move-output.png" alt="07-thread-move-output.png"><span class="img-wrapper"><img src="015-threads/07-thread-move-output.png" alt="07-thread-move-output.png"></span></label></p>
 <p>🦀👨🏻 We can move data into the closure that will be sent to the thread using the <code>move</code> keyword.</p>
 <p>🦀👨🏻 Here we move the entire data vector into the spawned thread.</p>
-<p><img src="015-threads/08-thread-return.png" alt="08-thread-return.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="015-threads/08-thread-return.png" alt="08-thread-return.png"><span class="img-wrapper"><img src="015-threads/08-thread-return.png" alt="08-thread-return.png"></span></label></p>
 <p>🦀👨🏻 You can also return data via the join handler.</p>
 <p>🦀👨🏻 This means you could pass hard work to a thread and do other work, coming back to check on the thread at a later time.</p>
 <p>🦀👨🏻 A little side note, if it’s helpful, you can check if the thread is finished with <code>.is_finished()</code>.</p>
@@ -258,11 +258,11 @@
 <p>Now we can start one thread, there’s no stopping us!</p>
 <p>Modern schedulers can manage a <em>lot</em> of threads at once, however, so far, we can only send data between a child thread and the parent that started it before and after that thread runs, not during.</p>
 <p>What if we want to communicate across multiple threads, or send data to a thread while its running?</p>
-<p><img src="015-threads/channel-doc.png" alt="channel-doc.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="015-threads/channel-doc.png" alt="channel-doc.png"><span class="img-wrapper"><img src="015-threads/channel-doc.png" alt="channel-doc.png"></span></label></p>
 <p>📕 Multi-producer, single-consumer (MPSC) is a queue pattern that allows us to create channels with multiple <code>Sender</code>s that can send messages, and a single <code>Reciever</code> that can receive them.</p>
 <p>📕 As per the name, Multi-producer, you can clone <code>Sender</code>s but each of those clones can only send to a single <code>Reciever</code>.</p>
 <p>The <code>Sender</code> and <code>Receiver</code> types are <code>Send</code> meaning that you can create them in one thread and send them to another.</p>
-<p><img src="015-threads/09-channel.png" alt="09-channel.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="015-threads/09-channel.png" alt="09-channel.png"><span class="img-wrapper"><img src="015-threads/09-channel.png" alt="09-channel.png"></span></label></p>
 <p>🦀👨🏻 Let’s create a bunch of threads and give each of them a <code>Sender</code> that points back to a single <code>Reciever</code></p>
 <p>🦀👨🏻 We move the sender into the closure being run in the map method of an iterator.</p>
 <p>🦀👨🏻 Because the closure now owns it, we can clone it for each thread we’re spawning</p>
@@ -282,13 +282,13 @@
 <p>Furthermore, references cannot outlive the data they reference… which is a little harder to confirm with threads.</p>
 <p>How do you know the thread referencing your data doesn’t exist for longer than the data it’s referenced?</p>
 <p>One option is using scoped threads which we can create with <code>std::thread::scope</code>.</p>
-<p><img src="015-threads/10-state-immutable-references.png" alt="10-state-immutable-references.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="015-threads/10-state-immutable-references.png" alt="10-state-immutable-references.png"><span class="img-wrapper"><img src="015-threads/10-state-immutable-references.png" alt="10-state-immutable-references.png"></span></label></p>
 <p>🦀👨🏻 The scope function takes a closure with a single parameter that gives us the scope context.</p>
 <p>🦀👨🏻 We can use the scope context to spawn threads.</p>
 <p>🦀👨🏻 We don’t need to keep track of <code>JoinHandle</code>s this time, all scoped threads are joined at the end of the scope closure.</p>
 <p>🦀👨🏻 However, the spawn method on the scope context does still return a <code>JoinHandle</code> if you want to handle potential thread panics.</p>
 <p>🦀👨🏻 The scope function blocks the thread that called it, until all the threads it started have been joined, so after that we’re safe to modify the data again, which here would require a mutable reference.</p>
-<p><img src="015-threads/11-state-mutable-references.png" alt="11-state-mutable-references.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="015-threads/11-state-mutable-references.png" alt="11-state-mutable-references.png"><span class="img-wrapper"><img src="015-threads/11-state-mutable-references.png" alt="11-state-mutable-references.png"></span></label></p>
 <p>🦀👨🏻 You can also send mutable references across threads like this, but, bear in mind, only one thread can access the mutable reference, and it must end before we can access our data again.</p>
 <pre class="playground"><code class="language-rust edition2024">use std::thread::scope;
 
@@ -327,7 +327,7 @@ fn main() {
 <p>There is a general software abstraction concept called a “mutex” that makes access to data MUTually EXclusive.</p>
 <p>Rust provides it’s mutex through <code>std::sync::Mutex</code>.</p>
 <p>Once you place data inside a Mutex, to access it again, you need to “lock” the Mutex.</p>
-<p><img src="015-threads/12-state-mutex.png" alt="12-state-mutex.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="015-threads/12-state-mutex.png" alt="12-state-mutex.png"><span class="img-wrapper"><img src="015-threads/12-state-mutex.png" alt="12-state-mutex.png"></span></label></p>
 <p>🦀👨🏻 If the Mutex is already locked, then the thread currently trying to access the data needs to wait for the existing lock to be released.</p>
 <p>🦀👨🏻 the lock method on a <code>Mutex</code> returns a <code>MutexGuard</code></p>
 <p>🦀👨🏻 When the MutexGuard goes out of scope, the lock is dropped, allowing other threads to use the Mutex</p>
@@ -354,7 +354,7 @@ fn main() {
 <p>Editors note: I don’t think I’ve <em>ever</em> used <code>Rc</code>, but I use <code>Arc</code> all the time, so don’t worry that we didn’t cover it in this series.</p>
 <p>If you need to pass data around a single thread, wrapped in its own container, it’s there for you to use</p>
 </blockquote>
-<p><img src="015-threads/13-state-arc-mutex.png" alt="13-state-arc-mutex.png"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="015-threads/13-state-arc-mutex.png" alt="13-state-arc-mutex.png"><span class="img-wrapper"><img src="015-threads/13-state-arc-mutex.png" alt="13-state-arc-mutex.png"></span></label></p>
 <p>🦀👨🏻 So, armed with this knowledge, we can go back to unscoped threads!</p>
 <p>🦀👨🏻 Like earlier, we can clone the arc in the map method of the iterator, and move the cloned value to the thread.</p>
 <p>🦀👨🏻 Arc also implements Deref for its internal type, so we can call lock on the Mutex from the Arc.</p>
@@ -414,11 +414,11 @@ fn main() {
 
         <script src="../elasticlunr-ef4e11c1.min.js"></script>
         <script src="../mark-09e88c2c.min.js"></script>
-        <script src="../searcher-c2a407aa.js"></script>
+        <script src="../searcher-09f2665d.js"></script>
 
         <script src="../clipboard-1626706a.min.js"></script>
         <script src="../highlight-abc7f01d.js"></script>
-        <script src="../book-a0b12cfe.js"></script>
+        <script src="../book-609e4cb8.js"></script>
 
         <!-- Custom JS scripts -->
         <script src="../scripts/enable-checkboxes-3ea146e3.js"></script>
